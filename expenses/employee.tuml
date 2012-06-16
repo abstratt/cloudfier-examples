@@ -5,88 +5,51 @@
  */
 package expenses;
 
-(* The category for an expense. *)
-class Category
+(* An employee reports expenses. *) 
+class Employee 
     attribute name : String;
-    static operation newCategory(name : String) : Category;
-    begin
-        var newCategory : Category;
-        newCategory := new Category;
-        newCategory.name := name;
-        return newCategory;
-    end;    
-end;
- 
-(* The expense as reported by an employee. *)
-class Expense
-    reference category : Category;
-    readonly attribute status : ExpenseStatus := Recorded;
-    attribute description : String;
-    attribute amount : Double;
-    attribute date : Date;
-    reference employee : Employee;
+    attribute expenses : Expense[*];
     
-    static operation newExpense(description : String, amount : Double, date : Date, category : Category) : Expense;
+    derived attribute approvedExpenses : Expense[*] := () : Expense[*] { 
+        return self.expensesByStatus(ExpenseStatus#Approved)
+    };    
+    
+    derived attribute recordedExpenses : Expense[*] := () : Expense[*] {
+        return self.expensesByStatus(ExpenseStatus#Recorded)
+    };
+    
+    derived attribute submittedExpenses : Expense[*] := () : Expense[*] {
+        return self.expensesByStatus(ExpenseStatus#Submitted)
+    };
+    
+    derived attribute totalSubmitted : Double := () : Double { return self.totalExpenses(self.submittedExpenses) };
+    
+    derived attribute totalRecorded : Double := () : Double { return self.totalExpenses(self.recordedExpenses) };
+    
+    operation declareExpense(description : String, amount : Double, date : Date, category : Category) : Expense;
     begin
-        var newExpense  : Expense;
-        newExpense := new Expense;
-        newExpense.description := description;
-        newExpense.amount := amount;
-        newExpense.date := date;        
-        newExpense.category := category;
+        var newExpense:Expense;
+        newExpense := Expense#newExpense(description,amount,date,category);
+        link EmployeeExpenses(employee := self, expenses := newExpense);
         return newExpense;
     end;
     
-    operation review();
-    precondition MUST_BE_SUBMITTED_TO_REVIEW { return self.status = ExpenseStatus#Submitted }
+    private operation totalExpenses(toSum : Expense[*]) : Double;
     begin
-        self.status := ExpenseStatus#Recorded;
+        return (toSum.reduce((e : Expense, sum : Double) : Double {
+            return sum + e.amount 
+        }, 0) as Double);
     end;
     
-    operation approve();
-    precondition MUST_BE_SUBMITTED_TO_APPROVE { return self.status = ExpenseStatus#Submitted }
+    private operation expensesByStatus(status : ExpenseStatus) : Expense[*] {ordered,unique};
     begin
-        self.status := ExpenseStatus#Approved;
+        return self->expenses.select((e : Expense) : Boolean { return e.status = status} )
     end;
-    
-    operation reject();
-    precondition MUST_BE_SUBMITTED_TO_REJECT { return self.status = ExpenseStatus#Submitted }
-    begin
-        self.status := ExpenseStatus#Rejected;
-    end;
-    
-    operation submit();
-    precondition MUST_BE_RECORDED_TO_SUBMIT { return self.status = ExpenseStatus#Recorded }
-    begin
-        self.status := ExpenseStatus#Submitted;
-    end;
-    
-    static operation findExpensesByCategory(category : Category) : Expense[*];
-    begin 
-        return Expense extent.select ((e : Expense) : Boolean {
-            return e->category == category
-        });
-    end;
-    
-    static operation findExpensesInPeriod(start : Date[0,1], end_: Date[0,1]) : Expense[*];
-    begin 
-        return Expense extent.select ((e : Expense) : Boolean {
-            return ((start == null) or (e.date >= start)) and ((end_ == null) or (e.date <= end_))
-        })
-    end;
-    
-    static operation findByStatus(status : ExpenseStatus) : Expense[*];
-    begin 
-        return Expense extent.select ((e : Expense) : Boolean {
-            return e.status = status
-        })
-    end;
-    
 end;
 
-(* The different statuses an expense can go through. *)
-enumeration ExpenseStatus
-    Approved, Recorded, Rejected, Submitted
+composition EmployeeExpenses
+    role Employee.expenses;
+    role Expense.employee;
 end;
 
-end.
+end.     
