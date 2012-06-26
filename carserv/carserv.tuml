@@ -1,0 +1,120 @@
+/*
+  Model reverse engineered from the CarServ 
+  sample application that appears in the book 
+  book Domain-Driven Design Using Naked Objects
+  by Dan Haywood.
+  
+  http://pragprog.com/book/dhnako/domain-driven-design-using-naked-objects
+*/
+package carserv;
+
+class Customer
+    attribute title : Title;
+    attribute firstName : String;
+    attribute lastName : String;
+    attribute cars : Car[0,*];
+    attribute since : Date[0,1]; /* TODO := Date#today(); */
+    readonly attribute notes : String := "";    
+    derived attribute valuableCustomer : Boolean := () : Boolean {
+        return self.cars.size() >= 2;
+    };
+    derived attribute ownsACar : Boolean := () : Boolean {
+        return not self.cars.isEmpty();
+    };    
+    operation addNotes(notes : String);
+    precondition { return self.ownsACar }
+    begin
+        self.notes := notes;
+    end;
+    operation clearNotes();
+    begin
+        self.notes := ""
+    end;
+    static operation findByName(firstName : String, lastName : String) : Customer[*];
+    precondition (firstName, lastName) { not ((firstName == null) and (lastName == null)) }
+    begin
+        return Customer extent.select((c : Customer) : Boolean {
+            return (c.firstName = firstName) or (c.lastName = lastName);
+        });
+    end;
+    static operation valuableCustomers() : Customer[*];
+    begin
+        return Customer extent.select((c : Customer) : Boolean {
+            return c.valuableCustomer;
+        });
+    end;            
+end;
+
+enumeration Gender 
+  Male, Female
+end;
+
+class Title
+    attribute name : String;
+    attribute gender : Gender;
+end;
+ 
+class Service
+    attribute bookedIn : Date;  /* TODO := Date#today(); */
+    attribute estimatedReady : Date;
+    attribute description : String;    
+    attribute car : Car;
+    static operation newService(carToService : Car, description : String, estimate : Integer) : Service;
+    precondition (estimate) { return estimate > 0 }
+    begin
+        var s : Service;
+        s := new Service;
+        s.bookedIn := Date#today();
+        s.estimatedReady := s.bookedIn.transpose(estimate);
+        s.description := description;
+        s.car := carToService;
+        return s;
+    end;
+end;
+
+class Car
+    /* TODO as a scalar */
+    attribute registrationNumber : String;
+    attribute services : Service[*];
+    attribute \model : Model;
+    attribute owningCustomer : Customer;
+    
+    static operation findByRegistrationNumber(regNumber : String) : Car[0,1];
+    begin
+        return Car extent.\any((c : Car) : Boolean {
+            return regNumber = c.registrationNumber;
+        });
+    end;    
+    
+    operation bookService(description : String, estimateInDays : Integer) : Service;
+    begin
+        return Service#newService(self, description, estimateInDays);
+    end;
+end;    
+
+association CarOwner
+    role Car.owningCustomer;
+    role Customer.cars;
+end;
+
+association
+    role Car.services;
+    role Service.car;
+end;
+
+class Make
+    attribute name : String;
+    attribute models : Model[*];
+end;
+
+class Model
+    attribute name : String;
+    attribute make : Make;    
+end;
+
+association
+    role Make.models;
+    role Model.make;
+end;
+
+end.
