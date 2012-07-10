@@ -8,6 +8,8 @@
 */
 package carserv;
 
+import mdd_types;
+
 class Customer
     attribute title : Title;
     attribute firstName : String;
@@ -30,7 +32,7 @@ class Customer
     begin
         self.notes := ""
     end;
-    static operation findByName(firstName : String, lastName : String) : Customer[*];
+    static operation findByName(firstName : String[0,1], lastName : String[0,1]) : Customer[*];
     precondition (firstName, lastName) { not ((firstName == null) and (lastName == null)) }
     begin
         return Customer extent.select((c : Customer) : Boolean {
