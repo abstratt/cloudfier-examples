@@ -1,0 +1,39 @@
+/*
+  Fixture data
+*/
+{
+    shipit: {
+        User: [
+            { username: "rperez", fullName: "Ricardo Perez", kind: 'Committer' },
+            { username: "ssimon", fullName: "Saulo Simon", kind: 'Committer' },
+            { username: "fsilveira", fullName: "Felix Silveira", kind: 'Reporter' },
+            { username: "gtorres", fullName: "Gina Torres", kind: 'Reporter' }
+        ],        
+        Issue: [
+            { 
+                summary: "Cannot launch two instances of the application",
+                description: "Cannot launch two instances of the application at the same time.",
+                reporter: "User@1",
+                assignee: "User@3",
+                severity: "Major",
+                status: "InProgress",
+                reportedOn: "2012/08/20"
+            },
+            { 
+                summary: "more work on usabilty",
+                description: "The current generated UI is quite functional but it could improve on usability.",
+                reporter: "User@2",
+                severity: "Enhancement",
+                status: "Resolved",
+                resolution: "WontFix",
+                reportedOn: "2012/08/27",
+                resolvedOn: "2012/08/28"
+            }
+        ],
+        Comment: [
+            { commented: 'Good catch, we will fix that right away.', user: 'User@3', issue: 'Issue@1', on: "2012/08/27"},
+            { commented: 'Glad to hear that!', user: 'User@1', issue: 'Issue@1', on: "2012/09/01"},
+            { commented: 'We hear you but this is too vague for us to address, we need more specific enhancement requests.', user: 'User@4', issue: 'Issue@2', on: "2012/09/02"}
+        ]
+    }
+}

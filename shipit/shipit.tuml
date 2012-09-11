@@ -1,0 +1,173 @@
+package shipit;
+
+[kirra::User]
+class User
+    attribute fullName : String;
+    attribute username : String;
+    attribute kind : UserKind;
+end;
+
+enumeration UserKind 
+    Reporter, Committer
+end;
+
+enumeration Severity
+    Minor, 
+    Normal, 
+    Major, 
+    Blocker,
+    Enhancement
+end;
+
+enumeration Resolution
+    Fixed, 
+    WorksForMe, 
+    WontFix 
+end;
+
+class Comment
+    readonly attribute commented : Memo;
+    readonly reference user : User;
+    readonly attribute \on : Date;
+end;
+
+/*
+class Label
+    readonly attribute text : String;
+    static operation make(text : String) : Label;
+    begin
+        var newLabel : Label;
+        newLabel := new Label;
+        newLabel.text := text;
+        return newLabel;
+    end;
+    static operation byName(text : String) : Label;
+    begin
+        return (Label extent.\any((l : Label) : Boolean { return l.text = text }) as Label);
+    end;    
+    static operation for(text : String) : Label;
+    begin 
+        var found : Label;
+        found := Label#byName(text);
+        if (found == null) then
+            return Label#make(text)
+        else
+            return found;
+    end;
+end;
+*/
+
+class Issue
+    attribute summary : String;
+    /*
+    reference labels : Label[*];    
+    operation addLabel(text : String);
+    begin 
+        self.labels := self.labels.add(Label#for(text));
+    end;
+    */
+    readonly attribute reportedOn : Date;    
+    readonly reference reporter : User;
+    readonly reference assignee : User[0,1];
+    attribute severity : Severity;
+    attribute status : Status;
+    readonly attribute resolution : Resolution[0,1];
+    readonly attribute resolvedOn : Date[0,1];
+    derived attribute waitingFor : Integer := () : Integer {
+        if (self.resolvedOn == null) then
+            return self.reportedOn.differenceInDays(Date#today())
+        else
+            return self.reportedOn.differenceInDays(self.resolvedOn);
+    };
+    attribute description : Memo;
+    
+    (* Report a new issue. *)
+    static operation reportIssue(summary : String, description : Memo, severity : Severity := Normal);
+    begin
+        var newIssue : Issue;
+        newIssue := new Issue;
+        newIssue.reporter := (System#user() as User);
+        newIssue.summary := summary;
+        newIssue.description := description;
+        newIssue.severity := severity;
+        newIssue.reportedOn := Date#today();
+    end;
+    
+    (* Release the issue so another committer can work on it. *)        
+    operation release();
+    precondition { return System#user() == self.assignee }    
+    begin
+        self.assignee := null;
+    end;
+
+    (* Resolve the issue. *)        
+    operation resolve(resolution : Resolution := Fixed);
+    begin
+        self.resolvedOn := Date#today();
+        self.resolution := resolution;
+    end;
+
+    (* Reopen the issue. *)    
+    operation reopen(reason : Memo);
+    begin
+        self.resolvedOn := null;
+        self.resolution := null;        
+        if (reason != "") then
+            self.comment(reason);        
+    end;
+    
+    (* Add a comment to the issue *)
+    operation comment(text : Memo);
+    begin
+        var comment : Comment;
+        comment := new Comment;
+        comment.user := (System#user() as User);
+        comment.\on := Date#today();
+        comment.commented := text;
+        link IssueComments(issue := self, comments := comment);
+    end;
+
+    (* Take over an issue currently assigned to (but not in progress) another user. *)
+    operation takeOver();
+    precondition { return (System#user() as User).kind == UserKind#Committer }    
+    precondition { return not(System#user() == self.assignee) }
+    begin
+        self.assignee := (System#user() as User);
+    end;
+    
+    (* Close the issue marking it as verified. *)
+    operation verify();
+    begin
+    end;
+    
+    statemachine Status
+    
+        initial state Open 
+            transition on call(resolve) to Resolved
+            transition on call(takeOver) to InProgress;
+            
+        state InProgress
+            transition on call(release) to Open
+            transition on call(resolve) to Resolved;
+            
+        state Assigned 
+            transition on call(release) to Open 
+            transition on call(resolve) to Resolved
+            transition on call(takeOver) to InProgress;
+            
+        state Resolved 
+            transition on call(verify) to Verified 
+            transition on call(reopen) to Open;
+            
+        state Verified
+            transition on call(reopen) to Open;
+    end;
+end;
+
+composition IssueComments
+    navigable role comments : Comment[*];
+    navigable role issue : Issue;
+end;
+
+
+end.
