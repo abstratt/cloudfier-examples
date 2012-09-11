@@ -10,6 +10,7 @@ package carserv;
 
 import mdd_types;
 
+
 class Customer
     attribute title : Title;
     attribute firstName : String;

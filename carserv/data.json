@@ -6,6 +6,7 @@
   
   http://pragprog.com/book/dhnako/domain-driven-design-using-naked-objects
 */
+
 {
     carserv: {
         Title: [
