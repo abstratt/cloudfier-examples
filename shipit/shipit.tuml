@@ -29,6 +29,12 @@ class Comment
     readonly attribute commented : Memo;
     readonly reference user : User;
     readonly attribute \on : Date;
+    readonly attribute inReplyTo : Comment[0,1];
+    readonly attribute issue : Issue;
+    operation reply(text: Memo);
+    begin
+        self.issue.addComment(text, self);
+    end;
 end;
 
 /*
@@ -73,11 +79,12 @@ class Issue
     attribute status : Status;
     readonly attribute resolution : Resolution[0,1];
     readonly attribute resolvedOn : Date[0,1];
-    derived attribute waitingFor : Integer := () : Integer {
+    readonly attribute comments : Comment[*];
+    derived attribute waitingFor : String := () : Integer {
         if (self.resolvedOn == null) then
-            return self.reportedOn.differenceInDays(Date#today())
+            return "" + self.reportedOn.differenceInDays(Date#today()) + " day(s)"
         else
-            return self.reportedOn.differenceInDays(self.resolvedOn);
+            return "" + self.reportedOn.differenceInDays(self.resolvedOn)  + " day(s)";
     };
     attribute description : Memo;
     
@@ -91,6 +98,11 @@ class Issue
         newIssue.description := description;
         newIssue.severity := severity;
         newIssue.reportedOn := Date#today();
+    end;
+    
+    static operation bySeverity(toMatch : Severity) : Issue[*];
+    begin
+        return Issue extent.select((i : Issue) : Boolean { return i.severity = toMatch });
     end;
     
     (* Release the issue so another committer can work on it. *)        
@@ -119,13 +131,20 @@ class Issue
     (* Add a comment to the issue *)
     operation comment(text : Memo);
     begin
+        self.addComment(text, null);
+    end;
+    
+    private operation addComment(text : Memo, inReplyTo : Comment);
+    begin
         var comment : Comment;
         comment := new Comment;
         comment.user := (System#user() as User);
         comment.\on := Date#today();
         comment.commented := text;
+        comment.inReplyTo := inReplyTo;
         link IssueComments(issue := self, comments := comment);
     end;
+
 
     (* Take over an issue currently assigned to (but not in progress) another user. *)
     operation takeOver();
@@ -165,8 +184,8 @@ class Issue
 end;
 
 composition IssueComments
-    navigable role comments : Comment[*];
-    navigable role issue : Issue;
+    role Issue.comments;
+    role Comment.issue;
 end;
 
 

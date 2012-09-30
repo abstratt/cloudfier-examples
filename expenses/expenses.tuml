@@ -19,12 +19,13 @@ end;
  
 (* The expense as reported by an employee. *)
 class Expense
+    derived attribute moniker : String := () : String { return self.description + " on " + self.date };
+    attribute description : String;
     reference category : Category;
     readonly attribute status : ExpenseStatus := Recorded;
-    attribute description : String;
     attribute amount : Double;
     attribute date : Date;
-    reference employee : Employee;
+    attribute employee : Employee;
     
     static operation newExpense(description : String, amount : Double, date : Date, category : Category) : Expense;
     begin
@@ -88,5 +89,54 @@ end;
 enumeration ExpenseStatus
     Approved, Recorded, Rejected, Submitted
 end;
+
+(* An employee reports expenses. *) 
+[kirra::User]
+class Employee 
+    attribute name : String;
+    attribute expenses : Expense[*];
+    
+    derived attribute approvedExpenses : Expense[*] := () : Expense[*] { 
+        return self.expensesByStatus(ExpenseStatus#Approved)
+    };    
+    
+    derived attribute recordedExpenses : Expense[*] := () : Expense[*] {
+        return self.expensesByStatus(ExpenseStatus#Recorded)
+    };
+    
+    derived attribute submittedExpenses : Expense[*] := () : Expense[*] {
+        return self.expensesByStatus(ExpenseStatus#Submitted)
+    };
+    
+    derived attribute totalSubmitted : Double := () : Double { return self.totalExpenses(self.submittedExpenses) };
+    
+    derived attribute totalRecorded : Double := () : Double { return self.totalExpenses(self.recordedExpenses) };
+    
+    operation declareExpense(description : String, amount : Double, date : Date, category : Category) : Expense;
+    begin
+        var newExpense:Expense;
+        newExpense := Expense#newExpense(description,amount,date,category);
+        link EmployeeExpenses(employee := self, expenses := newExpense);
+        return newExpense;
+    end;
+    
+    private operation totalExpenses(toSum : Expense[*]) : Double;
+    begin
+        return (toSum.reduce((e : Expense, sum : Double) : Double {
+            return sum + e.amount 
+        }, 0) as Double);
+    end;
+    
+    private operation expensesByStatus(status : ExpenseStatus) : Expense[*] {ordered,unique};
+    begin
+        return self->expenses.select((e : Expense) : Boolean { return e.status = status} )
+    end;
+end;
+
+association EmployeeExpenses
+    role Employee.expenses;
+    role Expense.employee;
+end;
+
 
 end.
