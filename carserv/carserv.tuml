@@ -110,10 +110,10 @@ class Service
         return s;
     end;
     
-    (* Cancels a service. *)
+    (* Cancels a service. No record is kept of cancelled services. *)
     operation cancel();
     begin
-        self.pending := false;
+        destroy self;
     end;
 
     (* Starts the service. It can no longer be canceled. *)
@@ -142,7 +142,7 @@ class Car
     access { return (System#user() == self.owner) or (System#user() is AutoMechanic) };
     
     attribute registrationNumber : String;
-    attribute services : Service[*];
+    readonly attribute services : Service[*];
     attribute \model : Model;
     attribute owner: Customer;
     
