@@ -112,12 +112,11 @@ class Employee
     
     derived attribute totalRecorded : Double := () : Double { return self.totalExpenses(self.recordedExpenses) };
     
-    operation declareExpense(description : String, amount : Double, date : Date, category : Category) : Expense;
+    operation declareExpense(description : String, amount : Double, date : Date, category : Category);
     begin
         var newExpense:Expense;
         newExpense := Expense#newExpense(description,amount,date,category);
         link EmployeeExpenses(employee := self, expenses := newExpense);
-        return newExpense;
     end;
     
     private operation totalExpenses(toSum : Expense[*]) : Double;

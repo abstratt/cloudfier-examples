@@ -12,7 +12,9 @@ import mdd_types;
 
 [kirra::User]
 abstract class Person
-    derived attribute fullName : String := () : String { return self.firstName + " " + self.lastName };
+    derived attribute fullName : String := () : String { 
+        return self.firstName + " " + self.lastName 
+    };
     attribute firstName : String;
     attribute lastName : String;
 end;

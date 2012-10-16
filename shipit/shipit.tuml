@@ -2,8 +2,8 @@ package shipit;
 
 [kirra::User]
 class User
-    attribute fullName : String;
     attribute username : String;
+    attribute fullName : String;
     attribute kind : UserKind;
 end;
 
@@ -148,7 +148,7 @@ class Issue
 
     (* Take over an issue currently assigned to (but not in progress) another user. *)
     operation takeOver();
-    precondition { return (System#user() as User).kind == UserKind#Committer }    
+    precondition { return (System#user() as User).kind = UserKind#Committer }    
     precondition { return not(System#user() == self.assignee) }
     begin
         self.assignee := (System#user() as User);
