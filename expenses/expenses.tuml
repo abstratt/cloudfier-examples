@@ -19,12 +19,12 @@ end;
  
 (* The expense as reported by an employee. *)
 class Expense
-    derived attribute moniker : String := () : String { return self.description + " on " + self.date };
+    derived attribute moniker : String := { self.description + " on " + self.date };
     attribute description : String;
     reference category : Category;
     readonly attribute status : ExpenseStatus := Recorded;
-    attribute amount : Double;
-    attribute date : Date;
+    attribute amount : Double := 0.0;
+    attribute date : Date := { Date#today() };
     attribute employee : Employee;
     
     static operation newExpense(description : String, amount : Double, date : Date, category : Category) : Expense;
@@ -39,25 +39,25 @@ class Expense
     end;
     
     operation review();
-    precondition MUST_BE_SUBMITTED_TO_REVIEW { return self.status = ExpenseStatus#Submitted }
+    precondition MUST_BE_SUBMITTED_TO_REVIEW { self.status = ExpenseStatus#Submitted }
     begin
         self.status := ExpenseStatus#Recorded;
     end;
     
     operation approve();
-    precondition MUST_BE_SUBMITTED_TO_APPROVE { return self.status = ExpenseStatus#Submitted }
+    precondition MUST_BE_SUBMITTED_TO_APPROVE { self.status = ExpenseStatus#Submitted }
     begin
         self.status := ExpenseStatus#Approved;
     end;
     
     operation reject();
-    precondition MUST_BE_SUBMITTED_TO_REJECT { return self.status = ExpenseStatus#Submitted }
+    precondition MUST_BE_SUBMITTED_TO_REJECT { self.status = ExpenseStatus#Submitted }
     begin
         self.status := ExpenseStatus#Rejected;
     end;
     
     operation submit();
-    precondition MUST_BE_RECORDED_TO_SUBMIT { return self.status = ExpenseStatus#Recorded }
+    precondition MUST_BE_RECORDED_TO_SUBMIT { self.status = ExpenseStatus#Recorded }
     begin
         self.status := ExpenseStatus#Submitted;
     end;
@@ -96,21 +96,21 @@ class Employee
     attribute name : String;
     attribute expenses : Expense[*];
     
-    derived attribute approvedExpenses : Expense[*] := () : Expense[*] { 
-        return self.expensesByStatus(ExpenseStatus#Approved)
+    derived attribute approvedExpenses : Expense[*] := { 
+        self.expensesByStatus(ExpenseStatus#Approved)
     };    
     
-    derived attribute recordedExpenses : Expense[*] := () : Expense[*] {
-        return self.expensesByStatus(ExpenseStatus#Recorded)
+    derived attribute recordedExpenses : Expense[*] := {
+        self.expensesByStatus(ExpenseStatus#Recorded)
     };
     
-    derived attribute submittedExpenses : Expense[*] := () : Expense[*] {
-        return self.expensesByStatus(ExpenseStatus#Submitted)
+    derived attribute submittedExpenses : Expense[*] := {
+        self.expensesByStatus(ExpenseStatus#Submitted)
     };
     
-    derived attribute totalSubmitted : Double := () : Double { return self.totalExpenses(self.submittedExpenses) };
+    derived attribute totalSubmitted : Double := { self.totalExpenses(self.submittedExpenses) };
     
-    derived attribute totalRecorded : Double := () : Double { return self.totalExpenses(self.recordedExpenses) };
+    derived attribute totalRecorded : Double := { self.totalExpenses(self.recordedExpenses) };
     
     operation declareExpense(description : String, amount : Double, date : Date, category : Category);
     begin
