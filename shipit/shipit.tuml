@@ -80,11 +80,15 @@ class Issue
     readonly attribute resolution : Resolution[0,1];
     readonly attribute resolvedOn : Date[0,1];
     readonly attribute comments : Comment[*];
-    derived attribute waitingFor : String := () : Integer {
+    private operation waitedUntil() : Date;
+    begin
         if (self.resolvedOn == null) then
-            return "" + self.reportedOn.differenceInDays(Date#today()) + " day(s)"
+            return Date#today()
         else
-            return "" + self.reportedOn.differenceInDays(self.resolvedOn)  + " day(s)";
+            return self.resolvedOn;
+    end;
+    derived attribute waitingFor : String := {
+        "" + self.reportedOn.differenceInDays(self.waitedUntil()) + " day(s)"
     };
     attribute description : Memo;
     
@@ -107,7 +111,7 @@ class Issue
     
     (* Release the issue so another committer can work on it. *)        
     operation release();
-    precondition { return System#user() == self.assignee }    
+    precondition { System#user() == self.assignee }    
     begin
         self.assignee := null;
     end;
@@ -148,8 +152,8 @@ class Issue
 
     (* Take over an issue currently assigned to (but not in progress) another user. *)
     operation takeOver();
-    precondition { return (System#user() as User).kind = UserKind#Committer }    
-    precondition { return not(System#user() == self.assignee) }
+    precondition { (System#user() as User).kind = UserKind#Committer }    
+    precondition { not(System#user() == self.assignee) }
     begin
         self.assignee := (System#user() as User);
     end;
