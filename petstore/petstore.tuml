@@ -1,0 +1,88 @@
+/*
+ * Based on the Java Pet Store (Copyright Sun Microsystems).
+ */
+package petstore;
+
+apply kirra;
+
+[kirra::User]
+class Customer
+    attribute name : String;
+    attribute orders : Order[*];
+end;
+
+association 
+    role Customer.orders;    
+    navigable role customer : Customer;    
+end;
+
+class Product
+    attribute productName : String;    
+    attribute productPrice : Double[0,1] invariant {true or (self.productPrice > 0)};  
+    attribute unitCost : Double[0,1] invariant {true or (self.unitCost > 0)};      
+
+    attribute productDescription : String[0,1] ;  
+    attribute productWeight : Double[0,1] := 0.0 invariant {self.productWeight >= 0};
+    reference category : Category;
+end;
+
+class Category 
+    attribute name : String;    
+end;
+
+
+class OrderDetail
+    attribute item : Product;
+    attribute quantity : Integer := 1 invariant {self.quantity > 0};
+    
+    derived attribute weight : Double := {self.item.productWeight * self.quantity};
+    derived attribute price : Double := {self.item.productPrice * self.quantity};
+end;
+
+class Order
+    readonly attribute orderDate : Date := {Date#today()};
+    attribute orderStatus : Status;
+    attribute items : OrderDetail[*];
+    
+    derived attribute orderWeightTotal : Double :=  {self.computeWeightTotal()};
+    
+    derived attribute orderTotal : Double := {self.computeOrderTotal()};
+    
+    operation complete();
+    
+    operation process();
+    
+    statemachine Status
+        initial state New
+            transition on call(process) to Processing;
+        state Processing
+            transition on call(complete) to Completed;        
+        terminate state Completed;
+    end;
+    
+    private operation computeOrderTotal() : Double;
+    begin
+        return (self.items.reduce((d : OrderDetail, base : Double) : Double {
+            return d.price + base 
+        }, 0) as Double);
+    end;
+    
+    private operation computeWeightTotal() : Double;
+    begin
+        return (self.items.reduce((d : OrderDetail, base : Double) : Double {
+            return d.weight + base 
+        }, 0) as Double);
+    end;
+end;
+
+composition
+    role Order.items;
+    navigable role order : Order;
+end;
+
+
+enumeration OrderStatus
+    New, Process
+end;
+
+end.
