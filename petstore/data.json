@@ -11,61 +11,6 @@
     }, {
       "name" : "Dogs"
     } ],
-    "Customer" : [ {
-      "name" : "Tony Dahl"
-    }, {
-      "name" : "Angela Thompson"
-    }, {
-      "name" : "Jeremy Peters"
-    }, {
-      "name" : "Pamela Beck"
-    }, {
-      "name" : "Tania Olsen"
-    }, {
-      "name" : "Steven Ackberg"
-    } ],
-    "Order" : [ {
-      "orderDate" : "2012/11/02",
-      "orderStatus" : "Processing",
-      "customer" : "Customer@2"
-    }, {
-      "orderDate" : "2012/11/02",
-      "orderStatus" : "Processing",
-      "customer" : "Customer@6"
-    }, {
-      "orderDate" : "2012/11/02",
-      "orderStatus" : "Completed",
-      "customer" : "Customer@3"
-    } ],
-    "OrderDetail" : [ {
-      "quantity" : 1,
-      "item" : "Product@8",
-      "order" : "Order@1"
-    }, {
-      "quantity" : 1,
-      "item" : "Product@13",
-      "order" : "Order@3"
-    }, {
-      "quantity" : 1,
-      "item" : "Product@11",
-      "order" : "Order@2"
-    }, {
-      "quantity" : 1,
-      "item" : "Product@9",
-      "order" : "Order@2"
-    }, {
-      "quantity" : 1,
-      "item" : "Product@10",
-      "order" : "Order@1"
-    }, {
-      "quantity" : 1,
-      "item" : "Product@7",
-      "order" : "Order@1"
-    }, {
-      "quantity" : 1,
-      "item" : "Product@12",
-      "order" : "Order@2"
-    } ],
     "Product" : [ {
       "productName" : "Labrador Retriever",
       "productPrice" : 324.2,
@@ -178,6 +123,62 @@
       "productDescription" : "Great family dog",
       "productWeight" : 0.0,
       "category" : "Category@5"
+    } ],    
+    "Customer" : [ {
+      "name" : "Tony Dahl"
+    }, {
+      "name" : "Angela Thompson"
+    }, {
+      "name" : "Jeremy Peters"
+    }, {
+      "name" : "Pamela Beck"
+    }, {
+      "name" : "Tania Olsen"
+    }, {
+      "name" : "Steven Ackberg"
+    } ],
+    "Order" : [ {
+      "orderDate" : "2012/11/02",
+      "orderStatus" : "Processing",
+      "customer" : "Customer@2"
+    }, {
+      "orderDate" : "2012/11/02",
+      "orderStatus" : "Processing",
+      "customer" : "Customer@6"
+    }, {
+      "orderDate" : "2012/11/02",
+      "orderStatus" : "Completed",
+      "customer" : "Customer@3"
+    } ],
+    "OrderDetail" : [ {
+      "quantity" : 1,
+      "item" : "Product@8",
+      "order" : "Order@1"
+    }, {
+      "quantity" : 1,
+      "item" : "Product@13",
+      "order" : "Order@3"
+    }, {
+      "quantity" : 1,
+      "item" : "Product@11",
+      "order" : "Order@2"
+    }, {
+      "quantity" : 1,
+      "item" : "Product@9",
+      "order" : "Order@2"
+    }, {
+      "quantity" : 1,
+      "item" : "Product@10",
+      "order" : "Order@1"
+    }, {
+      "quantity" : 1,
+      "item" : "Product@7",
+      "order" : "Order@1"
+    }, {
+      "quantity" : 1,
+      "item" : "Product@12",
+      "order" : "Order@2"
     } ]
+
   }
 }
