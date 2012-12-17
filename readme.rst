@@ -4,6 +4,8 @@ Example Cloudfier apps
 
 This repository contains simple examples of Cloudfier applications.
 
+You can easily bring it into Cloudfier by clicking `here <http://develop.cloudfier.com/git/git-repository.html#,cloneGitRepository=https://bitbucket.org/abstratt/cloudfier-examples.git>`_ (requires login).
+
 
 Expenses
 --------------------------------------------------------------------------------
