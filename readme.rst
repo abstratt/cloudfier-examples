@@ -4,7 +4,7 @@ Example Cloudfier apps
 
 This repository contains simple examples of Cloudfier applications.
 
-For instructions on how to get these example apps into Cloudfier, `read this http://cloudfier.com/doc/creating/examples/`_.
+For instructions on how to get these example apps into Cloudfier, `read this <http://cloudfier.com/doc/creating/examples/>`_.
 
 
 Expenses
