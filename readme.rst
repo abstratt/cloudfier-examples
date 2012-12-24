@@ -20,3 +20,20 @@ and later be resubmitted. One must be able to find:
 * all expenses submitted, approved and rejected for an employee.
 * all expenses for a category
 * all expenses for a given period
+
+ShipIt
+--------------------------------------------------------------------------------
+
+Users can be either committers or reporters. Anyone can report and comment on issues. 
+Committers can take over issues, resolve
+
+PetStore
+--------------------------------------------------------------------------------
+
+The traditional Pet Store application.
+
+CarServ
+--------------------------------------------------------------------------------
+
+Application reverse engineered from the CarServ sample application that appears in the book
+book Domain-Driven Design Using Naked Objects by Dan Haywood.
