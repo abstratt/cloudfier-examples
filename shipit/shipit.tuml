@@ -80,16 +80,16 @@ class Issue
     readonly attribute resolution : Resolution[0,1];
     readonly attribute resolvedOn : Date[0,1];
     readonly attribute comments : Comment[*];
-    private operation waitedUntil() : Date;
+    derived attribute waitingFor : String := { 
+        "" + self.reportedOn.differenceInDays(self.referenceDate()) + " day(s)"
+    };
+    private operation referenceDate() : Date;
     begin
         if (self.resolvedOn == null) then
             return Date#today()
         else
             return self.resolvedOn;
     end;
-    derived attribute waitingFor : String := {
-        "" + self.reportedOn.differenceInDays(self.waitedUntil()) + " day(s)"
-    };
     attribute description : Memo;
     
     (* Report a new issue. *)
