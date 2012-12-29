@@ -71,12 +71,17 @@ class Service
     attribute car : Car;
     readonly private attribute pending : Boolean := true;
     readonly attribute bookedOn : Date := {Date#today()};
-    attribute estimatedReady : Date invariant DeliveryDateMustBeAfterBookDate{((self.bookedOn == null) or (self.estimatedReady == null)) or (self.estimatedDays >= 0)};
+    attribute estimatedReady : Date 
+        invariant DeliveryDateMustBeAfterBookDate{
+            ((self.bookedOn == null) or (self.estimatedReady == null)) or (self.estimatedDays >= 0)
+        };
     reference technician : AutoMechanic[0, 1];
     attribute status : Status;
-    derived attribute estimatedDays : Integer := {self.bookedOn.differenceInDays(self.estimatedReady)};
+    derived attribute estimatedDays : Integer := {
+        self.bookedOn.differenceInDays(self.estimatedReady)
+    };
     static operation newService(carToService : Car, description : Memo, estimate : Integer) : Service;
-        precondition(estimate){estimate > 0}
+        precondition(estimate) {estimate > 0}
     begin
         var s : Service;
         s := new Service;
@@ -99,7 +104,15 @@ class Service
     begin
         self.pending := false;
     end;
-    statemachine Status initial state Booked transition on call(cancel)to Cancelled transition on call(start)to InProgress;state InProgress transition on call(complete)to Completed;terminate state Completed;terminate state Cancelled;end;
+    statemachine Status 
+        initial state Booked 
+            transition on call(cancel) to Cancelled 
+            transition on call(start)to InProgress;
+        state InProgress 
+            transition on call(complete) to Completed;
+        terminate state Completed;
+        terminate state Cancelled;
+    end;
 end;
 
 class Car
@@ -152,9 +165,9 @@ class Model
     attribute name : String;
     attribute make : Make;
     operation makeAndModel() : String;
- {
+    begin
         return self.make.name + " " + self.name;
-    };
+    end;
 end;
 
 association
