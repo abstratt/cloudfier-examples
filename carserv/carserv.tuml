@@ -5,6 +5,10 @@
   by Dan Haywood.
   
   http://pragprog.com/book/dhnako/domain-driven-design-using-naked-objects
+  
+  See Example Applications in the documentation for more information:
+
+    http://cloudfier.com/doc/
 */
 package carserv;
 

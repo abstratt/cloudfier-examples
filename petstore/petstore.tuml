@@ -1,5 +1,9 @@
 /*
  * Based on the Java Pet Store (Copyright Sun Microsystems).
+ *
+ * See Example Applications in the documentation for more information:
+ *
+ * http://cloudfier.com/doc/
  */
 package petstore;
 

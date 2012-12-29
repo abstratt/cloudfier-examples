@@ -1,3 +1,8 @@
+/*
+ * See Example Applications in the documentation for more information:
+ *
+ * http://cloudfier.com/doc/
+ */
 package shipit;
 
 [kirra::User]
@@ -19,6 +24,8 @@ enumeration Severity
     Enhancement
 end;
 
+
+
 enumeration Resolution
     Fixed, 
     WorksForMe, 
@@ -26,6 +33,23 @@ enumeration Resolution
 end;
 
 class Comment
+	attribute status2 : SM1;
+operation action1();
+	operation action2();
+	operation action3();
+	statemachine SM1
+		initial state State0
+			transition on call(action1) to State1;
+		state State1
+			transition on call(action1) to State1
+			transition on call(action2) to State2;
+		state State2
+			transition  on call(action1) to State1
+			transition on call(action3) to State3;
+		terminate state State3;
+	end;
+
+
     readonly attribute commented : Memo;
     readonly reference user : User;
     readonly attribute \on : Date;
