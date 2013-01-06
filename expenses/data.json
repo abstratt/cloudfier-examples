@@ -12,7 +12,7 @@
             { "name": "Peter Jones"}
         ],
         "Expense": [
-            { "employee": "Employee@1", "status": "Recorded", "category": "Category@2", "date": "2012/09/13", "description": "YVR/LAX", "amount": 190.50},
+            { "employee": "Employee@1", "status": "Draft", "category": "Category@2", "date": "2012/09/13", "description": "YVR/LAX", "amount": 190.50},
             { "employee": "Employee@1", "status": "Approved", "category": "Category@3", "date": "2012/09/13", "description": "Hilton LA downtown", "amount": 304.50},            
             { "employee": "Employee@3", "status": "Approved", "category": "Category@4", "date": "2012/07/13", "description": "Cab airport->downtown", "amount": 40.50},                        
             { "employee": "Employee@1", "status": "Rejected", "category": "Category@1", "date": "2012/09/13", "description": "Lunch at subway", "amount": 20.50},                                    

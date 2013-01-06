@@ -1,8 +1,3 @@
-/*
- * See Advanced Examples in the documentation for more information:
- *
- * http://alphasimple.com/blog/documentation/advanced-examples/
- */
 package expenses;
 
 (* The category for an expense. *)
@@ -22,7 +17,7 @@ class Expense
     derived attribute moniker : String := { self.description + " on " + self.date };
     attribute description : String;
     reference category : Category;
-    readonly attribute status : ExpenseStatus := Recorded;
+    readonly attribute status : Status;
     attribute amount : Double := 0.0;
     attribute date : Date := { Date#today() };
     attribute employee : Employee;
@@ -39,28 +34,12 @@ class Expense
     end;
     
     operation review();
-    precondition MUST_BE_SUBMITTED_TO_REVIEW { self.status = ExpenseStatus#Submitted }
-    begin
-        self.status := ExpenseStatus#Recorded;
-    end;
     
     operation approve();
-    precondition MUST_BE_SUBMITTED_TO_APPROVE { self.status = ExpenseStatus#Submitted }
-    begin
-        self.status := ExpenseStatus#Approved;
-    end;
     
     operation reject();
-    precondition MUST_BE_SUBMITTED_TO_REJECT { self.status = ExpenseStatus#Submitted }
-    begin
-        self.status := ExpenseStatus#Rejected;
-    end;
-    
+
     operation submit();
-    precondition MUST_BE_RECORDED_TO_SUBMIT { self.status = ExpenseStatus#Recorded }
-    begin
-        self.status := ExpenseStatus#Submitted;
-    end;
     
     static operation findExpensesByCategory(category : Category) : Expense[*];
     begin 
@@ -76,18 +55,24 @@ class Expense
         })
     end;
     
-    static operation findByStatus(status : ExpenseStatus) : Expense[*];
+    static operation findByStatus(status : Status) : Expense[*];
     begin 
         return Expense extent.select ((e : Expense) : Boolean {
-            return e.status = status
+            return e.status == status
         })
     end;
     
-end;
-
-(* The different statuses an expense can go through. *)
-enumeration ExpenseStatus
-    Approved, Recorded, Rejected, Submitted
+    (* The different statuses an expense can go through. *)
+	statemachine Status
+		initial state Draft
+			transition on call(submit) to Submitted;
+		state Submitted
+			transition on call(approve) to Approved
+			transition on call(reject) to Rejected
+			transition on call(review) to Draft;
+		terminate state Approved;
+		terminate state Rejected;		
+	end;
 end;
 
 (* An employee reports expenses. *) 
@@ -97,15 +82,15 @@ class Employee
     attribute expenses : Expense[*];
     
     derived attribute approvedExpenses : Expense[*] := { 
-        self.expensesByStatus(ExpenseStatus#Approved)
+        self.expensesByStatus(Expense::Status#Approved)
     };    
     
     derived attribute recordedExpenses : Expense[*] := {
-        self.expensesByStatus(ExpenseStatus#Recorded)
+        self.expensesByStatus(Expense::Status#Draft)
     };
     
     derived attribute submittedExpenses : Expense[*] := {
-        self.expensesByStatus(ExpenseStatus#Submitted)
+        self.expensesByStatus(Expense::Status#Submitted)
     };
     
     derived attribute totalSubmitted : Double := { self.totalExpenses(self.submittedExpenses) };
@@ -125,11 +110,12 @@ class Employee
             return sum + e.amount 
         }, 0) as Double);
     end;
-    
-    private operation expensesByStatus(status : ExpenseStatus) : Expense[*] {ordered,unique};
+
+    private operation expensesByStatus(status : Expense::Status) : Expense[*] {ordered,unique};
     begin
-        return self->expenses.select((e : Expense) : Boolean { return e.status = status} )
-    end;
+        return self->expenses.select((e : Expense) : Boolean { return e.status == status} )
+    end;    
+    
 end;
 
 association EmployeeExpenses
