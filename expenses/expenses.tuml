@@ -9,7 +9,12 @@ class Category
         newCategory := new Category;
         newCategory.name := name;
         return newCategory;
-    end;    
+    end;
+        
+    derived attribute expensesInThisCategory : Expense[*] := {
+        Expense#findExpensesByCategory(self)
+    };
+    
 end;
  
 (* The expense as reported by an employee. *)
@@ -21,6 +26,8 @@ class Expense
     attribute amount : Double := 0.0;
     attribute date : Date := { Date#today() };
     attribute employee : Employee;
+    readonly attribute rejectionReason : Memo[0,1];
+    readonly reference approver : Employee[0,1];
     
     static operation newExpense(description : String, amount : Double, date : Date, category : Category) : Expense;
     begin
@@ -36,8 +43,16 @@ class Expense
     operation review();
     
     operation approve();
+    begin
+        self.approver := (System#user() as Employee);
+    end;
     
-    operation reject();
+    (* Reject this expense. Please provide a reason. *)
+    operation reject(reason : Memo);
+    begin
+        self.rejectionReason := reason;
+        self.approver := (System#user() as Employee);
+    end;
 
     operation submit();
     
@@ -81,21 +96,29 @@ class Employee
     attribute name : String;
     attribute expenses : Expense[*];
     
-    derived attribute approvedExpenses : Expense[*] := { 
-        self.expensesByStatus(Expense::Status#Approved)
-    };    
-    
     derived attribute recordedExpenses : Expense[*] := {
         self.expensesByStatus(Expense::Status#Draft)
     };
-    
+
     derived attribute submittedExpenses : Expense[*] := {
         self.expensesByStatus(Expense::Status#Submitted)
     };
+
+    derived attribute approvedExpenses : Expense[*] := { 
+        self.expensesByStatus(Expense::Status#Approved)
+    };    
+        
+    derived attribute rejectedExpenses : Expense[*] := {
+        self.expensesByStatus(Expense::Status#Rejected)
+    };
+
+    derived attribute totalRecorded : Double := { self.totalExpenses(self.recordedExpenses) };
     
     derived attribute totalSubmitted : Double := { self.totalExpenses(self.submittedExpenses) };
     
-    derived attribute totalRecorded : Double := { self.totalExpenses(self.recordedExpenses) };
+    derived attribute totalApproved : Double := { self.totalExpenses(self.approvedExpenses) };
+    
+    derived attribute totalRejected : Double := { self.totalExpenses(self.rejectedExpenses) };
     
     operation declareExpense(description : String, amount : Double, date : Date, category : Category);
     begin
