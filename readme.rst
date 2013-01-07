@@ -36,4 +36,5 @@ CarServ
 --------------------------------------------------------------------------------
 
 Application reverse engineered from the CarServ sample application that appears in the book
-book `Domain-Driven Design Using Naked Objects<http://pragprog.com/book/dhnako/domain-driven-design-using-naked-objects>`_ by Dan Haywood.
+book 
+`Domain-Driven Design Using Naked Objects <http://pragprog.com/book/dhnako/domain-driven-design-using-naked-objects>`_ by Dan Haywood.
