@@ -25,7 +25,7 @@ ShipIt
 --------------------------------------------------------------------------------
 
 Users can be either committers or reporters. Anyone can report and comment on issues. 
-Committers can take over issues, resolve
+Committers can take over issues, resolve, assign them to other committers.
 
 PetStore
 --------------------------------------------------------------------------------
