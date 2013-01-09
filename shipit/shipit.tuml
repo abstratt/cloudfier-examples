@@ -121,11 +121,12 @@ class Issue
     begin
         var newIssue : Issue;
         newIssue := new Issue;
-        newIssue.reporter := (System#user() as User);
         newIssue.summary := summary;
         newIssue.description := description;
         newIssue.severity := severity;
         newIssue.reportedOn := Date#today();
+        /* associations last as it forces the object to be persisted */
+        newIssue.reporter := (System#user() as User);        
     end;
     
     static operation bySeverity(toMatch : Severity) : Issue[*];
