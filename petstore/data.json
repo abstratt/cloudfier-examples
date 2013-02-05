@@ -152,31 +152,31 @@
     } ],
     "OrderDetail" : [ {
       "quantity" : 1,
-      "item" : "Product@8",
+      "product" : "Product@8",
       "order" : "Order@1"
     }, {
       "quantity" : 1,
-      "item" : "Product@13",
+      "product" : "Product@13",
       "order" : "Order@3"
     }, {
       "quantity" : 1,
-      "item" : "Product@11",
+      "product" : "Product@11",
       "order" : "Order@2"
     }, {
       "quantity" : 1,
-      "item" : "Product@9",
+      "product" : "Product@9",
       "order" : "Order@2"
     }, {
       "quantity" : 1,
-      "item" : "Product@10",
+      "product" : "Product@10",
       "order" : "Order@1"
     }, {
       "quantity" : 1,
-      "item" : "Product@7",
+      "product" : "Product@7",
       "order" : "Order@1"
     }, {
       "quantity" : 1,
-      "item" : "Product@12",
+      "product" : "Product@12",
       "order" : "Order@2"
     } ]
 
