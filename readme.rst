@@ -29,6 +29,7 @@ and later be resubmitted. One must be able to find:
 Examples of user names (no password required):
 
 User: "john ford"
+
 User: guest
 
 ShipIt
@@ -40,6 +41,7 @@ Committers can take over issues, resolve, assign them to other committers.
 Examples of user names (no password required):
 
 User: "ssimon" (a committer)
+
 User: "fsilveira" (a user)
 
 PetStore
@@ -56,5 +58,7 @@ Application reverse engineered from the CarServ sample application that appears 
 `Domain-Driven Design Using Naked Objects <http://pragprog.com/book/dhnako/domain-driven-design-using-naked-objects>`_ by Dan Haywood.
 
 User: "teresa perkins" (an auto mechanic)
+
 User: "joe bloggs" (a customer)
+
 User: guest
