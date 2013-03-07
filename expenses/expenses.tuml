@@ -43,12 +43,14 @@ class Expense
     operation review();
     
     operation approve();
+    precondition CannotApproveOwnExpense { not (System#user() == self.employee) }
     begin
         self.approver := (System#user() as Employee);
     end;
     
     (* Reject this expense. Please provide a reason. *)
     operation reject(reason : Memo);
+    precondition UnderAutoApprovalLimit { self.amount > 50 } 
     begin
         self.rejectionReason := reason;
         self.approver := (System#user() as Employee);
