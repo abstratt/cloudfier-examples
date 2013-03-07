@@ -10,6 +10,12 @@ class User
     attribute username : String;
     attribute fullName : String;
     attribute kind : UserKind;
+    private derived static attribute current : User := { (System#user() as User) };
+    private derived attribute committer : Boolean := { self.kind = UserKind#Committer };
+    private attribute issuesAssignedToUser : Issue[*];
+    readonly attribute issuesReportedByUser : Issue[*];    
+    derived attribute issuesCurrentlyInProgress : Issue[*] := { Issue#byStatus(self.issuesAssignedToUser, Issue::Status#InProgress) };
+    derived attribute issuesCurrentlyAssigned : Issue[*] := { Issue#byStatus(self.issuesAssignedToUser, Issue::Status#Assigned) };    
 end;
 
 enumeration UserKind 
@@ -24,8 +30,6 @@ enumeration Severity
     Enhancement
 end;
 
-
-
 enumeration Resolution
     Fixed, 
     WorksForMe, 
@@ -33,23 +37,6 @@ enumeration Resolution
 end;
 
 class Comment
-	attribute status2 : SM1;
-operation action1();
-	operation action2();
-	operation action3();
-	statemachine SM1
-		initial state State0
-			transition on call(action1) to State1;
-		state State1
-			transition on call(action1) to State1
-			transition on call(action2) to State2;
-		state State2
-			transition  on call(action1) to State1
-			transition on call(action3) to State3;
-		terminate state State3;
-	end;
-
-
     readonly attribute commented : Memo;
     readonly reference user : User;
     readonly attribute \on : Date;
@@ -61,52 +48,53 @@ operation action1();
     end;
 end;
 
-/*
 class Label
-    readonly attribute text : String;
-    static operation make(text : String) : Label;
-    begin
-        var newLabel : Label;
-        newLabel := new Label;
-        newLabel.text := text;
-        return newLabel;
-    end;
-    static operation byName(text : String) : Label;
-    begin
-        return (Label extent.\any((l : Label) : Boolean { return l.text = text }) as Label);
-    end;    
-    static operation for(text : String) : Label;
-    begin 
-        var found : Label;
-        found := Label#byName(text);
-        if (found == null) then
-            return Label#make(text)
-        else
-            return found;
-    end;
+    attribute text : String;
 end;
-*/
+
+association IssueLabels 
+    role Issue.labels;
+    role labeled : Issue[*];
+end;
+
+association AssignedIssue
+    role Issue.assignee;
+    role User.issuesAssignedToUser;
+end;    
+
+association ReportedIssue
+    role Issue.reporter;
+    role User.issuesReportedByUser;
+end;    
+
+association WatchedIssues
+    role Issue.watchers;
+    navigable role issuesWatched : Issue[*];
+end;
 
 class Issue
     attribute summary : String;
-    /*
-    reference labels : Label[*];    
-    operation addLabel(text : String);
-    begin 
-        self.labels := self.labels.add(Label#for(text));
-    end;
-    */
-    readonly attribute reportedOn : Date;    
-    readonly reference reporter : User;
-    readonly reference assignee : User[0,1];
+    attribute labels : Label[*];    
+    
+    readonly attribute reportedOn : Date := { Date#today() };
+    readonly attribute reporter : User;
+    readonly attribute assignee : User[0,1];
     attribute severity : Severity;
     attribute status : Status;
+    
     readonly attribute resolution : Resolution[0,1];
     readonly attribute resolvedOn : Date[0,1];
     readonly attribute comments : Comment[*];
+    
+    attribute watchers : User[*];
+    
+    derived attribute commentCount : Integer := { self.comments.size() };    
     derived attribute waitingFor : String := { 
         "" + self.reportedOn.differenceInDays(self.referenceDate()) + " day(s)"
     };
+    
+    private derived attribute mine : Boolean := { System#user() == self.assignee };
+    private derived attribute free : Boolean := { self.assignee == null };
     private operation referenceDate() : Date;
     begin
         if (self.resolvedOn == null) then
@@ -124,25 +112,46 @@ class Issue
         newIssue.summary := summary;
         newIssue.description := description;
         newIssue.severity := severity;
-        newIssue.reportedOn := Date#today();
-        /* associations last as it forces the object to be persisted */
-        newIssue.reporter := (System#user() as User);        
+        newIssue.reporter := (System#user() as User);
     end;
     
     static operation bySeverity(toMatch : Severity) : Issue[*];
     begin
         return Issue extent.select((i : Issue) : Boolean { return i.severity = toMatch });
     end;
+
+    static operation byStatus(issues : Issue[*], toMatch : Status) : Issue[*];    
+    begin
+	    return issues.select((issue : Issue) : Boolean {
+            return issue.status == toMatch
+        });
+    end;
     
     (* Release the issue so another committer can work on it. *)        
     operation release();
-    precondition { System#user() == self.assignee }    
+    precondition { self.mine }    
     begin
         self.assignee := null;
     end;
 
+    (* Assign an issue to a user. *)    
+    operation assign(newAssignee : User);
+    precondition { self.mine or self.free }    
+    begin
+        self.assignee := newAssignee;
+    end;
+    
+    (* Suspend work on this issue. *)
+    operation suspend();
+    precondition { self.mine }        
+    
+    (* Start/resume work on this issue. *)
+    operation start();
+    precondition { self.mine }        
+
     (* Resolve the issue. *)        
     operation resolve(resolution : Resolution := Fixed);
+    precondition { self.mine or self.free }
     begin
         self.resolvedOn := Date#today();
         self.resolution := resolution;
@@ -167,41 +176,48 @@ class Issue
     begin
         var comment : Comment;
         comment := new Comment;
-        comment.user := (System#user() as User);
+        comment.user := User#current;
         comment.\on := Date#today();
         comment.commented := text;
         comment.inReplyTo := inReplyTo;
         link IssueComments(issue := self, comments := comment);
     end;
-
-
-    (* Take over an issue currently assigned to (but not in progress) another user. *)
-    operation takeOver();
-    precondition { (System#user() as User).kind = UserKind#Committer }    
-    precondition { not(System#user() == self.assignee) }
+    
+    (* Take over an issue currently available. *)
+    operation assignToMe();
+    precondition { User#current.committer }
+    precondition { not self.mine }
     begin
-        self.assignee := (System#user() as User);
+        self.assignee := User#current;
+    end;
+
+    (* Take over an issue currently assigned to another user (not in progress). *)    
+    operation steal();
+    precondition { User#current.committer }
+    precondition { not(self.mine) }
+    begin
+        self.assignee := User#current;
     end;
     
     (* Close the issue marking it as verified. *)
     operation verify();
     begin
-    end;
-    
-    statemachine Status
-    
-        initial state Open 
+    end; 
+
+    statemachine Status 
+        initial state Open
             transition on call(resolve) to Resolved
-            transition on call(takeOver) to InProgress;
+            transition on call(assignToMe) to Assigned
+            transition on call(assign) to Assigned;
             
         state InProgress
-            transition on call(release) to Open
-            transition on call(resolve) to Resolved;
+            transition on call(suspend) to Assigned;
             
-        state Assigned 
+        state Assigned
             transition on call(release) to Open 
             transition on call(resolve) to Resolved
-            transition on call(takeOver) to InProgress;
+            transition on call(steal) to Assigned
+            transition on call(start) to InProgress;
             
         state Resolved 
             transition on call(verify) to Verified 
