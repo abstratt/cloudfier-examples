@@ -25,6 +25,24 @@
                 "resolution": "WontFix",
                 "reportedOn": "2012/08/27",
                 "resolvedOn": "2012/08/28"
+            },
+            { 
+                "summary": "Why am I forced to assign values before linking a new object with another object?",
+                "description": "Why am I forced to assign values before linking a new object with another object? I get a 400 error if I link a new object before assigning values to all required properties. Linking at the end works though.",
+                "reporter": "User@2",
+                "severity": "Major",
+                "status": "Assigned",
+                "reportedOn": "2012/12/27",
+                "assignee": "User@2"                
+            },
+            { 
+                "summary": "When I have a collection of references, I want to associate/dissociate, not create/delete from the peer",
+                "description": "Imagine an issue and its labels. Or a person and its friends. I should be able to attach/detach labels to/from an issue or friends to/from a person but not create/delete them as they are meant to be shared, they are not child objects (creation could be allowed as a convenience, but it would mean no special relationship with the contextual peer).",
+                "reporter": "User@2",
+                "severity": "Major",
+                "status": "InProgress",                
+                "reportedOn": "2013/01/05",
+                "assignee": "User@2"                
             }
         ],
         "Comment": [
