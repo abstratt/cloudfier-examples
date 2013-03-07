@@ -23,6 +23,13 @@ end;
 
 class AutoMechanic specializes Person
     access{System#user()is AutoMechanic};
+    private attribute services : Service[*];
+    derived attribute currentServices : Service[*] := { 
+        Service#byStatus(self.services, Service::Status#InProgress)
+    };
+    derived attribute upcomingServices : Service[*] := { 
+        Service#byStatus(self.services, Service::Status#Booked)
+    };
 end;
 
 class Customer specializes Person
@@ -30,7 +37,7 @@ class Customer specializes Person
     attribute title : Title[0, 1];
     attribute cars : Car[0, *];
     attribute since : Date := {Date#today()};
-    /* TODO := Date#today(); */
+    
     readonly attribute notes : Memo[0, 1];
     derived attribute valuableCustomer : Boolean := {self.cars.size() >= 2};
     derived attribute ownsACar : Boolean := {not self.cars.isEmpty()};
@@ -69,21 +76,31 @@ class Title
     attribute gender : Gender[0, 1];
 end;
 
+association
+    role Service.technician;
+    role AutoMechanic.services;    
+end;
+
 class Service
     access{(System#user() == self.car.owner) or (System#user()is AutoMechanic)};
     attribute description : Memo;
     attribute car : Car;
     readonly private attribute pending : Boolean := true;
     readonly attribute bookedOn : Date := {Date#today()};
-    attribute estimatedReady : Date 
+    attribute estimatedReady : Date := {Date#today().transpose(1)}
         invariant DeliveryDateMustBeAfterBookDate{
-            ((self.bookedOn == null) or (self.estimatedReady == null)) or (self.estimatedDays >= 0)
+            ((self.estimatedReady == null) or (self.bookedOn == null)) or (self.estimatedDays >= 0)
         };
-    reference technician : AutoMechanic[0, 1];
+    attribute technician : AutoMechanic[0, 1];
     attribute status : Status;
     derived attribute estimatedDays : Integer := {
         self.bookedOn.differenceInDays(self.estimatedReady)
     };
+    static operation byStatus(services : Service[*], toMatch : Status) : Service[*];
+    begin 
+        return services.select((service : Service) : Boolean { return service.status == toMatch });
+    end;
+
     static operation newService(carToService : Car, description : Memo, estimate : Integer) : Service;
         precondition(estimate) {estimate > 0}
     begin
