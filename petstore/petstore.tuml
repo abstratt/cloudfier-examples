@@ -17,7 +17,7 @@ end;
 
 association 
     role Customer.orders;    
-    navigable role customer : Customer;    
+    navigable role customer : Customer;
 end;
 
 class Product
@@ -36,11 +36,11 @@ end;
 
 
 class OrderDetail
-    reference product : Product[0,1];
+    reference item : Product[0,1];
     attribute quantity : Integer := 1 invariant {self.quantity > 0};
     
-    derived attribute weight : Double := {self.product.productWeight * self.quantity};
-    derived attribute price : Double := {self.product.productPrice * self.quantity};
+    derived attribute weight : Double := {self.item.productWeight * self.quantity};
+    derived attribute price : Double := {self.item.productPrice * self.quantity};
 end;
 
 class Order
