@@ -8,7 +8,27 @@ function IssueListCtrl($scope, Issue) {
 
 function IssueDetailCtrl($scope, $routeParams, Issue) {
   $scope.issue = Issue.get($routeParams.issueId, function(issue) {
-    //$scope.mainImageUrl = phone.images[0];
   });
+}
 
+function LoginController($scope, $http, $rootScope, $route) {
+    $http.get(cloudfier.apiBase)
+        .success(function (data) {
+	        $scope.session = {};
+	        $scope.session.loggedIn = true;
+	        $scope.session.username = data.currentUser.shorthand || "Guest"; 
+	    })
+	    .error(function () { 
+	        $scope.session = {};         
+	    });
+	$scope.logout = function () {
+	    var reload = function () {
+	        $scope.login();
+	    };
+	    $http.get(cloudfier.apiBase + "logout").success(reload).error(reload);
+	};
+	$scope.login = function () {
+	    var newLocation = window.location.origin + cloudfier.uiBase + 'root/source/?source=' + encodeURIComponent(window.location);
+	    window.location = newLocation;
+	};
 }

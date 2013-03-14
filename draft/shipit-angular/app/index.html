@@ -11,7 +11,11 @@
   <script src="lib/angular/angular-resource.js"></script>
 </head>
 <body>
-
+  <div ng-controller="LoginController">
+      <div ng-show="session.loggedIn"><p>User: {{session.username}} (<a ng-click="logout()">Logout</a>)</p></div>
+      <div ng-show="session && !session.loggedIn"><a ng-click="login()">Login</a></div>
+  </div>
+   
   <div ng-view></div>
 
 </body>
