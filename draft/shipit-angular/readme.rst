@@ -4,8 +4,7 @@ Custom UI for the Cloudfier-based ShipIt app
 
 This is an AngularJS UI backed by a Cloudfier-based application back-end.
 
-* Wherever you host the client files, you will need to proxy the "/services/" URI path 
-to http://develop.cloudfier.com/services/.
+* Wherever you host the client files, you will need to proxy the "/services/" URI path to http://develop.cloudfier.com/services/
 * The client code relies on the generic login UI that is automatically generated for all Cloudfier apps.
 
 Status
