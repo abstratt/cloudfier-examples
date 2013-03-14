@@ -9,7 +9,10 @@ This is an AngularJS UI backed by a Cloudfier-based application back-end.
 
 Status
 --------------------------------------------------------------------------------
-2013-03-07 project started
-2013-03-08 listing of all issues
-2013-03-13 login/logout piggybacking on auto-generated UI
+
+2013-03-07 - project started
+
+2013-03-08 - listing of all issues
+
+2013-03-13 - login/logout piggybacking on auto-generated UI
 
