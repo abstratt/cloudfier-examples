@@ -13,15 +13,21 @@ https://bitbucket.org/abstratt/cloudfier-examples/src/master/shipit/data.json
 Things to keep in mind when writing custom UIs for Cloudfier-based apps
 --------------------------------------------------------------------------------
 
-* Wherever you host the client files, you will need to proxy the "/services/" URI path to "http://develop.cloudfier.com/services/"
-* The client code relies on the generic login UI that is automatically generated for all Cloudfier apps.
+* Wherever you host the client files, you will need to proxy two paths:
+  * "/services/api/" to "http://develop.cloudfier.com/services/proxy-api/"
+  * "/services/" to "http://develop.cloudfier.com/services/"
+* Your application needs to hit your Cloudfier application API at /services/api/<app-slug>/
+* The client code relies on the generic login UI that is automatically generated for all Cloudfier apps
+  * The path to the login screen is /services/ui/<app-slug>/root/source
+  * Pass in a source query parameter so it will redirect back to your app once log-in completes
 
 Status
 --------------------------------------------------------------------------------
 
+2013-03-15 - UI for checking an issue's details, including comments
+2013-03-13 - login/logout piggybacking on auto-generated UI
+2013-03-08 - listing of all issues
 2013-03-07 - project started
 
-2013-03-08 - listing of all issues
 
-2013-03-13 - login/logout piggybacking on auto-generated UI
 
