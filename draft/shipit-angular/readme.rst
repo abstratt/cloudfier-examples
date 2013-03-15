@@ -16,7 +16,9 @@ Things to keep in mind when writing custom UIs for Cloudfier-based apps
 - To avoid same-origin policy issues. wherever you host the client files, you will need to set up a reverse proxy for these two paths:
    - "/services/api/" to "http://develop.cloudfier.com/services/proxy-api/"
    - "/services/" to "http://develop.cloudfier.com/services/"
+
 - Your application needs to hit your Cloudfier application API at /services/api/<app-slug>/
+
 - The client code relies on the generic login UI that is automatically generated for all Cloudfier apps
    - The path to the login screen is /services/ui/<app-slug>/root/source
    - Pass in a source query parameter so it will redirect back to your app once log-in completes
