@@ -6,13 +6,15 @@
           <th>Status</th>
           <th>On</th>
           <th>Severity</th>          
+          <th>Comment #</th>          
         </tr>
         <tr ng-repeat="issue in issues">
-          <td><a href="#">{{issue.values.summary}}</a></td>
+          <td><a href="#/issue/?uri={{issue.uri}}">{{issue.values.summary}}</a></td>
           <td>{{issue.values.reporter.shorthand}}</td>
           <td>{{issue.values.assignee.shorthand}}</td>          
           <td>{{issue.values.status}}</td>
           <td>{{issue.values.reportedOn}}</td>          
-          <td>{{issue.values.severity}}</td>                    
+          <td>{{issue.values.severity}}</td>
+          <td>{{issue.values.commentCount}}</td>          
         </tr>
       </table>

@@ -2,14 +2,38 @@
 
 /* Services */
 
-var shipIt = angular.module('shipitServices', ['ngResource']);
+var shipIt = angular.module('shipitServices', []);
 
-shipIt.factory('Issue', function($resource, $rootScope) {
-  return $resource(cloudfier.apiBase + '/instances/shipit.Issue/', {}, {
-    query: {method:'GET', params:{}, isArray:true}
-  });
+shipIt.factory('Issue', function($rootScope, $http) {
+  var Issue = {};
+  Issue.query = function () {
+      return $http.get(cloudfier.apiBase + 'instances/shipit.Issue/').then(function (response) {
+          var issues = [];
+          angular.forEach(response.data, function(data){
+              issues.push(data);
+          });
+          return issues;
+      });
+  };
+  Issue.get = function (issueUri) {
+      return $http.get(issueUri).then(function (response) {
+          var issue = response.data;
+          issue.loadedLinks = {};
+          if (issue.values.commentCount > 0) {
+	          $http.get(issue.links.comments).then(function (response) {
+	              issue.loadedLinks.comments = [];
+			      angular.forEach(response.data, function(data){
+			          issue.loadedLinks.comments.push(data);
+			      });
+		      });
+		  } else {
+		      issue.loadedLinks.comments = [];
+		  }
+          return issue;
+      });
+  };
+  return Issue;
 });
-
 
 /*
 shipIt.factory('Session', function($http) {

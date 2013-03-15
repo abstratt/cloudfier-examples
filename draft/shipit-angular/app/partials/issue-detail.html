@@ -1,3 +1,21 @@
-<h1>{{issue.summary}}</h1>
+<a href="#/issues/">Back to the list</a>
 
-<p>{{issue.description}}</p>
+<h3>Issue: {{issue.values.summary}}</h3>
+
+<p>Description: {{issue.values.description}}</p>
+<p>Reporter: {{issue.values.reporter.shorthand}}</p>
+<p>Status: {{issue.values.status}}</p>
+<p>Report date: {{issue.values.reportedOn}}</p>
+
+<h3 ng-show="issue.values && issue.values.commentCount">Comments ({{issue.values.commentCount}})</h3>
+<div ng-show="issue && issue.loadedLinks.comments == undefined">Loading comments...</div>
+<div ng-repeat="comment in issue.loadedLinks.comments"> 
+    By: {{comment.values.user.shorthand}} on {{comment.values.on}}
+    <p>
+    {{comment.values.commented}}
+    </p>
+</div>
+<p ng-show="issue.values.commentCount == 0">No comments</p>
+
+
+

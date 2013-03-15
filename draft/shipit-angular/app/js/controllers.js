@@ -6,10 +6,11 @@ function IssueListCtrl($scope, Issue) {
   $scope.issues = Issue.query();
 }
 
-function IssueDetailCtrl($scope, $routeParams, Issue) {
-  $scope.issue = Issue.get($routeParams.issueId, function(issue) {
-  });
+function IssueDetailCtrl($scope, $route, Issue) {
+  var issueUri = $route.current.params.uri;
+  $scope.issue = Issue.get(issueUri);
 }
+
 
 function LoginController($scope, $http, $rootScope, $route) {
     $http.get(cloudfier.apiBase)
