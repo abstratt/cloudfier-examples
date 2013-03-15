@@ -1,4 +1,4 @@
-      <table>
+      <table  ng-show="issues.length > 0">
         <tr>
           <th>Summary</th>
           <th>Submitter</th>
@@ -18,3 +18,6 @@
           <td>{{issue.values.commentCount}}</td>          
         </tr>
       </table>
+<div align="center" ng-show="!issues">Loading issues...</div>
+<div align="center" ng-show="issues == false">No issues found</div>
+      
