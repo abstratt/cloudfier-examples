@@ -37,8 +37,8 @@
 </form>
 </div>
 
-<div class="span12">
-<div ng-show="issue && issue.loadedLinks.comments == undefined" class="info">Loading comments...</div>
+<div class="span9">
+<div ng-show="issue && issue.loadedLinks.comments == undefined" class="info label">Loading comments...</div>
 <div ng-repeat="comment in issue.loadedLinks.comments"> 
     <p>
     By: <strong>{{comment.values.user.shorthand}}</strong> on {{comment.values.on}}
