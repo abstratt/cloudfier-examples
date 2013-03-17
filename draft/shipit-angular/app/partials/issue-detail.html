@@ -1,21 +1,51 @@
-<a href="#/issues/">Back to the list</a>
+<p ng-show="error">{{error}}</p>
 
-<h3>Issue: {{issue.values.summary}}</h3>
-
-<p>Description: {{issue.values.description}}</p>
-<p>Reporter: {{issue.values.reporter.shorthand}}</p>
-<p>Status: {{issue.values.status}}</p>
-<p>Report date: {{issue.values.reportedOn}}</p>
-
-<h3 ng-show="issue.values && issue.values.commentCount">Comments ({{issue.values.commentCount}})</h3>
-<div ng-show="issue && issue.loadedLinks.comments == undefined">Loading comments...</div>
-<div ng-repeat="comment in issue.loadedLinks.comments"> 
-    By: {{comment.values.user.shorthand}} on {{comment.values.on}}
-    <p>
-    {{comment.values.commented}}
-    </p>
+<div class="span12">
+<legend>Issue: {{issue.values.summary}}</legend>
+<div class="span3"><strong>Reporter:</strong> <span class="input-xlarge uneditable-input"> {{issue.values.reporter.shorthand}}</span></div>
+<div class="span3"><strong>Status:</strong> <span class="input-xlarge uneditable-input"> {{issue.values.status}}</span></div>
+<div class="span3"><strong>Report date:</strong> <span class="input-xlarge uneditable-input"> {{issue.values.reportedOn}}</span></div>
+<div class="span9"><strong>Description:</strong> <textarea class="span12" rows="10" disabled>{{issue.values.description}}</textarea></div>
 </div>
-<p ng-show="issue.values.commentCount == 0">No comments</p>
 
+<div class="span12">
+<a href="#/issues/" class="btn span2">Back to the list</a>
+</div>
 
+<div class="span12">
+<h4>Watchers</h4>
 
+<a ng-click="startWatching(issue)" ng-show="issue.loadedLinks.watchers != undefined && !issue.checks.watching" class="btn span2">Watch</a>
+<a ng-click="stopWatching(issue)" ng-show="issue.checks.watching" class="btn span2">Stop watching</a>
+
+<ul ng-show="issue.loadedLinks.watchers.length > 0" class="inline-block">
+<li ng-repeat="watcher in issue.loadedLinks.watchers" class="label label-inverse span1 text-center">{{watcher.shorthand}}</li>
+</ul>
+<span ng-show="issue.loadedLinks.watchers.length == 0" class="label label-info span2 text-center">No one is watching</span>
+
+</div>
+
+<div class="span12">
+<h4>Comments <span ng-show="issue.loadedLinks.comments.length > 0">({{issue.loadedLinks.comments.length}})</span></h4>
+<form name="commentForm" ng-controller="CommentController" class="form-horizontal span9">
+      <fieldset>
+      <label>New comment: </label><textarea name="commentField" ng-model="commentText" required rows="8" class="span12"> </textarea>
+      <label></label>
+      <a ng-click="addComment(issue, commentText)"  class="btn btn-primary">Submit</a>
+      </fieldset>
+      <span ng-show="commentError" class="label label-important">{{commentError}}</span>      
+</form>
+</div>
+
+<div class="span12">
+<div ng-show="issue && issue.loadedLinks.comments == undefined" class="info">Loading comments...</div>
+<div ng-repeat="comment in issue.loadedLinks.comments"> 
+    <p>
+    By: <strong>{{comment.values.user.shorthand}}</strong> on {{comment.values.on}}
+    </p>
+    <textarea class="span12" disabled>
+    {{comment.values.commented}}
+    </textarea>
+</div>
+<p ng-show="issue.loadedLinks.comments.length == 0">No comments</p>       
+</div>

@@ -1,4 +1,7 @@
-      <table  ng-show="issues.length > 0">
+<div class="span12 control-group" ng-show="issues"><a href="#/new-issue/" class="btn btn-primary">Report a new issue</a></div>
+
+<div class="span12">
+      <table  ng-show="issues.length > 0" class="table table-striped">
         <tr>
           <th>Summary</th>
           <th>Submitter</th>
@@ -18,6 +21,7 @@
           <td>{{issue.values.commentCount}}</td>          
         </tr>
       </table>
-<div align="center" ng-show="!issues">Loading issues...</div>
-<div align="center" ng-show="issues == false">No issues found</div>
+</div>      
+<div align="center" ng-show="!issues"><span class="info label">Loading issues...</span></div>
+<div align="center" ng-show="issues == false"><span class="info label">No issues found</span></div>
       
