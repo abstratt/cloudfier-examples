@@ -26,6 +26,7 @@ Things to keep in mind when writing custom UIs for Cloudfier-based apps
 Status
 --------------------------------------------------------------------------------
 
+- 2013-03-16 - issue reporting, styling
 - 2013-03-15 - UI for checking an issue's details, including comments
 - 2013-03-13 - login/logout piggybacking on auto-generated UI
 - 2013-03-08 - listing of all issues
