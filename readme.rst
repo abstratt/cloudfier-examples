@@ -44,6 +44,13 @@ User: "ssimon" (a committer)
 
 User: "fsilveira" (a user)
 
+ShipIt Custom UI
+--------------------------------------------------------------------------------
+
+A custom UI for the ShipIt application above. Relies on the same back-end (API/business logic/persistence) as the generated UI.
+
+Same users apply.
+
 PetStore
 --------------------------------------------------------------------------------
 
