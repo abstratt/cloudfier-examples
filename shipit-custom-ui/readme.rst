@@ -6,10 +6,6 @@ This is an AngularJS UI backed by a Cloudfier-based application back-end. You ca
 
 http://cloudfier-tracker.orionhub.org:8080/index.html
 
-Log in using "fsilveira" or "ssimon" as users, really any user you can see in the sample data set:
-
-https://bitbucket.org/abstratt/cloudfier-examples/src/master/shipit/data.json
-
 Things to keep in mind when writing custom UIs for Cloudfier-based apps
 --------------------------------------------------------------------------------
 
@@ -22,10 +18,17 @@ Things to keep in mind when writing custom UIs for Cloudfier-based apps
 - The client code relies on the generic login UI that is automatically generated for all Cloudfier apps
    - The path to the login screen is /services/ui/<app-slug>/root/source
    - Pass in a source query parameter so it will redirect back to your app once log-in completes
+   - If your application requires onboarding (profile creation), you need to provide a UI for that. This example currently doesn't provide custom UI for joining the app, so for now you will need to create a profile in the standard generated UI at:
+   
+   http://develop.cloudfier.com/services/ui/demo-cloudfier-examples-shipit/ (or your application slug)
+   
+   before you can perform any non-read-only actions.
+   
 
 Status
 --------------------------------------------------------------------------------
 
+- 2013-04-22 - varios minor UI tweaks, showing indication whether user has joined/is allowed to perform actions (instead of failing silently)
 - 2013-03-16 - issue reporting, styling
 - 2013-03-15 - UI for checking an issue's details, including comments
 - 2013-03-13 - login/logout piggybacking on auto-generated UI

@@ -10,10 +10,10 @@ function IssueDetailCtrl($scope, $route, Issue) {
   var issueUri = $route.current.params.uri;
   $scope.issue = Issue.get(issueUri);
   $scope.startWatching = function (issue) {
-      Issue.addWatcher(issue, $scope.session.currentUser.uri);
+      Issue.addWatcher(issue, $scope.session.currentUser.profile.uri);
   };
   $scope.stopWatching = function (issue) {
-      Issue.removeWatcher(issue, $scope.session.currentUser.uri);      
+      Issue.removeWatcher(issue, $scope.session.currentUser.profile.uri);      
   };  
 }
 
@@ -47,13 +47,16 @@ function LoginController($scope, $http, $rootScope, $route) {
 	    .error(function () { 
 	        $rootScope.session = {};         
 	    });
-	$rootScope.logout = function () {
-	    var reload = function () {
-	        $rootScope.login();
-	    };
-	    $http.get(cloudfier.apiBase + "logout").success(reload).error(reload);
+	$scope.join = function () {
+	    console.log('Joining app');
 	};
-	$rootScope.login = function () {
+	$scope.logout = function () {
+	    var reload = function () {
+	        $scope.login();
+	    };
+	    $http.get(cloudfier.apiBase + "logout").then(reload);
+	};
+	$scope.login = function () {
 	    var newLocation = window.location.origin + cloudfier.uiBase + 'root/source/?source=' + encodeURIComponent(window.location);
 	    window.location = newLocation;
 	};

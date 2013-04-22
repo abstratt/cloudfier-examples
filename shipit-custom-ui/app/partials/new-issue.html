@@ -1,13 +1,18 @@
-<form name="newIssueForm" class="form-horizontal">
+<form name="newIssueForm" class="form-horizontal" ng-show="session.currentUser.profile"">
 <fieldset>
       <legend>Report a new issue</legend>
       <label>Summary: </label><input name="summaryField" ng-model="summaryText" required>
       <label>Description: </label><textarea name="descriptionField" ng-model="descriptionText" required rows="10" class="span12"> </textarea>      
 </fieldset>      
 </form>
-<div class="control-group">
+<div ng-show="session.currentUser.profile" class="control-group">
 <a ng-click="newIssue(summaryText, descriptionText, severity)" class="btn btn-primary">Submit</a>
 <a href="#/issues/" class="btn">Cancel</a>
 </div>      
 
 <p ng-show="error" class="label label-important">{{error}}</p>
+
+<div ng-show="session.currentUser && !session.currentUser.profile">
+<p  class="text-warning text-center">You must join this application before you can report an issue</p>
+<a href="#/issues/" class="btn" align="center">Back to the list of issues</a>
+</div>

@@ -68,7 +68,7 @@ shipIt.factory('Issue', function($rootScope, $http) {
   Issue.watchersLoaded = function (issue) {
       var result = false;
       angular.forEach(issue.loadedLinks.watchers, function(watcher){
-		  if(watcher.uri === $rootScope.session.currentUser.uri) {
+		  if(watcher.uri === $rootScope.session.currentUser.profile.uri) {
 		      result = true;
 		  }
 	  });

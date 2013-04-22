@@ -10,11 +10,16 @@
   <script src="js/services.js"></script>
   <script src="lib/angular/angular-resource.js"></script>
   <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+
 </head>
 <body>
 <div class="container span12">
   <div ng-controller="LoginController" class="text-right">
-      <div ng-show="session.loggedIn"><p>User: {{session.currentUser.shorthand}} <a ng-click="logout()" class="btn">Logout</a></p></div>
+      <div ng-show="session.loggedIn"><p><i class="icon-user"></i> User: {{session.currentUser.username}} 
+      <span ng-show="session.currentUser.profile">({{session.currentUser.profile.shorthand}})</span>
+      <a ng-click="logout()" class="btn"><i class="icon-off"></i> Logout</a>
+      <a ng-show="session.loggedIn && !session.currentUser.profile" ng-click="join()" class="btn disabled" title="You are logged in but not a user of this application. Click here to join. TBD">Join this app</a>
+      </p></div>
       <div ng-show="session && !session.loggedIn"><a ng-click="login()" class="btn">Login</a></div>
   </div>
    

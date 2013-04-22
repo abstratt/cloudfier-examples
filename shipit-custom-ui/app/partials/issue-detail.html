@@ -9,32 +9,27 @@
 </div>
 
 <div class="span12">
-<a href="#/issues/" class="btn span2">Back to the list</a>
+<a href="#/issues/" class="btn span2"><i class="icon-arrow-left"></i> Back to the list</a>
 </div>
 
 <div class="span12">
-<h4>Watchers</h4>
+<h4>Watchers <span ng-show="issue.loadedLinks.watchers.length">({{issue.loadedLinks.watchers.length}})</span></h4>
 
-<a ng-click="startWatching(issue)" ng-show="issue.loadedLinks.watchers != undefined && !issue.checks.watching" class="btn span2">Watch</a>
-<a ng-click="stopWatching(issue)" ng-show="issue.checks.watching" class="btn span2">Stop watching</a>
+<div ng-hide="!session.currentUser.profile">
+<a ng-click="startWatching(issue)" ng-show="issue.loadedLinks.watchers != undefined && !issue.checks.watching" class="btn span2"><i class="icon-eye-open"></i> Watch</a>
+<a ng-click="stopWatching(issue)" ng-show="issue.checks.watching" class="btn span2"><i class="icon-eye-close"></i> Stop watching</a>
+</div>
 
 <ul ng-show="issue.loadedLinks.watchers.length > 0" class="inline-block">
-<li ng-repeat="watcher in issue.loadedLinks.watchers" class="label label-inverse span1 text-center">{{watcher.shorthand}}</li>
+<li ng-repeat="watcher in issue.loadedLinks.watchers" class="label label-inverse span2 text-center">{{watcher.shorthand}}</li>
 </ul>
 <span ng-show="issue.loadedLinks.watchers.length == 0" class="label label-info span2 text-center">No one is watching</span>
 
 </div>
 
 <div class="span12">
-<h4>Comments <span ng-show="issue.loadedLinks.comments.length > 0">({{issue.loadedLinks.comments.length}})</span></h4>
-<form name="commentForm" ng-controller="CommentController" class="form-horizontal span9">
-      <fieldset>
-      <label>New comment: </label><textarea name="commentField" ng-model="commentText" required rows="8" class="span12"> </textarea>
-      <label></label>
-      <a ng-click="addComment(issue, commentText)"  class="btn btn-primary">Submit</a>
-      </fieldset>
-      <span ng-show="commentError" class="label label-important">{{commentError}}</span>      
-</form>
+<h4>Comments <span ng-show="issue.loadedLinks.comments.length > 0">({{issue.loadedLinks.comments.length}})</span> <i class="icon-comment"></i></h4>
+<p class="text-warning text-center" ng-show="session.currentUser && !session.currentUser.profile">You must join this application before you can comment</p>
 </div>
 
 <div class="span9">
@@ -47,5 +42,13 @@
     {{comment.values.commented}}
     </textarea>
 </div>
-<p ng-show="issue.loadedLinks.comments.length == 0">No comments</p>       
+<p class="text-info" ng-show="issue.loadedLinks.comments.length == 0">No comments. </p>
 </div>
+<form name="commentForm" ng-controller="CommentController" class="form-horizontal span9" ng-show="session.currentUser.profile">
+      <fieldset>
+      <label>New comment: </label><textarea name="commentField" ng-model="commentText" required rows="8" class="span12"> </textarea>
+      <label></label>
+      <a ng-click="addComment(issue, commentText)"  class="btn btn-primary">Submit</a>
+      </fieldset>
+      <span ng-show="commentError" class="label label-important">{{commentError}}</span>      
+</form>

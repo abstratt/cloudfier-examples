@@ -1,15 +1,16 @@
-<div class="span12 control-group" ng-show="issues"><a href="#/new-issue/" class="btn btn-primary">Report a new issue</a></div>
+<p class="text-warning text-center" ng-show="session.currentUser && !session.currentUser.profile">You must join this application before you can report an issue.</p>
+<div class="span12 control-group" ng-show="issues && session.currentUser.profile""><a href="#/new-issue/" class="btn"><i class="icon-plus-sign"></i> Report a new issue</a></div>
 
 <div class="span12">
       <table  ng-show="issues.length > 0" class="table table-striped">
         <tr>
           <th>Summary</th>
           <th>Submitter</th>
-          <th>Assigned to</th>          
+          <th>Assignee</th>          
           <th>Status</th>
-          <th>On</th>
+          <th><i class="icon-calendar" title="Date submitted"></i></th>
           <th>Severity</th>          
-          <th>Comment #</th>          
+          <th><i class="icon-comment" title="# of comments"></i></th>          
         </tr>
         <tr ng-repeat="issue in issues">
           <td><a href="#/issue/?uri={{issue.uri}}">{{issue.values.summary}}</a></td>
@@ -23,5 +24,5 @@
       </table>
 </div>      
 <div align="center" ng-show="!issues"><span class="info label">Loading issues...</span></div>
-<div align="center" ng-show="issues == false"><span class="info label">No issues found</span></div>
+<div ng-show="issues == false" class="text-info text-center">No issues found</div>
       
