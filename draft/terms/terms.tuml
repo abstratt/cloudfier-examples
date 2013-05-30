@@ -1,0 +1,13 @@
+package terms;
+
+class Term
+    attribute name : String;
+    derived attribute definition : String := { "this is a definition" };
+end;
+
+interface Definer
+    operation define(term : String) : String;
+end;
+
+
+end.
