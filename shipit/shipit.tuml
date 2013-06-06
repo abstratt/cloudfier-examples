@@ -206,25 +206,30 @@ class Issue
 
     statemachine Status 
         initial state Open
-            transition on call(resolve) to Resolved
-            transition on call(assignToMe) to Assigned
+            transition on call(resolve) to Resolved;
+            transition on call(assignToMe) to Assigned;
             transition on call(assign) to Assigned;
+        end;
             
         state InProgress
             transition on call(suspend) to Assigned;
-            
+        end;
+        
         state Assigned
-            transition on call(release) to Open 
-            transition on call(resolve) to Resolved
-            transition on call(steal) to Assigned
+            transition on call(release) to Open;
+            transition on call(resolve) to Resolved;
+            transition on call(steal) to Assigned;
             transition on call(start) to InProgress;
-            
+        end;
+        
         state Resolved 
-            transition on call(verify) to Verified 
+            transition on call(verify) to Verified;
             transition on call(reopen) to Open;
-            
+        end;
+        
         state Verified
             transition on call(reopen) to Open;
+        end;
     end;
 end;
 

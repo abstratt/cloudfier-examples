@@ -83,12 +83,14 @@ class Expense
 	statemachine Status
 		initial state Draft
 			transition on call(submit) to Submitted;
+		end;
 		state Submitted
-			transition on call(approve) to Approved
-			transition on call(reject) to Rejected
+			transition on call(approve) to Approved;
+			transition on call(reject) to Rejected;
 			transition on call(review) to Draft;
-		terminate state Approved;
-		terminate state Rejected;		
+	    end;
+		terminate state Approved end;
+		terminate state Rejected end;		
 	end;
 end;
 
