@@ -22,11 +22,13 @@ abstract class Person
 end;
 
 class AutoMechanic specializes Person
-    access{System#user()is AutoMechanic};
+    access {System#user() is AutoMechanic};
     private attribute services : Service[*];
+    (* Services currently in progress by this worker. *)
     derived attribute currentServices : Service[*] := { 
         Service#byStatus(self.services, Service::Status#InProgress)
     };
+    (* Services assigned to this worker but not yet started. *)
     derived attribute upcomingServices : Service[*] := { 
         Service#byStatus(self.services, Service::Status#Booked)
     };
@@ -126,13 +128,15 @@ class Service
         self.pending := false;
     end;
     statemachine Status 
-        initial state Booked 
-            transition on call(cancel) to Cancelled 
-            transition on call(start)to InProgress;
+        initial state Booked
+            transition on call(cancel) to Cancelled;
+            transition on call(start) to InProgress;
+        end;
         state InProgress 
             transition on call(complete) to Completed;
-        terminate state Completed;
-        terminate state Cancelled;
+        end;
+        terminate state Completed end;
+        terminate state Cancelled end;
     end;
 end;
 
