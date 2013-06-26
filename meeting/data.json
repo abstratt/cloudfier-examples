@@ -1,0 +1,30 @@
+{
+  "meeting" : {
+    "User" : [ {
+      "name" : "Andrew Eisenberg",
+      "email" : "andrew@eclipse.org",
+      "username" : null
+    }, {
+      "name" : "Rafael Chaves",
+      "email" : "rafael@abstratt.com",
+      "username" : "rafael@abstratt.com"
+    }, {
+      "name" : "David Green",
+      "email" : "dgreen@tasktop.com",
+      "username" : null
+    } ],
+    "Meeting" : [ {
+      "title" : "Eclipse DemoCamp YVR",
+      "description" : "Kepler release",
+      "date" : "2013/06/25",
+      "organizer" : "User@1",
+      "participants" : ["User@1", "User@2"]
+    }, {
+      "title" : "Democamp YYJ",
+      "description" : "...",
+      "date" : "2013/06/29",
+      "organizer" : "User@2",
+      "participants" : ["User@2"]
+    } ]
+  }
+}

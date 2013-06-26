@@ -1,0 +1,52 @@
+package shipit_plus;
+
+load <<http://localhost/services/publisher/A-cloudfier-examples-email/email.uml>>;
+load <<http://localhost/services/publisher/A-cloudfier-examples-shipit/shipit.uml>>;
+
+import shipit;
+import email;
+
+external class EmailService implements Emailer
+end;
+
+class EmailUserNotifierService implements shipit::UserNotifier
+    reception notify(n : IssueReported);
+    begin 
+        send EMailMessage(
+            subject := "New issue: " + n.issueKey + " - " + n.summary,
+            body := n.description,
+            \to := n.userEmail,
+            \from := "shipitplus@cloudfier.com"
+        ) to self.emailer;        
+    end;
+    reception notify(n : CommentAdded);
+    begin 
+        send EMailMessage(
+            subject := "New comment to: " + n.issueKey + " by " + n.author,
+            body := Memo#fromString(n.author + " said: '" + n.comment + "'"),
+            \to := n.userEmail,
+            \from := "shipitplus@cloudfier.com"
+        ) to self.emailer;        
+    end;    
+    reception notify(n : IssueResolved);
+    begin 
+        send EMailMessage(
+            subject := "Issue resolved: " + n.issueKey,
+            body := Memo#fromString(n.issueKey + " has been resolved as: " + n.resolution),
+            \to := n.userEmail,
+            \from := "shipitplus@cloudfier.com"
+        ) to self.emailer;        
+    end;        
+    
+    required port emailer : Emailer;
+end;
+
+component ShipItPlus
+    composition userNotifier : EmailUserNotifierService;
+    composition emailService : EmailService;
+    composition issues : Issue[*];
+    provided port notifier : UserNotifier connector userNotifier, issues.userNotifier;
+    provided port emailer : Emailer connector userNotifier.emailer, emailService;
+end;
+
+end.

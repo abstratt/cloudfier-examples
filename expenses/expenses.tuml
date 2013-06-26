@@ -1,5 +1,7 @@
 package expenses;
 
+import payment;
+
 (* The category for an expense. *)
 class Category
     attribute name : String;
@@ -7,7 +9,7 @@ class Category
     begin
         var newCategory : Category;
         newCategory := new Category;
-        newCategory.name := name;
+        newCategory.name := name; 
         return newCategory;
     end;
         
@@ -16,7 +18,7 @@ class Category
     };
     
 end;
- 
+
 (* The expense as reported by an employee. *)
 class Expense
     derived attribute moniker : String := { self.description + " on " + self.date };
@@ -28,6 +30,8 @@ class Expense
     attribute employee : Employee;
     readonly attribute rejectionReason : Memo[0,1];
     readonly reference approver : Employee[0,1];
+    port expensePayer : ExpensePayer;
+    derived id attribute expenseId : Integer;
     
     static operation newExpense(description : String, amount : Double, date : Date, category : Category) : Expense;
     begin
@@ -83,12 +87,21 @@ class Expense
 	statemachine Status
 		initial state Draft
 			transition on call(submit) to Submitted;
-		state Submitted
-			transition on call(approve) to Approved
-			transition on call(reject) to Rejected
+        end; 
+		state Submitted 
+			transition on call(approve) to Approved do {
+			    send ExpenseApproved(
+			        employeeName := self.employee.name, 
+			        amount := self.amount,
+			        description := self.description + "(" + self.category.name + ")",
+			        expenseId := self.expenseId) to self.expensePayer;
+			};
+			transition on call(reject) to Rejected;
 			transition on call(review) to Draft;
-		terminate state Approved;
-		terminate state Rejected;		
+		end;	
+	    terminate state Approved
+		end;
+		terminate state Rejected end;		
 	end;
 end;
 
@@ -147,6 +160,5 @@ association EmployeeExpenses
     role Employee.expenses;
     role Expense.employee;
 end;
-
 
 end.

@@ -1,0 +1,15 @@
+package expenses_app;
+
+import payment;
+import expenses;
+
+external class EmployeePaymentService implements ExpensePayer
+end;
+
+component ExpensesApp
+    composition expensePaymentService : EmployeePaymentService;
+    composition expenses : Expense[*];
+    provided port expensePayer : ExpensePayer connector expenses.expensePayer, expensePaymentService;
+end;
+
+end.

@@ -7,8 +7,9 @@ package shipit;
 
 [kirra::User]
 class User
-    attribute username : String;
-    attribute fullName : String;
+    id attribute username : String;
+    id attribute fullName : String;
+    attribute email : String;
     attribute kind : UserKind;
     private derived static attribute current : User := { (System#user() as User) };
     private derived attribute committer : Boolean := { self.kind = UserKind#Committer };
@@ -16,6 +17,7 @@ class User
     readonly attribute issuesReportedByUser : Issue[*];    
     derived attribute issuesCurrentlyInProgress : Issue[*] := { Issue#byStatus(self.issuesAssignedToUser, Issue::Status#InProgress) };
     derived attribute issuesCurrentlyAssigned : Issue[*] := { Issue#byStatus(self.issuesAssignedToUser, Issue::Status#Assigned) };    
+    private derived static attribute provisioned : Boolean := {!(System#user() == null)};        
 end;
 
 enumeration UserKind 
@@ -28,6 +30,29 @@ enumeration Severity
     Major, 
     Blocker,
     Enhancement
+end;
+
+interface UserNotifier
+    reception notify(notification : UserNotification);
+end;
+
+abstract signal UserNotification
+    attribute issueKey : String;
+    attribute userEmail : String;
+end;
+
+signal IssueReported specializes UserNotification
+    attribute summary : String;
+    attribute description : Memo;    
+end;
+
+signal IssueResolved specializes UserNotification
+    attribute resolution : Resolution;
+end;
+
+signal CommentAdded specializes UserNotification
+    attribute comment : Memo;
+    attribute author : String;
 end;
 
 enumeration Resolution
@@ -49,7 +74,7 @@ class Comment
 end;
 
 class Label
-    attribute text : String;
+    id attribute name : String;
 end;
 
 association IssueLabels 
@@ -68,13 +93,31 @@ association ReportedIssue
 end;    
 
 association WatchedIssues
-    role Issue.watchers;
+    role Issue.watchers; 
     navigable role issuesWatched : Issue[*];
+end;
+
+class Project
+    id attribute description : String;
+    id attribute token : String;
+end;
+
+association ProjectIssues
+    navigable role issues : Issue[*];
+    role Issue.project;
 end;
 
 class Issue
     attribute summary : String;
-    attribute labels : Label[*];    
+
+    private derived id attribute issueId : Integer;    
+    derived attribute issueKey : String := { self.project.token + "-" + self.issueId };
+    
+    attribute labels : Label[*];
+    
+    attribute project : Project;
+
+    port userNotifier : UserNotifier;   
     
     readonly attribute reportedOn : Date := { Date#today() };
     readonly attribute reporter : User;
@@ -93,7 +136,7 @@ class Issue
         "" + self.reportedOn.differenceInDays(self.referenceDate()) + " day(s)"
     };
     
-    private derived attribute mine : Boolean := { System#user() == self.assignee };
+    private derived attribute mine : Boolean := { User#current == self.assignee };
     private derived attribute free : Boolean := { self.assignee == null };
     private operation referenceDate() : Date;
     begin
@@ -105,14 +148,21 @@ class Issue
     attribute description : Memo;
     
     (* Report a new issue. *)
-    static operation reportIssue(summary : String, description : Memo, severity : Severity := Normal);
+    static operation reportIssue(project : Project, summary : String, description : Memo, severity : Severity := Normal);
+    precondition Must_be_logged_in { User#provisioned }
     begin
         var newIssue : Issue;
         newIssue := new Issue;
         newIssue.summary := summary;
         newIssue.description := description;
         newIssue.severity := severity;
-        newIssue.reporter := (System#user() as User);
+        newIssue.reporter := User#current;
+        newIssue.project := project;
+        send IssueReported(
+            issueKey := newIssue.issueKey, 
+            summary := summary, 
+            description := description, 
+            userEmail := newIssue.reporter.email) to newIssue.userNotifier;
     end;
     
     static operation bySeverity(toMatch : Severity) : Issue[*];
@@ -170,6 +220,7 @@ class Issue
     operation comment(text : Memo);
     begin
         self.addComment(text, null);
+        
     end;
     
     private operation addComment(text : Memo, inReplyTo : Comment);
@@ -181,6 +232,7 @@ class Issue
         comment.commented := text;
         comment.inReplyTo := inReplyTo;
         link IssueComments(issue := self, comments := comment);
+        send CommentAdded(issueKey := self.issueKey, author := comment.user.email, userEmail := self.reporter.email, comment := text) to self.userNotifier;
     end;
     
     (* Take over an issue currently available. *)
@@ -206,25 +258,37 @@ class Issue
 
     statemachine Status 
         initial state Open
-            transition on call(resolve) to Resolved
-            transition on call(assignToMe) to Assigned
+            transition on call(resolve) to Resolved;
+            transition on call(assignToMe) to Assigned;
             transition on call(assign) to Assigned;
+        end;
             
         state InProgress
             transition on call(suspend) to Assigned;
+        end;            
             
         state Assigned
-            transition on call(release) to Open 
-            transition on call(resolve) to Resolved
-            transition on call(steal) to Assigned
+            transition on call(release) to Open; 
+            transition on call(resolve) to Resolved;
+            transition on call(steal) to Assigned;
             transition on call(start) to InProgress;
+        end;            
             
-        state Resolved 
-            transition on call(verify) to Verified 
+        state Resolved
+            entry { 
+                send IssueResolved(
+                    issueKey := self.issueKey, 
+                    userEmail := self.reporter.email, 
+                    resolution := self.resolution
+                ) to self.userNotifier; 
+            };
+            transition on call(verify) to Verified; 
             transition on call(reopen) to Open;
+        end;            
             
         state Verified
             transition on call(reopen) to Open;
+        end;            
     end;
 end;
 
