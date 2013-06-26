@@ -9,6 +9,7 @@ import email;
 external class EmailService implements Emailer
 end;
 
+
 class EmailUserNotifierService implements shipit::UserNotifier
     reception notify(n : IssueReported);
     begin 
