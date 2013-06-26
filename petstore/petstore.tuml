@@ -59,11 +59,13 @@ class Order
     
     statemachine Status
         initial state New
-            transition on call(process) to Processing
+            transition on call(process) to Processing;
             transition on call(process) to New;            
+        end;
         state Processing
             transition on call(complete) to Completed;        
-        terminate state Completed;
+        end;
+        terminate state Completed end;
     end;
     
     private operation computeOrderTotal() : Double;

@@ -265,13 +265,23 @@ class Issue
             
         state InProgress
             transition on call(suspend) to Assigned;
+<<<<<<< HEAD
         end;            
             
+=======
+        end;
+        
+>>>>>>> 8af08abe9ddeaa061afdc9e41a5375cbd0c8f950
         state Assigned
+<<<<<<< HEAD
             transition on call(release) to Open; 
+=======
+            transition on call(release) to Open;
+>>>>>>> 8af08abe9ddeaa061afdc9e41a5375cbd0c8f950
             transition on call(resolve) to Resolved;
             transition on call(steal) to Assigned;
             transition on call(start) to InProgress;
+<<<<<<< HEAD
         end;            
             
         state Resolved
@@ -283,12 +293,27 @@ class Issue
                 ) to self.userNotifier; 
             };
             transition on call(verify) to Verified; 
+=======
+        end;
+        
+        state Resolved 
+            transition on call(verify) to Verified;
+>>>>>>> 8af08abe9ddeaa061afdc9e41a5375cbd0c8f950
             transition on call(reopen) to Open;
+<<<<<<< HEAD
         end;            
             
+=======
+        end;
+        
+>>>>>>> 8af08abe9ddeaa061afdc9e41a5375cbd0c8f950
         state Verified
             transition on call(reopen) to Open;
+<<<<<<< HEAD
         end;            
+=======
+        end;
+>>>>>>> 8af08abe9ddeaa061afdc9e41a5375cbd0c8f950
     end;
 end;
 

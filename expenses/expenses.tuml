@@ -87,6 +87,7 @@ class Expense
 	statemachine Status
 		initial state Draft
 			transition on call(submit) to Submitted;
+<<<<<<< HEAD
         end; 
 		state Submitted 
 			transition on call(approve) to Approved do {
@@ -96,11 +97,21 @@ class Expense
 			        description := self.description + "(" + self.category.name + ")",
 			        expenseId := self.expenseId) to self.expensePayer;
 			};
+=======
+		end;
+		state Submitted
+			transition on call(approve) to Approved;
+>>>>>>> 8af08abe9ddeaa061afdc9e41a5375cbd0c8f950
 			transition on call(reject) to Rejected;
 			transition on call(review) to Draft;
+<<<<<<< HEAD
 		end;	
 	    terminate state Approved
 		end;
+=======
+	    end;
+		terminate state Approved end;
+>>>>>>> 8af08abe9ddeaa061afdc9e41a5375cbd0c8f950
 		terminate state Rejected end;		
 	end;
 end;
