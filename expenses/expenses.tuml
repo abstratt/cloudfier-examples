@@ -96,6 +96,7 @@ class Expense
 			        description := self.description + "(" + self.category.name + ")",
 			        expenseId := self.expenseId) to self.expensePayer;
 			};
+			transition on call(review) to Draft;
 		end;
 		terminate state Approved end;
 		terminate state Rejected end;		
