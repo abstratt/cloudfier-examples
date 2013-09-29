@@ -3,9 +3,6 @@ package shipit_plus;
 load <<http://localhost/services/publisher/A-cloudfier-examples-email/email.uml>>;
 load <<http://localhost/services/publisher/A-cloudfier-examples-shipit/shipit.uml>>;
 
-import shipit;
-import email;
-
 external class EmailService implements Emailer
 end;
 

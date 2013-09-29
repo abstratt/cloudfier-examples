@@ -97,6 +97,7 @@ class Expense
 			        expenseId := self.expenseId) to self.expensePayer;
 			};
 			transition on call(review) to Draft;
+			transition on call(reject) to Rejected;
 		end;
 		terminate state Approved end;
 		terminate state Rejected end;		
