@@ -9,7 +9,7 @@
   <script src="js/filters.js"></script>
   <script src="js/services.js"></script>
   <script src="lib/angular/angular-resource.js"></script>
-  <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+  <link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
 <body>
@@ -20,12 +20,15 @@
       <a ng-click="logout()" class="btn"><i class="icon-off"></i> Logout</a>
       <a ng-show="session.loggedIn && !session.currentUser.profile" ng-click="join()" class="btn disabled" title="You are logged in but not a user of this application. Click here to join. TBD">Join this app</a>
       <a ng-click="openSimpleUI()" class="btn">Simple UI</a>
+      <a href="https://bitbucket.org/abstratt/cloudfier-examples/src/master/shipit-custom-ui">The source</a>
       </p></div>
       <div ng-show="session && !session.loggedIn"><a ng-click="login()" class="btn">Login</a></div>
   </div>
    
   <div ng-view></div>
+
 </div>
+
 </body>
 
 </html>
