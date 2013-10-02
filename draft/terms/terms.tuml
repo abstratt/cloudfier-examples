@@ -1,0 +1,47 @@
+package terms;
+
+datatype MissingSuggestion
+end;
+
+class Term
+    attribute name : String;
+    composition definitions : Definition[*];
+
+    (* Add the automatically suggested definition as one of the definitions for this term. *)
+    operation acceptSuggestion() raises MissingSuggestion;
+    begin
+        var accepted : Definition, suggestion : Definition;
+        suggestion := self.definer.define(self.name);
+        if (suggestion == null) then
+            raise new MissingSuggestion;
+        accepted := new Definition;
+        accepted.Definition := suggestion.Definition;
+        link TermDefinition(term := self, definitions := accepted);
+    end;    
+
+    required port definer : Definer;
+end;
+
+class Definition
+    attribute Definition : Memo;
+end;
+
+composition TermDefinition
+    role Term.definitions;
+    navigable role term : Term;
+end;
+
+interface Definer
+    operation define(q : String) : Definition;
+end;
+
+external class DefinitionService implements Definer
+end;
+
+component TermsApp
+    composition terms : Term[*];
+    composition definitionService : DefinitionService;
+    provided port definer : Definer connector terms.definer, definitionService;
+end;
+
+end.
