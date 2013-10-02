@@ -60,4 +60,8 @@ function LoginController($scope, $http, $rootScope, $route) {
 	    var newLocation = window.location.origin + cloudfier.uiBase + 'root/source/?source=' + encodeURIComponent(window.location);
 	    window.location = newLocation;
 	};
+	$scope.openSimpleUI = function () {
+	    var newLocation = window.location.origin + cloudfier.uiBase + 'root/source/';
+	    window.open(newLocation);
+	};
 }

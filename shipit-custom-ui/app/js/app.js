@@ -3,8 +3,8 @@
 /* App Module */
 
 var cloudfier = { 
-    uiBase: '/services/ui/demo-cloudfier-examples-shipit/',
-    apiBase: '/services/api/demo-cloudfier-examples-shipit/' 
+    uiBase: '/services/ui/demo-cloudfier-examples-shipit-plus/',
+    apiBase: '/services/api/demo-cloudfier-examples-shipit-plus/' 
 };
 
 angular.module('shipit', ['shipitServices'], function ($routeProvider, $locationProvider, $httpProvider) {

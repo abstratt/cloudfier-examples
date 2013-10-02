@@ -19,6 +19,7 @@
       <span ng-show="session.currentUser.profile">({{session.currentUser.profile.shorthand}})</span>
       <a ng-click="logout()" class="btn"><i class="icon-off"></i> Logout</a>
       <a ng-show="session.loggedIn && !session.currentUser.profile" ng-click="join()" class="btn disabled" title="You are logged in but not a user of this application. Click here to join. TBD">Join this app</a>
+      <a ng-click="openSimpleUI()" class="btn">Simple UI</a>
       </p></div>
       <div ng-show="session && !session.loggedIn"><a ng-click="login()" class="btn">Login</a></div>
   </div>
