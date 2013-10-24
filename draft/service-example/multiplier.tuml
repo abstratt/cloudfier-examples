@@ -1,0 +1,15 @@
+package multiplier;
+
+
+interface Multiplier
+    operation multiply(v1 : Double, v2 : Double) : Integer;
+end;
+
+class MultiplicationService implements Multiplier
+    operation multiply(v1 : Double, v2 : Double) : Double;
+    begin
+        return v1 * v2;
+    end;
+end;
+
+end.
