@@ -15,8 +15,8 @@ class User
     private derived attribute committer : Boolean := { self.kind = UserKind#Committer };
     private attribute issuesAssignedToUser : Issue[*];
     readonly attribute issuesReportedByUser : Issue[*];    
-    derived attribute issuesCurrentlyInProgress : Issue[*] := { Issue#byStatus(self.issuesAssignedToUser, Issue::Status#InProgress) };
-    derived attribute issuesCurrentlyAssigned : Issue[*] := { Issue#byStatus(self.issuesAssignedToUser, Issue::Status#Assigned) };    
+    derived attribute issuesCurrentlyInProgress : Issue[*] := { Issue#filterByStatus(self.issuesAssignedToUser, Issue::Status#InProgress) };
+    derived attribute issuesCurrentlyAssigned : Issue[*] := { Issue#filterByStatus(self.issuesAssignedToUser, Issue::Status#Assigned) };    
     private derived static attribute provisioned : Boolean := {!(System#user() == null)};        
 end;
 
@@ -107,6 +107,11 @@ association ProjectIssues
     role Issue.project;
 end;
 
+association VotedIssues
+    navigable role voters : User[*];
+    navigable role voted : Issue[*];
+end;
+
 class Issue
     attribute summary : String;
 
@@ -130,6 +135,8 @@ class Issue
     readonly attribute comments : Comment[*];
     
     attribute watchers : User[*];
+    
+    derived attribute votes : Integer := { self<-VotedIssues->voters.size() };
     
     derived attribute commentCount : Integer := { self.comments.size() };    
     derived attribute waitingFor : String := { 
@@ -167,15 +174,19 @@ class Issue
     
     static operation bySeverity(toMatch : Severity) : Issue[*];
     begin
-        return Issue extent.select((i : Issue) : Boolean { return i.severity = toMatch });
+        return Issue extent.select((i : Issue) : Boolean { return i.severity == toMatch });
     end;
 
-    static operation byStatus(issues : Issue[*], toMatch : Status) : Issue[*];    
+    private static operation filterByStatus(issues : Issue[*], toMatch : Status) : Issue[*];    
     begin
-	    return issues.select((issue : Issue) : Boolean {
-            return issue.status == toMatch
-        });
+	    return issues.select((issue : Issue) : Boolean { return issue.status == toMatch });
     end;
+
+    static operation byStatus(toMatch : Status) : Issue[*];    
+    begin
+	    return Issue#filterByStatus(Issue extent, toMatch);
+    end;
+
     
     (* Release the issue so another committer can work on it. *)        
     operation release();
@@ -234,6 +245,27 @@ class Issue
         link IssueComments(issue := self, comments := comment);
         send CommentAdded(issueKey := self.issueKey, author := comment.user.email, userEmail := self.reporter.email, comment := text) to self.userNotifier;
     end;
+    
+    operation addWatcher(userToAdd : User);
+    begin
+        link WatchedIssues (issuesWatched := self, watchers := userToAdd);
+    end;
+    
+    operation vote();
+    precondition { not (User#current == null) }    
+    precondition { !self.mine }
+    precondition { !self<-VotedIssues->voters.includes(User#current) }  
+    begin
+        link VotedIssues (voted := self, voters := User#current);
+    end;
+    
+    operation withdrawVote();
+    precondition { not (User#current == null) }        
+    precondition { self<-VotedIssues->voters.includes(User#current) }    
+    begin
+       unlink VotedIssues (voted := self, voters := User#current);
+    end;    
+    
     
     (* Take over an issue currently available. *)
     operation assignToMe();
