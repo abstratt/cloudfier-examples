@@ -1,0 +1,52 @@
+package timetracker;
+
+[kirra::User]
+class User
+    attribute name : String;
+end;
+
+class WorkItem
+    attribute description : String;
+    
+    derived attribute unitsWorked : Integer := {self.countUnitsWorked()};
+    
+    private operation countUnitsWorked() : Integer;
+    begin
+        var total : Integer;
+        total := 0;
+        self<-WorkItemWork->reported.forEach((w : Work) {
+            total := total + w.units
+        });
+        return total;
+    end;
+end;
+
+class Project
+    attribute name : String;
+end;
+
+class Client
+    attribute name : String;
+end;
+
+composition ClientProject
+    navigable role projects : Project[*];
+    navigable role client : Client;
+end;
+
+composition ProjectWorkItem
+    navigable role workItems : WorkItem[*];
+    navigable role project : Project;
+end;
+
+class Work
+    invariant{self.units > 0};
+    attribute units : Integer;
+end;
+
+composition WorkItemWork
+    navigable role reported : Work[*];
+    navigable role workItem : WorkItem;
+end;
+
+end.
