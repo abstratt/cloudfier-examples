@@ -1,52 +1,94 @@
 package timetracker;
 
+import invoicer;
+
 [kirra::User]
 class User
     attribute name : String;
 end;
 
-class WorkItem
+class Invoice
+    id attribute number : String;
+    attribute client : Client;
+    attribute issueDate : Date := { Date#today() };
+    attribute reported : Work[*];
+    derived attribute open : Boolean := { self.status == Status#Preparation };
+    attribute status : Status;
+    
+    required port invoicer : Invoicer;
+    
+    operation issue();
+    begin
+        /* assign effective issue date */
+        self.issueDate := Date#today();
+    end;
+    
+    private operation sendInvoice();
+    begin
+        send InvoiceIssued() to self.invoicer;
+    end;
+    
+    statemachine Status
+        initial state Preparation
+            transition on call(issue) to Invoiced;        
+        end;
+        state Invoiced
+            entry { self.sendInvoice() };
+        end;
+    end;
+end;
+
+association
+    role Invoice.reported;
+    role Work.invoice;
+end;
+
+class Task
     attribute description : String;
-    
+    attribute reported : Work[*];
+    attribute client : Client;
     derived attribute unitsWorked : Integer := {self.countUnitsWorked()};
-    
     private operation countUnitsWorked() : Integer;
     begin
         var total : Integer;
         total := 0;
-        self<-WorkItemWork->reported.forEach((w : Work) {
+        self.reported.forEach((w : Work) {
             total := total + w.units
         });
         return total;
     end;
 end;
 
-class Project
-    attribute name : String;
-end;
-
 class Client
     attribute name : String;
+    attribute tasks : Task[*];
 end;
 
-composition ClientProject
-    navigable role projects : Project[*];
-    navigable role client : Client;
-end;
-
-composition ProjectWorkItem
-    navigable role workItems : WorkItem[*];
-    navigable role project : Project;
+composition ClientTask
+    role Client.tasks;
+    role Task.client;
 end;
 
 class Work
-    invariant{self.units > 0};
+    invariant {self.units > 0};
     attribute units : Integer;
+    attribute task : Task;
+    readonly attribute invoice : Invoice[0, 1];
+    derived attribute invoiced : Boolean := { self.invoice == null };
+    
+    (* Submits this work to a chosen invoice for the client. *)
+    operation submit(invoice : Invoice);
+    precondition { not self.invoiced }
+    precondition (invoice) { invoice.client == self.task.client }
+    precondition (invoice) { invoice.open }
+    begin
+        self.invoice := invoice;
+    end;
 end;
 
-composition WorkItemWork
-    navigable role reported : Work[*];
-    navigable role workItem : WorkItem;
+composition TaskWork
+    role Task.reported;
+    role Work.task;
 end;
 
 end.

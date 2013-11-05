@@ -1,0 +1,10 @@
+package invoicer;
+
+signal InvoiceIssued
+end;
+
+interface Invoicer
+    reception process(notification : InvoiceIssued);
+end;
+
+end.
