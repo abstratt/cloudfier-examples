@@ -10,7 +10,7 @@ end;
 component App
     composition invoicerService : ExternalInvoicer;
     composition invoices : Invoice[*];
-    provided port _ : Invoicer connector invoicerService, invoices.invoicer;
+    provided port : Invoicer connector invoicerService, invoices.invoicer;
 end;
 
 end.
