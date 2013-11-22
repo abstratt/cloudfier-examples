@@ -2,13 +2,34 @@ package timetracker;
 
 import invoicer;
 
-[kirra::User]
-class User
+class Client
     attribute name : String;
+    attribute tasks : Task[*];
+    attribute invoices : Invoice[*];
+    
+    operation startInvoice();
+    begin
+        var newInvoice : Invoice;
+        newInvoice := new Invoice;
+        newInvoice.client := self;
+    end;
+end;
+
+class Task
+    attribute description : String;
+    attribute reported : Work[*];
+    attribute client : Client;
+    derived attribute unitsWorked : Integer := {self.countUnitsWorked()};
+    private operation countUnitsWorked() : Integer;
+    begin
+        return (self.reported.reduce((w : Work, count : Integer) : Integer {
+            return count + w.units
+        }, 0) as Integer);
+    end;
 end;
 
 class Invoice
-    id attribute number : String;
+    derived id attribute number : String;
     attribute client : Client;
     attribute issueDate : Date := { Date#today() };
     attribute reported : Work[*];
@@ -17,9 +38,16 @@ class Invoice
     
     required port invoicer : Invoicer;
     
-    operation issue();
+    derived attribute totalUnits : Integer := {
+    	(self.reported.reduce((w : Work, sum : Integer) : Integer {
+    		return w.units + sum 
+        }, 0) as Integer)
+	};
+    
+    operation issue()
+    (* Cannot issue an invoice that has no work reported. *)
+    precondition { not self.reported.isEmpty() };
     begin
-        /* assign effective issue date */
         self.issueDate := Date#today();
     end;
     
@@ -38,49 +66,35 @@ class Invoice
     end;
 end;
 
-association
+association InvoicedWork
     role Invoice.reported;
     role Work.invoice;
 end;
 
-class Task
-    attribute description : String;
-    attribute reported : Work[*];
-    attribute client : Client;
-    derived attribute unitsWorked : Integer := {self.countUnitsWorked()};
-    private operation countUnitsWorked() : Integer;
-    begin
-        var total : Integer;
-        total := 0;
-        self.reported.forEach((w : Work) {
-            total := total + w.units
-        });
-        return total;
-    end;
-end;
-
-class Client
-    attribute name : String;
-    attribute tasks : Task[*];
-end;
-
-composition ClientTask
+association ClientTask
     role Client.tasks;
     role Task.client;
 end;
 
+association ClientInvoice
+    role Client.invoices;
+    role Invoice.client;
+end;
+
 class Work
-    invariant {self.units > 0};
-    attribute units : Integer;
+    attribute units : Integer
+        (* Work must describe a positive number of units. *)
+        invariant {self.units > 0};
     attribute task : Task;
+    (* Work can be only invoiced once. Cannot be set directly but via #submit *)
     readonly attribute invoice : Invoice[0, 1];
-    derived attribute invoiced : Boolean := { self.invoice == null };
+    derived attribute invoiced : Boolean := { not(self.invoice == null) };
     
     (* Submits this work to a chosen invoice for the client. *)
-    operation submit(invoice : Invoice);
+    operation submit(invoice : Invoice)
     precondition { not self.invoiced }
     precondition (invoice) { invoice.client == self.task.client }
-    precondition (invoice) { invoice.open }
+    precondition (invoice) { invoice.open };
     begin
         self.invoice := invoice;
     end;

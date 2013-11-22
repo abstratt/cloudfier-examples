@@ -1,0 +1,29 @@
+{
+  "timetracker" : {
+    "Client" : [ {
+      "name" : "Client 1"
+    }, {
+      "name" : "Client 2"
+    } ],
+    "Task" : [ {
+      "description" : "Create website mock-up",
+      "client" : "Client@2"
+    }, {
+      "description" : "Design database schema",
+      "client" : "Client@1"
+    } ],
+    "Work" : [ {
+      "units" : 4,
+      "task" : "Task@1"
+    }, {
+      "units" : 1,
+      "task" : "Task@1"
+    }, {
+      "units" : 3,
+      "task" : "Task@2"
+    }, {
+      "units" : 3,
+      "task" : "Task@2"
+    } ]    
+  }
+}
