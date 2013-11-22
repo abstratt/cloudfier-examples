@@ -1,5 +1,5 @@
 /*
-  Model reverse engineered from the CarServ 
+  Model initially reverse engineered from the CarServ 
   sample application that appears in the book
   book Domain-Driven Design Using Naked Objects
   by Dan Haywood.
@@ -21,9 +21,19 @@ abstract class Person
     attribute lastName : String;
 end;
 
+enumeration Title
+    Mr, Mrs, Ms
+end;
+
 class AutoMechanic specializes Person
     access {System#user() is AutoMechanic};
+    
+    attribute status : WorkingStatus;
+    
+    derived attribute working : Boolean := { self.status == WorkingStatus#Working };
+    
     private attribute services : Service[*];
+
     (* Services currently in progress by this worker. *)
     derived attribute currentServices : Service[*] := { 
         Service#byStatus(self.services, Service::Status#InProgress)
@@ -32,79 +42,183 @@ class AutoMechanic specializes Person
     derived attribute upcomingServices : Service[*] := { 
         Service#byStatus(self.services, Service::Status#Booked)
     };
+    
+    derived attribute workInProgress : Boolean := { not self.currentServices.isEmpty() };
+
+    derived attribute workScheduled : Boolean := { not self.upcomingServices.isEmpty() };
+
+    (* Unassigns any work scheduled. Does not affect work in progress. *)
+    operation unassign();
+    precondition NoWorkScheduled { self.workScheduled }
+    begin
+        self.doUnassign();
+    end;
+    
+    private operation doUnassign();
+    begin
+        self.upcomingServices.forEach((s : Service) {
+        	unlink TechnicianWorksOnService(services := s, technician := self);
+        });
+    end;
+    
+    (* Puts employee into vacation. Unassigns any work scheduled. *)
+    operation beginVacation();
+    precondition NoWorkInProgress { not self.workInProgress }
+    begin
+    end;
+    
+    (* Brings the employee back from vacation. Employee can be assigned work again. *)
+    operation endVacation();
+    
+    operation retire();
+    precondition NoWorkInProgress { not self.workInProgress }
+    begin
+    end;
+    
+    statemachine WorkingStatus
+        initial state Working
+            transition on call(beginVacation) to Vacation;
+            transition on call(retire) to Retired;
+        end;
+        state Vacation
+            entry { self.doUnassign() };
+            transition on call(endVacation) to Working;        
+        end;
+        state Retired
+            entry { self.doUnassign() };
+        end;
+    end;
+    
 end;
 
 class Customer specializes Person
     access{(System#user() == self) or (System#user()is AutoMechanic)};
-    attribute title : Title[0, 1];
-    attribute cars : Car[0, *];
-    attribute since : Date := {Date#today()};
     
-    readonly attribute notes : Memo[0, 1];
-    derived attribute valuableCustomer : Boolean := {self.cars.size() >= 2};
-    derived attribute ownsACar : Boolean := {not self.cars.isEmpty()};
-    operation addNotes(notes : Memo);
-        precondition MustOwnACar{self.ownsACar}
-    begin
-        self.notes := notes;
-    end;
-    operation clearNotes();
-        precondition MustOwnACar{self.notes != null}
-    begin
-        self.notes := null;
-    end;
+    attribute cars : Car[0, *];
+    
+    attribute title : Title;
+    
+    derived attribute pendingServices : Service[*] := {
+        (self.cars.reduce((c : Car, soFar : Service[*]) : Service[*] {
+            return c.pendingServices.union(soFar)	
+        }, Service[]) as Service)
+    };
+    
+    derived attribute completedServices : Service[*] := {
+        (self.cars.reduce((c : Car, soFar : Service[*]) : Service[*] {
+            return c.completedServices.union(soFar)	
+        }, Service[]) as Service)
+    };
+
+    
+    (* A valuable customer is a customer that has two or more cars with us *)
+    derived attribute vip : Boolean := {self.cars.size() >= 2};
+    
     static operation findByName(firstName : String[0, 1], lastName : String[0, 1]) : Customer[*];
-        precondition(firstName, lastName){not((firstName == null) and (lastName == null))}
+        precondition OneMustBeProvided (firstName, lastName){not((firstName == null) and (lastName == null))}
     begin
         return Customer extent.select((c : Customer) : Boolean {
             return(c.firstName = firstName) or (c.lastName = lastName);
         });
     end;
-    static operation valuableCustomers() : Customer[*];
+    
+    static operation vipCustomers() : Customer[*];
     begin
         return Customer extent.select((c : Customer) : Boolean {
-            return c.valuableCustomer;
+            return c.vip;
         });
     end;
 end;
 
-enumeration Gender
-    Male, 
-    Female
-end;
-
-class Title
-    attribute name : String;
-    attribute gender : Gender[0, 1];
-end;
-
-association
+association TechnicianWorksOnService
     role Service.technician;
     role AutoMechanic.services;    
 end;
 
+
+class Car
+    access{(System#user() == self.owner) or (System#user()is AutoMechanic)};
+    
+    attribute registrationNumber : String;
+    
+    private readonly attribute services : Service[*];
+    
+    attribute \model : Model;
+    
+    attribute owner : Customer;
+    
+    derived attribute modelName : String := {self.\model.makeAndModel()};
+    
+    derived attribute pending : Integer := {self.pendingServices.size()};
+    
+    derived attribute pendingServices : Service[*] := {self.services.select((s : Service) : Boolean {
+        return s.pending;
+    })};
+    
+    derived attribute completedServices : Service[*] := {self.services.select((s : Service) : Boolean {
+        return not s.pending;
+    })};
+    
+    operation registrationAndModel() : String;
+    begin
+        return self.\model.makeAndModel() + " " + self.registrationNumber;
+    end;
+    
+    static operation findByRegistrationNumber(regNumber : String) : Car[0, 1];
+    begin
+        return Car extent.\any((c : Car) : Boolean {
+            return regNumber = c.registrationNumber;
+        });
+    end;
+    
+    (* Book a service on this car. *)
+    operation bookService(description : Memo, estimateInDays : Integer);
+    begin
+        Service#newService(self, description, estimateInDays);
+    end;
+    
+    static operation findByOwner(owner : Customer) : Car[*];
+    begin
+        return owner.cars;
+    end;
+end;
+
+
 class Service
     access{(System#user() == self.car.owner) or (System#user()is AutoMechanic)};
+    
     attribute description : Memo;
+    
     attribute car : Car;
-    readonly private attribute pending : Boolean := true;
+    
     readonly attribute bookedOn : Date := {Date#today()};
+    
     attribute estimatedReady : Date := {Date#today().transpose(1)}
-        invariant DeliveryDateMustBeAfterBookDate{
+        invariant DeliveryDateMustBeAfterBookDate {
             ((self.estimatedReady == null) or (self.bookedOn == null)) or (self.estimatedDays >= 0)
         };
+    
+    derived attribute pending : Boolean := { (self.status == Status#Booked) or (self.status == Status#InProgress) };
+    
     attribute technician : AutoMechanic[0, 1];
+    
     attribute status : Status;
+    
     derived attribute estimatedDays : Integer := {
         self.bookedOn.differenceInDays(self.estimatedReady)
     };
+    
+    derived attribute assigned : Boolean := { not (self.technician == null) };
+    
     static operation byStatus(services : Service[*], toMatch : Status) : Service[*];
     begin 
-        return services.select((service : Service) : Boolean { return service.status == toMatch });
+        return services.select((service : Service) : Boolean {
+        	return service.status == toMatch 
+        });
     end;
 
     static operation newService(carToService : Car, description : Memo, estimate : Integer) : Service;
-        precondition(estimate) {estimate > 0}
+        precondition EstimateMustBePositive (estimate) {estimate > 0}
     begin
         var s : Service;
         s := new Service;
@@ -113,62 +227,53 @@ class Service
         s.car := carToService;
         return s;
     end;
+    
     (* Cancels a service. No record is kept of cancelled services. *)
     operation cancel();
     begin
         destroy self;
     end;
+    
     (* Starts the service. It can no longer be canceled. *)
     operation start();
+    precondition { self.assigned }
     begin
     end;
+    
     (* Completes the service. *)
     operation complete();
     begin
-        self.pending := false;
     end;
+    
+    (* Assigns a service that is available to a technician. *)
+    operation assignTo(technician : AutoMechanic);
+    precondition MustBePending { self.pending }
+    precondition MustNotBeAssigned { !self.assigned }
+    precondition TechnicianMustBeWorking  (technician) { technician.working }
+    begin
+        self.technician := technician;
+    end;
+    
+    (* Assigns a service to a different technician other than the one currently assigned. *)
+    operation transfer(mechanic : AutoMechanic);
+    precondition MustBePending { self.pending }
+    precondition MustBeAssigned { self.assigned }
+    precondition AlreadyAssigned (mechanic) { not (self.technician == mechanic) }
+    precondition TechnicianMustBeWorking (mechanic) { mechanic.working }
+    begin
+        self.technician := mechanic;
+    end;
+    
     statemachine Status 
         initial state Booked
             transition on call(cancel) to Cancelled;
             transition on call(start) to InProgress;
         end;
-        state InProgress 
+        state InProgress
             transition on call(complete) to Completed;
         end;
         terminate state Completed end;
         terminate state Cancelled end;
-    end;
-end;
-
-class Car
-    access{(System#user() == self.owner) or (System#user()is AutoMechanic)};
-    attribute registrationNumber : String;
-    readonly attribute services : Service[*];
-    attribute \model : Model;
-    attribute owner : Customer;
-    derived attribute modelName : String := {self.\model.makeAndModel()};
-    derived attribute pending : Integer := {self.pendingServices.size()};
-    derived attribute pendingServices : Service[*] := {self.services.select((s : Service) : Boolean {
-        return s.pending;
-    })};
-    operation registrationAndModel() : String;
-    begin
-        return self.\model.makeAndModel() + " " + self.registrationNumber;
-    end;
-    static operation findByRegistrationNumber(regNumber : String) : Car[0, 1];
-    begin
-        return Car extent.\any((c : Car) : Boolean {
-            return regNumber = c.registrationNumber;
-        });
-    end;
-    (* Book a service on this car. *)
-    operation bookService(description : Memo, estimateInDays : Integer);
-    begin
-        Service#newService(self, description, estimateInDays);
-    end;
-    static operation findByOwner(owner : Customer) : Car[*];
-    begin
-        return owner.cars;
     end;
 end;
 

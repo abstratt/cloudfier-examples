@@ -8,12 +8,6 @@
 */
 {
     "carserv": {
-        "Title": [
-            { "name": "Mr.", "gender": "Male" },
-            { "name": "Mrs.", "gender": "Female" },
-            { "name": "Ms.", "gender": "Female" }     ,                   
-            { "name": "Miss", "gender": "Female" }
-        ],
         "Make": [
             { "name": "Ford" },
             { "name": "Toyota" },
@@ -34,29 +28,28 @@
         ],
         "Customer": [
             {
-                "title": "Title@1", "lastName": "Frederikson", "firstName": "Boris", 
-                "since": "2005/04/23"
+                "title": "Mr", "lastName": "Frederikson", "firstName": "Boris"
             },
             {
-                "title": "Title@1", "lastName": "Bloggs", "firstName": "Joe", "notes": "One of our best customers!"
+                "title": "Mr", "lastName": "Bloggs", "firstName": "Joe"
             },            
             {
-                "title": "Title@2", "lastName": "Bloggs", "firstName": "Mary"
+                "title": "Mrs", "lastName": "Bloggs", "firstName": "Mary"
             },                        
             { 
                 "firstName": 'Sarah', 
                 "lastName": 'Connor', 
-                "title": "Title@2"
+                "title": "Ms"
             },
             { 
                 "firstName": 'John', 
                 "lastName": 'Connor', 
-                "title": "Title@1"
+                "title": "Mr"
             },
             { 
                 "firstName": 'Zelda', 
                 "lastName": 'Scott', 
-                "title": "Title@3"
+                "title": "Mrs"
             }                        
         ],
         "Car": [
