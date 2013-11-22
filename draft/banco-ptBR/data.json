@@ -1,0 +1,22 @@
+{
+  "banco" : {
+    "Cliente" : [ {
+      "nome" : "Maria dos Santos"
+    }, {
+      "nome" : "Joao da Silva"
+    } ],
+    "Conta" : [ {
+      "numero" : 7,
+      "saldo" : 92.0,
+      "correntista" : "Cliente@2"
+    }, {
+      "numero" : 11,
+      "saldo" : 0.0,
+      "correntista" : "Cliente@2"
+    }, {
+      "numero" : 15,
+      "saldo" : 0.0,
+      "correntista" : "Cliente@1"
+    } ]
+  }
+}

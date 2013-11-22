@@ -1,0 +1,86 @@
+package banco;
+
+class Conta
+    derived id attribute numero : Integer;
+    readonly attribute saldo : Double := 0.0;
+    
+    attribute estado : Status;
+    
+    operation depositar(valor : Double);
+    precondition { self.estado == Status#Aberta }
+    begin
+        self.saldo := self.saldo + valor;
+    end;
+    
+    operation sacar(valor : Double);
+    precondition { self.estado == Status#Aberta }
+    begin
+        self.saldo := self.saldo - valor;
+    end;
+    
+    operation confirmar();
+    
+    operation fechar();
+    
+    statemachine Status
+        initial state Pendente
+            transition on call(confirmar) to Aberta;
+        end;
+        state Aberta
+            transition on call(fechar) to Fechada;
+        end;
+        terminate state Fechada
+        end;
+    end;
+end;
+
+class Cliente
+    attribute nome : String;
+end;
+
+aggregation ContaCorrentista
+    navigable role correntista : Cliente;
+    navigable role contas : Conta[*];
+end;
+
+end.
+
+
+
+
+/*
+class Conta
+    readonly attribute saldo : Double := 0.0;
+    
+    attribute estado : Status;
+    
+    operation depositar(valor : Double);
+    precondition { self.estado == Status#Aberta }
+    begin
+        self.saldo := self.saldo + valor;
+    end;
+    
+    operation sacar(valor : Double);
+    precondition { self.estado == Status#Aberta }
+    begin
+        self.saldo := self.saldo - valor;
+    end;
+    
+    operation confirmar();
+    
+    operation fechar();
+    
+    statemachine Status
+        initial state Pendente
+            transition on call(confirmar) to Aberta;
+        end;
+        state Aberta
+            transition on call(fechar) to Fechada;
+        end;
+        terminate state Fechada
+        end;
+    end;
+end;
+
+
+*/
