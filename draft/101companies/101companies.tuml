@@ -1,39 +1,56 @@
 package _101companies;
 
-
 class Department
+
     attribute name : String;
+
     attribute subdepts : Department[*];
-    composition employees : Employee[0,*];
-    reference manager : Employee[0,1];
+
+    composition employees : Employee[0, *];
+
+    reference manager : Employee[0, 1];
+
     invariant { self.employees.includes(self.manager) };
 end;
 
 class Employee
+
     attribute name : String;
-    attribute address : String;    
-    attribute salary : Double;    
+
+    attribute address : String;
+
+    attribute salary : Double;
 end;
 
-composition 
+composition
+
     role Department.employees;
+
     role dept : Department;
+
 end;
 
-composition 
+composition
+
     role Company.depts;
+
     role company : Company;
+
 end;
 
-composition 
+composition
+
     role Department.subdepts;
-    role superdept : Department[0,1];
+
+    role superdept : Department[0, 1];
+
 end;
 
-class Company 
+class Company
+
     attribute name : String;
+
     composition depts : Department[*];
 end;
-
 
 end.

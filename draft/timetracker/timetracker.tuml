@@ -3,10 +3,13 @@ package timetracker;
 import invoicer;
 
 class Client
+
     attribute name : String;
+
     attribute tasks : Task[*];
+
     attribute invoices : Invoice[*];
-    
+
     operation startInvoice();
     begin
         var newInvoice : Invoice;
@@ -16,53 +19,64 @@ class Client
 end;
 
 class Task
+
     attribute description : String;
+
     attribute reported : Work[*];
+
     attribute client : Client;
-    derived attribute unitsWorked : Integer := {self.countUnitsWorked()};
+
+    derived attribute unitsWorked : Integer := { self.countUnitsWorked() };
+
     private operation countUnitsWorked() : Integer;
     begin
         return (self.reported.reduce((w : Work, count : Integer) : Integer {
-            return count + w.units
+            count + w.units
         }, 0) as Integer);
     end;
 end;
 
 class Invoice
+
     derived id attribute number : String;
+
     attribute client : Client;
+
     attribute issueDate : Date := { Date#today() };
+
     attribute reported : Work[*];
-    derived attribute open : Boolean := { self.status == Status#Preparation };
+
+    derived attribute open : Boolean := {
+        self.status == Status#Preparation
+    };
+
     attribute status : Status;
-    
+
     required port invoicer : Invoicer;
-    
+
     derived attribute totalUnits : Integer := {
-    	(self.reported.reduce((w : Work, sum : Integer) : Integer {
-    		return w.units + sum 
+        (self.reported.reduce((w : Work, sum : Integer) : Integer {
+            w.units + sum
         }, 0) as Integer)
-	};
-    
+    };
+
     operation issue()
-    (* Cannot issue an invoice that has no work reported. *)
-    precondition { not self.reported.isEmpty() };
+        (* Cannot issue an invoice that has no work reported. *)
+        precondition { not self.reported.isEmpty() };
     begin
         self.issueDate := Date#today();
     end;
-    
+
     private operation sendInvoice();
     begin
-        send InvoiceIssued() to self.invoicer;
+        send InvoiceIssued()to self.invoicer;
     end;
-    
+
     statemachine Status
         initial state Preparation
-            transition on call(issue) to Invoiced;        
+            transition on call(issue) to Invoiced;
         end;
-        state Invoiced
-            entry { self.sendInvoice() };
-        end;
+        state Invoiced end;
     end;
 end;
 
@@ -82,19 +96,25 @@ association ClientInvoice
 end;
 
 class Work
+
     attribute units : Integer
         (* Work must describe a positive number of units. *)
-        invariant {self.units > 0};
+        invariant { self.units > 0 };
+
     attribute task : Task;
+
     (* Work can be only invoiced once. Cannot be set directly but via #submit *)
     readonly attribute invoice : Invoice[0, 1];
-    derived attribute invoiced : Boolean := { not(self.invoice == null) };
-    
+
+    derived attribute invoiced : Boolean := {
+        not(self.invoice == null)
+    };
+
     (* Submits this work to a chosen invoice for the client. *)
     operation submit(invoice : Invoice)
-    precondition { not self.invoiced }
-    precondition (invoice) { invoice.client == self.task.client }
-    precondition (invoice) { invoice.open };
+        precondition { not self.invoiced }
+        precondition (invoice) { invoice.client == self.task.client }
+        precondition (invoice) { invoice.open };
     begin
         self.invoice := invoice;
     end;

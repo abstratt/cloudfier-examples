@@ -2,35 +2,44 @@ package social;
 
 [kirra::User]
 class User
+
     attribute name : String;
-/*
+
+    /*
     private attribute initiated : Relationship[*];
     private attribute accepted : Relationship[*];
     private attribute invitationsSent : Invitation[*];
     private attribute invitationsReceived : Invitation[*];
     derived attribute relationships : Relationship[*] := { self.initiated.union(self.accepted) };
-*/    
+*/
     operation invite();
     begin
         link Invitation(inviter := (System#user() as User), invitee := self);
     end;
+
     operation accept();
     begin
         unlink Invitation(inviter := (System#user() as User), invitee := self);
         link Connection(initiator := self, acceptor := (System#user() as User));
-    end;    
-    derived attribute invitations : User[*] := { self<-Invitation->inviter };
-    derived attribute connections : User[*] := { self<-Connection->initiator.union(self<-Connection->acceptor) };    
+    end;
+
+    derived attribute invitations : User[*] := {
+        self<-Invitation->inviter
+    };
+
+    derived attribute connections : User[*] := {
+        self<-Connection->initiator.union(self<-Connection->acceptor)
+    };
 end;
 
 association Invitation
-    navigable role inviter : User[*];    
-    navigable role invitee : User[*];    
+    navigable role inviter : User[*];
+    navigable role invitee : User[*];
 end;
 
 association Connection
-    navigable role initiator : User[*];    
-    navigable role acceptor : User[*];    
+    navigable role initiator : User[*];
+    navigable role acceptor : User[*];
 end;
 
 /*

@@ -2,50 +2,83 @@
 package daytrader;
 
 class Account
+
     attribute openBalance : Double;
+
     attribute balance : Double;
+
     attribute orders : Order[*];
+
     attribute holdings : Holding[*];
 end;
 
 class Holding
+
     attribute quantity : Double;
+
     attribute purchasePrice : Double;
+
     attribute purchaseDate : Date;
+
     attribute quote : Quote;
+
     attribute account : Account;
+
     attribute order : Order;
 end;
 
 association
+
     role Account.holdings;
+
     role Holding.account;
+
 end;
 
 association
+
     role Account.holdings;
+
     role Holding.account;
+
 end;
 
 association
+
     role Order.holding;
+
     role Holding.order;
+
 end;
 
 class Order
+
     attribute orderType : OrderType;
+
     attribute openDate : Date;
+
     attribute completionDate : Date;
+
     attribute price : Double;
+
     attribute orderFee : Double;
+
     attribute quantity : Double;
+
     attribute holding : Holding;
-    statemachine Status 
-        initial state Open;
-        state Processing;
-        terminate state Completed;
-        terminate state Closed;
-        terminate state Cancelled;
+
+    statemachine Status
+
+        initial state Open end;
+
+        state Processing end;
+
+        terminate state Completed end;
+
+        terminate state Closed end;
+
+        terminate state Cancelled end;
+
     end;
 end;
 
@@ -55,14 +88,22 @@ enumeration OrderType
 end;
 
 class Quote
-	attribute symbol : String;
-	attribute companyName: String;
-	attribute volume : Double;
-	attribute price : Double;
-	attribute open : Double;
-	attribute high : Double;
-	attribute low : Double;
-	attribute change : Double;
+
+    attribute symbol : String;
+
+    attribute companyName : String;
+
+    attribute volume : Double;
+
+    attribute price : Double;
+
+    attribute open : Double;
+
+    attribute high : Double;
+
+    attribute low : Double;
+
+    attribute change : Double;
 end;
 
 end.
