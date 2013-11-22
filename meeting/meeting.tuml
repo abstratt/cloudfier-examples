@@ -1,51 +1,58 @@
 package meeting;
 
 class Meeting
-    invariant Organizer_must_be_participant { self.isParticipating(self.organizer) };
+
+
+    invariant Organizer_must_be_participant {
+        self.isParticipating(self.organizer)
+    };
 
     attribute title : String;
+
     attribute description : Memo;
+
     attribute date : Date;
+
     reference organizer : User;
+
     readonly attribute participants : User[*];
 
     private operation isParticipating(candidate : User) : Boolean;
-    begin 
+    begin
         return self.participants.includes(candidate);
     end;
-    
-    private operation isOrganizing(candidate : User) : Boolean; 
+
+    private operation isOrganizing(candidate : User) : Boolean;
     begin
         return self.organizer == candidate;
     end;
 
     (* Makes the current user leave this meeting. Note that organizers cannot leave a meeting. *)
-    operation leave();
-    precondition { self.isParticipating(User#current) }
+    operation leave()
+        precondition { self.isParticipating(User#current) };
     begin
         unlink Participation(participants := User#current, meetings := self);
     end;
-    
+
     (* Makes the current user join this meeting. *)
-    operation join();
-    precondition { not self.isParticipating(User#current) }
+    operation join()
+        precondition { not self.isParticipating(User#current) };
     begin
         link Participation(participants := User#current, meetings := self);
     end;
-    
+
     (* Adds a selected participant to this meeting. *)
     operation addParticipant(newParticipant : User);
     begin
         link Participation(participants := newParticipant, meetings := self);
     end;
-    
+
     (* Starts a meeting having the current user as organizer. *)
-    static operation startMeeting(title : String, description : Memo, date : Date);
-    precondition { not (User#current == null) }
+    static operation startMeeting(title : String, description : Memo, date : Date)
+        precondition { not(User#current == null) };
     begin
         User#current.startMeetingOnBehalf(title, description, date);
     end;
-    
 end;
 
 association Participation
@@ -54,17 +61,26 @@ association Participation
 end;
 
 class Presentation
-    invariant Author_does_not_participate_in_meeting { self.meeting.isParticipating(self.author) };
+
+
+    invariant Author_does_not_participate_in_meeting {
+        self.meeting.isParticipating(self.author)
+    };
+
     attribute title : String;
+
     attribute author : User;
+
     attribute meeting : Meeting;
 end;
 
 [kirra::User]
 class User
+
     attribute name : String;
+
     id attribute email : String;
-    
+
     (* Creates a meeting organized by this participant. *)
     operation startMeetingOnBehalf(title : String, description : Memo, date : Date);
     begin
@@ -76,9 +92,8 @@ class User
         newMeeting.organizer := self;
         newMeeting.addParticipant(newMeeting.organizer);
     end;
-    
-    private static derived attribute current : User := { (System#user() as User) };
 
+    private static derived attribute current : User := { (System#user() as User) };
 end;
 
 end.

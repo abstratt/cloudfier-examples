@@ -1,22 +1,69 @@
 {
-    "expenses": {
-        "Category": [
-            { "name": "Meal"},
-            { "name": "Airfare"},
-            { "name": "Lodging"},            
-            { "name": "Transportation"}            
-        ],
-        "Employee": [
-            { "name": "John Ford"},
-            { "name": "Camille Jouel"},
-            { "name": "Peter Jones"}
-        ],
-        "Expense": [
-            { "employee": "Employee@1", "status": "Draft", "category": "Category@2", "date": "2012/09/13", "description": "YVR/LAX", "amount": 190.50},
-            { "employee": "Employee@1", "status": "Approved", "category": "Category@3", "date": "2012/09/13", "description": "Hilton LA downtown", "amount": 304.50},            
-            { "employee": "Employee@3", "status": "Approved", "category": "Category@4", "date": "2012/07/13", "description": "Cab airport->downtown", "amount": 40.50},                        
-            { "employee": "Employee@1", "status": "Rejected", "category": "Category@1", "date": "2012/09/13", "description": "Lunch at subway", "amount": 20.50},                                    
-            { "employee": "Employee@2", "status": "Submitted", "category": "Category@1", "date": "2012/09/14", "description": "Lunch in LA", "amount": 35.75}
-        ]
-    }
+  "expenses" : {
+    "Category" : [ {
+      "name" : "Airfare"
+    }, {
+      "name" : "Meal"
+    }, {
+      "name" : "Transportation"
+    }, {
+      "name" : "Lodging"
+    } ],
+    "Employee" : [ {
+      "name" : "Camille Jouel",
+      "username" : null
+    }, {
+      "name" : "John Ford",
+      "username" : null
+    }, {
+      "name" : "Peter Jones",
+      "username" : null
+    } ],
+    "Expense" : [ {
+      "description" : "Hilton LA downtown",
+      "status" : "Approved",
+      "amount" : 304.5,
+      "date" : "2012/09/13",
+      "rejectionReason" : null,
+      "expenseId" : 20,
+      "category" : "Category@4",
+      "employee" : "Employee@2"
+    }, {
+      "description" : "Cab airport->downtown",
+      "status" : "Approved",
+      "amount" : 40.5,
+      "date" : "2012/07/13",
+      "rejectionReason" : null,
+      "expenseId" : 23,
+      "category" : "Category@3",
+      "employee" : "Employee@3"
+    }, {
+      "description" : "Lunch in LA",
+      "status" : "Submitted",
+      "amount" : 35.75,
+      "date" : "2012/09/14",
+      "rejectionReason" : null,
+      "expenseId" : 29,
+      "category" : "Category@2",
+      "employee" : "Employee@1"
+    }, {
+      "description" : "Lunch at subway",
+      "status" : "Rejected",
+      "amount" : 20.5,
+      "date" : "2012/09/13",
+      "rejectionReason" : null,
+      "expenseId" : 26,
+      "category" : "Category@2",
+      "employee" : "Employee@2"
+    }, {
+      "description" : "YVR/LAX",
+      "status" : "Draft",
+      "amount" : 190.5,
+      "date" : "2012/09/13",
+      "rejectionReason" : null,
+      "expenseId" : 17,
+      "category" : "Category@1",
+      "employee" : "Employee@2"
+    } ]
+  }
 }

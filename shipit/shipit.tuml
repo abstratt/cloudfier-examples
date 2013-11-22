@@ -7,77 +7,112 @@ package shipit;
 
 [kirra::User]
 class User
+
     id attribute username : String;
+
     id attribute fullName : String;
+
     attribute email : String;
+
     attribute kind : UserKind;
+
     private derived static attribute current : User := { (System#user() as User) };
-    private derived attribute committer : Boolean := { self.kind = UserKind#Committer };
+
+    private derived attribute committer : Boolean := {
+        self.kind = UserKind#Committer
+    };
+
     private attribute issuesAssignedToUser : Issue[*];
-    readonly attribute issuesReportedByUser : Issue[*];    
-    derived attribute issuesCurrentlyInProgress : Issue[*] := { Issue#filterByStatus(self.issuesAssignedToUser, Issue::Status#InProgress) };
-    derived attribute issuesCurrentlyAssigned : Issue[*] := { Issue#filterByStatus(self.issuesAssignedToUser, Issue::Status#Assigned) };    
-    private derived static attribute provisioned : Boolean := {!(System#user() == null)};        
+
+    readonly attribute issuesReportedByUser : Issue[*];
+
+    derived attribute issuesCurrentlyInProgress : Issue[*] := {
+        Issue#filterByStatus(self.issuesAssignedToUser, Issue::Status#InProgress)
+    };
+
+    derived attribute issuesCurrentlyAssigned : Issue[*] := {
+        Issue#filterByStatus(self.issuesAssignedToUser, Issue::Status#Assigned)
+    };
+
+    private derived static attribute provisioned : Boolean := {
+        !(System#user() == null)
+    };
 end;
 
-enumeration UserKind 
-    Reporter, Committer
+enumeration UserKind
+    Reporter, 
+    Committer
 end;
 
 enumeration Severity
     Minor, 
     Normal, 
     Major, 
-    Blocker,
+    Blocker, 
     Enhancement
 end;
 
 interface UserNotifier
+
     reception notify(notification : UserNotification);
 end;
 
 abstract signal UserNotification
+
     attribute issueKey : String;
+
     attribute userEmail : String;
 end;
 
 signal IssueReported specializes UserNotification
+
     attribute summary : String;
-    attribute description : Memo;    
+
+    attribute description : Memo;
 end;
 
 signal IssueResolved specializes UserNotification
+
     attribute resolution : Resolution;
 end;
 
 signal CommentAdded specializes UserNotification
+
     attribute comment : Memo;
+
     attribute author : String;
 end;
 
 enumeration Resolution
     Fixed, 
     WorksForMe, 
-    WontFix 
+    WontFix
 end;
 
 class Comment
+
     readonly attribute commented : Memo;
+
     readonly reference user : User;
+
     readonly attribute \on : Date;
-    readonly attribute inReplyTo : Comment[0,1];
+
+    readonly attribute inReplyTo : Comment[0, 1];
+
     readonly attribute issue : Issue;
-    operation reply(text: Memo);
+
+    operation reply(text : Memo);
     begin
         self.issue.addComment(text, self);
     end;
 end;
 
 class Label
+
     id attribute name : String;
 end;
 
-association IssueLabels 
+association IssueLabels
     role Issue.labels;
     role labeled : Issue[*];
 end;
@@ -85,20 +120,22 @@ end;
 association AssignedIssue
     role Issue.assignee;
     role User.issuesAssignedToUser;
-end;    
+end;
 
 association ReportedIssue
     role Issue.reporter;
     role User.issuesReportedByUser;
-end;    
+end;
 
 association WatchedIssues
-    role Issue.watchers; 
+    role Issue.watchers;
     navigable role issuesWatched : Issue[*];
 end;
 
 class Project
+
     id attribute description : String;
+
     id attribute token : String;
 end;
 
@@ -113,50 +150,64 @@ association VotedIssues
 end;
 
 class Issue
+
     attribute summary : String;
 
-    private derived id attribute issueId : Integer;    
-    derived attribute issueKey : String := { self.project.token + "-" + self.issueId };
-    
+    private derived id attribute issueId : Integer;
+
+    derived attribute issueKey : String := {
+        self.project.token + "-" + self.issueId
+    };
+
     attribute labels : Label[*];
-    
+
     attribute project : Project;
 
-    port userNotifier : UserNotifier;   
-    
+    port userNotifier : UserNotifier;
+
     readonly attribute reportedOn : Date := { Date#today() };
+
     readonly attribute reporter : User;
-    readonly attribute assignee : User[0,1];
+
+    readonly attribute assignee : User[0, 1];
+
     attribute severity : Severity;
+
     attribute status : Status;
-    
-    readonly attribute resolution : Resolution[0,1];
-    readonly attribute resolvedOn : Date[0,1];
+
+    readonly attribute resolution : Resolution[0, 1];
+
+    readonly attribute resolvedOn : Date[0, 1];
+
     readonly attribute comments : Comment[*];
-    
+
     attribute watchers : User[*];
-    
+
     derived attribute votes : Integer := { self<-VotedIssues->voters.size() };
-    
-    derived attribute commentCount : Integer := { self.comments.size() };    
-    derived attribute waitingFor : String := { 
+
+    derived attribute commentCount : Integer := { self.comments.size() };
+
+    derived attribute waitingFor : String := {
         "" + self.reportedOn.differenceInDays(self.referenceDate()) + " day(s)"
     };
-    
+
     private derived attribute mine : Boolean := { User#current == self.assignee };
+
     private derived attribute free : Boolean := { self.assignee == null };
+
     private operation referenceDate() : Date;
     begin
-        if (self.resolvedOn == null) then
+        if(self.resolvedOn == null)then
             return Date#today()
         else
             return self.resolvedOn;
     end;
+
     attribute description : Memo;
-    
+
     (* Report a new issue. *)
-    static operation reportIssue(project : Project, summary : String, description : Memo, severity : Severity := Normal);
-    precondition Must_be_logged_in { User#provisioned }
+    static operation reportIssue(project : Project, summary : String, description : Memo, severity : Severity := Normal)
+        precondition Must_be_logged_in { User#provisioned };
     begin
         var newIssue : Issue;
         newIssue := new Issue;
@@ -165,75 +216,70 @@ class Issue
         newIssue.severity := severity;
         newIssue.reporter := User#current;
         newIssue.project := project;
-        send IssueReported(
-            issueKey := newIssue.issueKey, 
-            summary := summary, 
-            description := description, 
-            userEmail := newIssue.reporter.email) to newIssue.userNotifier;
+        send IssueReported(issueKey := newIssue.issueKey, summary := summary, description := description, userEmail := newIssue.reporter.email)to newIssue.userNotifier;
     end;
-    
+
     static operation bySeverity(toMatch : Severity) : Issue[*];
     begin
-        return Issue extent.select((i : Issue) : Boolean { return i.severity == toMatch });
+        return Issue extent.select((i : Issue) : Boolean{ i.severity == toMatch });
     end;
 
-    private static operation filterByStatus(issues : Issue[*], toMatch : Status) : Issue[*];    
+    private static operation filterByStatus(issues : Issue[*], toMatch : Status) : Issue[*];
     begin
-	    return issues.select((issue : Issue) : Boolean { return issue.status == toMatch });
+        return issues.select((issue : Issue) : Boolean{ issue.status == toMatch });
     end;
 
-    static operation byStatus(toMatch : Status) : Issue[*];    
+    static operation byStatus(toMatch : Status) : Issue[*];
     begin
-	    return Issue#filterByStatus(Issue extent, toMatch);
+        return Issue#filterByStatus(Issue extent, toMatch);
     end;
 
-    
-    (* Release the issue so another committer can work on it. *)        
-    operation release();
-    precondition { self.mine }    
+    (* Release the issue so another committer can work on it. *)
+    operation release()
+        precondition { self.mine };
     begin
         self.assignee := null;
     end;
 
-    (* Assign an issue to a user. *)    
-    operation assign(newAssignee : User);
-    precondition { self.mine or self.free }    
+    (* Assign an issue to a user. *)
+    operation assign(newAssignee : User)
+        precondition { self.mine or self.free };
     begin
         self.assignee := newAssignee;
     end;
-    
-    (* Suspend work on this issue. *)
-    operation suspend();
-    precondition { self.mine }        
-    
-    (* Start/resume work on this issue. *)
-    operation start();
-    precondition { self.mine }        
 
-    (* Resolve the issue. *)        
-    operation resolve(resolution : Resolution := Fixed);
-    precondition { self.mine or self.free }
+    (* Suspend work on this issue. *)
+    operation suspend()
+        precondition { self.mine };
+
+    (* Start/resume work on this issue. *)
+    operation start()
+        precondition { self.mine };
+
+    (* Resolve the issue. *)
+    operation resolve(resolution : Resolution := Fixed)
+        precondition { self.mine or self.free };
     begin
         self.resolvedOn := Date#today();
         self.resolution := resolution;
     end;
 
-    (* Reopen the issue. *)    
+    (* Reopen the issue. *)
     operation reopen(reason : Memo);
     begin
         self.resolvedOn := null;
-        self.resolution := null;        
-        if (reason != "") then
-            self.comment(reason);        
+        self.resolution := null;
+        if(reason != "")then
+            self.comment(reason)
+        ;
     end;
-    
+
     (* Add a comment to the issue *)
     operation comment(text : Memo);
     begin
         self.addComment(text, null);
-        
     end;
-    
+
     private operation addComment(text : Memo, inReplyTo : Comment);
     begin
         var comment : Comment;
@@ -243,83 +289,71 @@ class Issue
         comment.commented := text;
         comment.inReplyTo := inReplyTo;
         link IssueComments(issue := self, comments := comment);
-        send CommentAdded(issueKey := self.issueKey, author := comment.user.email, userEmail := self.reporter.email, comment := text) to self.userNotifier;
+        send CommentAdded(issueKey := self.issueKey, author := comment.user.email, userEmail := self.reporter.email, comment := text)to self.userNotifier;
     end;
-    
+
     operation addWatcher(userToAdd : User);
     begin
-        link WatchedIssues (issuesWatched := self, watchers := userToAdd);
+        link WatchedIssues(issuesWatched := self, watchers := userToAdd);
     end;
-    
-    operation vote();
-    precondition { not (User#current == null) }    
-    precondition { !self.mine }
-    precondition { !self<-VotedIssues->voters.includes(User#current) }  
+
+    operation vote()
+        precondition { not(User#current == null) }
+        precondition { !self.mine }
+        precondition { !self<-VotedIssues->voters.includes(User#current) };
     begin
-        link VotedIssues (voted := self, voters := User#current);
+        link VotedIssues(voted := self, voters := User#current);
     end;
-    
-    operation withdrawVote();
-    precondition { not (User#current == null) }        
-    precondition { self<-VotedIssues->voters.includes(User#current) }    
+
+    operation withdrawVote()
+        precondition { not(User#current == null) }
+        precondition { self<-VotedIssues->voters.includes(User#current) };
     begin
-       unlink VotedIssues (voted := self, voters := User#current);
-    end;    
-    
-    
+        unlink VotedIssues(voted := self, voters := User#current);
+    end;
+
     (* Take over an issue currently available. *)
-    operation assignToMe();
-    precondition { User#current.committer }
-    precondition { not self.mine }
+    operation assignToMe()
+        precondition { User#current.committer }
+        precondition { not self.mine };
     begin
         self.assignee := User#current;
     end;
 
-    (* Take over an issue currently assigned to another user (not in progress). *)    
-    operation steal();
-    precondition { User#current.committer }
-    precondition { not(self.mine) }
+    (* Take over an issue currently assigned to another user (not in progress). *)
+    operation steal()
+        precondition { User#current.committer }
+        precondition { not(self.mine) };
     begin
         self.assignee := User#current;
     end;
-    
+
     (* Close the issue marking it as verified. *)
     operation verify();
     begin
-    end; 
+    end;
 
-    statemachine Status 
+    statemachine Status
         initial state Open
             transition on call(resolve) to Resolved;
             transition on call(assignToMe) to Assigned;
             transition on call(assign) to Assigned;
         end;
-            
         state InProgress
             transition on call(suspend) to Assigned;
-        end;            
-            
+        end;
         state Assigned
-            transition on call(release) to Open; 
+            transition on call(release) to Open;
             transition on call(resolve) to Resolved;
             transition on call(steal) to Assigned;
             transition on call(start) to InProgress;
-        end;            
-            
-        state Resolved
-            entry { 
-                send IssueResolved(
-                    issueKey := self.issueKey, 
-                    userEmail := self.reporter.email, 
-                    resolution := self.resolution
-                ) to self.userNotifier; 
-            };
-            transition on call(verify) to Verified; 
         end;
-        
+        state Resolved
+            transition on call(verify) to Verified;
+        end;
         state Verified
             transition on call(reopen) to Open;
-        end;            
+        end;
     end;
 end;
 
@@ -327,6 +361,5 @@ composition IssueComments
     role Issue.comments;
     role Comment.issue;
 end;
-
 
 end.

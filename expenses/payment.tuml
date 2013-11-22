@@ -1,13 +1,18 @@
 package payment;
 
 signal ExpenseApproved
+
     attribute employeeName : String;
+
     attribute amount : Double;
+
     attribute description : String;
+
     attribute expenseId : Integer;
 end;
 
 interface ExpensePayer
+
     reception expenseApproved(approval : ExpenseApproved);
 end;
 

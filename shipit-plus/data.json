@@ -1,30 +1,61 @@
 {
   "shipit" : {
     "User" : [ {
-      "username" : "rperez",
-      "fullName" : "Ricardo Perez",
-      "email" : "rperez@cloudfier.com",
-      "kind" : "Committer"
-    }, {
       "username" : "ssimon",
       "fullName" : "Saulo Simon",
       "email" : "ssimon@cloudfier.com",
       "kind" : "Committer"
     }, {
-      "username" : "fsilveira",
-      "fullName" : "Felix Silveira",
-      "email" : "fsilveira@abstratt.com",
-      "kind" : "Reporter"
+      "username" : "rperez",
+      "fullName" : "Ricardo Perez",
+      "email" : "rperez@cloudfier.com",
+      "kind" : "Committer"
     }, {
       "username" : "gtorres",
       "fullName" : "Gina Torres",
       "email" : "gtorres@abstratt.com",
       "kind" : "Reporter"
     }, {
+      "username" : "fsilveira",
+      "fullName" : "Felix Silveira",
+      "email" : "fsilveira@abstratt.com",
+      "kind" : "Reporter"
+    }, {
       "username" : "rafael@abstratt.com",
       "fullName" : "AAA",
       "email" : "rafael@abstratt.com",
       "kind" : "Reporter"
+    } ],
+    "Comment" : [ {
+      "commented" : "We hear you but this is too vague for us to address, we need more specific enhancement requests.",
+      "on" : "2012/09/02",
+      "user" : "User@3",
+      "issue" : "Issue@2"
+    }, {
+      "commented" : "Good catch, we will fix that right away.",
+      "on" : "2012/08/27",
+      "user" : "User@5",
+      "issue" : "Issue@5"
+    }, {
+      "commented" : "Glad to hear that!",
+      "on" : "2012/09/01",
+      "user" : "User@2",
+      "issue" : "Issue@5"
+    } ],
+    "Label" : [ {
+      "name" : "ux"
+    }, {
+      "name" : "overbydeadbody"
+    }, {
+      "name" : "UX"
+    }, {
+      "name" : "aaa"
+    }, {
+      "name" : "patchornothing"
+    }, {
+      "name" : "performance"
+    }, {
+      "name" : "bountyavailable"
     } ],
     "Project" : [ {
       "description" : "Cloudfier issues",
@@ -33,58 +64,9 @@
       "description" : "TextUML Toolkit issues",
       "token" : "TK"
     } ],
-    "Label" : [ {
-      "name" : "bountyavailable"
-    }, {
-      "name" : "overbydeadbody"
-    }, {
-      "name" : "ux"
-    }, {
-      "name" : "aaa"
-    }, {
-      "name" : "UX"
-    }, {
-      "name" : "performance"
-    }, {
-      "name" : "patchornothing"
-    } ],
     "Issue" : [ {
-      "summary" : "Cannot launch two instances of the application",
-      "issueId" : 20,
-      "reportedOn" : "2012/08/20",
-      "severity" : "Major",
-      "status" : "InProgress",
-      "resolution" : null,
-      "resolvedOn" : null,
-      "description" : "Cannot launch two instances of the application at the same time.",
-      "project" : "Project@1",
-      "reporter" : "User@1",
-      "assignee" : "User@5"
-    }, {
-      "summary" : "more work on usabilty",
-      "issueId" : 23,
-      "reportedOn" : "2012/08/27",
-      "severity" : "Enhancement",
-      "status" : "Resolved",
-      "resolution" : "WontFix",
-      "resolvedOn" : "2012/08/28",
-      "description" : "The current generated UI is quite functional but it could improve on usability.",
-      "project" : "Project@1",
-      "reporter" : "User@2"
-    }, {
-      "summary" : "you have been taking too long to finish this",
-      "issueId" : 48,
-      "reportedOn" : "2013/06/23",
-      "severity" : "Normal",
-      "status" : "Open",
-      "resolution" : null,
-      "resolvedOn" : null,
-      "description" : "Finish it soon!!!!",
-      "project" : "Project@1",
-      "reporter" : "User@5"
-    }, {
       "summary" : "Why am I forced to assign values before linking a new object with another object?",
-      "issueId" : 26,
+      "issueId" : 40,
       "reportedOn" : "2012/12/27",
       "severity" : "Major",
       "status" : "Assigned",
@@ -92,11 +74,33 @@
       "resolvedOn" : null,
       "description" : "Why am I forced to assign values before linking a new object with another object? I get a 400 error if I link a new object before assigning values to all required properties. Linking at the end works though.",
       "project" : "Project@1",
-      "reporter" : "User@2",
-      "assignee" : "User@2"
+      "reporter" : "User@1",
+      "assignee" : "User@1"
+    }, {
+      "summary" : "more work on usabilty",
+      "issueId" : 34,
+      "reportedOn" : "2012/08/27",
+      "severity" : "Enhancement",
+      "status" : "Resolved",
+      "resolution" : "WontFix",
+      "resolvedOn" : "2012/08/28",
+      "description" : "The current generated UI is quite functional but it could improve on usability.",
+      "project" : "Project@1",
+      "reporter" : "User@1"
+    }, {
+      "summary" : "you have been taking too long to finish this",
+      "issueId" : 37,
+      "reportedOn" : "2013/06/23",
+      "severity" : "Normal",
+      "status" : "Resolved",
+      "resolution" : "Fixed",
+      "resolvedOn" : "2013/10/26",
+      "description" : "Finish it soon!!!!",
+      "project" : "Project@1",
+      "reporter" : "User@5"
     }, {
       "summary" : "When I have a collection of references, I want to associate/dissociate, not create/delete from the peer",
-      "issueId" : 17,
+      "issueId" : 43,
       "reportedOn" : "2013/01/05",
       "severity" : "Major",
       "status" : "InProgress",
@@ -104,24 +108,20 @@
       "resolvedOn" : null,
       "description" : "Imagine an issue and its labels. Or a person and its friends. I should be able to attach/detach labels to/from an issue or friends to/from a person but not create/delete them as they are meant to be shared, they are not child objects (creation could be allowed as a convenience, but it would mean no special relationship with the contextual peer).",
       "project" : "Project@1",
+      "reporter" : "User@1",
+      "assignee" : "User@1"
+    }, {
+      "summary" : "Cannot launch two instances of the application",
+      "issueId" : 31,
+      "reportedOn" : "2012/08/20",
+      "severity" : "Major",
+      "status" : "InProgress",
+      "resolution" : null,
+      "resolvedOn" : null,
+      "description" : "Cannot launch two instances of the application at the same time.",
+      "project" : "Project@1",
       "reporter" : "User@2",
-      "assignee" : "User@2"
-    } ],
-    "Comment" : [ {
-      "commented" : "Good catch, we will fix that right away.",
-      "on" : "2012/08/27",
-      "user" : "User@5",
-      "issue" : "Issue@1"
-    }, {
-      "commented" : "Glad to hear that!",
-      "on" : "2012/09/01",
-      "user" : "User@1",
-      "issue" : "Issue@1"
-    }, {
-      "commented" : "We hear you but this is too vague for us to address, we need more specific enhancement requests.",
-      "on" : "2012/09/02",
-      "user" : "User@4",
-      "issue" : "Issue@2"
+      "assignee" : "User@5"
     } ]
   }
 }

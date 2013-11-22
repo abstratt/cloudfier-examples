@@ -4,112 +4,134 @@ import payment;
 
 (* The category for an expense. *)
 class Category
+
     attribute name : String;
+
     static operation newCategory(name : String) : Category;
     begin
         var newCategory : Category;
         newCategory := new Category;
-        newCategory.name := name; 
+        newCategory.name := name;
         return newCategory;
     end;
-        
+
     derived attribute expensesInThisCategory : Expense[*] := {
         Expense#findExpensesByCategory(self)
     };
-    
 end;
 
 (* The expense as reported by an employee. *)
 class Expense
+
     derived attribute moniker : String := { self.description + " on " + self.date };
+
     attribute description : String;
+
     reference category : Category;
+
     readonly attribute status : Status;
+
     attribute amount : Double := 0.0;
+
     attribute date : Date := { Date#today() };
+
     attribute employee : Employee;
-    readonly attribute rejectionReason : Memo[0,1];
-    readonly reference approver : Employee[0,1];
+
+    readonly attribute rejectionReason : Memo[0, 1];
+
+    readonly reference approver : Employee[0, 1];
+
     port expensePayer : ExpensePayer;
+
     derived id attribute expenseId : Integer;
-    
+
     static operation newExpense(description : String, amount : Double, date : Date, category : Category) : Expense;
     begin
-        var newExpense  : Expense;
+        var newExpense : Expense;
         newExpense := new Expense;
         newExpense.description := description;
         newExpense.amount := amount;
-        newExpense.date := date;        
+        newExpense.date := date;
         newExpense.category := category;
         return newExpense;
     end;
-    
+
+    derived attribute automaticApproval : Boolean := {
+        return self.amount < 50;
+    };
+
     operation review();
-    
-    operation approve();
-    precondition CannotApproveOwnExpense { not (System#user() == self.employee) }
+
+    operation approve()
+        (* Cannot approve own expenses. *)
+        precondition { not(System#user() == self.employee) };
     begin
         self.approver := (System#user() as Employee);
     end;
-    
+
     (* Reject this expense. Please provide a reason. *)
-    operation reject(reason : Memo);
-    precondition UnderAutoApprovalLimit { self.amount > 50 } 
+    operation reject(reason : Memo)
+        (* Cannot reject an expense under the auto-approval limit. *)
+        precondition { self.automaticApproval };
     begin
         self.rejectionReason := reason;
         self.approver := (System#user() as Employee);
     end;
 
+    (* Submits this expense. *)
     operation submit();
-    
+
     static operation findExpensesByCategory(category : Category) : Expense[*];
-    begin 
-        return Expense extent.select ((e : Expense) : Boolean {
-            return e->category == category
+    begin
+        return Expense extent.select((e : Expense) : Boolean{
+            e->category == category
         });
     end;
-    
-    static operation findExpensesInPeriod(start : Date[0,1], end_: Date[0,1]) : Expense[*];
-    begin 
-        return Expense extent.select ((e : Expense) : Boolean {
-            return ((start == null) or (e.date >= start)) and ((end_ == null) or (e.date <= end_))
-        })
+
+    static operation findExpensesInPeriod(start : Date[0, 1], end_ : Date[0, 1]) : Expense[*];
+    begin
+        return Expense extent.select((e : Expense) : Boolean{
+            ((start == null) or (e.date >= start)) and ((end_ == null) or (e.date <= end_))
+        });
     end;
-    
+
     static operation findByStatus(status : Status) : Expense[*];
-    begin 
-        return Expense extent.select ((e : Expense) : Boolean {
-            return e.status == status
-        })
+    begin
+        return Expense extent.select((e : Expense) : Boolean{ e.status == status });
     end;
-    
-    (* The different statuses an expense can go through. *)
-	statemachine Status
-		initial state Draft
-			transition on call(submit) to Submitted;
-        end; 
-		state Submitted 
-			transition on call(approve) to Approved do {
-			    send ExpenseApproved(
-			        employeeName := self.employee.name, 
-			        amount := self.amount,
-			        description := self.description + "(" + self.category.name + ")",
-			        expenseId := self.expenseId) to self.expensePayer;
-			};
-			transition on call(review) to Draft;
-			transition on call(reject) to Rejected;
-		end;
-		terminate state Approved end;
-		terminate state Rejected end;		
-	end;
+
+    (* 
+        The different statuses an expense can go through. 
+    *)
+    statemachine Status
+        initial state Draft
+            (*
+		        If amount is under automatic approval limit,
+                the expense is automaticaly approved. 
+            *)
+            transition on call(submit) to Approved when { self.automaticApproval };
+            transition on call(submit) to Submitted when {
+                not self.automaticApproval
+            };
+        end;
+        state Submitted
+            transition on call(approve) to Approved;
+            transition on call(review) to Draft;
+            transition on call(reject) to Rejected;
+        end;
+        state Approved end;
+        state Rejected end;
+    end;
 end;
 
-(* An employee reports expenses. *) 
+(* An employee reports expenses. *)
 [kirra::User]
-class Employee 
+class Employee
+
     attribute name : String;
+
     attribute expenses : Expense[*];
-    
+
     derived attribute recordedExpenses : Expense[*] := {
         self.expensesByStatus(Expense::Status#Draft)
     };
@@ -118,41 +140,46 @@ class Employee
         self.expensesByStatus(Expense::Status#Submitted)
     };
 
-    derived attribute approvedExpenses : Expense[*] := { 
+    derived attribute approvedExpenses : Expense[*] := {
         self.expensesByStatus(Expense::Status#Approved)
-    };    
-        
+    };
+
     derived attribute rejectedExpenses : Expense[*] := {
         self.expensesByStatus(Expense::Status#Rejected)
     };
 
-    derived attribute totalRecorded : Double := { self.totalExpenses(self.recordedExpenses) };
-    
-    derived attribute totalSubmitted : Double := { self.totalExpenses(self.submittedExpenses) };
-    
-    derived attribute totalApproved : Double := { self.totalExpenses(self.approvedExpenses) };
-    
-    derived attribute totalRejected : Double := { self.totalExpenses(self.rejectedExpenses) };
-    
+    derived attribute totalRecorded : Double := {
+        self.totalExpenses(self.recordedExpenses)
+    };
+
+    derived attribute totalSubmitted : Double := {
+        self.totalExpenses(self.submittedExpenses)
+    };
+
+    derived attribute totalApproved : Double := {
+        self.totalExpenses(self.approvedExpenses)
+    };
+
+    derived attribute totalRejected : Double := {
+        self.totalExpenses(self.rejectedExpenses)
+    };
+
     operation declareExpense(description : String, amount : Double, date : Date, category : Category);
     begin
-        var newExpense:Expense;
-        newExpense := Expense#newExpense(description,amount,date,category);
+        var newExpense : Expense;
+        newExpense := Expense#newExpense(description, amount, date, category);
         link EmployeeExpenses(employee := self, expenses := newExpense);
     end;
-    
+
     private operation totalExpenses(toSum : Expense[*]) : Double;
     begin
-        return (toSum.reduce((e : Expense, sum : Double) : Double {
-            return sum + e.amount 
-        }, 0) as Double);
+        return(toSum.reduce((e : Expense, sum : Double) : Double{ sum + e.amount }, 0) as Double);
     end;
 
-    private operation expensesByStatus(status : Expense::Status) : Expense[*] {ordered,unique};
+    private operation expensesByStatus(status : Expense::Status) : Expense[*]{ordered, unique};
     begin
-        return self->expenses.select((e : Expense) : Boolean { return e.status == status} )
-    end;    
-    
+        return self->expenses.select((e : Expense) : Boolean{ e.status == status });
+    end;
 end;
 
 association EmployeeExpenses
