@@ -23,7 +23,9 @@ end;
 (* The expense as reported by an employee. *)
 class Expense
 
-    derived attribute moniker : String := { self.description + " on " + self.date };
+    derived attribute moniker : String := {
+        self.description + " on " + self.date
+    };
 
     attribute description : String;
 
@@ -81,47 +83,70 @@ class Expense
     (* Submits this expense. *)
     operation submit();
 
+    private operation reportApproved();
+    begin
+        send ExpenseApproved(
+            employeeName := self.employee.name, 
+            amount := self.amount, 
+            description := self.description + "(" + self.category.name + ")", 
+            expenseId := self.expenseId) to self.expensePayer;
+    end;
+
     static operation findExpensesByCategory(category : Category) : Expense[*];
     begin
-        return Expense extent.select((e : Expense) : Boolean{
+        return Expense extent.select((e : Expense) : Boolean {
             e->category == category
         });
     end;
 
     static operation findExpensesInPeriod(start : Date[0, 1], end_ : Date[0, 1]) : Expense[*];
     begin
-        return Expense extent.select((e : Expense) : Boolean{
+        return Expense extent.select((e : Expense) : Boolean {
             ((start == null) or (e.date >= start)) and ((end_ == null) or (e.date <= end_))
         });
     end;
 
     static operation findByStatus(status : Status) : Expense[*];
     begin
-        return Expense extent.select((e : Expense) : Boolean{ e.status == status });
+        return Expense extent.select((e : Expense) : Boolean {
+            e.status == status
+        });
     end;
 
     (* 
         The different statuses an expense can go through. 
     *)
     statemachine Status
+
         initial state Draft
             (*
 		        If amount is under automatic approval limit,
                 the expense is automaticaly approved. 
             *)
-            transition on call(submit) to Approved when { self.automaticApproval };
+            transition on call(submit) to Approved when {
+                self.automaticApproval
+            };
             transition on call(submit) to Submitted when {
                 not self.automaticApproval
             };
         end;
+
         state Submitted
             transition on call(approve) to Approved;
             transition on call(review) to Draft;
             transition on call(reject) to Rejected;
         end;
-        state Approved end;
+
+        state Approved
+            entry {
+                self.reportApproved();
+            };
+        end;
+
         state Rejected end;
+
     end;
+
 end;
 
 (* An employee reports expenses. *)
@@ -173,18 +198,25 @@ class Employee
 
     private operation totalExpenses(toSum : Expense[*]) : Double;
     begin
-        return(toSum.reduce((e : Expense, sum : Double) : Double{ sum + e.amount }, 0) as Double);
+        return (toSum.reduce((e : Expense, sum : Double) : Double {
+            sum + e.amount
+        }, 0) as Double);
     end;
 
     private operation expensesByStatus(status : Expense::Status) : Expense[*]{ordered, unique};
     begin
-        return self->expenses.select((e : Expense) : Boolean{ e.status == status });
+        return self->expenses.select((e : Expense) : Boolean {
+            e.status == status
+        });
     end;
 end;
 
 association EmployeeExpenses
+
     role Employee.expenses;
+
     role Expense.employee;
+
 end;
 
 end.
