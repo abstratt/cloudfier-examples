@@ -26,23 +26,16 @@ and later be resubmitted. One must be able to find:
 * all expenses for a category
 * all expenses for a given period
 
-Examples of user names (no password required):
+This application includes an integration with an external system that records approved expenses.
 
-User: "john ford"
-
-User: guest
+* external system `code <https://script.google.com/d/1Rxmsbr6wvdRIksSO1JIu6LSVHmG5lN5SxYOCapvgcLUB6w1i6vqHsuiv/edit>`_
+* external system `database <https://docs.google.com/spreadsheet/ccc?key=0ApWq_saU5c8DdENHN0FlSGl4Tm9rdVhpVFlRcE9hVEE>`
 
 ShipIt
 --------------------------------------------------------------------------------
 
 Users can be either committers or reporters. Anyone can report and comment on issues. 
 Committers can take over issues, resolve, assign them to other committers.
-
-Examples of user names (no password required):
-
-User: "ssimon" (a committer)
-
-User: "fsilveira" (a user)
 
 ShipIt Custom UI
 --------------------------------------------------------------------------------
@@ -56,16 +49,8 @@ PetStore
 
 The traditional Pet Store application.
 
-User: guest
-
 CarServ
 --------------------------------------------------------------------------------
 
 Application reverse engineered from the CarServ sample application that appears in the book 
 `Domain-Driven Design Using Naked Objects <http://pragprog.com/book/dhnako/domain-driven-design-using-naked-objects>`_ by Dan Haywood.
-
-User: "teresa perkins" (an auto mechanic)
-
-User: "joe bloggs" (a customer)
-
-User: guest
