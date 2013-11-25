@@ -16,7 +16,7 @@ that can be used to log in.
 Expenses
 --------------------------------------------------------------------------------
 
-See `Expenses <src/master/expenses/>`_ example application.
+See Expenses example application own documentation for more information.
 
 ShipIt
 --------------------------------------------------------------------------------
