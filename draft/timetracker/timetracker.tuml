@@ -69,30 +69,45 @@ class Invoice
 
     private operation sendInvoice();
     begin
-        send InvoiceIssued()to self.invoicer;
+        send InvoiceIssued() to self.invoicer;
     end;
 
     statemachine Status
+
         initial state Preparation
             transition on call(issue) to Invoiced;
         end;
-        state Invoiced end;
+
+        state Invoiced
+            entry { self.sendInvoice(); };
+        end;
+
     end;
+
 end;
 
 association InvoicedWork
+
     role Invoice.reported;
+
     role Work.invoice;
+
 end;
 
 association ClientTask
+
     role Client.tasks;
+
     role Task.client;
+
 end;
 
 association ClientInvoice
+
     role Client.invoices;
+
     role Invoice.client;
+
 end;
 
 class Work
@@ -107,7 +122,7 @@ class Work
     readonly attribute invoice : Invoice[0, 1];
 
     derived attribute invoiced : Boolean := {
-        not(self.invoice == null)
+        not (self.invoice == null)
     };
 
     (* Submits this work to a chosen invoice for the client. *)
@@ -121,8 +136,11 @@ class Work
 end;
 
 composition TaskWork
+
     role Task.reported;
+
     role Work.task;
+
 end;
 
 end.
