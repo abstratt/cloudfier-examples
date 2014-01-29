@@ -21,7 +21,7 @@ class Category
 end;
 
 (* The expense as reported by an employee. *)
-class Expense
+class Expense 
 
     derived attribute moniker : String := {
         self.description + " on " + self.date
@@ -45,9 +45,10 @@ class Expense
 
     port expensePayer : ExpensePayer;
 
-    derived id attribute expenseId : Integer;
+    private derived id attribute expenseId : Integer;
 
-    static operation newExpense(description : String, amount : Double, date : Date, category : Category) : Expense;
+    static operation newExpense(description : String, amount : Double, date : Date, 
+            category : Category, employee : Employee) : Expense;
     begin
         var newExpense : Expense;
         newExpense := new Expense;
@@ -55,6 +56,7 @@ class Expense
         newExpense.amount := amount;
         newExpense.date := date;
         newExpense.category := category;
+        newExpense.employee := employee;
         return newExpense;
     end;
 
@@ -66,7 +68,7 @@ class Expense
 
     operation approve()
         (* Cannot approve own expenses. *)
-        precondition { not(System#user() == self.employee) };
+        precondition { not (System#user() == self.employee) };
     begin
         self.approver := (System#user() as Employee);
     end;
@@ -80,8 +82,8 @@ class Expense
         self.approver := (System#user() as Employee);
     end;
 
-    (* Submits this expense. *)
-    operation submit();
+    (* Submit this expense. *)
+    operation submit() : Boolean;
 
     private operation reportApproved();
     begin
@@ -92,21 +94,21 @@ class Expense
             expenseId := self.expenseId) to self.expensePayer;
     end;
 
-    static operation findExpensesByCategory(category : Category) : Expense[*];
+    static query findExpensesByCategory(category : Category) : Expense[*];
     begin
         return Expense extent.select((e : Expense) : Boolean {
             e->category == category
         });
     end;
 
-    static operation findExpensesInPeriod(start : Date[0, 1], end_ : Date[0, 1]) : Expense[*];
+    static query findExpensesInPeriod(start : Date[0, 1], end_ : Date[0, 1]) : Expense[*];
     begin
         return Expense extent.select((e : Expense) : Boolean {
             ((start == null) or (e.date >= start)) and ((end_ == null) or (e.date <= end_))
         });
     end;
 
-    static operation findByStatus(status : Status) : Expense[*];
+    static query findByStatus(status : Status) : Expense[*];
     begin
         return Expense extent.select((e : Expense) : Boolean {
             e.status == status
@@ -189,21 +191,20 @@ class Employee
         self.totalExpenses(self.rejectedExpenses)
     };
 
-    operation declareExpense(description : String, amount : Double, date : Date, category : Category);
+    operation declareExpense(description : String, amount : Double, date : Date, 
+            category : Category) : Expense;
     begin
-        var newExpense : Expense;
-        newExpense := Expense#newExpense(description, amount, date, category);
-        link EmployeeExpenses(employee := self, expenses := newExpense);
+        return Expense#newExpense(description, amount, date, category, self);
     end;
 
-    private operation totalExpenses(toSum : Expense[*]) : Double;
+    private query totalExpenses(toSum : Expense[*]) : Double;
     begin
         return (toSum.reduce((e : Expense, sum : Double) : Double {
             sum + e.amount
         }, 0) as Double);
     end;
 
-    private operation expensesByStatus(status : Expense::Status) : Expense[*]{ordered, unique};
+    private query expensesByStatus(status : Expense::Status) : Expense[*]{ordered, unique};
     begin
         return self->expenses.select((e : Expense) : Boolean {
             e.status == status
