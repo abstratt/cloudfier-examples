@@ -26,22 +26,6 @@
       "email" : "rafael@abstratt.com",
       "kind" : "Reporter"
     } ],
-    "Comment" : [ {
-      "commented" : "We hear you but this is too vague for us to address, we need more specific enhancement requests.",
-      "on" : "2012/09/02",
-      "user" : "User@3",
-      "issue" : "Issue@2"
-    }, {
-      "commented" : "Good catch, we will fix that right away.",
-      "on" : "2012/08/27",
-      "user" : "User@5",
-      "issue" : "Issue@5"
-    }, {
-      "commented" : "Glad to hear that!",
-      "on" : "2012/09/01",
-      "user" : "User@2",
-      "issue" : "Issue@5"
-    } ],
     "Label" : [ {
       "name" : "ux"
     }, {
@@ -122,6 +106,22 @@
       "project" : "Project@1",
       "reporter" : "User@2",
       "assignee" : "User@5"
-    } ]
+    } ],
+    "Comment" : [ {
+      "commented" : "We hear you but this is too vague for us to address, we need more specific enhancement requests.",
+      "on" : "2012/09/02",
+      "user" : "User@3",
+      "issue" : "Issue@2"
+    }, {
+      "commented" : "Good catch, we will fix that right away.",
+      "on" : "2012/08/27",
+      "user" : "User@5",
+      "issue" : "Issue@5"
+    }, {
+      "commented" : "Glad to hear that!",
+      "on" : "2012/09/01",
+      "user" : "User@2",
+      "issue" : "Issue@5"
+    } ]    
   }
 }
