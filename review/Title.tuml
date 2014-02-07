@@ -1,0 +1,38 @@
+package review;
+
+class Title
+
+    attribute name : String;
+    
+end;
+
+class Review
+
+    attribute text : Memo;
+
+    readonly attribute date : Date := { Date#today() };
+
+    attribute score : Integer
+        invariant { self.score >= 0 }
+        invariant { self.score <= 5 };
+
+    reference author : User;
+
+    aggregation comments : Comment[*];
+end;
+
+class Comment
+
+    attribute text : Memo;
+
+    readonly attribute date : Date := { Date#today() };
+
+    reference author : User;
+end;
+
+class User
+
+    attribute name : String;
+end;
+
+end.
