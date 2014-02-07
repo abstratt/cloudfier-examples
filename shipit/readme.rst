@@ -1,4 +1,4 @@
-ShipIt - A issue tracking module
+ShipIt - An issue tracking module
 --------------------------------------------------------------------------------
 
 Users can be either committers or reporters. Anyone can report and comment on issues. 
