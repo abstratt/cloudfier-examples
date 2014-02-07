@@ -64,6 +64,7 @@ class Expense
         return self.amount < 50;
     };
 
+    (* Sends this expense back to Draft state. *)
     operation review();
 
     operation approve()
