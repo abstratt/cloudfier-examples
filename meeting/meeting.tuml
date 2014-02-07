@@ -17,7 +17,7 @@ class Meeting
 
     readonly attribute participants : User[*];
 
-    private operation isParticipating(candidate : User) : Boolean;
+    private query isParticipating(candidate : User) : Boolean;
     begin
         return self.participants.includes(candidate);
     end;

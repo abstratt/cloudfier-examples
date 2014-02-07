@@ -28,7 +28,7 @@ class Task
 
     derived attribute unitsWorked : Integer := { self.countUnitsWorked() };
 
-    private operation countUnitsWorked() : Integer;
+    private query countUnitsWorked() : Integer;
     begin
         return (self.reported.reduce((w : Work, count : Integer) : Integer {
             count + w.units

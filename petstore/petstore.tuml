@@ -114,14 +114,14 @@ class Order
     end;
 
 
-    private operation computeOrderTotal() : Double;
+    private query computeOrderTotal() : Double;
     begin
         return (self.items.reduce((d : OrderDetail, base : Double) : Double {
             d.price + base
         }, 0) as Double);
     end;
 
-    private operation computeWeightTotal() : Double;
+    private query computeWeightTotal() : Double;
     begin
         return (self.items.reduce((d : OrderDetail, base : Double) : Double {
             d.weight + base
