@@ -37,7 +37,7 @@ class User
     };
 
     private derived static attribute provisioned : Boolean := {
-        !(System#user() == null)
+        ! (System#user() == null)
     };
 end;
 
@@ -221,7 +221,7 @@ class Issue
 
     private query referenceDate() : Date;
     begin
-        if (self.resolvedOn == null)then
+        if (self.resolvedOn == null) then
             return Date#today()
         else
             return self.resolvedOn;
@@ -230,7 +230,8 @@ class Issue
     attribute description : Memo;
 
     (* Report a new issue. *)
-    static operation reportIssue(project : Project, summary : String, description : Memo, severity : Severity := Normal)
+    static operation reportIssue(project : Project, summary : String, description : Memo, 
+            severity : Severity := Normal)
         precondition Must_be_logged_in { User#provisioned };
     begin
         var newIssue : Issue;
@@ -240,7 +241,11 @@ class Issue
         newIssue.severity := severity;
         newIssue.reporter := User#current;
         newIssue.project := project;
-        send IssueReported(issueKey := newIssue.issueKey, summary := summary, description := description, userEmail := newIssue.reporter.email)to newIssue.userNotifier;
+        send IssueReported(
+            issueKey := newIssue.issueKey, 
+            summary := summary, 
+            description := description, 
+            userEmail := newIssue.reporter.email) to newIssue.userNotifier;
     end;
 
     static query bySeverity(toMatch : Severity) : Issue[*];
@@ -297,9 +302,8 @@ class Issue
     begin
         self.resolvedOn := null;
         self.resolution := null;
-        if (reason != "")then
-            self.comment(reason)
-        ;
+        if (reason != "") then
+            self.comment(reason);
     end;
 
     (* Add a comment to the issue *)
@@ -317,7 +321,11 @@ class Issue
         comment.commented := text;
         comment.inReplyTo := inReplyTo;
         link IssueComments(issue := self, comments := comment);
-        send CommentAdded(issueKey := self.issueKey, author := comment.user.email, userEmail := self.reporter.email, comment := text)to self.userNotifier;
+        send CommentAdded(
+            issueKey := self.issueKey, 
+            author := comment.user.email, 
+            userEmail := self.reporter.email, 
+            comment := text) to self.userNotifier;
     end;
 
     operation addWatcher(userToAdd : User);
@@ -326,17 +334,17 @@ class Issue
     end;
 
     operation vote()
-        precondition { not(User#current == null) }
-        precondition { !self.mine }
+        precondition { not (User#current == null) }
+        precondition { ! self.mine }
         precondition {
-            !self<-VotedIssues->voters.includes(User#current)
+            ! self<-VotedIssues->voters.includes(User#current)
         };
     begin
         link VotedIssues(voted := self, voters := User#current);
     end;
 
     operation withdrawVote()
-        precondition { not(User#current == null) }
+        precondition { not (User#current == null) }
         precondition {
             self<-VotedIssues->voters.includes(User#current)
         };
@@ -355,7 +363,7 @@ class Issue
     (* Take over an issue currently assigned to another user (not in progress). *)
     operation steal()
         precondition { User#current.committer }
-        precondition { not(self.mine) };
+        precondition { not (self.mine) };
     begin
         self.assignee := User#current;
     end;
@@ -393,6 +401,7 @@ class Issue
         end;
 
     end;
+
 end;
 
 composition IssueComments
