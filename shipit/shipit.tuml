@@ -16,7 +16,9 @@ class User
 
     attribute kind : UserKind;
 
-    private derived static attribute current : User := { (System#user() as User) };
+    private derived static attribute current : User := {
+        (System#user() as User)
+    };
 
     private derived attribute committer : Boolean := {
         self.kind = UserKind#Committer
@@ -113,23 +115,35 @@ class Label
 end;
 
 association IssueLabels
+
     role Issue.labels;
+
     role labeled : Issue[*];
+
 end;
 
 association AssignedIssue
+
     role Issue.assignee;
+
     role User.issuesAssignedToUser;
+
 end;
 
 association ReportedIssue
+
     role Issue.reporter;
+
     role User.issuesReportedByUser;
+
 end;
 
 association WatchedIssues
+
     role Issue.watchers;
+
     navigable role issuesWatched : Issue[*];
+
 end;
 
 class Project
@@ -140,13 +154,19 @@ class Project
 end;
 
 association ProjectIssues
+
     navigable role issues : Issue[*];
+
     role Issue.project;
+
 end;
 
 association VotedIssues
+
     navigable role voters : User[*];
+
     navigable role voted : Issue[*];
+
 end;
 
 class Issue
@@ -183,7 +203,9 @@ class Issue
 
     attribute watchers : User[*];
 
-    derived attribute votes : Integer := { self<-VotedIssues->voters.size() };
+    derived attribute votes : Integer := {
+        self<-VotedIssues->voters.size()
+    };
 
     derived attribute commentCount : Integer := { self.comments.size() };
 
@@ -191,13 +213,15 @@ class Issue
         "" + self.reportedOn.differenceInDays(self.referenceDate()) + " day(s)"
     };
 
-    private derived attribute mine : Boolean := { User#current == self.assignee };
+    private derived attribute mine : Boolean := {
+        User#current == self.assignee
+    };
 
     private derived attribute free : Boolean := { self.assignee == null };
 
     private operation referenceDate() : Date;
     begin
-        if(self.resolvedOn == null)then
+        if (self.resolvedOn == null)then
             return Date#today()
         else
             return self.resolvedOn;
@@ -221,12 +245,16 @@ class Issue
 
     static operation bySeverity(toMatch : Severity) : Issue[*];
     begin
-        return Issue extent.select((i : Issue) : Boolean{ i.severity == toMatch });
+        return Issue extent.select((i : Issue) : Boolean {
+            i.severity == toMatch
+        });
     end;
 
     private static operation filterByStatus(issues : Issue[*], toMatch : Status) : Issue[*];
     begin
-        return issues.select((issue : Issue) : Boolean{ issue.status == toMatch });
+        return issues.select((issue : Issue) : Boolean {
+            issue.status == toMatch
+        });
     end;
 
     static operation byStatus(toMatch : Status) : Issue[*];
@@ -269,7 +297,7 @@ class Issue
     begin
         self.resolvedOn := null;
         self.resolution := null;
-        if(reason != "")then
+        if (reason != "")then
             self.comment(reason)
         ;
     end;
@@ -300,14 +328,18 @@ class Issue
     operation vote()
         precondition { not(User#current == null) }
         precondition { !self.mine }
-        precondition { !self<-VotedIssues->voters.includes(User#current) };
+        precondition {
+            !self<-VotedIssues->voters.includes(User#current)
+        };
     begin
         link VotedIssues(voted := self, voters := User#current);
     end;
 
     operation withdrawVote()
         precondition { not(User#current == null) }
-        precondition { self<-VotedIssues->voters.includes(User#current) };
+        precondition {
+            self<-VotedIssues->voters.includes(User#current)
+        };
     begin
         unlink VotedIssues(voted := self, voters := User#current);
     end;
@@ -334,32 +366,41 @@ class Issue
     end;
 
     statemachine Status
+
         initial state Open
             transition on call(resolve) to Resolved;
             transition on call(assignToMe) to Assigned;
             transition on call(assign) to Assigned;
         end;
+
         state InProgress
             transition on call(suspend) to Assigned;
         end;
+
         state Assigned
             transition on call(release) to Open;
             transition on call(resolve) to Resolved;
             transition on call(steal) to Assigned;
             transition on call(start) to InProgress;
         end;
+
         state Resolved
             transition on call(verify) to Verified;
         end;
+
         state Verified
             transition on call(reopen) to Open;
         end;
+
     end;
 end;
 
 composition IssueComments
+
     role Issue.comments;
+
     role Comment.issue;
+
 end;
 
 end.

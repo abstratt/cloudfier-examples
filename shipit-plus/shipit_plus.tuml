@@ -8,19 +8,31 @@ end;
 
 class EmailUserNotifierService implements shipit::UserNotifier
 
-    reception notify(n : IssueReported);
+    reception(n : IssueReported);
     begin
-        send EMailMessage(subject := "New issue: " + n.issueKey + " - " + n.summary, body := n.description, \to := n.userEmail, \from := "shipitplus@cloudfier.com")to self.emailer;
+        send EMailMessage(
+            subject := "New issue: " + n.issueKey + " - " + n.summary, 
+            body := n.description, 
+            \to := n.userEmail, 
+            from := "shipitplus@cloudfier.com") to self.emailer;
     end;
 
-    reception notify(n : CommentAdded);
+    reception(n : CommentAdded);
     begin
-        send EMailMessage(subject := "New comment to: " + n.issueKey + " by " + n.author, body := Memo#fromString(n.author + " said: '" + n.comment + "'"), \to := n.userEmail, \from := "shipitplus@cloudfier.com")to self.emailer;
+        send EMailMessage(
+            subject := "New comment to: " + n.issueKey + " by " + n.author, 
+            body := Memo#fromString(n.author + " said: '" + n.comment + "'"), 
+            \to := n.userEmail, 
+            from := "shipitplus@cloudfier.com") to self.emailer;
     end;
 
-    reception notify(n : IssueResolved);
+    reception(n : IssueResolved);
     begin
-        send EMailMessage(subject := "Issue resolved: " + n.issueKey, body := Memo#fromString(n.issueKey + " has been resolved as: " + n.resolution), \to := n.userEmail, \from := "shipitplus@cloudfier.com")to self.emailer;
+        send EMailMessage(
+            subject := "Issue resolved: " + n.issueKey, 
+            body := Memo#fromString(n.issueKey + " has been resolved as: " + n.resolution), 
+            \to := n.userEmail, 
+            from := "shipitplus@cloudfier.com") to self.emailer;
     end;
 
     required port emailer : Emailer;
