@@ -219,7 +219,7 @@ class Issue
 
     private derived attribute free : Boolean := { self.assignee == null };
 
-    private operation referenceDate() : Date;
+    private query referenceDate() : Date;
     begin
         if (self.resolvedOn == null)then
             return Date#today()
@@ -243,21 +243,21 @@ class Issue
         send IssueReported(issueKey := newIssue.issueKey, summary := summary, description := description, userEmail := newIssue.reporter.email)to newIssue.userNotifier;
     end;
 
-    static operation bySeverity(toMatch : Severity) : Issue[*];
+    static query bySeverity(toMatch : Severity) : Issue[*];
     begin
         return Issue extent.select((i : Issue) : Boolean {
             i.severity == toMatch
         });
     end;
 
-    private static operation filterByStatus(issues : Issue[*], toMatch : Status) : Issue[*];
+    private static query filterByStatus(issues : Issue[*], toMatch : Status) : Issue[*];
     begin
         return issues.select((issue : Issue) : Boolean {
             issue.status == toMatch
         });
     end;
 
-    static operation byStatus(toMatch : Status) : Issue[*];
+    static query byStatus(toMatch : Status) : Issue[*];
     begin
         return Issue#filterByStatus(Issue extent, toMatch);
     end;
