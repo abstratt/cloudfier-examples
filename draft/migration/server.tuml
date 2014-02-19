@@ -1,9 +1,9 @@
 package migration;
 
-signal MigrationStarted
+signal CloningSuccess
 end;
 
-signal MigrationCompleted
+signal CloningFailure
 end;
 
 signal CutoverSuccess
@@ -39,7 +39,7 @@ class Server
     attribute status : Status;
     
     (* Starts migrating this server. *)
-    operation start();
+    operation migrate();
     
     (* Starts cutting this server over to the cloud *)
     operation cutover();
@@ -47,14 +47,15 @@ class Server
     statemachine Status
 
         initial state OnPremise
-            transition on call(start) to Migrating;
+            transition on call(migrate) to Cloning;
         end;
 
-        state Migrating
-            transition on signal(MigrationCompleted) to Migrated;
+        state Cloning
+            transition on signal(CloningSuccess) to Cloned;
+            transition on signal(CloningFailure) to OnPremise;
         end;
 
-        state Migrated
+        state Cloned
             transition on call(cutover) to CuttingOver;
         end;
         
@@ -75,3 +76,4 @@ enumeration HostKind
     Cloud
 end;
 
+end.
