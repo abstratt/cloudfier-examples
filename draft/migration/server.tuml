@@ -1,0 +1,65 @@
+package migration;
+
+signal HostMigrated
+end;
+
+signal MigrationStarted
+end;
+
+signal MigrationCompleted
+end;
+
+signal CutoverSuccess
+end;
+
+signal CutoverFailure
+end;
+
+class Host
+
+    attribute name : String;
+
+    attribute address : String;
+
+    derived attribute onCloud : Boolean := { self.kind == HostKind#Cloud };
+
+    readonly attribute kind : HostKind;
+end;
+
+class Node
+
+    attribute sourceHost : Host
+        invariant { not self.targetHost.onCloud };
+
+    attribute targetHost : Host
+        invariant { self.targetHost.onCloud };
+
+    attribute status : Status;
+
+    statemachine Status
+
+        initial state Waiting
+            transition on signal(MigrationStarted) to Migrating;
+        end;
+
+        state Migrating
+            transition on signal(MigrationCompleted) to Migrated;
+        end;
+
+        state Migrated
+            transition on signal(CutoverSuccess) to CutOver;
+            transition on signal(CutoverFailure) to Waiting;
+        end;
+
+        state CutOver end;
+    end;
+
+end;
+
+enumeration HostKind
+    Physical, 
+    Virtual, 
+    Cloud
+end;
+
+end.
