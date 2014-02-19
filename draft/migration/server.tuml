@@ -1,8 +1,5 @@
 package migration;
 
-signal HostMigrated
-end;
-
 signal MigrationStarted
 end;
 
@@ -15,6 +12,7 @@ end;
 signal CutoverFailure
 end;
 
+(* A host is a machine, physical or virtual, on-premise or in the cloud *)
 class Host
 
     attribute name : String;
@@ -26,20 +24,30 @@ class Host
     readonly attribute kind : HostKind;
 end;
 
-class Node
+(* A server is the logical stuff we have running on a legacy server, 
+   that we want to move to a server on the cloud. *)
+class Server
 
     attribute sourceHost : Host
-        invariant { not self.targetHost.onCloud };
+        (* The source host must be on-premise *)
+        invariant { not self.sourceHost.onCloud };
 
     attribute targetHost : Host
+        (* The destination host is supposed to be on the cloud. *)
         invariant { self.targetHost.onCloud };
 
     attribute status : Status;
+    
+    (* Starts migrating this server. *)
+    operation start();
+    
+    (* Starts cutting this server over to the cloud *)
+    operation cutover();
 
     statemachine Status
 
-        initial state Waiting
-            transition on signal(MigrationStarted) to Migrating;
+        initial state OnPremise
+            transition on call(start) to Migrating;
         end;
 
         state Migrating
@@ -47,11 +55,16 @@ class Node
         end;
 
         state Migrated
-            transition on signal(CutoverSuccess) to CutOver;
-            transition on signal(CutoverFailure) to Waiting;
+            transition on call(cutover) to CuttingOver;
+        end;
+        
+        state CuttingOver
+            transition on signal(CutoverSuccess) to InTheCloud;
+            transition on signal(CutoverFailure) to OnPremise;
         end;
 
-        state CutOver end;
+        state InTheCloud end;
+
     end;
 
 end;
@@ -62,4 +75,3 @@ enumeration HostKind
     Cloud
 end;
 
-end.
