@@ -1,0 +1,68 @@
+{
+  "taxi_fleet" : {
+    "ShiftType" : [ {
+      "description" : "Full day",
+      "price" : 50.0,
+      "shiftsPerDay" : 1
+    }, {
+      "description" : "Half day",
+      "price" : 30.0,
+      "shiftsPerDay" : 2
+    } ],
+    "Driver" : [ {
+      "name" : "Driver 6"
+    }, {
+      "name" : "Driver 1"
+    }, {
+      "name" : "Driver 4"
+    }, {
+      "name" : "Driver 2"
+    }, {
+      "name" : "Driver 5"
+    }, {
+      "name" : "Driver 3"
+    } ],
+    "Taxi" : [ {
+      "name" : "Taxi 2",
+      "shift" : "ShiftType@1",
+      "drivers" : [ "Driver@6" ]
+    }, {
+      "name" : "Taxi 1",
+      "shift" : "ShiftType@1",
+      "drivers" : [ "Driver@6" ]
+    }, {
+      "name" : "Taxi 3",
+      "shift" : "ShiftType@2",
+      "drivers" : [ "Driver@5", "Driver@6" ]
+    }, {
+      "name" : "Taxi 4",
+      "shift" : "ShiftType@2",
+      "drivers" : [ "Driver@4", "Driver@6" ]
+    } ],
+    "Deposit" : [ {
+      "date" : "2014/02/21",
+      "driver" : "Driver@6",
+      "taxi" : "Taxi@2"
+    }, {
+      "date" : "2014/02/21",
+      "driver" : "Driver@6",
+      "taxi" : "Taxi@2"
+    }, {
+      "date" : "2014/02/21",
+      "driver" : "Driver@2",
+      "taxi" : "Taxi@2"
+    }, {
+      "date" : "2014/02/21",
+      "driver" : "Driver@6",
+      "taxi" : "Taxi@2"
+    }, {
+      "date" : "2014/02/21",
+      "driver" : "Driver@5",
+      "taxi" : "Taxi@3"
+    }, {
+      "date" : "2014/02/21",
+      "driver" : "Driver@6",
+      "taxi" : "Taxi@2"
+    } ]
+  }
+}

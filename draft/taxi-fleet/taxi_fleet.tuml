@@ -1,0 +1,121 @@
+package taxi_fleet;
+
+class Taxi
+
+    attribute name : String;
+
+    attribute shift : ShiftType;
+
+    readonly attribute drivers : Driver[*]
+        (* Too many drivers for this shift *)
+        invariant { self.drivers.size() <= self.shift.shiftsPerDay };
+
+    derived attribute driverCount : Integer := { self.drivers.size() };
+
+    derived attribute full : Boolean := {
+        self.driverCount >= self.shift.shiftsPerDay
+    };
+end;
+
+association TaxisDrivers
+
+    role Taxi.drivers;
+
+    role Driver.taxis;
+
+end;
+
+class ShiftType
+
+    attribute description : String;
+
+    attribute price : Double;
+
+    attribute shiftsPerDay : Integer := 1
+        (* Choose at least 1 shift per day *)
+        invariant { self.shiftsPerDay > 0 }
+        (* Too many shifts per day *)
+        invariant { self.shiftsPerDay <= 2 };
+end;
+
+class Driver
+
+    attribute name : String;
+
+    readonly attribute taxis : Taxi[*];
+
+    readonly attribute deposits : Deposit[*];
+
+    derived attribute hasBooking : Boolean := { not self.taxis.isEmpty() };
+
+    operation book(toRent : Taxi)
+        (* No taxis available *)
+        precondition {
+            Taxi extent.exists((t : Taxi) : Boolean { not t.full })
+        }
+        (* Driver already booked this taxi *)
+        precondition (toRent) { not self.taxis.includes(toRent) }
+        (* Taxi is not available *)
+        precondition (toRent) { not toRent.full };
+    begin
+        link TaxisDrivers(taxis := toRent, drivers := self);
+    end;
+
+    operation release(toRelease : Taxi)
+        (* No bookings to release *)
+        precondition { self.hasBooking }
+        (* Taxi not booked, can't release *)
+        precondition (toRelease) { self.taxis.includes(toRelease) };
+    begin
+        unlink TaxisDrivers(taxis := toRelease, drivers := self);
+    end;
+
+    operation makeDeposit(taxi : Taxi, date : Date[0, 1])
+        (* No bookings to pay for *)
+        precondition { self.hasBooking }
+        (* Cannot pay for taxi not booked *)
+        precondition (taxi) { self.taxis.includes(taxi) };
+    begin
+        var deposit : Deposit;
+        deposit := new Deposit;
+        deposit.driver := self;
+        deposit.taxi := taxi;
+        /* ugly workaround for lack of support for parameter defaults. */
+        if (date == null) then
+            date := Date#today();
+        deposit.date := date;
+    end;
+end;
+
+class Charge
+    attribute date : Date := { Date#today() };
+    attribute shiftType : ShiftType;
+    attribute taxi : Taxi;
+    attribute driver : Driver;
+    attribute amount : Double;
+end;
+
+class Payment
+    attribute driver : Driver;
+    attribute date : Date := { Date#today() };
+    attribute amount : Double;
+end;
+
+class Deposit
+
+    attribute date : Date := { Date#today() };
+
+    attribute driver : Driver;
+
+    attribute taxi : Taxi;
+end;
+
+aggregation
+
+    role Driver.deposits;
+
+    role Deposit.driver;
+
+end;
+
+end.
