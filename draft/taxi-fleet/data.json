@@ -1,65 +1,84 @@
 {
   "taxi_fleet" : {
-    "Driver" : [ {
-      "name" : "Terrence Morris"
-    }, {
-      "name" : "Alice Camden"
-    }, {
-      "name" : "Katie Gold"
-    }, {
-      "name" : "John Silver"
-    }, {
-      "name" : "Ann Beasly"
-    }, {
-      "name" : "Martin Johnes"
-    } ],
     "Shift" : [ {
-      "description" : "Half day",
-      "price" : 30.0,
-      "shiftsPerDay" : 2
-    }, {
       "description" : "Full day",
       "price" : 50.0,
       "shiftsPerDay" : 1
-    } ],
-    "Charge" : [ {
-      "date" : null,
-      "receivedOn" : null,
-      "description" : "Taxi 2",
-      "amount" : 50.0,
-      "status" : "Pending",
-      "driver" : "Driver@5"
     }, {
-      "date" : null,
-      "receivedOn" : null,
-      "description" : "Taxi 3",
-      "amount" : 30.0,
-      "status" : "Pending",
-      "driver" : "Driver@5"
-    }, {
-      "date" : null,
-      "receivedOn" : null,
-      "description" : "Taxi 3",
-      "amount" : 30.0,
-      "status" : "Pending",
-      "driver" : "Driver@6"
+      "description" : "Half day",
+      "price" : 30.0,
+      "shiftsPerDay" : 2
     } ],
     "Taxi" : [ {
-      "name" : "Taxi 1",
-      "shift" : "Shift@2",
-      "drivers" : [ "Driver@5" ]
-    }, {
       "name" : "Taxi 2",
-      "shift" : "Shift@2",
-      "drivers" : [ "Driver@5" ]
+      "shift" : "Shift@1"
     }, {
-      "name" : "Taxi 4",
-      "shift" : "Shift@1",
-      "drivers" : [ "Driver@3", "Driver@5" ]
+      "name" : "Taxi 1",
+      "shift" : "Shift@1"
     }, {
       "name" : "Taxi 3",
-      "shift" : "Shift@1",
-      "drivers" : [ "Driver@5", "Driver@6" ]
+      "shift" : "Shift@2"
+    }, {
+      "name" : "Taxi 4",
+      "shift" : "Shift@2"
+    } ],
+    "Driver" : [ {
+      "name" : "Alice Camden",
+      "taxi" : "Taxi@2"
+    }, {
+      "name" : "Terrence Morris"
+    }, {
+      "name" : "John Silver"
+    }, {
+      "name" : "Katie Gold",
+      "taxi" : "Taxi@4"
+    }, {
+      "name" : "Martin Johnes",
+      "taxi" : "Taxi@3"
+    }, {
+      "name" : "Ann Beasly",
+      "taxi" : "Taxi@3"
+    } ],
+    "Charge" : [ {
+      "date" : "2014/02/22",
+      "receivedOn" : null,
+      "description" : "Taxi 1 - Full day",
+      "amount" : 50.0,
+      "status" : "Pending",
+      "driver" : "Driver@1",
+      "taxi" : "Taxi@2"
+    }, {
+      "date" : "2014/02/22",
+      "receivedOn" : "2014/02/22",
+      "description" : "Taxi 3 - Half day",
+      "amount" : 30.0,
+      "status" : "Paid",
+      "driver" : "Driver@5",
+      "taxi" : "Taxi@3"
+    }, {
+      "date" : "2014/02/22",
+      "receivedOn" : null,
+      "description" : "Taxi 4 - Half day",
+      "amount" : 30.0,
+      "status" : "Pending",
+      "driver" : "Driver@4",
+      "taxi" : "Taxi@4"
+    }, {
+      "date" : "2014/02/22",
+      "receivedOn" : null,
+      "description" : "Taxi 3 - Half day",
+      "amount" : 30.0,
+      "status" : "Pending",
+      "driver" : "Driver@5",
+      "taxi" : "Taxi@3"
+    }, {
+      "date" : "2014/02/22",
+      "receivedOn" : "2014/02/22",
+      "description" : "Taxi 3 - Half day",
+      "amount" : 30.0,
+      "status" : "Paid",
+      "driver" : "Driver@6",
+      "taxi" : "Taxi@3"
     } ]
   }
 }

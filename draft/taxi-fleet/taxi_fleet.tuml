@@ -24,16 +24,16 @@ class Taxi
         precondition { self.booked };
     begin
         self.drivers.forEach((toCharge : Driver) {
-            Charge#newCharge(self.name, self.shift.price, toCharge, date);
+            Charge#newCharge(self, toCharge, date);
         });
     end;
 end;
 
-association TaxisDrivers
+association TaxiDrivers
 
     role Taxi.drivers;
 
-    role Driver.taxis;
+    role Driver.taxi;
 
 end;
 
@@ -54,11 +54,11 @@ class Driver
 
     attribute name : String;
 
-    readonly attribute taxis : Taxi[*];
+    readonly attribute taxi : Taxi[0,1];
 
     readonly attribute charges : Charge[*];
 
-    derived attribute hasBooking : Boolean := { not self.taxis.isEmpty() };
+    derived attribute hasBooking : Boolean := { not (self.taxi == null) };
 
     derived attribute pendingCharges : Charge[*] := { self.charges.select((c : Charge) : Boolean { not c.paid }) };
 
@@ -70,22 +70,18 @@ class Driver
         precondition {
             Taxi extent.exists((t : Taxi) : Boolean { not t.full })
         }
-        (* Driver already booked this taxi *)
-        precondition (toRent) { not self.taxis.includes(toRent) }
         (* Taxi is not available *)
         precondition (toRent) { not toRent.full };
     begin
-        link TaxisDrivers(taxis := toRent, drivers := self);
+        link TaxiDrivers(taxi := toRent, drivers := self);
     end;
 
     (* Release a taxi that is currently booked *)
-    operation release(toRelease : Taxi)
+    operation release()
         (* No bookings to release *)
-        precondition { self.hasBooking }
-        (* Taxi not booked, can't release *)
-        precondition (toRelease) { self.taxis.includes(toRelease) };
+        precondition { self.hasBooking };
     begin
-        unlink TaxisDrivers(taxis := toRelease, drivers := self);
+        unlink TaxiDrivers(taxi := self.taxi, drivers := self);
     end;
 end;
 
@@ -98,6 +94,8 @@ class Charge
     readonly attribute driver : Driver;
 
     readonly attribute description : String;
+    
+    readonly attribute taxi : Taxi;
 
     readonly attribute amount : Double;
 
@@ -107,15 +105,17 @@ class Charge
 
     operation pay();
 
-    static operation newCharge(description : String, amount : Double, payer : Driver, 
+    static operation newCharge(taxi : Taxi, payer : Driver, 
             date : Date);
     begin
         var charge : Charge;
         if (date == null) then
             date := Date#today();
         charge := new Charge;
-        charge.description := description;
-        charge.amount := amount;
+        charge.description := taxi.name + " - " + taxi.shift.description;
+        charge.amount := taxi.shift.price;
+        charge.taxi := taxi;
+        charge.date := date;
         link DriverCharges(driver := payer, charges := charge);
     end;
 
