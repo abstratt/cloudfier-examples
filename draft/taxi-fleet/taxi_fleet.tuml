@@ -4,7 +4,7 @@ class Taxi
 
     attribute name : String;
 
-    attribute shift : ShiftType;
+    attribute shift : Shift;
 
     readonly attribute drivers : Driver[*]
         (* Too many drivers for this shift *)
@@ -15,6 +15,18 @@ class Taxi
     derived attribute full : Boolean := {
         self.driverCount >= self.shift.shiftsPerDay
     };
+
+    derived attribute booked : Boolean := { self.driverCount > 0 };
+
+    (* Create charges for every driver *)
+    operation charge(date : Date[0,1])
+        (* Not booked, can't charge *)
+        precondition { self.booked };
+    begin
+        self.drivers.forEach((toCharge : Driver) {
+            Charge#newCharge(self.name, self.shift.price, toCharge, date);
+        });
+    end;
 end;
 
 association TaxisDrivers
@@ -25,7 +37,7 @@ association TaxisDrivers
 
 end;
 
-class ShiftType
+class Shift
 
     attribute description : String;
 
@@ -44,10 +56,15 @@ class Driver
 
     readonly attribute taxis : Taxi[*];
 
-    readonly attribute deposits : Deposit[*];
+    readonly attribute charges : Charge[*];
 
     derived attribute hasBooking : Boolean := { not self.taxis.isEmpty() };
 
+    derived attribute pendingCharges : Charge[*] := { self.charges.select((c : Charge) : Boolean { not c.paid }) };
+
+    derived attribute paymentDue : Boolean := { not self.pendingCharges.isEmpty() };
+
+    (* Book a taxi that is currently available *)
     operation book(toRent : Taxi)
         (* No taxis available *)
         precondition {
@@ -61,6 +78,7 @@ class Driver
         link TaxisDrivers(taxis := toRent, drivers := self);
     end;
 
+    (* Release a taxi that is currently booked *)
     operation release(toRelease : Taxi)
         (* No bookings to release *)
         precondition { self.hasBooking }
@@ -69,52 +87,64 @@ class Driver
     begin
         unlink TaxisDrivers(taxis := toRelease, drivers := self);
     end;
-
-    operation makeDeposit(taxi : Taxi, date : Date[0, 1])
-        (* No bookings to pay for *)
-        precondition { self.hasBooking }
-        (* Cannot pay for taxi not booked *)
-        precondition (taxi) { self.taxis.includes(taxi) };
-    begin
-        var deposit : Deposit;
-        deposit := new Deposit;
-        deposit.driver := self;
-        deposit.taxi := taxi;
-        /* ugly workaround for lack of support for parameter defaults. */
-        if (date == null) then
-            date := Date#today();
-        deposit.date := date;
-    end;
 end;
 
 class Charge
-    attribute date : Date := { Date#today() };
-    attribute shiftType : ShiftType;
-    attribute taxi : Taxi;
-    attribute driver : Driver;
-    attribute amount : Double;
+
+    readonly attribute date : Date;
+
+    readonly attribute receivedOn : Date[0, 1];
+
+    readonly attribute driver : Driver;
+
+    readonly attribute description : String;
+
+    readonly attribute amount : Double;
+
+    attribute status : Status;
+
+    derived attribute paid : Boolean := { self.status == Status#Paid };
+
+    operation pay();
+
+    static operation newCharge(description : String, amount : Double, payer : Driver, 
+            date : Date);
+    begin
+        var charge : Charge;
+        if (date == null) then
+            date := Date#today();
+        charge := new Charge;
+        charge.description := description;
+        charge.amount := amount;
+        link DriverCharges(driver := payer, charges := charge);
+    end;
+
+    static query pendingCharges() : Charge[*];
+    begin
+        return Charge extent.select((c : Charge) : Boolean { c.paid });
+    end;
+
+    statemachine Status
+
+        initial state Pending
+            transition on call(pay) to Paid;
+        end;
+
+        state Paid
+            entry {
+                self.receivedOn := Date#today();
+            };
+        end;
+
+    end;
+
 end;
 
-class Payment
-    attribute driver : Driver;
-    attribute date : Date := { Date#today() };
-    attribute amount : Double;
-end;
+association DriverCharges
 
-class Deposit
+    role Driver.charges;
 
-    attribute date : Date := { Date#today() };
-
-    attribute driver : Driver;
-
-    attribute taxi : Taxi;
-end;
-
-aggregation
-
-    role Driver.deposits;
-
-    role Deposit.driver;
+    role Charge.driver;
 
 end;
 
