@@ -13,4 +13,11 @@ class MultiplicationService implements Multiplier
     end;
 end;
 
+component MultiplicationApp
+
+    composition multiplicationService : MultiplicationService;
+
+    provided port multiplier : Multiplier connector multiplicationService;
+end;
+
 end.
