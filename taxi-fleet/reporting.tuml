@@ -1,0 +1,26 @@
+package reporting;
+
+interface ReportingService
+
+    query listPendingCharges() : ChargeDetails[*];
+
+    query paymentsPerDay() : DailyPayments[*];
+end;
+
+datatype ChargeDetails
+
+    attribute amount : Double;
+
+    attribute date : Date;
+
+    attribute name : String;
+end;
+
+datatype DailyPayments
+
+    attribute paymentDate : Date;
+
+    attribute dailyTotal : Double;
+end;
+
+end.
