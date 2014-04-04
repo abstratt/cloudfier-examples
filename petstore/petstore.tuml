@@ -116,16 +116,16 @@ class Order
 
     private query computeOrderTotal() : Double;
     begin
-        return (self.items.reduce((d : OrderDetail, base : Double) : Double {
+        return self.items.reduce((d : OrderDetail, base : Double) : Double {
             d.price + base
-        }, 0) as Double);
+        }, 0);
     end;
 
     private query computeWeightTotal() : Double;
     begin
-        return (self.items.reduce((d : OrderDetail, base : Double) : Double {
+        return self.items.reduce((d : OrderDetail, base : Double) : Double {
             d.weight + base
-        }, 0) as Double);
+        }, 0);
     end;
 end;
 

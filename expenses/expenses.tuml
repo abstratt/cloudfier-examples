@@ -8,7 +8,7 @@ class Category
     attribute name : String;
 
     static operation newCategory(name : String) : Category;
-    begin
+    begin 
         var newCategory : Category;
         newCategory := new Category;
         newCategory.name := name;
@@ -71,7 +71,7 @@ class Expense
         (* Cannot approve own expenses. *)
         precondition { not (System#user() == self.employee) };
     begin
-        self.approver := (System#user() as Employee);
+        self.approver := System#user();
     end;
 
     (* Reject this expense. Please provide a reason. *)
@@ -80,7 +80,7 @@ class Expense
         precondition { self.automaticApproval };
     begin
         self.rejectionReason := reason;
-        self.approver := (System#user() as Employee);
+        self.approver := System#user();
     end;
 
     (* Submit this expense. *)
@@ -200,9 +200,9 @@ class Employee
 
     private query totalExpenses(toSum : Expense[*]) : Double;
     begin
-        return (toSum.reduce((e : Expense, sum : Double) : Double {
+        return toSum.reduce((e : Expense, sum : Double) : Double {
             sum + e.amount
-        }, 0) as Double);
+        }, 0);
     end;
 
     private query expensesByStatus(status : Expense::Status) : Expense[*]{ordered, unique};

@@ -17,7 +17,9 @@ import mdd_types;
 [kirra::User]
 abstract class Person
 
-    derived attribute fullName : String := { self.firstName + " " + self.lastName };
+    derived attribute fullName : String := {
+        self.firstName + " " + self.lastName
+    };
 
     attribute firstName : String;
 
@@ -32,12 +34,13 @@ end;
 
 class AutoMechanic specializes Person
 
-
-    access { System#user()is AutoMechanic };
+    access { System#user() is AutoMechanic };
 
     attribute status : WorkingStatus;
 
-    derived attribute working : Boolean := { self.status == WorkingStatus#Working };
+    derived attribute working : Boolean := {
+        self.status == WorkingStatus#Working
+    };
 
     private attribute services : Service[*];
 
@@ -68,7 +71,7 @@ class AutoMechanic specializes Person
 
     private operation doUnassign();
     begin
-        self.upcomingServices.forEach((s : Service){
+        self.upcomingServices.forEach((s : Service) {
             unlink TechnicianWorksOnService(services := s, technician := self);
         });
     end;
@@ -88,36 +91,42 @@ class AutoMechanic specializes Person
     end;
 
     statemachine WorkingStatus
+
         initial state Working
             transition on call(beginVacation) to Vacation;
             transition on call(retire) to Retired;
         end;
+
         state Vacation
             transition on call(endVacation) to Working;
         end;
+
         state Retired end;
+
     end;
+
 end;
 
 class Customer specializes Person
 
-
-    access { (System#user() == self) or (System#user()is AutoMechanic) };
+    access {
+        (System#user() == self) or (System#user() is AutoMechanic)
+    };
 
     attribute cars : Car[0, *];
 
     attribute title : Title;
 
     derived attribute pendingServices : Service[*] := {
-        (self.cars.reduce((c : Car, soFar : Service[*]) : Service[*]{
+        self.cars.reduce((c : Car, soFar : Service[*]) : Service[*] {
             c.pendingServices.union(soFar)
-        }, Service[]) as Service)
+        }, Service[])
     };
 
     derived attribute completedServices : Service[*] := {
-        (self.cars.reduce((c : Car, soFar : Service[*]) : Service[*]{
+        self.cars.reduce((c : Car, soFar : Service[*]) : Service[*] {
             c.completedServices.union(soFar)
-        }, Service[]) as Service)
+        }, Service[])
     };
 
     (* A valuable customer is a customer that has two or more cars with us *)
@@ -125,30 +134,32 @@ class Customer specializes Person
 
     static operation findByName(firstName : String[0, 1], lastName : String[0, 1]) : Customer[*]
         precondition OneMustBeProvided(firstName, lastName) {
-            not((firstName == null) and (lastName == null))
+            not ((firstName == null) and (lastName == null))
         };
     begin
-        return Customer extent.select((c : Customer) : Boolean{
+        return Customer extent.select((c : Customer) : Boolean {
             (c.firstName = firstName) or (c.lastName = lastName)
         });
     end;
 
     static operation vipCustomers() : Customer[*];
     begin
-        return Customer extent.select((c : Customer) : Boolean{ c.vip });
+        return Customer extent.select((c : Customer) : Boolean { c.vip });
     end;
 end;
 
 association TechnicianWorksOnService
+
     role Service.technician;
+
     role AutoMechanic.services;
+
 end;
 
 class Car
 
-
     access {
-        (System#user() == self.owner) or (System#user()is AutoMechanic)
+        (System#user() == self.owner) or (System#user() is AutoMechanic)
     };
 
     attribute registrationNumber : String;
@@ -164,11 +175,11 @@ class Car
     derived attribute pending : Integer := { self.pendingServices.size() };
 
     derived attribute pendingServices : Service[*] := {
-        self.services.select((s : Service) : Boolean{ s.pending })
+        self.services.select((s : Service) : Boolean { s.pending })
     };
 
     derived attribute completedServices : Service[*] := {
-        self.services.select((s : Service) : Boolean{ not s.pending })
+        self.services.select((s : Service) : Boolean { not s.pending })
     };
 
     operation registrationAndModel() : String;
@@ -178,7 +189,9 @@ class Car
 
     static operation findByRegistrationNumber(regNumber : String) : Car[0, 1];
     begin
-        return Car extent.\any((c : Car) : Boolean{ regNumber = c.registrationNumber });
+        return Car extent.\any((c : Car) : Boolean {
+            regNumber = c.registrationNumber
+        });
     end;
 
     (* Book a service on this car. *)
@@ -195,9 +208,8 @@ end;
 
 class Service
 
-
     access {
-        (System#user() == self.car.owner) or (System#user()is AutoMechanic)
+        (System#user() == self.car.owner) or (System#user() is AutoMechanic)
     };
 
     attribute description : Memo;
@@ -223,11 +235,11 @@ class Service
         self.bookedOn.differenceInDays(self.estimatedReady)
     };
 
-    derived attribute assigned : Boolean := { not(self.technician == null) };
+    derived attribute assigned : Boolean := { not (self.technician == null) };
 
-    static operation byStatus(services : Service[*], toMatch : Status) : Service[*];
+    static query byStatus(services : Service[*], toMatch : Status) : Service[*];
     begin
-        return services.select((service : Service) : Boolean{
+        return services.select((service : Service) : Boolean {
             service.status == toMatch
         });
     end;
@@ -263,7 +275,7 @@ class Service
     (* Assigns a service that is available to a technician. *)
     operation assignTo(technician : AutoMechanic)
         precondition MustBePending { self.pending }
-        precondition MustNotBeAssigned { !self.assigned }
+        precondition MustNotBeAssigned { ! self.assigned }
         precondition TechnicianMustBeWorking(technician) { technician.working };
     begin
         self.technician := technician;
@@ -274,7 +286,7 @@ class Service
         precondition MustBePending { self.pending }
         precondition MustBeAssigned { self.assigned }
         precondition AlreadyAssigned(mechanic) {
-            not(self.technician == mechanic)
+            not (self.technician == mechanic)
         }
         precondition TechnicianMustBeWorking(mechanic) { mechanic.working };
     begin
@@ -282,26 +294,38 @@ class Service
     end;
 
     statemachine Status
+
         initial state Booked
             transition on call(cancel) to Cancelled;
             transition on call(start) to InProgress;
         end;
+
         state InProgress
             transition on call(complete) to Completed;
         end;
+
         terminate state Completed end;
+
         terminate state Cancelled end;
+
     end;
+
 end;
 
 association CarOwner
+
     role Customer.cars;
+
     role Car.owner;
+
 end;
 
 composition ServiceCar
+
     role Car.services;
+
     role Service.car;
+
 end;
 
 class Make
@@ -315,15 +339,18 @@ class Model
 
     attribute make : Make;
 
-    operation makeAndModel() : String;
+    query makeAndModel() : String;
     begin
         return self.make.name + " " + self.name;
     end;
 end;
 
 association
+
     role models : Model[*];
+
     role Model.make;
+
 end;
 
 end.

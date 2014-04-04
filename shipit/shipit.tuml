@@ -16,9 +16,7 @@ class User
 
     attribute kind : UserKind;
 
-    private derived static attribute current : User := {
-        (System#user() as User)
-    };
+    private derived static attribute current : User := { System#user() };
 
     private derived attribute committer : Boolean := {
         self.kind = UserKind#Committer

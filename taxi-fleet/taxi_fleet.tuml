@@ -1,5 +1,7 @@
 package taxi_fleet;
 
+import mdd_collections;
+
 class Taxi
 
     attribute name : String;
@@ -19,7 +21,7 @@ class Taxi
     derived attribute booked : Boolean := { self.driverCount > 0 };
 
     (* Create charges for every driver *)
-    operation charge(date : Date[0,1])
+    operation charge(date : Date[0, 1])
         (* Not booked, can't charge *)
         precondition { self.booked };
     begin
@@ -54,15 +56,19 @@ class Driver
 
     attribute name : String;
 
-    readonly attribute taxi : Taxi[0,1];
+    readonly attribute taxi : Taxi[0, 1];
 
     readonly attribute charges : Charge[*];
 
     derived attribute hasBooking : Boolean := { not (self.taxi == null) };
 
-    derived attribute pendingCharges : Charge[*] := { self.charges.select((c : Charge) : Boolean { not c.paid }) };
+    derived attribute pendingCharges : Charge[*] := {
+        self.charges.select((c : Charge) : Boolean { not c.paid })
+    };
 
-    derived attribute paymentDue : Boolean := { not self.pendingCharges.isEmpty() };
+    derived attribute paymentDue : Boolean := {
+        not self.pendingCharges.isEmpty()
+    };
 
     (* Book a taxi that is currently available *)
     operation book(toRent : Taxi)
@@ -94,7 +100,7 @@ class Charge
     readonly attribute driver : Driver;
 
     readonly attribute description : String;
-    
+
     readonly attribute taxi : Taxi;
 
     readonly attribute amount : Double;
@@ -105,8 +111,7 @@ class Charge
 
     operation pay();
 
-    static operation newCharge(taxi : Taxi, payer : Driver, 
-            date : Date);
+    static operation newCharge(taxi : Taxi, payer : Driver, date : Date);
     begin
         var charge : Charge;
         if (date == null) then
@@ -120,6 +125,11 @@ class Charge
     end;
 
     static query pendingCharges() : Charge[*];
+    begin
+        return Charge extent.select((c : Charge) : Boolean { not c.paid });
+    end;
+
+    static query paidCharges() : Charge[*];
     begin
         return Charge extent.select((c : Charge) : Boolean { c.paid });
     end;
@@ -138,6 +148,16 @@ class Charge
 
     end;
 
+
+    static query listPendingCharges() : { : Double,  : Date}[*];
+    begin
+        return Charge#pendingCharges().collect((c : Charge) : { : Double,  : Date} {
+            {
+                amount := c.amount, 
+                date := c.date
+            }
+        });
+    end;
 end;
 
 association DriverCharges
@@ -146,6 +166,60 @@ association DriverCharges
 
     role Charge.driver;
 
+end;
+
+interface ReportingService
+
+    query listPendingCharges() : ChargeDetails[*];
+end;
+
+class DailyCharges
+
+    attribute date : Date;
+
+    attribute dailyTotal : Double;
+end;
+
+class Reports implements ReportingService
+
+    query listPendingCharges() : ChargeDetails[*];
+    begin
+        return Charge#pendingCharges().collect((c : Charge) : ChargeDetails {
+            ({
+                amount := c.amount, 
+                date := c.date, 
+                driver := c.driver.name
+            } as ChargeDetails)
+        });
+    end;
+
+    query paymentsPerDay() : DailyCharges[*];
+    begin
+        var groups : mdd_collections::Grouping<Charge>;
+        groups := (Charge#paidCharges().groupBy((c : Charge) : Date { c.date }) as Grouping<Charge>);
+        return groups.collect((grouped : Charge[*]) : DailyCharges {
+            ({
+                date := grouped.\any((c : Charge) : Boolean { true }).date, 
+                dailyTotal := grouped.sum((c : Charge) : Double { c.amount })
+            } as DailyCharges) 
+        });
+    end;
+end;
+
+datatype ChargeDetails
+
+    attribute amount : Double;
+
+    attribute date : Date;
+
+    attribute name : String;
+end;
+
+component App
+
+    composition reports : Reports;
+
+    provided port : ReportingService connector reports;
 end;
 
 end.

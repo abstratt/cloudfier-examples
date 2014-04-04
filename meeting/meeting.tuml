@@ -93,7 +93,7 @@ class User
         newMeeting.addParticipant(newMeeting.organizer);
     end;
 
-    private static derived attribute current : User := { (System#user() as User) };
+    private static derived attribute current : User := { System#user() };
 end;
 
 end.
