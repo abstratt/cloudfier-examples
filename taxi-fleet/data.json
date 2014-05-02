@@ -10,10 +10,10 @@
       "shiftsPerDay" : 2
     } ],
     "Taxi" : [ {
-      "name" : "Taxi 2",
+      "name" : "Taxi 1",
       "shift" : "Shift@1"
     }, {
-      "name" : "Taxi 1",
+      "name" : "Taxi 2",
       "shift" : "Shift@1"
     }, {
       "name" : "Taxi 3",
