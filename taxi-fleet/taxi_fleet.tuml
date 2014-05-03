@@ -30,6 +30,11 @@ class Taxi
             Charge#newCharge(self, toCharge, date);
         });
     end;
+    
+    derived attribute pendingCharges : Charge[*] := {
+        Charge#byTaxi(self).select((c : Charge) : Boolean { not c.paid })
+    };
+
 end;
 
 association TaxiDrivers
@@ -130,6 +135,11 @@ class Charge
     static query pendingCharges() : Charge[*];
     begin
         return Charge extent.select((c : Charge) : Boolean { not c.paid });
+    end;
+
+    static query byTaxi(taxi : Taxi) : Charge[*];
+    begin
+        return Charge extent.select((c : Charge) : Boolean { c.taxi == taxi });
     end;
 
     static query paidCharges() : Charge[*];
