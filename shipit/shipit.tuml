@@ -144,6 +144,7 @@ association WatchedIssues
 
 end;
 
+(* Issues are reported against a specific project. *)
 class Project
 
     id attribute description : String;
@@ -167,6 +168,11 @@ association VotedIssues
 
 end;
 
+(* 
+    An issue describes a problem report, a feature request or just a work item for a project.
+    Issues are reported by and assigned to users, and go through a lifecycle from the time 
+    they are opened until they are resolved and eventually closed.
+*)
 class Issue
 
     attribute summary : String;
