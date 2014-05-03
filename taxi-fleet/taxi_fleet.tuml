@@ -83,7 +83,9 @@ class Driver
             Taxi extent.exists((t : Taxi) : Boolean { not t.full })
         }
         (* Taxi is not available *)
-        precondition (toRent) { not toRent.full };
+        precondition (toRent) { not toRent.full }
+        (* Taxi already booked by this driver *)
+        precondition (toRent) { not (toRent == self.taxi) };
     begin
         link TaxiDrivers(taxi := toRent, drivers := self);
     end;
