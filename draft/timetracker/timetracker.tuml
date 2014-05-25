@@ -117,6 +117,10 @@ class Work
         invariant { self.units > 0 };
 
     attribute task : Task;
+    
+    attribute date : Date := { Date#today() };
+    
+    attribute memo : Memo[0, 1];
 
     (* Work can be only invoiced once. Cannot be set directly but via #submit *)
     readonly attribute invoice : Invoice[0, 1];
