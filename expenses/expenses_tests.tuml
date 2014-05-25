@@ -10,14 +10,18 @@ class Tests
         var emp : Employee, cat : Category, expense : Expense;
         emp := Employee extent.\any((e : Employee) : Boolean { true });
         cat := Category extent.\any((e : Category) : Boolean { true });
-        return emp.declareExpense("just a test expense", 10.0, Date#today(), cat);
+        return emp.declareExpense("just a test expense", amount, Date#today(), cat);
     end;
 
     operation declaredExpenseRemainsInDraft();
     begin
         var expense : Expense;
-        expense := Tests#declare(10.0);
-        Assert#areEqual(Expense::Status#Draft, expense.status);
+        begin
+            expense := Tests#declare(10.0);
+        end;
+        begin
+            Assert#areEqual(Expense::Status#Draft, expense.status);
+        end;
     end;
 
     operation submitExpenseUnder50IsAutomaticallyApproved();
@@ -25,22 +29,46 @@ class Tests
         var expense : Expense;
         begin
             expense := Tests#declare(10.0);
+            Assert#isTrue(expense.automaticApproval);
+        end;        
+        begin
+            expense.submit();
+        end;
+        begin
+            Assert#areEqual(Expense::Status#Approved, expense.status);
+        end;
+    end;
+
+    operation submitExpense50AndOverNeedsApproval();
+    begin
+        var expense : Expense;
+        begin
+            expense := Tests#declare(100.0);
+            Assert#isTrue(not expense.automaticApproval);
         end;
         begin
             expense.submit();
         end;
         begin
-        	Assert#areEqual(Expense::Status#Approved, expense.status);
+            Assert#areEqual(Expense::Status#Submitted, expense.status);
         end;
     end;
-    
-    operation submitExpense50AndOverNeedsApproval();
+    operation rejectedExpense();
     begin
         var expense : Expense;
-        expense := Tests#declare(100.0);
-        expense.submit();
-        Assert#areEqual(Expense::Status#Submitted, expense.status);
-    end;
+        begin
+            expense := Tests#declare(100.0);
+        end;
+        begin
+            expense.submit();
+        end;
+        begin
+            expense.reject(Memo#fromString("Non-reimbursable"));
+        end;
+        begin
+            Assert#areEqual(Expense::Status#Rejected, expense.status);
+        end;
+    end;    
 end;
 
 end.

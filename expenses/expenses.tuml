@@ -12,8 +12,8 @@ class Category
         var newCategory : Category;
         newCategory := new Category;
         newCategory.name := name;
-        return newCategory;
-    end;
+        return newCategory; 
+    end; 
 
     derived attribute expensesInThisCategory : Expense[*] := {
         Expense#findExpensesByCategory(self)
@@ -60,6 +60,7 @@ class Expense
         return newExpense;
     end;
 
+    (* Whether this expense qualifies for automatic approval. *)
     derived attribute automaticApproval : Boolean := {
         return self.amount < 50;
     };
@@ -77,7 +78,7 @@ class Expense
     (* Reject this expense. Please provide a reason. *)
     operation reject(reason : Memo)
         (* Cannot reject an expense under the auto-approval limit. *)
-        precondition { self.automaticApproval };
+        precondition { not self.automaticApproval };
     begin
         self.rejectionReason := reason;
         self.approver := System#user();
