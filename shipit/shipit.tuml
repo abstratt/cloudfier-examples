@@ -12,7 +12,7 @@ class User
 
     id attribute fullName : String;
 
-    attribute email : String;
+    derived attribute email : String := { self.username };
 
     attribute kind : UserKind;
 
@@ -53,8 +53,6 @@ enumeration Severity
 end;
 
 interface UserNotifier
-
-    reception notify(notification : UserNotification);
 end;
 
 abstract signal UserNotification
