@@ -1,11 +1,10 @@
-================================================================================
 Example Cloudfier apps
 ================================================================================
 
 This repository contains simple examples of Cloudfier applications.
 
 For instructions on how to get these example apps into Cloudfier, 
-`read this <http://cloudfier.com/doc/creating/examples/>`_.
+[read this](http://cloudfier.com/doc/creating/examples/).
 
 When running these applications, it is usually possible to login as user 'guest' 
 (no password), except if the application does not support anonymous login (check 
@@ -44,4 +43,4 @@ CarServ
 --------------------------------------------------------------------------------
 
 Application reverse engineered from the CarServ sample application that appears in the book 
-`Domain-Driven Design Using Naked Objects <http://pragprog.com/book/dhnako/domain-driven-design-using-naked-objects>`_ by Dan Haywood.
+[Domain-Driven Design Using Naked Objects](http://pragprog.com/book/dhnako/domain-driven-design-using-naked-objects) by Dan Haywood.

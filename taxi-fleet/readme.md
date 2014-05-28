@@ -10,4 +10,4 @@ shared between two drivers.
 * The application must send an email notification when a shift was not paid.
 * The application must produce reports on rental performance of taxis
 
-For more details, see `project proposal <https://www.freelancer.com/projects/PHP-MySQL/Simple-payment-entry-software.html>`_.
+For more details, see [project proposal](https://www.freelancer.com/projects/PHP-MySQL/Simple-payment-entry-software.html).
