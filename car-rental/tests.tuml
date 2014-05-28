@@ -1,0 +1,232 @@
+package tests;
+
+import car_rental;
+/* To avoid clash with uml::Model */
+import car_rental::Model;
+
+
+[Test]
+class CustomerScenarios
+
+    operation rentalHistory();
+    begin
+        var car : Car, customer : Customer;
+        begin
+            car := Examples#car();
+            customer := Examples#customer();
+            customer.rent(car);
+            Assert#areEqual(1, customer.rentals.size());
+            customer.finishRental();
+        end;
+        begin
+            customer.rent(car);
+            Assert#areEqual(2, customer.rentals.size());
+        end;
+    end;
+end;
+
+[Test]
+class RentalCenarios
+
+    operation startsAsInProgress();
+    begin
+        var car : Car, customer : Customer;
+        begin
+            car := Examples#car();
+            customer := Examples#customer();
+            Assert#isNull(customer.currentRental);
+            customer.rent(car);
+        end;
+        begin
+            Assert#isNotNull(customer.currentRental);
+            Assert#isTrue(customer.currentRental.inProgress);
+        end;
+    end;
+
+    operation finishedUponReturn();
+    begin
+        var car : Car, customer : Customer, rental : Rental;
+        begin
+            car := Examples#car();
+            customer := Examples#customer();
+            customer.rent(car);
+            rental := customer.currentRental;
+        end;
+        begin
+            Assert#isTrue(rental.inProgress);        
+            customer.finishRental();
+        end;
+        begin
+            Assert#isTrue(not rental.inProgress);
+        end;
+    end;
+
+    [Failure(constraint="no_current_rental")]
+    operation oneCarPerCustomer();
+    begin
+        var car1 : Car, car2 : Car, customer : Customer;
+        begin
+            car1 := Examples#car();
+            customer := Examples#customer();
+            customer.rent(car1);
+        end;
+        begin
+            car2 := Examples#car();
+            customer.rent(car2);
+        end;
+    end;
+
+    [Failure(constraint="car_available")]
+    operation carUnavailable();
+    begin
+        var car : Car, customer1 : Customer, customer2 : Customer;
+        begin
+            car := Examples#car();
+            customer1 := Examples#customer();
+            customer1.rent(car);
+        end;
+        begin
+            Assert#isTrue(car.rented);
+            customer2 := Examples#customer();
+            customer2.rent(car);
+        end;
+    end;
+end;
+
+[Test]
+class CarCenarios
+
+    operation startsAsValid();
+    begin
+        var car : Car;
+        car := Examples#car();
+    end;
+
+    operation startsAsAvailable();
+    begin
+        var car : Car;
+        car := Examples#car();
+        Assert#isTrue(car.available);
+    end;
+
+    [Failure(constraint="above_minimum", context="year")]
+    operation tooOld();
+    begin
+        var car : Car;
+        car := Examples#car();
+        car.year := 1900;
+    end;
+
+    [Failure(constraint="below_maximum", context="year")]
+    operation tooNew();
+    begin
+        var car : Car;
+        car := Examples#car();
+        car.year := 2500;
+    end;
+
+    [Failure(constraint="above_minimum", context="price")]
+    operation priceIsTooLow();
+    begin
+        var car : Car;
+        car := Examples#car();
+        car.price := 49;
+    end;
+
+    [Failure(constraint="below_maximum", context="price")]
+    operation priceIsTooHigh();
+    begin
+        var car : Car;
+        car := Examples#car();
+        car.price := 2000;
+    end;
+
+    operation unavailableWhenRented();
+    begin
+        var car : Car, customer : Customer;
+        begin
+            car := Examples#car();
+            customer := Examples#customer();
+            Assert#isTrue(car.available);
+            customer.rent(car);
+        end;
+        begin
+            Assert#isTrue(not car.available);
+            customer.finishRental();
+        end;
+    end;
+    
+    operation availableUponReturn();
+    begin
+        var car : Car, customer : Customer;
+        begin
+            car := Examples#car();
+            customer := Examples#customer();
+        end;
+        begin
+            Assert#isTrue(car.available);
+            customer.rent(car);
+        end;
+        begin
+            Assert#isTrue(not car.available);
+            customer.finishRental();
+        end;
+        begin
+            Assert#isTrue(car.available);
+        end;
+    end;
+
+    operation unavailableWhenUnderRepair();
+    begin
+        var car : Car;
+        begin
+            car := Examples#car();
+            car.startRepair();
+        end;
+        begin
+            Assert#isTrue(car.underRepair);
+        end;
+    end;
+end;
+
+class Examples
+
+    private static operation make() : Make;
+    begin
+        var make : Make;
+        make := new Make;
+        make.name := "Fiat";
+        return make;
+    end;
+
+    private static operation \model() : Model;
+    begin
+        var \model : Model;
+        \model := new Model;
+        \model.name := "Mille";
+        \model.make := Examples#make();
+        return \model;
+    end;
+
+    private static operation car() : Car;
+    begin
+        var car : Car;
+        car := new Car;
+        car.year := Date#today().year();
+        car.price := 100;
+        car.color := "black";
+        car.plate := "ABC-1234";
+        car.\model := Examples#\model();
+        return car;
+    end;
+
+    private static operation customer() : Customer;
+    begin
+        var customer : Customer;
+        customer := new Customer;
+        customer.name := "Joana de Almeida";
+        return customer;
+    end;
+end;
+
+end.

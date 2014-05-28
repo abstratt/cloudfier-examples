@@ -1,0 +1,173 @@
+package car_rental;
+
+class Car
+
+    attribute plate : String;
+
+    attribute price : Double
+        (* Price mustbe $50 at least. *)
+        invariant above_minimum { self.price >= 50.0 }
+        (* Price cannot be above $500. *)
+        invariant below_maximum { self.price <= 500.0 };
+
+    derived attribute available : Boolean := {
+        self.status == Status#Available
+    };
+
+    derived attribute currentRental : Rental := {
+        Rental#currentForCar(self)
+    };
+
+    attribute year : Integer
+        (* Year must be later than 1990 *)
+        invariant above_minimum { (self.year > 1990) }
+        (* Year cannot be in the future *)
+        invariant below_maximum { self.year <= Date#today().year() };
+
+    attribute color : String;
+
+    attribute \model : Model;
+
+    derived attribute underRepair : Boolean := {
+        self.status == Status#UnderRepair
+    };
+
+    derived attribute rented : Boolean := { self.status == Status#Rented };
+
+    readonly attribute rentals : Rental[*];
+
+    attribute status : Status;
+
+    statemachine Status
+
+        initial state Available
+            transition on signal(CarRented) to Rented;
+            transition on signal(RepairStarted) to UnderRepair;
+        end;
+
+        state Rented
+            transition on signal(CarReturned) to Available;
+        end;
+
+        state UnderRepair
+            transition on signal(RepairFinished) to Available;
+        end;
+
+    end;
+
+
+    operation startRepair();
+    begin
+        send RepairStarted() to self;
+    end;
+
+    operation finishRepair();
+    begin
+        send RepairFinished() to self;
+    end;
+end;
+
+signal CarRented
+end;
+
+signal CarReturned
+end;
+
+signal RepairStarted
+end;
+
+signal RepairFinished
+end;
+
+class Rental
+
+    readonly attribute inicio : Date := { Date#today() };
+
+    readonly attribute car : Car;
+
+    readonly attribute customer : Customer;
+
+    readonly attribute inProgress : Boolean := true;
+
+    private operation finish()
+        precondition { self.inProgress };
+    begin
+        self.inProgress := false;
+    end;
+
+    static query currentForCar(c : Car) : Rental;
+    begin
+        return Rental extent.\any((l : Rental) : Boolean {
+            (l.car == c) and l.inProgress
+        });
+    end;
+
+    static query currentForCustomer(c : Customer) : Rental;
+    begin
+        return Rental extent.\any((l : Rental) : Boolean {
+            (l.customer == c) and l.inProgress
+        });
+    end;
+end;
+
+class Model
+
+    attribute name : String;
+
+    attribute make : Make;
+end;
+
+class Make
+
+    attribute name : String;
+end;
+
+class Customer
+
+    attribute name : String;
+
+    readonly attribute rentals : Rental[*];
+
+    operation rent(car : Car)
+        precondition car_available(car) { car.available }
+        precondition no_current_rental { self.currentRental == null };
+    begin
+        var rental : Rental;
+        rental := new Rental;
+        link RentalsCustomer(customer := self, rentals := rental);
+        link RentalsCar(car := car, rentals := rental);
+        rental.customer := self;
+        send CarRented() to car;
+    end;
+
+    derived attribute currentRental : Rental := {
+        Rental#currentForCustomer(self)
+    };
+
+    operation finishRental()
+        precondition current_rental_exists {
+            not (self.currentRental == null)
+        };
+    begin
+        send CarReturned() to self.currentRental.car;
+        self.currentRental.finish();
+    end;
+end;
+
+association RentalsCustomer
+
+    role Customer.rentals;
+
+    role Rental.customer;
+
+end;
+
+association RentalsCar
+
+    role Car.rentals;
+
+    role Rental.car;
+
+end;
+
+end.
