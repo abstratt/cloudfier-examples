@@ -1,0 +1,253 @@
+package testes;
+
+import autolocadora;
+
+[Test]
+class ClienteCenarios
+
+    operation historicoLocacoes();
+    begin
+        var carro : Carro, cliente : Cliente;
+        begin
+            carro := Exemplos#carro();
+            cliente := Exemplos#cliente();
+            cliente.alugue(carro);
+            Assert#areEqual(1, cliente.locacoes.size());
+            cliente.encerraLocacao();
+        end;
+        begin
+            cliente.alugue(carro);
+            Assert#areEqual(2, cliente.locacoes.size());
+        end;
+    end;
+end;
+
+[Test]
+class LocacaoCenarios
+
+    operation comecaEmAberto();
+    begin
+        var carro : Carro, cliente : Cliente;
+        begin
+            carro := Exemplos#carro();
+            cliente := Exemplos#cliente();
+            Assert#isNull(cliente.locacaoAtiva);
+            cliente.alugue(carro);
+        end;
+        begin
+            Assert#isNotNull(cliente.locacaoAtiva);
+            Assert#isTrue(cliente.locacaoAtiva.emAberto);
+        end;
+    end;
+
+    operation encerradoQuandoCarroRetornado();
+    begin
+        var carro : Carro, cliente : Cliente, locacao : Locacao;
+        begin
+            carro := Exemplos#carro();
+            cliente := Exemplos#cliente();
+            cliente.alugue(carro);
+            locacao := cliente.locacaoAtiva;
+        end;
+        begin
+            Assert#isTrue(locacao.emAberto);        
+            cliente.encerraLocacao();
+        end;
+        begin
+            Assert#isTrue(not locacao.emAberto);
+        end;
+    end;
+
+    operation carroDisponivelQuandoRetornado();
+    begin
+        var carro : Carro, cliente : Cliente;
+        begin
+            carro := Exemplos#carro();
+            cliente := Exemplos#cliente();
+            cliente.alugue(carro);
+        end;
+        begin
+            Assert#isTrue(not carro.disponivel);
+            cliente.encerraLocacao();
+        end;
+        begin
+            Assert#isTrue(carro.disponivel);
+        end;
+    end;
+
+    [Failure(constraint="sem_locacao_ativa")]
+    operation somenteUmCarroPorCliente();
+    begin
+        var carro1 : Carro, carro2 : Carro, cliente : Cliente;
+        begin
+            carro1 := Exemplos#carro();
+            cliente := Exemplos#cliente();
+            cliente.alugue(carro1);
+        end;
+        begin
+            carro2 := Exemplos#carro();
+            cliente.alugue(carro2);
+        end;
+    end;
+
+    [Failure(constraint="carro_disponivel")]
+    operation carroIndisponivel();
+    begin
+        var carro : Carro, cliente1 : Cliente, cliente2 : Cliente;
+        begin
+            carro := Exemplos#carro();
+            cliente1 := Exemplos#cliente();
+            cliente1.alugue(carro);
+        end;
+        begin
+            Assert#isTrue(carro.alugado);
+            cliente2 := Exemplos#cliente();
+            cliente2.alugue(carro);
+        end;
+    end;
+end;
+
+[Test]
+class CarroCenarios
+
+    operation iniciaValido();
+    begin
+        var carro : Carro;
+        carro := Exemplos#carro();
+    end;
+
+    operation iniciaDisponivel();
+    begin
+        var carro : Carro;
+        carro := Exemplos#carro();
+        Assert#isTrue(carro.disponivel);
+    end;
+
+    [Failure(constraint="acima_do_minimo", context="ano")]
+    operation muitoAntigo();
+    begin
+        var carro : Carro;
+        carro := Exemplos#carro();
+        carro.ano := 1900;
+    end;
+
+    [Failure(constraint="abaixo_do_maximo", context="ano")]
+    operation muitoNovo();
+    begin
+        var carro : Carro;
+        carro := Exemplos#carro();
+        carro.ano := 2500;
+    end;
+
+    [Failure(constraint="acima_do_minimo", context="diaria")]
+    operation diariaMuitoBaixa();
+    begin
+        var carro : Carro;
+        carro := Exemplos#carro();
+        carro.diaria := 49;
+    end;
+
+    [Failure(constraint="abaixo_do_maximo", context="diaria")]
+    operation diariaMuitoAlta();
+    begin
+        var carro : Carro;
+        carro := Exemplos#carro();
+        carro.diaria := 2000;
+    end;
+
+    operation iniciaDisponivel();
+    begin
+        var carro : Carro;
+        carro := Exemplos#carro();
+        Assert#isTrue(carro.disponivel);
+    end;
+
+    operation indisponivelQuandoAlugado();
+    begin
+        var carro : Carro, cliente : Cliente;
+        begin
+            carro := Exemplos#carro();
+            cliente := Exemplos#cliente();
+            Assert#isTrue(carro.disponivel);
+            cliente.alugue(carro);
+        end;
+        begin
+            Assert#isTrue(not carro.disponivel);
+            cliente.encerraLocacao();
+        end;
+    end;
+
+    operation disponivelQuandoRetornado();
+    begin
+        var carro : Carro, cliente : Cliente;
+        begin
+            carro := Exemplos#carro();
+            cliente := Exemplos#cliente();
+        end;
+        begin
+            Assert#isTrue(carro.disponivel);
+            cliente.alugue(carro);
+        end;
+        begin
+            Assert#isTrue(not carro.disponivel);
+            cliente.encerraLocacao();
+        end;
+        begin
+            Assert#isTrue(carro.disponivel);
+        end;
+    end;
+
+    operation indisponivelQuandoEmReparo();
+    begin
+        var carro : Carro;
+        begin
+            carro := Exemplos#carro();
+            carro.iniciaReparo();
+        end;
+        begin
+            Assert#isTrue(carro.emReparo);
+        end;
+    end;
+end;
+
+class Exemplos
+
+    private static operation marca() : Marca;
+    begin
+        var marca : Marca;
+        marca := new Marca;
+        marca.nome := "Fiat";
+        return marca;
+    end;
+
+    private static operation modelo() : Modelo;
+    begin
+        var modelo : Modelo;
+        modelo := new Modelo;
+        modelo.nome := "Mille";
+        modelo.marca := Exemplos#marca();
+        return modelo;
+    end;
+
+    private static operation carro() : Carro;
+    begin
+        var carro : Carro;
+        carro := new Carro;
+        carro.ano := Date#today().year();
+        carro.diaria := 100;
+        carro.cor := "preto";
+        carro.placa := "ABC-1234";
+        carro.modelo := Exemplos#modelo();
+        return carro;
+    end;
+
+    private static operation cliente() : Cliente;
+    begin
+        var cliente : Cliente;
+        cliente := new Cliente;
+        cliente.nome := "Joana de Almeida";
+        return cliente;
+    end;
+end;
+
+end.

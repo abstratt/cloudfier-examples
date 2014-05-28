@@ -1,0 +1,183 @@
+package autolocadora;
+
+class Carro
+
+    attribute placa : String;
+
+    attribute diaria : Double
+        (* Diaria precisa ser de 50 reais ou mais. *)
+        invariant acima_do_minimo { self.diaria >= 50.0 }
+        (* Diaria nao pode ser acima de 500 reais. *)
+        invariant abaixo_do_maximo { self.diaria <= 500.0 };
+
+    derived attribute disponivel : Boolean := {
+        self.status == Status#Disponivel
+    };
+
+    derived attribute locacaoAtiva : Locacao := {
+        Locacao#emAbertoParaCarro(self)
+    };
+
+    attribute ano : Integer
+        (* Ano tem que ser superior a 1990 *)
+        invariant acima_do_minimo { (self.ano > 1990) }
+        (* Ano nao pode ser maior que o ano atual *)
+        invariant abaixo_do_maximo { self.ano <= Date#today().year() };
+
+    attribute cor : String;
+
+    attribute modelo : Modelo;
+
+    derived attribute emReparo : Boolean := {
+        self.status == Status#EmReparo
+    };
+
+    derived attribute alugado : Boolean := {
+        self.status == Status#Alugado
+    };
+
+    readonly attribute locacoes : Locacao[*];
+
+    attribute status : Status;
+
+    statemachine Status
+
+        initial state Disponivel
+            transition on signal(CarroAlugado) to Alugado;
+            transition on signal(ReparoIniciado), call(iniciaReparo) to EmReparo;
+        end;
+
+        state Alugado
+            transition on signal(CarroRetornado) to Disponivel;
+        end;
+
+        state EmReparo
+            transition on signal(ReparoTerminado), call(terminaReparo) to Disponivel;
+        end;
+
+    end;
+
+
+    operation iniciaReparo();
+
+    operation terminaReparo();
+end;
+
+signal CarroAlugado
+end;
+
+signal CarroRetornado
+end;
+
+signal ReparoIniciado
+end;
+
+signal ReparoTerminado
+end;
+
+class Locacao
+
+    readonly attribute inicio : Date := { Date#today() };
+
+    readonly attribute carro : Carro;
+
+    readonly attribute cliente : Cliente;
+
+    readonly attribute emAberto : Boolean := true;
+
+    private operation encerre()
+        precondition { self.emAberto };
+    begin
+        self.emAberto := false;
+    end;
+
+    static query emAbertoParaCarro(c : Carro) : Locacao;
+    begin
+        return Locacao extent.\any((l : Locacao) : Boolean {
+            (l.carro == c) and l.emAberto
+        });
+    end;
+
+    static query emAbertoParaCliente(c : Cliente) : Locacao;
+    begin
+        return Locacao extent.\any((l : Locacao) : Boolean {
+            (l.cliente == c) and l.emAberto
+        });
+    end;
+end;
+
+class Modelo
+
+    attribute nome : String;
+
+    attribute marca : Marca;
+end;
+
+class Marca
+
+    attribute nome : String;
+end;
+
+class Cliente
+
+    attribute nome : String;
+
+    attribute cpf : String[0, 1];
+
+    readonly attribute locacoes : Locacao[*];
+
+    operation alugue(carro : Carro)
+        precondition carro_disponivel(carro) { carro.disponivel }
+        precondition sem_locacao_ativa { self.locacaoAtiva == null };
+    begin
+        var locacao : Locacao;
+        locacao := new Locacao;
+        link LocacoesCliente(cliente := self, locacoes := locacao);
+        link LocacoesCarro(carro := carro, locacoes := locacao);
+        locacao.cliente := self;
+        send CarroAlugado() to carro;
+    end;
+
+    derived attribute locacaoAtiva : Locacao := {
+        Locacao#emAbertoParaCliente(self)
+    };
+
+    operation encerraLocacao()
+        precondition locacao_ativa_existe { not (self.locacaoAtiva == null) };
+    begin
+        send CarroRetornado() to self.locacaoAtiva.carro;
+        self.locacaoAtiva.encerre();
+    end;
+end;
+
+association LocacoesCliente
+
+    role Cliente.locacoes;
+
+    role Locacao.cliente;
+
+end;
+
+association LocacoesCarro
+
+    role Carro.locacoes;
+
+    role Locacao.carro;
+
+end;
+
+class CartaoDeCredito
+
+    attribute numero : String;
+
+    attribute bandeira : BandeiraCartao;
+end;
+
+enumeration BandeiraCartao
+    VISA, 
+    Mastercard, 
+    Amex, 
+    Dinners
+end;
+
+end.

@@ -1,0 +1,62 @@
+{
+  "autolocadora" : {
+    "Marca" : [ {
+      "nome" : "Renault"
+    }, {
+      "nome" : "marca"
+    }, {
+      "nome" : "Citroen"
+    }, {
+      "nome" : "Ford"
+    }, {
+      "nome" : "Fiat"
+    }, {
+      "nome" : "marca"
+    }, {
+      "nome" : "Chevrolet"
+    }, {
+      "nome" : "marca"
+    }, {
+      "nome" : "marca"
+    }, {
+      "nome" : "marca"
+    }, {
+      "nome" : "marca"
+    }, {
+      "nome" : "marca"
+    } ],
+    "Modelo" : [ {
+      "nome" : "Fiesta",
+      "marca" : "Marca@4"
+    }, {
+      "nome" : "Palio",
+      "marca" : "Marca@5"
+    }, {
+      "nome" : "C3",
+      "marca" : "Marca@3"
+    }, {
+      "nome" : "Sandero",
+      "marca" : "Marca@1"
+    }, {
+      "nome" : "500",
+      "marca" : "Marca@5"
+    } ],
+    "Carro" : [ {
+      "placa" : "ABC-1234",
+      "diaria" : 100.0,
+      "ano" : 2014,
+      "cor" : "preto",
+      "modelo" : "Modelo@2"
+    } ],
+    "Cliente" : [ {
+      "nome" : "Aluno 1",
+      "cpf" : "123456789-01"
+    }, {
+      "nome" : "Aluno 2",
+      "cpf" : "456789012-34"
+    }, {
+      "nome" : "Aluno 3",
+      "cpf" : "789012345-67"
+    } ]
+  }
+}
