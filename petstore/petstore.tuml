@@ -30,6 +30,7 @@ class Product
     attribute productName : String;
 
     attribute productPrice : Double[0, 1]
+        (* Price must be greater than zero *)
         invariant { (self.productPrice > 0) };
 
     attribute unitCost : Double[0, 1]
