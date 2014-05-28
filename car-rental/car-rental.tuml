@@ -55,13 +55,14 @@ class Car
 
     end;
 
-
-    operation startRepair();
+    operation startRepair()
+        precondition { self.status == Status#Available };
     begin
         send RepairStarted() to self;
     end;
 
-    operation finishRepair();
+    operation finishRepair()
+        precondition { self.status == Status#UnderRepair };
     begin
         send RepairFinished() to self;
     end;
