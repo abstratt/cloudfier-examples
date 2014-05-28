@@ -1,0 +1,90 @@
+{
+  "car_rental" : {
+    "Make" : [ {
+      "name" : "Dodge"
+    }, {
+      "name" : "Subaru"
+    }, {
+      "name" : "Chrysler"
+    }, {
+      "name" : "Toyota"
+    }, {
+      "name" : "Honda"
+    } ],
+    "Customer" : [ {
+      "name" : "Stephanie Enever"
+    }, {
+      "name" : "Rob Padaratz"
+    }, {
+      "name" : "Jeremy Wilson"
+    }, {
+      "name" : "Maya deSouza"
+    } ],
+    "Model" : [ {
+      "name" : "Stratus",
+      "make" : "Make@1"
+    }, {
+      "name" : "Caravan",
+      "make" : "Make@1"
+    }, {
+      "name" : "Corolla",
+      "make" : "Make@4"
+    }, {
+      "name" : "Civic",
+      "make" : "Make@5"
+    }, {
+      "name" : "Camry",
+      "make" : "Make@4"
+    } ],
+    "Car" : [ {
+      "plate" : "DEF-456",
+      "price" : 85.0,
+      "year" : 2012,
+      "color" : "Beige",
+      "status" : "Rented",
+      "model" : "Model@4"
+    }, {
+      "plate" : "GHI-789",
+      "price" : 100.0,
+      "year" : 2013,
+      "color" : "Black",
+      "status" : "Available",
+      "model" : "Model@5"
+    }, {
+      "plate" : "ABC-123",
+      "price" : 70.0,
+      "year" : 2010,
+      "color" : "White",
+      "status" : "UnderRepair",
+      "model" : "Model@1"
+    }, {
+      "plate" : "XYZ-987",
+      "price" : 89.0,
+      "year" : 2014,
+      "color" : "Silver",
+      "status" : "Available",
+      "model" : "Model@3"
+    } ],
+    "Rental" : [ {
+      "inicio" : "2014/05/28",
+      "inProgress" : false,
+      "car" : "Car@4",
+      "customer" : "Customer@2"
+    }, {
+      "inicio" : "2014/05/28",
+      "inProgress" : false,
+      "car" : "Car@2",
+      "customer" : "Customer@2"
+    }, {
+      "inicio" : "2014/05/28",
+      "inProgress" : false,
+      "car" : "Car@4",
+      "customer" : "Customer@1"
+    }, {
+      "inicio" : "2014/05/28",
+      "inProgress" : true,
+      "car" : "Car@1",
+      "customer" : "Customer@4"
+    } ]
+  }
+}
