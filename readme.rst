@@ -18,6 +18,10 @@ Expenses
 
 See Expenses example application own documentation for more information.
 
+CarRental
+--------------------------------------------------------------------------------
+Simple app, but shows how to write test suites (run them with run-tests).
+
 ShipIt
 --------------------------------------------------------------------------------
 
