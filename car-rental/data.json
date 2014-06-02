@@ -66,22 +66,22 @@
       "model" : "Model@3"
     } ],
     "Rental" : [ {
-      "inicio" : "2014/05/28",
+      "start" : "2014/05/28",
       "inProgress" : false,
       "car" : "Car@4",
       "customer" : "Customer@2"
     }, {
-      "inicio" : "2014/05/28",
+      "start" : "2014/05/28",
       "inProgress" : false,
       "car" : "Car@2",
       "customer" : "Customer@2"
     }, {
-      "inicio" : "2014/05/28",
+      "start" : "2014/05/28",
       "inProgress" : false,
       "car" : "Car@4",
       "customer" : "Customer@1"
     }, {
-      "inicio" : "2014/05/28",
+      "start" : "2014/05/28",
       "inProgress" : true,
       "car" : "Car@1",
       "customer" : "Customer@4"

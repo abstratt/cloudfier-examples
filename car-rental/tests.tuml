@@ -26,7 +26,7 @@ class CustomerScenarios
 end;
 
 [Test]
-class RentalCenarios
+class RentalScenarios
 
     operation startsAsInProgress();
     begin
@@ -94,7 +94,7 @@ class RentalCenarios
 end;
 
 [Test]
-class CarCenarios
+class CarScenarios
 
     operation startsAsValid();
     begin

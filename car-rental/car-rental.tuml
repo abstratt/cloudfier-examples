@@ -2,6 +2,8 @@ package car_rental;
 
 class Car
 
+    derived attribute description : String := { self.\model.description + " - " + self.plate };
+
     attribute plate : String;
 
     attribute price : Double
@@ -82,7 +84,9 @@ end;
 
 class Rental
 
-    readonly attribute inicio : Date := { Date#today() };
+    derived attribute description : String := { self.car.\model.description + " on " + self.start };
+
+    readonly attribute start : Date := { Date#today() };
 
     readonly attribute car : Car;
 
@@ -112,6 +116,8 @@ class Rental
 end;
 
 class Model
+
+    derived attribute description : String := { self.make.name + " " + self.name };
 
     attribute name : String;
 
