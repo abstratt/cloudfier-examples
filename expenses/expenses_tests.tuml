@@ -24,6 +24,12 @@ class Tests
         end;
     end;
 
+    operation automaticApproval();
+    begin
+        Assert#isTrue(Tests#declare(49.9).automaticApproval);
+        Assert#isTrue(not Tests#declare(50.0).automaticApproval);
+    end;
+
     operation submitExpenseUnder50IsAutomaticallyApproved();
     begin
         var expense : Expense;
