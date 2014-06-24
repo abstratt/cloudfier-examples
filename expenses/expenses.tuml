@@ -24,7 +24,7 @@ end;
 class Expense 
 
     derived attribute moniker : String := {
-        self.description + " on " + self.date
+        self.description + " on " + self.date + " - " + self.status
     };
 
     attribute description : String;
@@ -65,15 +65,14 @@ class Expense
         return self.amount < 50;
     };
 
-    (* Sends this expense back to Draft state. *)
-    operation review();
-
     operation approve()
         (* Cannot approve own expenses. *)
         precondition { not (System#user() == self.employee) };
     begin
         self.approver := System#user();
     end;
+    
+    operation reconsider();
 
     (* Reject this expense. Please provide a reason. *)
     operation reject(reason : Memo)
@@ -83,6 +82,9 @@ class Expense
         self.rejectionReason := reason;
         self.approver := System#user();
     end;
+    
+    (* Sends this expense back to Draft state. *)
+    operation review();
 
     (* Submit this expense. *)
     operation submit() : Boolean;
@@ -147,7 +149,9 @@ class Expense
             };
         end;
 
-        state Rejected end;
+        state Rejected
+            transition on call(reconsider) to Submitted;
+        end;
 
     end;
 
