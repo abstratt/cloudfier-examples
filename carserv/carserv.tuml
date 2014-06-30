@@ -182,7 +182,7 @@ class Car
         self.services.select((s : Service) : Boolean { not s.pending })
     };
 
-    operation registrationAndModel() : String;
+    query registrationAndModel() : String;
     begin
         return self.\model.makeAndModel() + " " + self.registrationNumber;
     end;
