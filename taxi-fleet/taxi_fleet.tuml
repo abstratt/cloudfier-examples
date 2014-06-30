@@ -3,6 +3,7 @@ package taxi_fleet;
 import mdd_collections::Grouping;
 import reporting;
 
+(* The vehicles that make up the fleet. *)
 class Taxi
 
     attribute name : String;
@@ -45,6 +46,7 @@ association TaxiDrivers
 
 end;
 
+(* Shift modalities. *)
 class Shift
 
     attribute description : String;
@@ -55,9 +57,10 @@ class Shift
         (* Choose at least 1 shift per day *)
         invariant { self.shiftsPerDay > 0 }
         (* Too many shifts per day *)
-        invariant { self.shiftsPerDay <= 2 };
+        invariant { self.shiftsPerDay <= 3 };
 end;
 
+(* Drivers that can book taxis. *)
 class Driver
 
     attribute name : String;
@@ -99,6 +102,7 @@ class Driver
     end;
 end;
 
+(* Charges for renting taxis. *)
 class Charge
 
     readonly attribute date : Date;
