@@ -227,7 +227,7 @@ class Service
         (self.status == Status#Booked) or (self.status == Status#InProgress)
     };
 
-    attribute technician : AutoMechanic[0, 1];
+    readonly attribute technician : AutoMechanic[0, 1];
 
     attribute status : Status;
 
@@ -244,7 +244,7 @@ class Service
         });
     end;
 
-    static operation newService(carToService : Car, description : Memo, estimate : Integer) : Service
+    static operation newService(carToService : Car, description : Memo, estimate : Integer := 1) : Service
         precondition EstimateMustBePositive(estimate) { estimate > 0 };
     begin
         var s : Service;
@@ -255,11 +255,8 @@ class Service
         return s;
     end;
 
-    (* Cancels a service. No record is kept of cancelled services. *)
+    (* Cancels a service. *)
     operation cancel();
-    begin
-        destroy self;
-    end;
 
     (* Starts the service. It can no longer be canceled. *)
     operation start()
@@ -304,10 +301,9 @@ class Service
             transition on call(complete) to Completed;
         end;
 
-        terminate state Completed end;
+        state Completed end;
 
-        terminate state Cancelled end;
-
+        state Cancelled end;
     end;
 
 end;
