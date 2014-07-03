@@ -12,7 +12,7 @@ class Category
         var newCategory : Category;
         newCategory := new Category;
         newCategory.name := name;
-        return newCategory; 
+        return newCategory;
     end; 
 
     derived attribute expensesInThisCategory : Expense[*] := {
@@ -24,20 +24,22 @@ end;
 class Expense 
 
     derived attribute moniker : String := {
-        self.description + " on " + self.date + " - " + self.status
+        self.description + " on " + self.date
     };
 
-    attribute description : String;
+    readonly attribute description : String;
 
-    reference category : Category;
+    readonly reference category : Category;
 
     readonly attribute status : Status;
 
-    attribute amount : Double := 0.0;
+    readonly attribute amount : Double;
 
-    attribute date : Date := { Date#today() };
+    readonly attribute date : Date := { Date#today() };
 
-    attribute employee : Employee;
+    readonly attribute processed : Date[0,1];
+
+    readonly attribute employee : Employee;
 
     readonly attribute rejectionReason : Memo[0, 1];
 
@@ -62,7 +64,14 @@ class Expense
 
     (* Whether this expense qualifies for automatic approval. *)
     derived attribute automaticApproval : Boolean := {
-        return self.amount < 50;
+        self.amount < 50
+    };
+    
+    derived attribute daysProcessed : Integer := {
+    	if (self.processed == null) then
+    	    return 0
+    	else
+    	    return Date#today().differenceInDays(self.processed);
     };
 
     operation approve()
@@ -72,7 +81,6 @@ class Expense
         self.approver := System#user();
     end;
     
-    operation reconsider();
 
     (* Reject this expense. Please provide a reason. *)
     operation reject(reason : Memo)
@@ -82,6 +90,11 @@ class Expense
         self.rejectionReason := reason;
         self.approver := System#user();
     end;
+    
+    (* Reconsider this expense. *)
+    operation reconsider() : Boolean
+        (* Cannot reconsider after a week. *)
+        precondition { self.daysProcessed < 7 };
     
     (* Sends this expense back to Draft state. *)
     operation review();
@@ -145,11 +158,15 @@ class Expense
 
         state Approved
             entry {
+            	self.processed := Date#today();
                 self.reportApproved();
             };
         end;
 
         state Rejected
+            entry {
+            	self.processed := Date#today();
+            };
             transition on call(reconsider) to Submitted;
         end;
 
