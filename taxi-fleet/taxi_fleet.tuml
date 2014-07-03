@@ -58,6 +58,11 @@ class Shift
         invariant { self.shiftsPerDay > 0 }
         (* Too many shifts per day *)
         invariant { self.shiftsPerDay <= 3 };
+        
+    derived attribute taxis : Taxi[*] := {
+        Taxi extent.select((t : Taxi) : Boolean { t.shift == self })
+    };
+
 end;
 
 (* Drivers that can book taxis. *)
