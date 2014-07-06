@@ -1,29 +1,42 @@
 {
   "timetracker" : {
     "Client" : [ {
-      "name" : "Client 1"
+      "name" : "Genologics"
     }, {
-      "name" : "Client 2"
+      "name" : "Digilab"
+    }, {
+      "name" : "Bravi"
+    }, {
+      "name" : "Solvusoft"
     } ],
     "Task" : [ {
-      "description" : "Create website mock-up",
-      "client" : "Client@2"
-    }, {
-      "description" : "Design database schema",
+      "description" : "UDT configuration",
+      "client" : "Client@1"
+    } ],
+    "Invoice" : [ {
+      "number" : "13",
+      "issueDate" : "2014/05/13",
+      "status" : "Preparation",
       "client" : "Client@1"
     } ],
     "Work" : [ {
-      "units" : 4,
-      "task" : "Task@1"
-    }, {
-      "units" : 1,
-      "task" : "Task@1"
+      "units" : 3,
+      "date" : "2014/05/13",
+      "memo" : null,
+      "task" : "Task@1",
+      "invoice" : "Invoice@1"
     }, {
       "units" : 3,
-      "task" : "Task@2"
+      "date" : "2014/05/13",
+      "memo" : "incremental progress",
+      "task" : "Task@1",
+      "invoice" : "Invoice@1"
     }, {
-      "units" : 3,
-      "task" : "Task@2"
-    } ]    
+      "units" : 2,
+      "date" : "2014/05/13",
+      "memo" : null,
+      "task" : "Task@1",
+      "invoice" : "Invoice@1"
+    } ]
   }
 }
