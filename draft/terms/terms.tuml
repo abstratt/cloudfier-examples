@@ -1,76 +1,73 @@
 package terms;
 
-datatype MissingSuggestion
+datatype NoRelatedTermFound
+end;
+
+datatype NoDefinitionFound
 end;
 
 class Term
-
     attribute name : String;
+    attribute definition : Memo[0,1];
 
-    composition definitions : Definition[*];
-
-    (* Add the automatically suggested definition as one of the definitions for this term. *)
-    operation acceptSuggestion()raises MissingSuggestion;
+    operation researchRelatedTerms();
     begin
-        var accepted : Definition, suggestion : Suggestion;
+        var retrieved : RetrievedTerm;
         begin
-	        suggestion := self.definer.define(self.name);
-	        if (suggestion == null)then
-	            raise new MissingSuggestion;
-	        accepted := new Definition;
-	        if (not(suggestion.Definition.isEmpty())) then 
-	            accepted.definition := suggestion.Definition
-	        elseif (not(suggestion.Abstract.isEmpty())) then
-	            accepted.definition := suggestion.Abstract
-	        else
-	            accepted.definition := suggestion.RelatedTopics.\any((t : Topic) : Boolean { not (t.Text == null) and (not(t.Text.isEmpty())) }).Text;
-	        if (accepted.definition == null) then
-	            raise new MissingSuggestion;            
-            link TermDefinition(term := self, definitions := accepted);
+            retrieved := self.definer.define(self.name);
+            if (retrieved.related.isEmpty()) then
+                raise new NoRelatedTermFound;
+            retrieved.related.forEach((r : RetrievedTerm) {
+                self.addRelatedTerm(r);
+            });
         end;
     end;
     
-    (* 
-    Adds a new term an automatically assigns a suggested definition.
-    If no suggestions exist, an error occurs.
-    *)
-    static operation newTerm(termName : String);
+    operation researchDefinition();
     begin
-        var term : Term;
+        var retrieved : RetrievedTerm;
         begin
-            term := new Term;
-            term.name := termName;
-        end;
-        begin
-            term.acceptSuggestion();
+            retrieved := self.definer.define(self.name);
+            if (retrieved.definition == null) then
+                raise new NoDefinitionFound;
+            self.definition := retrieved.definition;
         end;
     end;
 
+    private operation addRelatedTerm(r : RetrievedTerm);
+    begin
+        var newTerm : Term;
+        begin
+            begin
+	            newTerm := new Term;
+	            newTerm.name := r.term;
+	            newTerm.definition := r.definition;
+	        end;
+	        begin
+                link TermRelationship(term := self, relatedTerms := newTerm);
+            end;
+        end;
+    end;
+    
     required port definer : Definer;
 end;
 
-class Definition
-    attribute definition : Memo;
+association TermRelationship
+    role term : Term;
+    navigable role relatedTerms : Term[*];
 end;
 
-composition TermDefinition
-    role Term.definitions;
-    navigable role term : Term;
-end;
 
 interface Definer
-    operation define(q : String) : Suggestion;
+    operation define(term : String) : RetrievedTerm;
 end;
 
-datatype Topic
-    attribute Text : Memo;
+datatype RetrievedTerm
+    attribute term : String;
+    attribute definition : Memo[0,1];
+    attribute related : RetrievedTerm[*];
 end;
 
-datatype Suggestion
-    attribute Definition : Memo;
-    attribute Abstract : Memo;
-    attribute RelatedTopics : Topic[*];
-end;
 
 external class DefinitionService implements Definer
 end;

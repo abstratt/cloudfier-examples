@@ -14,7 +14,7 @@ class Client
     begin
         var newInvoice : Invoice;
         newInvoice := new Invoice;
-        newInvoice.client := self;
+        link ClientInvoice(client := self, invoices := newInvoice);
     end;
 end;
 
