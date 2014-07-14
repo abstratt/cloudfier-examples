@@ -1,47 +1,47 @@
 {
   "expenses" : {
     "Category" : [ {
-      "name" : "Airfare"
-    }, {
       "name" : "Meal"
     }, {
-      "name" : "Transportation"
+      "name" : "Airfare"
     }, {
       "name" : "Lodging"
+    }, {
+      "name" : "Transportation"
     } ],
     "Employee" : [ {
-      "name" : "Camille Jouel",
+      "name" : "John Ford",
       "username" : null
     }, {
-      "name" : "John Ford",
+      "name" : "Camille Jouel",
       "username" : null
     }, {
       "name" : "Peter Jones",
       "username" : null
     } ],
     "Expense" : [ {
-      "description" : "Hilton LA downtown",
-      "status" : "Approved",
-      "amount" : 304.5,
-      "date" : "2012/09/13",
-      "rejectionReason" : null,
-      "expenseId" : 20,
-      "category" : "Category@4",
-      "employee" : "Employee@2"
-    }, {
       "description" : "Cab airport->downtown",
       "status" : "Approved",
       "amount" : 40.5,
       "date" : "2012/07/13",
       "rejectionReason" : null,
-      "expenseId" : 23,
-      "category" : "Category@3",
+      "expenseId" : 20,
+      "category" : "Category@4",
       "employee" : "Employee@3"
     }, {
       "description" : "Lunch in LA",
       "status" : "Submitted",
       "amount" : 35.75,
       "date" : "2012/09/14",
+      "rejectionReason" : null,
+      "expenseId" : 23,
+      "category" : "Category@1",
+      "employee" : "Employee@2"
+    }, {
+      "description" : "YVR/LAX",
+      "status" : "Draft",
+      "amount" : 190.5,
+      "date" : "2012/09/13",
       "rejectionReason" : null,
       "expenseId" : 29,
       "category" : "Category@2",
@@ -53,17 +53,17 @@
       "date" : "2012/09/13",
       "rejectionReason" : null,
       "expenseId" : 26,
-      "category" : "Category@2",
-      "employee" : "Employee@2"
+      "category" : "Category@1",
+      "employee" : "Employee@1"
     }, {
-      "description" : "YVR/LAX",
-      "status" : "Draft",
-      "amount" : 190.5,
+      "description" : "Hilton LA downtown",
+      "status" : "Approved",
+      "amount" : 304.5,
       "date" : "2012/09/13",
       "rejectionReason" : null,
       "expenseId" : 17,
-      "category" : "Category@1",
-      "employee" : "Employee@2"
-    } ] 
+      "category" : "Category@3",
+      "employee" : "Employee@1"
+    } ]
   }
 }
