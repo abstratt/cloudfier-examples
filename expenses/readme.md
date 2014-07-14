@@ -13,5 +13,5 @@ and later be resubmitted. One must be able to find:
 
 This application includes an integration with an external system that records approved expenses.
 
-* external system `database <https://docs.google.com/spreadsheet/ccc?key=0ApWq_saU5c8DdENHN0FlSGl4Tm9rdVhpVFlRcE9hVEE>`_
-* external system `code <https://script.google.com/d/1Rxmsbr6wvdRIksSO1JIu6LSVHmG5lN5SxYOCapvgcLUB6w1i6vqHsuiv/edit>`_  (Google login required)
+* external system [database](https://docs.google.com/spreadsheet/ccc?key=0ApWq_saU5c8DdENHN0FlSGl4Tm9rdVhpVFlRcE9hVEE)
+* external system [code](https://script.google.com/d/1Rxmsbr6wvdRIksSO1JIu6LSVHmG5lN5SxYOCapvgcLUB6w1i6vqHsuiv/edit)  (Google login required)
