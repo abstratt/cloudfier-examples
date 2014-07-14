@@ -1,42 +1,17 @@
 {
   "timetracker" : {
     "Client" : [ {
-      "name" : "Genologics"
+      "name" : "Shoebox Logistics"
     }, {
-      "name" : "Digilab"
+      "name" : "TreeSap International"
     }, {
-      "name" : "Bravi"
-    }, {
-      "name" : "Solvusoft"
-    } ],
-    "Task" : [ {
-      "description" : "UDT configuration",
-      "client" : "Client@1"
+      "name" : "Megabrains Consulting"
     } ],
     "Invoice" : [ {
-      "number" : "13",
-      "issueDate" : "2014/05/13",
+      "number" : "28",
+      "issueDate" : "2014/07/14",
       "status" : "Preparation",
       "client" : "Client@1"
-    } ],
-    "Work" : [ {
-      "units" : 3,
-      "date" : "2014/05/13",
-      "memo" : null,
-      "task" : "Task@1",
-      "invoice" : "Invoice@1"
-    }, {
-      "units" : 3,
-      "date" : "2014/05/13",
-      "memo" : "incremental progress",
-      "task" : "Task@1",
-      "invoice" : "Invoice@1"
-    }, {
-      "units" : 2,
-      "date" : "2014/05/13",
-      "memo" : null,
-      "task" : "Task@1",
-      "invoice" : "Invoice@1"
     } ]
   }
 }
