@@ -9,7 +9,7 @@ class Client
     attribute tasks : Task[*];
 
     attribute invoices : Invoice[*];
-    
+
     operation newTask(description : String) : Task;
     begin
         var newTask : Task;
@@ -113,10 +113,17 @@ class Invoice
             entry {
                 self.sendInvoice();
             };
+
+            transition on signal(InvoicePaid) to Received;
         end;
+
+        state Received end;
 
     end;
 
+end;
+
+signal InvoicePaid
 end;
 
 class Work
@@ -130,7 +137,7 @@ class Work
     attribute date : Date := { Date#today() };
 
     attribute memo : Memo[0, 1];
-    
+
     derived attribute client : Client := { self.task.client };
 
     (* Work can be only invoiced once. Cannot be set directly but via #submit *)
@@ -141,8 +148,10 @@ class Work
     (* Submits this work to a chosen invoice for the client. *)
     operation submit(invoice : Invoice)
         precondition AlreadyInvoiced { not self.invoiced }
-        precondition WrongClient (invoice) { invoice.client == self.task.client }
-        precondition InvoiceNotOpen (invoice) { invoice.open };
+        precondition WrongClient(invoice) {
+            invoice.client == self.task.client
+        }
+        precondition InvoiceNotOpen(invoice) { invoice.open };
     begin
         self.invoice := invoice;
     end;

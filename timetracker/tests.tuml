@@ -3,7 +3,7 @@ package tests;
 import timetracker;
 
 [Test]
-class CustomerScenarios
+class TaskScenarios
 
     /* Units of time reported increases as work is reported. */
     operation timeReported();
@@ -28,6 +28,10 @@ class CustomerScenarios
         Assert#areEqual(1, task.toInvoice.size());
         Assert#areEqual(3, task.unitsToInvoice);
     end;
+end;
+
+[Test]
+class WorkScenarios
 
     /* It is an error to assign work to an invoice that belongs to a different client. */
     [Failure(constraint="WrongClient", context="submit")]
@@ -51,25 +55,55 @@ class CustomerScenarios
         work.submit(invoice);
     end;
 
-    operation invoiceIssued();
+    [Failure(constraint="MustBePositive", context="units")]
+    operation unitsWorkedMustBePositive();
+    begin
+        Examples#task().addWork(- 1);
+    end;
+
+    [Failure(constraint="MustBePositive", context="units")]
+    operation unitsWorkedMayNotBeZero();
+    begin
+        Examples#task().addWork(0);
+    end;
+end;
+
+[Test]
+class InvoiceScenarios
+
+    operation issueInvoice();
     begin
         var invoice : Invoice, work : Work, client : Client;
         begin
-	        client := Examples#client();
-	        work := client.newTask("Some task").addWork(1);
-	        invoice := client.startInvoice();
-	        work.submit(invoice);
-	        invoice.issue();
-	    end;
-	    begin
-        	Assert#areEqual(Invoice::Status#Invoiced, invoice.status);
+            client := Examples#client();
+            work := client.newTask("Some task").addWork(1);
+            invoice := client.startInvoice();
+            work.submit(invoice);
+            Assert#areEqual(Invoice::Status#Preparation, invoice.status);
+            invoice.issue();
+        end;
+        begin
+            Assert#areEqual(Invoice::Status#Invoiced, invoice.status);
+        end;
+    end;
+    
+    operation invoicePaid();
+    begin
+        var invoice : Invoice;
+        begin
+            invoice := Examples#client().startInvoice();
+            invoice.client.newTask("Some task").addWork(1).submit(invoice);
+            invoice.issue();
+            send InvoicePaid() to invoice;
+        end;
+        begin
+            Assert#areEqual(Invoice::Status#Received, invoice.status);
         end;
     end;
 
 
-    /* Cannot submit work to an invoice that has already been issued. */
     [Failure(constraint="InvoiceNotOpen", context="submit")]
-    operation invoiceNotOpen();
+    operation cannotSubmitWorkIfInvoiceNotOpen();
     begin
         var task : Task, invoice : Invoice, work : Work;
         begin
@@ -83,25 +117,10 @@ class CustomerScenarios
         end;
     end;
 
-    /* Cannot issue an invoice with no work. */
     [Failure(constraint="MustHaveWork", context="issue")]
-    operation mustHaveWork();
+    operation cannotIssueInvoiceWithoutAnyWork();
     begin
         Examples#client().startInvoice().issue();
-    end;
-
-    /* Cannot report non-positive units of work. */
-    [Failure(constraint="MustBePositive", context="units")]
-    operation unitsWorkedMustBePositive();
-    begin
-        Examples#task().addWork(- 1);
-    end;
-
-    /* Cannot report zero units of work. */
-    [Failure(constraint="MustBePositive", context="units")]
-    operation unitsWorkedMayNotBeZero();
-    begin
-        Examples#task().addWork(0);
     end;
 end;
 
