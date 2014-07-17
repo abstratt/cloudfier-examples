@@ -8,8 +8,13 @@
       "name" : "Megabrains Consulting"
     } ],
     "Invoice" : [ {
-      "number" : "28",
+      "invoiceId" : 9,
       "issueDate" : "2014/07/14",
+      "status" : "Preparation",
+      "client" : "Client@1"
+    }, {
+      "invoiceId" : 61,
+      "issueDate" : "2014/07/17",
       "status" : "Preparation",
       "client" : "Client@1"
     } ]

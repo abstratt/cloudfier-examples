@@ -9,12 +9,22 @@ class Client
     attribute tasks : Task[*];
 
     attribute invoices : Invoice[*];
+    
+    operation newTask(description : String) : Task;
+    begin
+        var newTask : Task;
+        newTask := new Task;
+        newTask.description := description;
+        link ClientTask(client := self, tasks := newTask);
+        return newTask;
+    end;
 
-    operation startInvoice();
+    operation startInvoice() : Invoice;
     begin
         var newInvoice : Invoice;
         newInvoice := new Invoice;
         link ClientInvoice(client := self, invoices := newInvoice);
+        return newInvoice;
     end;
 end;
 
@@ -24,31 +34,52 @@ class Task
 
     attribute reported : Work[*];
 
-    attribute client : Client;
+    derived attribute toInvoice : Work[*] := {
+        self.reported.select((w : Work) : Boolean { not w.invoiced })
+    };
 
-    derived attribute unitsWorked : Integer := { self.countUnitsWorked() };
+    readonly attribute client : Client;
 
-    private query countUnitsWorked() : Integer;
+    derived attribute unitsReported : Integer := {
+        self.countUnits(self.reported)
+    };
+
+    derived attribute unitsToInvoice : Integer := {
+        self.countUnits(self.toInvoice)
+    };
+
+    private query countUnits(work : Work[*]) : Integer;
     begin
-        return (self.reported.reduce((w : Work, count : Integer) : Integer {
+        return (work.reduce((w : Work, count : Integer) : Integer {
             count + w.units
         }, 0) as Integer);
+    end;
+
+    operation addWork(units : Integer) : Work;
+    begin
+        var newWork : Work;
+        newWork := new Work;
+        newWork.units := units;
+        link TaskWork(reported := newWork, task := self);
+        return newWork;
     end;
 end;
 
 class Invoice
 
-    derived id attribute number : String;
+    derived attribute number : String := {
+        "" + self.issueDate.year() + "." + self.invoiceId
+    };
 
-    attribute client : Client;
+    derived id attribute invoiceId : Integer;
+
+    readonly attribute client : Client;
 
     attribute issueDate : Date := { Date#today() };
 
     attribute reported : Work[*];
 
-    derived attribute open : Boolean := {
-        self.status == Status#Preparation
-    };
+    derived attribute open : Boolean := { self.status == Status#Preparation };
 
     attribute status : Status;
 
@@ -62,7 +93,7 @@ class Invoice
 
     operation issue()
         (* Cannot issue an invoice that has no work reported. *)
-        precondition { not self.reported.isEmpty() };
+        precondition MustHaveWork { not self.reported.isEmpty() };
     begin
         self.issueDate := Date#today();
     end;
@@ -79,10 +110,49 @@ class Invoice
         end;
 
         state Invoiced
-            entry { self.sendInvoice(); };
+            entry {
+                self.sendInvoice();
+            };
         end;
 
     end;
+
+end;
+
+class Work
+
+    attribute units : Integer
+        (* Work must describe a positive number of units. *)
+        invariant MustBePositive { self.units > 0 };
+
+    attribute task : Task;
+
+    attribute date : Date := { Date#today() };
+
+    attribute memo : Memo[0, 1];
+    
+    derived attribute client : Client := { self.task.client };
+
+    (* Work can be only invoiced once. Cannot be set directly but via #submit *)
+    readonly attribute invoice : Invoice[0, 1];
+
+    derived attribute invoiced : Boolean := { not (self.invoice == null) };
+
+    (* Submits this work to a chosen invoice for the client. *)
+    operation submit(invoice : Invoice)
+        precondition AlreadyInvoiced { not self.invoiced }
+        precondition WrongClient (invoice) { invoice.client == self.task.client }
+        precondition InvoiceNotOpen (invoice) { invoice.open };
+    begin
+        self.invoice := invoice;
+    end;
+end;
+
+composition TaskWork
+
+    role Task.reported;
+
+    role Work.task;
 
 end;
 
@@ -107,43 +177,6 @@ association ClientInvoice
     role Client.invoices;
 
     role Invoice.client;
-
-end;
-
-class Work
-
-    attribute units : Integer
-        (* Work must describe a positive number of units. *)
-        invariant { self.units > 0 };
-
-    attribute task : Task;
-    
-    attribute date : Date := { Date#today() };
-    
-    attribute memo : Memo[0, 1];
-
-    (* Work can be only invoiced once. Cannot be set directly but via #submit *)
-    readonly attribute invoice : Invoice[0, 1];
-
-    derived attribute invoiced : Boolean := {
-        not (self.invoice == null)
-    };
-
-    (* Submits this work to a chosen invoice for the client. *)
-    operation submit(invoice : Invoice)
-        precondition { not self.invoiced }
-        precondition (invoice) { invoice.client == self.task.client }
-        precondition (invoice) { invoice.open };
-    begin
-        self.invoice := invoice;
-    end;
-end;
-
-composition TaskWork
-
-    role Task.reported;
-
-    role Work.task;
 
 end;
 

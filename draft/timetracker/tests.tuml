@@ -1,0 +1,138 @@
+package tests;
+
+import timetracker;
+
+[Test]
+class CustomerScenarios
+
+    /* Units of time reported increases as work is reported. */
+    operation timeReported();
+    begin
+        var task : Task;
+        task := Examples#task();
+        task.addWork(4);
+        task.addWork(3);
+        Assert#areEqual(2, task.reported.size());
+        Assert#areEqual(7, task.unitsReported);
+    end;
+
+    /* Units of time to invoice decrease as work gets assigned to invoices. */
+    operation timeToInvoice();
+    begin
+        var task : Task, invoice : Invoice, work1 : Work, work2 : Work;
+        task := Examples#task();
+        work1 := task.addWork(4);
+        work2 := task.addWork(3);
+        invoice := task.client.startInvoice();
+        work1.submit(invoice);
+        Assert#areEqual(1, task.toInvoice.size());
+        Assert#areEqual(3, task.unitsToInvoice);
+    end;
+
+    /* It is an error to assign work to an invoice that belongs to a different client. */
+    [Failure(constraint="WrongClient", context="submit")]
+    operation wrongClient();
+    begin
+        var client1 : Client, client2 : Client, work : Work;
+        client1 := Examples#client();
+        client2 := Examples#client();
+        work := client1.newTask("Some task").addWork(1);
+        work.submit(client2.startInvoice());
+    end;
+
+    /* Cannot submit to an invoice work that was already submitted. */
+    [Failure(constraint="AlreadyInvoiced", context="submit")]
+    operation alreadyInvoiced();
+    begin
+        var invoice : Invoice, work : Work;
+        work := Examples#client().newTask("Some task").addWork(1);
+        invoice := work.client.startInvoice();
+        work.submit(invoice);
+        work.submit(invoice);
+    end;
+
+    operation invoiceIssued();
+    begin
+        var invoice : Invoice, work : Work, client : Client;
+        begin
+	        client := Examples#client();
+	        work := client.newTask("Some task").addWork(1);
+	        invoice := client.startInvoice();
+	        work.submit(invoice);
+	        invoice.issue();
+	    end;
+	    begin
+        	Assert#areEqual(Invoice::Status#Invoiced, invoice.status);
+        end;
+    end;
+
+
+    /* Cannot submit work to an invoice that has already been issued. */
+    [Failure(constraint="InvoiceNotOpen", context="submit")]
+    operation invoiceNotOpen();
+    begin
+        var task : Task, invoice : Invoice, work : Work;
+        begin
+            task := Examples#task();
+            invoice := task.client.startInvoice();
+            task.addWork(1).submit(invoice);
+            invoice.issue();
+        end;
+        begin
+            task.addWork(2).submit(invoice);
+        end;
+    end;
+
+    /* Cannot issue an invoice with no work. */
+    [Failure(constraint="MustHaveWork", context="issue")]
+    operation mustHaveWork();
+    begin
+        Examples#client().startInvoice().issue();
+    end;
+
+    /* Cannot report non-positive units of work. */
+    [Failure(constraint="MustBePositive", context="units")]
+    operation unitsWorkedMustBePositive();
+    begin
+        Examples#task().addWork(- 1);
+    end;
+
+    /* Cannot report zero units of work. */
+    [Failure(constraint="MustBePositive", context="units")]
+    operation unitsWorkedMayNotBeZero();
+    begin
+        Examples#task().addWork(0);
+    end;
+end;
+
+class Examples
+
+    private static operation clientWithName(name : String) : Client;
+    begin
+        var client : Client;
+        client := new Client;
+        client.name := name;
+        return client;
+    end;
+
+    private static operation client() : Client;
+    begin
+        return Examples#clientWithName("New Client");
+    end;
+
+    private static operation taskWithName(description : String, client : Client) : Task;
+    begin
+        var task : Task;
+        task := new Task;
+        task.description := description;
+        task.client := client;
+        return task;
+    end;
+
+    private static operation task() : Task;
+    begin
+        return Examples#taskWithName("New Task", Examples#client());
+    end;
+end;
+
+end.
