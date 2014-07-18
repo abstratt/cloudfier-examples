@@ -5,7 +5,6 @@ import timetracker;
 [Test]
 class TaskScenarios
 
-    /* Units of time reported increases as work is reported. */
     operation timeReported();
     begin
         var task;
@@ -16,7 +15,6 @@ class TaskScenarios
         Assert#areEqual(7, task.unitsReported);
     end;
 
-    /* Units of time to invoice decrease as work gets assigned to invoices. */
     operation timeToInvoice();
     begin
         var task, invoice, work1, work2;
@@ -40,9 +38,8 @@ class WorkScenarios
         Assert#areEqual(Date#today(), work.date);
     end;
 
-    /* It is an error to assign work to an invoice that belongs to a different client. */
     [Failure(constraint="WrongClient", context="submit")]
-    operation wrongClient();
+    operation cannotAssignWorkToInvoiceFromAnotherClient();
     begin
         var client1, client2, work;
         client1 := Examples#client();
@@ -51,9 +48,8 @@ class WorkScenarios
         work.submit(client2.startInvoice());
     end;
 
-    /* Cannot submit to an invoice work that was already submitted. */
     [Failure(constraint="AlreadyInvoiced", context="submit")]
-    operation alreadyInvoiced();
+    operation cannotSubmitWorkToInvoiceAlreadyInvoiced();
     begin
         var invoice, work;
         work := Examples#client().newTask("Some task").addWork(1);
