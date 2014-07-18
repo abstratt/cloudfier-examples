@@ -12,7 +12,7 @@ class Client
 
     operation newTask(description : String) : Task;
     begin
-        var newTask : Task;
+        var newTask;
         newTask := new Task;
         newTask.description := description;
         link ClientTask(client := self, tasks := newTask);
@@ -21,7 +21,7 @@ class Client
 
     operation startInvoice() : Invoice;
     begin
-        var newInvoice : Invoice;
+        var newInvoice;
         newInvoice := new Invoice;
         link ClientInvoice(client := self, invoices := newInvoice);
         return newInvoice;
@@ -57,7 +57,7 @@ class Task
 
     operation addWork(units : Integer) : Work;
     begin
-        var newWork : Work;
+        var newWork;
         newWork := new Work;
         newWork.units := units;
         link TaskWork(reported := newWork, task := self);

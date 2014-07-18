@@ -8,7 +8,7 @@ class TaskScenarios
     /* Units of time reported increases as work is reported. */
     operation timeReported();
     begin
-        var task : Task;
+        var task;
         task := Examples#task();
         task.addWork(4);
         task.addWork(3);
@@ -19,7 +19,7 @@ class TaskScenarios
     /* Units of time to invoice decrease as work gets assigned to invoices. */
     operation timeToInvoice();
     begin
-        var task : Task, invoice : Invoice, work1 : Work, work2 : Work;
+        var task, invoice, work1, work2;
         task := Examples#task();
         work1 := task.addWork(4);
         work2 := task.addWork(3);
@@ -30,14 +30,21 @@ class TaskScenarios
     end;
 end;
 
-[Test]
+[Test] 
 class WorkScenarios
+
+    operation workDateDefaultsToToday();
+    begin
+        var work;
+        work := Examples#task().addWork(1); 
+        Assert#areEqual(Date#today(), work.date);
+    end;
 
     /* It is an error to assign work to an invoice that belongs to a different client. */
     [Failure(constraint="WrongClient", context="submit")]
     operation wrongClient();
     begin
-        var client1 : Client, client2 : Client, work : Work;
+        var client1, client2, work;
         client1 := Examples#client();
         client2 := Examples#client();
         work := client1.newTask("Some task").addWork(1);
@@ -48,7 +55,7 @@ class WorkScenarios
     [Failure(constraint="AlreadyInvoiced", context="submit")]
     operation alreadyInvoiced();
     begin
-        var invoice : Invoice, work : Work;
+        var invoice, work;
         work := Examples#client().newTask("Some task").addWork(1);
         invoice := work.client.startInvoice();
         work.submit(invoice);
@@ -73,7 +80,7 @@ class InvoiceScenarios
 
     operation issueInvoice();
     begin
-        var invoice : Invoice, work : Work, client : Client;
+        var invoice, work, client;
         begin
             client := Examples#client();
             work := client.newTask("Some task").addWork(1);
@@ -89,7 +96,7 @@ class InvoiceScenarios
     
     operation invoicePaid();
     begin
-        var invoice : Invoice;
+        var invoice;
         begin
             invoice := Examples#client().startInvoice();
             invoice.client.newTask("Some task").addWork(1).submit(invoice);
@@ -105,7 +112,7 @@ class InvoiceScenarios
     [Failure(constraint="InvoiceNotOpen", context="submit")]
     operation cannotSubmitWorkIfInvoiceNotOpen();
     begin
-        var task : Task, invoice : Invoice, work : Work;
+        var task, invoice, work;
         begin
             task := Examples#task();
             invoice := task.client.startInvoice();
@@ -128,7 +135,7 @@ class Examples
 
     private static operation clientWithName(name : String) : Client;
     begin
-        var client : Client;
+        var client;
         client := new Client;
         client.name := name;
         return client;
@@ -141,7 +148,7 @@ class Examples
 
     private static operation taskWithName(description : String, client : Client) : Task;
     begin
-        var task : Task;
+        var task;
         task := new Task;
         task.description := description;
         task.client := client;
