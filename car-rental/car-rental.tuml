@@ -28,7 +28,7 @@ class Car
 
     attribute color : String;
 
-    attribute \model : Model;
+    readonly attribute \model : Model;
 
     derived attribute underRepair : Boolean := {
         self.status == Status#UnderRepair
@@ -123,9 +123,9 @@ class Model
 
     derived attribute description : String := { self.make.name + " " + self.name };
 
-    attribute name : String;
+    readonly attribute name : String;
 
-    attribute make : Make;
+    readonly attribute make : Make;
 end;
 
 class Make
@@ -139,7 +139,7 @@ class Customer
 
     readonly attribute rentals : Rental[*];
     
-    derived attribute hasCurrentRental : Boolean := {
+    private derived attribute hasCurrentRental : Boolean := {
         not (self.currentRental == null)	
     };
 
