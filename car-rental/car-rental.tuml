@@ -84,20 +84,24 @@ end;
 
 class Rental
 
-    derived attribute description : String := { self.car.\model.description + " on " + self.start };
+    derived attribute description : String := { self.car.\model.description + " on " + self.started };
 
-    readonly attribute start : Date := { Date#today() };
+    readonly attribute started : Date := { Date#today() };
+
+    readonly attribute returned : Date;
 
     readonly attribute car : Car;
 
     readonly attribute customer : Customer;
 
-    readonly attribute inProgress : Boolean := true;
+    derived readonly attribute inProgress : Boolean := {
+    	self.returned == null
+    };
 
     private operation finish()
         precondition { self.inProgress };
     begin
-        self.inProgress := false;
+        self.returned := Date#today();
     end;
 
     static query currentForCar(c : Car) : Rental;
@@ -134,6 +138,10 @@ class Customer
     attribute name : String;
 
     readonly attribute rentals : Rental[*];
+    
+    derived attribute hasCurrentRental : Boolean := {
+        not (self.currentRental == null)	
+    };
 
     operation rent(car : Car)
         precondition car_available(car) { car.available }
@@ -153,7 +161,7 @@ class Customer
 
     operation finishRental()
         precondition current_rental_exists {
-            not (self.currentRental == null)
+            self.hasCurrentRental
         };
     begin
         send CarReturned() to self.currentRental.car;
