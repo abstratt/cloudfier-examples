@@ -2,7 +2,9 @@ package car_rental;
 
 class Car
 
-    derived attribute description : String := { self.\model.description + " - " + self.plate };
+    derived attribute description : String := {
+        self.\model.description + " - " + self.plate
+    };
 
     attribute plate : String;
 
@@ -57,6 +59,7 @@ class Car
 
     end;
 
+
     operation startRepair()
         precondition { self.status == Status#Available };
     begin
@@ -84,7 +87,9 @@ end;
 
 class Rental
 
-    derived attribute description : String := { self.car.\model.description + " on " + self.started };
+    derived attribute description : String := {
+        self.car.\model.description + " on " + self.started
+    };
 
     readonly attribute started : Date := { Date#today() };
 
@@ -95,7 +100,7 @@ class Rental
     readonly attribute customer : Customer;
 
     derived readonly attribute inProgress : Boolean := {
-    	self.returned == null
+        self.returned == null
     };
 
     private operation finish()
@@ -121,7 +126,9 @@ end;
 
 class Model
 
-    derived attribute description : String := { self.make.name + " " + self.name };
+    derived attribute description : String := {
+        self.make.name + " " + self.name
+    };
 
     readonly attribute name : String;
 
@@ -131,6 +138,16 @@ end;
 class Make
 
     attribute name : String;
+
+    readonly attribute models : Model[*];
+end;
+
+association ModelsMade
+
+    role Model.make;
+
+    role Make.models;
+
 end;
 
 class Customer
@@ -138,9 +155,9 @@ class Customer
     attribute name : String;
 
     readonly attribute rentals : Rental[*];
-    
+
     private derived attribute hasCurrentRental : Boolean := {
-        not (self.currentRental == null)	
+        not (self.currentRental == null)
     };
 
     operation rent(car : Car)
@@ -150,7 +167,7 @@ class Customer
         var rental : Rental;
         rental := new Rental;
         link RentalsCustomer(customer := self, rentals := rental);
-        link RentalsCar(car := car, rentals := rental);        
+        link RentalsCar(car := car, rentals := rental);
         send CarRented() to car;
     end;
 
@@ -159,9 +176,7 @@ class Customer
     };
 
     operation finishRental()
-        precondition current_rental_exists {
-            self.hasCurrentRental
-        };
+        precondition current_rental_exists { self.hasCurrentRental };
     begin
         send CarReturned() to self.currentRental.car;
         self.currentRental.finish();
