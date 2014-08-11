@@ -150,8 +150,7 @@ class Customer
         var rental : Rental;
         rental := new Rental;
         link RentalsCustomer(customer := self, rentals := rental);
-        link RentalsCar(car := car, rentals := rental);
-        rental.customer := self;
+        link RentalsCar(car := car, rentals := rental);        
         send CarRented() to car;
     end;
 
