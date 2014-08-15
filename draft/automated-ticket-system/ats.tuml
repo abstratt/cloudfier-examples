@@ -1,0 +1,343 @@
+package ats;
+
+[kirra::User]
+class User
+
+    id attribute email : String;
+
+    id attribute fullName : String;
+
+    attribute kind : UserKind;
+
+    private derived static attribute current : User := { System#user() };
+
+    private derived attribute admin : Boolean := {
+        self.kind = UserKind#Admin
+    };
+
+    private attribute ticketsAssignedToUser : Ticket[*];
+
+    readonly attribute ticketsReportedByUser : Ticket[*];
+end;
+
+enumeration UserKind
+
+    Admin;
+
+    Customer;
+end;
+
+interface UserNotifier
+end;
+
+abstract signal UserNotification
+
+    attribute ticketKey : String;
+
+    attribute userEmail : String;
+end;
+
+signal TicketReported specializes UserNotification
+
+    attribute summary : String;
+
+    attribute description : Memo;
+end;
+
+signal TicketResolved specializes UserNotification
+
+    attribute resolution : Resolution;
+end;
+
+signal CommentAdded specializes UserNotification
+
+    attribute comment : Memo;
+
+    attribute author : String;
+end;
+
+enumeration Resolution
+
+    Fixed;
+
+    WorksForMe;
+
+    WontFix;
+end;
+
+class Comment
+
+    readonly attribute commented : Memo;
+
+    readonly reference user : User;
+
+    readonly attribute \on : Date;
+
+    readonly attribute inReplyTo : Comment[0, 1];
+
+    readonly attribute ticket : Ticket;
+
+    operation reply(text : Memo);
+    begin
+        self.ticket.addComment(text, self);
+    end;
+end;
+
+association AssignedTicket
+
+    role Ticket.assignee;
+
+    role User.ticketsAssignedToUser;
+
+end;
+
+association ReportedTicket
+
+    role Ticket.reporter;
+
+    role User.ticketsReportedByUser;
+
+end;
+
+association WatchedTickets
+
+    role Ticket.watchers;
+
+    navigable role ticketsWatched : Ticket[*];
+
+end;
+
+(* Tickets are reported against a specific process. *)
+class Process
+
+    id attribute description : String;
+
+    id attribute token : String;
+end;
+
+association ProcessTickets
+
+    navigable role tickets : Ticket[*];
+
+    role Ticket.process;
+
+end;
+
+(* 
+    An ticket describes a problem report, a feature request or just a work item for a process.
+    Tickets are reported by and assigned to users, and go through a lifecycle from the time 
+    they are opened until they are resolved and eventually closed.
+*)
+class Ticket
+
+    attribute summary : String;
+
+    private derived id attribute ticketId : Integer;
+
+    derived attribute ticketKey : String := {
+        self.process.token + "-" + self.ticketId
+    };
+
+    attribute process : Process;
+
+    port userNotifier : UserNotifier;
+
+    readonly attribute reportedOn : Date := { Date#today() };
+
+    readonly attribute reporter : User;
+
+    readonly attribute assignee : User;
+
+    attribute status : Status;
+
+    readonly attribute resolution : Resolution[0, 1];
+
+    readonly attribute resolvedOn : Date[0, 1];
+
+    readonly attribute comments : Comment[*];
+
+    attribute watchers : User[*];
+
+    derived attribute commentCount : Integer := { self.comments.size() };
+
+    derived attribute waitingFor : String := {
+        "" + self.reportedOn.differenceInDays(self.referenceDate()) + " day(s)"
+    };
+
+    private derived attribute mine : Boolean := {
+        User#current == self.assignee
+    };
+
+    private query referenceDate() : Date;
+    begin
+        if (self.resolvedOn == null) then
+            return Date#today()
+        else
+            return self.resolvedOn;
+    end;
+
+    attribute description : Memo;
+
+    (* Report a new ticket. *)
+    static operation reportTicket(process : Process, summary : String, description : Memo);
+    begin
+        var newTicket : Ticket;
+        newTicket := new Ticket;
+        newTicket.summary := summary;
+        newTicket.description := description;
+        newTicket.reporter := User#current;
+        newTicket.process := process;
+        send TicketReported(
+            ticketKey := newTicket.ticketKey, 
+            summary := summary, 
+            description := description, 
+            userEmail := newTicket.reporter.email) to newTicket.userNotifier;
+    end;
+
+    private static query filterByStatus(tickets : Ticket[*], toMatch : Status) : Ticket[*];
+    begin
+        return tickets.select((ticket : Ticket) : Boolean {
+            ticket.status == toMatch
+        });
+    end;
+
+    static query byStatus(toMatch : Status) : Ticket[*];
+    begin
+        return Ticket#filterByStatus(Ticket extent, toMatch);
+    end;
+
+    (* Assign an ticket to a user. *)
+    operation assign(newAssignee : User);
+    begin
+        self.assignee := newAssignee;
+    end;
+
+    (* Suspend work on this ticket. *)
+    operation suspend()
+        precondition { self.mine };
+
+    (* Start/resume work on this ticket. *)
+    operation start()
+        precondition { self.mine };
+
+    (* Resolve the ticket. *)
+    operation resolve(resolution : Resolution := Fixed);
+    begin
+        self.resolvedOn := Date#today();
+        self.resolution := resolution;
+    end;
+
+    (* Reopen the ticket. *)
+    operation reopen(reason : Memo);
+    begin
+        self.resolvedOn := null;
+        self.resolution := null;
+        if (reason != "") then
+            self.comment(reason);
+    end;
+
+    (* Add a comment to the ticket *)
+    operation comment(text : Memo);
+    begin
+        self.addComment(text, null);
+    end;
+
+    private operation addComment(text : Memo, inReplyTo : Comment);
+    begin
+        var comment : Comment;
+        comment := new Comment;
+        comment.user := User#current;
+        comment.\on := Date#today();
+        comment.commented := text;
+        comment.inReplyTo := inReplyTo;
+        link TicketComments(ticket := self, comments := comment);
+        send CommentAdded(
+            ticketKey := self.ticketKey, 
+            author := comment.user.email, 
+            userEmail := self.reporter.email, 
+            comment := text) to self.userNotifier;
+    end;
+
+    operation addWatcher(userToAdd : User);
+    begin
+        link WatchedTickets(ticketsWatched := self, watchers := userToAdd);
+    end;
+
+    (* Take over an ticket currently available. *)
+    operation assignToMe()
+        precondition { User#current.admin }
+        precondition { not self.mine };
+    begin
+        self.assignee := User#current;
+    end;
+
+    (* Take over an ticket currently assigned to another user (not in progress). *)
+    operation steal()
+        precondition { User#current.admin }
+        precondition { not (self.mine) };
+    begin
+        self.assignee := User#current;
+    end;
+
+    statemachine Status
+
+        initial state Open
+            transition on signal(TicketSuspended) to Suspended;
+            transition on signal(TicketInProgress) to InProgress;
+            transition on signal(TicketCompleted) to Completed;
+            transition on signal(TicketWithdrawn) to Withdrawn;
+        end;
+
+        state InProgress
+            transition on signal(TicketSuspended) to Suspended;
+            transition on signal(TicketInProgress) to InProgress;
+            transition on signal(TicketCompleted) to Completed;
+            transition on signal(TicketWithdrawn) to Withdrawn;
+        end;
+
+        state Withdrawn
+            transition on signal(TicketSuspended) to Suspended;
+            transition on signal(TicketInProgress) to InProgress;
+            transition on signal(TicketCompleted) to Completed;
+            transition on signal(TicketWithdrawn) to Withdrawn;
+        end;
+
+        state Suspended
+            transition on signal(TicketSuspended) to Suspended;
+            transition on signal(TicketInProgress) to InProgress;
+            transition on signal(TicketCompleted) to Completed;
+            transition on signal(TicketWithdrawn) to Withdrawn;
+        end;
+
+        state Completed
+            transition on signal(TicketSuspended) to Suspended;
+            transition on signal(TicketInProgress) to InProgress;
+            transition on signal(TicketCompleted) to Completed;
+            transition on signal(TicketWithdrawn) to Withdrawn;
+        end;
+
+    end;
+
+end;
+
+signal TicketSuspended
+end;
+
+signal TicketWithdrawn
+end;
+
+signal TicketCompleted
+end;
+
+signal TicketInProgress
+end;
+
+composition TicketComments
+
+    role Ticket.comments;
+
+    role Comment.ticket;
+
+end;
+
+end.
