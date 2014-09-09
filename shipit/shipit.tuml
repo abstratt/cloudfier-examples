@@ -40,16 +40,16 @@ class User
 end;
 
 enumeration UserKind
-    Reporter, 
-    Committer
+    Reporter;
+    Committer;
 end;
 
 enumeration Severity
-    Minor, 
-    Normal, 
-    Major, 
-    Blocker, 
-    Enhancement
+    Minor;
+    Normal; 
+    Major;
+    Blocker; 
+    Enhancement;
 end;
 
 interface UserNotifier
@@ -82,9 +82,9 @@ signal CommentAdded specializes UserNotification
 end;
 
 enumeration Resolution
-    Fixed, 
-    WorksForMe, 
-    WontFix
+    Fixed;
+    WorksForMe; 
+    WontFix;
 end;
 
 class Comment
@@ -175,7 +175,7 @@ class Issue
 
     attribute summary : String;
 
-    private derived id attribute issueId : Integer;
+    derived id attribute issueId : Integer;
 
     derived attribute issueKey : String := {
         self.project.token + "-" + self.issueId
