@@ -4,6 +4,8 @@ class Todo
 
     attribute description : String;
     
+    attribute details : Memo;
+    
     attribute status : Status := Open;
 
 end;
