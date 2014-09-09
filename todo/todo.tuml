@@ -1,0 +1,23 @@
+package todo;
+
+class Todo
+
+    attribute description : String;
+    
+    attribute status : Status;
+
+    composition comments : Comment[*];
+end;
+
+enumeration Status
+    Open;
+    Done;
+    Cancelled;
+end;
+
+class Comment
+
+    attribute comment : Memo;
+end;
+
+end.
