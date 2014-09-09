@@ -6,7 +6,6 @@ class Todo
     
     attribute status : Status := Open;
 
-    composition comments : Comment[*];
 end;
 
 enumeration Status
@@ -16,8 +15,12 @@ enumeration Status
 end;
 
 class Comment
-
     attribute comment : Memo;
+end;
+
+composition
+	navigable role comments : Comment[*];
+    navigable role todo : Todo; 
 end;
 
 end.
