@@ -7,6 +7,15 @@ class Todo
     attribute details : Memo;
     
     attribute status : Status := Open;
+    
+    /* 
+     * Not really necessary, as you can change the status directly, 
+     * just for demo purposes.
+     */
+    operation complete();
+    begin
+        self.status := Status#Done;
+    end;
 
 end;
 
