@@ -47,7 +47,7 @@ class Expense
 
     port expensePayer : ExpensePayer;
 
-    private derived id attribute expenseId : Integer;
+    derived id attribute expenseId : Integer;
 
     static operation newExpense(description : String, amount : Double, date : Date, 
             category : Category, employee : Employee) : Expense;
