@@ -91,9 +91,9 @@ class Comment
 
     readonly attribute commented : Memo;
 
-    readonly reference user : User;
+    readonly attribute user : User := { User#current };
 
-    readonly attribute \on : Date;
+    readonly attribute \on : Date := { Date#now() };
 
     readonly attribute inReplyTo : Comment[0, 1];
 
@@ -193,7 +193,7 @@ class Issue
 
     readonly attribute assignee : User[0, 1];
 
-    attribute severity : Severity;
+    attribute severity : Severity := Major;
 
     attribute status : Status;
 
