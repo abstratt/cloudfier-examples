@@ -9,7 +9,7 @@ class Category
 
     static operation newCategory(name : String) : Category;
     begin 
-        var newCategory : Category;
+        var newCategory;
         newCategory := new Category;
         newCategory.name := name;
         return newCategory;
@@ -52,7 +52,7 @@ class Expense
     static operation newExpense(description : String, amount : Double, date : Date, 
             category : Category, employee : Employee) : Expense;
     begin
-        var newExpense : Expense;
+        var newExpense;
         newExpense := new Expense;
         newExpense.description := description;
         newExpense.amount := amount;

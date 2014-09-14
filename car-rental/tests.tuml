@@ -10,7 +10,7 @@ class CustomerScenarios
 
     operation rentalHistory();
     begin
-        var car : Car, customer : Customer;
+        var car, customer;
         begin
             car := Examples#car();
             customer := Examples#customer();
@@ -30,7 +30,7 @@ class RentalScenarios
 
     operation startsAsInProgress();
     begin
-        var car : Car, customer : Customer;
+        var car, customer;
         begin
             car := Examples#car();
             customer := Examples#customer();
@@ -45,7 +45,7 @@ class RentalScenarios
 
     operation finishedUponReturn();
     begin
-        var car : Car, customer : Customer, rental : Rental;
+        var car, customer, rental;
         begin
             car := Examples#car();
             customer := Examples#customer();
@@ -64,7 +64,7 @@ class RentalScenarios
     [Failure(constraint="no_current_rental")]
     operation oneCarPerCustomer();
     begin
-        var car1 : Car, car2 : Car, customer : Customer;
+        var car1, car2, customer;
         begin
             car1 := Examples#car();
             customer := Examples#customer();
@@ -79,7 +79,7 @@ class RentalScenarios
     [Failure(constraint="car_available")]
     operation carUnavailable();
     begin
-        var car : Car, customer1 : Customer, customer2 : Customer;
+        var car, customer1, customer2;
         begin
             car := Examples#car();
             customer1 := Examples#customer();
@@ -98,13 +98,13 @@ class CarScenarios
 
     operation startsAsValid();
     begin
-        var car : Car;
+        var car;
         car := Examples#car();
     end;
 
     operation startsAsAvailable();
     begin
-        var car : Car;
+        var car;
         car := Examples#car();
         Assert#isTrue(car.available);
     end;
@@ -112,7 +112,7 @@ class CarScenarios
     [Failure(constraint="above_minimum", context="year")]
     operation tooOld();
     begin
-        var car : Car;
+        var car;
         car := Examples#car();
         car.year := 1900;
     end;
@@ -120,7 +120,7 @@ class CarScenarios
     [Failure(constraint="below_maximum", context="year")]
     operation tooNew();
     begin
-        var car : Car;
+        var car;
         car := Examples#car();
         car.year := 2500;
     end;
@@ -128,7 +128,7 @@ class CarScenarios
     [Failure(constraint="above_minimum", context="price")]
     operation priceIsTooLow();
     begin
-        var car : Car;
+        var car;
         car := Examples#car();
         car.price := 49;
     end;
@@ -136,14 +136,14 @@ class CarScenarios
     [Failure(constraint="below_maximum", context="price")]
     operation priceIsTooHigh();
     begin
-        var car : Car;
+        var car;
         car := Examples#car();
         car.price := 2000;
     end;
 
     operation unavailableWhenRented();
     begin
-        var car : Car, customer : Customer;
+        var car, customer;
         begin
             car := Examples#car();
             customer := Examples#customer();
@@ -158,7 +158,7 @@ class CarScenarios
     
     operation availableUponReturn();
     begin
-        var car : Car, customer : Customer;
+        var car, customer;
         begin
             car := Examples#car();
             customer := Examples#customer();
@@ -178,7 +178,7 @@ class CarScenarios
 
     operation unavailableWhenUnderRepair();
     begin
-        var car : Car;
+        var car;
         begin
             car := Examples#car();
             car.startRepair();
@@ -193,7 +193,7 @@ class Examples
 
     private static operation make() : Make;
     begin
-        var make : Make;
+        var make;
         make := new Make;
         make.name := "Fiat";
         return make;
@@ -201,16 +201,16 @@ class Examples
 
     private static operation \model() : Model;
     begin
-        var \model : Model;
-        \model := new Model;
-        \model.name := "Mille";
-        \model.make := Examples#make();
-        return \model;
+        var carModel;
+        carModel := new Model;
+        carModel.name := "Mille";
+        carModel.make := Examples#make();
+        return carModel;
     end;
 
     private static operation car() : Car;
     begin
-        var car : Car;
+        var car;
         car := new Car;
         car.year := Date#today().year();
         car.price := 100;
@@ -222,7 +222,7 @@ class Examples
 
     private static operation customer() : Customer;
     begin
-        var customer : Customer;
+        var customer;
         customer := new Customer;
         customer.name := "Joana de Almeida";
         return customer;

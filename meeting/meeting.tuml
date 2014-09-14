@@ -84,7 +84,7 @@ class User
     (* Creates a meeting organized by this participant. *)
     operation startMeetingOnBehalf(title : String, description : Memo, date : Date);
     begin
-        var newMeeting : Meeting;
+        var newMeeting;
         newMeeting := new Meeting;
         newMeeting.date := date;
         newMeeting.title := title;

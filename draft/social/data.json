@@ -1,0 +1,25 @@
+{
+  "social" : {
+    "User" : [ {
+      "name" : "Gabriel",
+      "username" : null,
+      "inviter" : [ ],
+      "initiator" : [ ]
+    }, {
+      "name" : "Rafael",
+      "username" : null,
+      "inviter" : [ ],
+      "initiator" : [ ]
+    }, {
+      "name" : "Fabiane",
+      "username" : null,
+      "inviter" : [ ],
+      "initiator" : [ ]
+    }, {
+      "name" : "Francisco",
+      "username" : null,
+      "inviter" : [ ],
+      "initiator" : [ ]
+    } ]
+  }
+}

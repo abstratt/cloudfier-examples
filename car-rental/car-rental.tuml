@@ -164,7 +164,7 @@ class Customer
         precondition car_available(car) { car.available }
         precondition no_current_rental { self.currentRental == null };
     begin
-        var rental : Rental;
+        var rental;
         rental := new Rental;
         link RentalsCustomer(customer := self, rentals := rental);
         link RentalsCar(car := car, rentals := rental);

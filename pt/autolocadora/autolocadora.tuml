@@ -130,7 +130,7 @@ class Cliente
         precondition carro_disponivel(carro) { carro.disponivel }
         precondition sem_locacao_ativa { self.locacaoAtiva == null };
     begin
-        var locacao : Locacao;
+        var locacao;
         locacao := new Locacao;
         link LocacoesCliente(cliente := self, locacoes := locacao);
         link LocacoesCarro(carro := carro, locacoes := locacao);

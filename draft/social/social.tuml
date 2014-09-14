@@ -5,26 +5,57 @@ class User
 
     attribute name : String;
 
-    /*
-    private attribute initiated : Relationship[*];
-    private attribute accepted : Relationship[*];
-    private attribute invitationsSent : Invitation[*];
-    private attribute invitationsReceived : Invitation[*];
-    derived attribute relationships : Relationship[*] := { self.initiated.union(self.accepted) };
-*/
-    operation invite();
+    operation invite(invitee : User)
+        precondition (invitee) { not(invitee == self) }
+        precondition (invitee) {
+            not invitee.pendingInvitationsReceived.includes(self)
+        }
+        precondition (invitee) {
+            not self.pendingInvitationsReceived.includes(invitee)
+        }
+        precondition YouAlreadyInvitedThisPerson(invitee) {
+            not invitee.invitationsRejected.includes(self)
+        };
     begin
-        link Invitation(inviter := (System#user() as User), invitee := self);
+        link Invitation(inviter := self, invitee := invitee);
+    end;
+    
+    operation uninvite(invitee : User)
+        precondition (invitee) {
+            invitee.pendingInvitationsReceived.includes(self)
+        };
+    begin
+        unlink Invitation(inviter := self, invitee := invitee);
     end;
 
-    operation accept();
+    operation accept(candidate : User)
+        precondition (candidate) {
+            self.pendingInvitationsReceived.includes(candidate)
+        };
     begin
-        unlink Invitation(inviter := (System#user() as User), invitee := self);
-        link Connection(initiator := self, acceptor := (System#user() as User));
+        unlink Invitation(inviter := candidate, invitee := self);
+        link Connection(initiator := candidate, acceptor := self);
     end;
 
-    derived attribute invitations : User[*] := {
+    operation reject(candidate : User)
+        precondition (candidate) {
+            self.pendingInvitationsReceived.includes(candidate)
+        };
+    begin
+        unlink Invitation(inviter := candidate, invitee := self);
+        link Rejection(rejected := candidate, rejector := self);
+    end;
+
+    derived attribute pendingInvitationsReceived : User[*] := {
         self<-Invitation->inviter
+    };
+    
+    derived attribute pendingInvitationsSent : User[*] := {
+        self<-Invitation->invitee
+    };
+
+    derived attribute invitationsRejected : User[*] := {
+        self<-Rejection->rejected
     };
 
     derived attribute connections : User[*] := {
@@ -33,39 +64,27 @@ class User
 end;
 
 association Invitation
+
     navigable role inviter : User[*];
+
     navigable role invitee : User[*];
+
 end;
 
 association Connection
+
     navigable role initiator : User[*];
+
     navigable role acceptor : User[*];
+
 end;
 
-/*
-association InvitationSent
-    role User.invitationsSent;    
-    role Relationship.initiator;
+association Rejection
+
+    navigable role rejected : User[*];
+
+    navigable role rejector : User[*];
+
 end;
 
-association InvitationReceived
-    role User.invitationsReceived;    
-    role Relationship.acceptor;
-end;
-
-association InitiatedRelationships
-    navigable role initiated : Relationship[*];
-    role Relationship.initiator;
-end;
-
-association AcceptedRelationships
-    navigable role accepted : Relationship[*];
-    role Relationship.acceptor;
-end;
-
-class Relationship
-    attribute initiator : User;
-    attribute acceptor : User;
-end;
-*/
 end.

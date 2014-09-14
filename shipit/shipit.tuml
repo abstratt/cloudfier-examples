@@ -236,7 +236,7 @@ class Issue
             severity : Severity := Normal)
         precondition Must_be_logged_in { User#provisioned };
     begin
-        var newIssue : Issue;
+        var newIssue;
         newIssue := new Issue;
         newIssue.summary := summary;
         newIssue.description := description;
@@ -316,7 +316,7 @@ class Issue
 
     private operation addComment(text : Memo, inReplyTo : Comment);
     begin
-        var comment : Comment;
+        var comment;
         comment := new Comment;
         comment.user := User#current;
         comment.\on := Date#today();

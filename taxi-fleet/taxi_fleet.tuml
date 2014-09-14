@@ -132,7 +132,7 @@ class Charge
 
     static operation newCharge(taxi : Taxi, payer : Driver, date : Date);
     begin
-        var charge : Charge;
+        var charge;
         if (date == null) then
             date := Date#today();
         charge := new Charge;
@@ -201,7 +201,7 @@ class Reports implements ReportingService
 
     query paymentsPerDay() : DailyPayments[*];
     begin
-        var groups : Grouping<Charge>;
+        var groups;
         groups := (Charge#paidCharges().groupBy((c : Charge) : Date {
             c.receivedOn
         }) as mdd_collections::Grouping<Charge>);

@@ -87,11 +87,11 @@ class Order
     operation addItem(product : Product, quantity : Integer)
     precondition { self.orderStatus == Status#New };
     begin
-        var i : OrderDetail;
-        i := new OrderDetail;
-        i.product := product;
-        i.quantity := quantity;
-        i.order := self;
+        var detail;
+        detail := new OrderDetail;
+        detail.product := product;
+        detail.quantity := quantity;
+        detail.order := self;
     end;
 
     operation complete();
