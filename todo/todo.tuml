@@ -51,12 +51,12 @@ class Todo
     
     static query openedToday() : Todo[*];
     begin
-        return Todo#byOpeningDate(Todo#byStatus(Todo extent, Status#Open), 0);
+        return Todo#byOpeningDate(Todo extent, 0);
     end;
     
     static query completedToday() : Todo[*];
     begin
-        return Todo#byCompletionDate(Todo#byStatus(Todo extent, Status#Completed), 0);
+        return Todo#byCompletionDate(Todo extent, 0);
     end;
 
     private static query byStatus(todos : Todo[*], status : Status) : Todo[*];
