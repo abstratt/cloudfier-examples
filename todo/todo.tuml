@@ -1,6 +1,16 @@
-package todo;
+package todo; 
 
-class Todo
+[kirra::User]
+class User
+    readonly id attribute email : String;
+    attribute name : String;
+end;
+
+class Todo 
+
+    private readonly attribute creator : User := { (System#user() as User) };
+
+    attribute assignee : User[0, 1] := { (System#user() as User) };
 
     attribute description : String;
     

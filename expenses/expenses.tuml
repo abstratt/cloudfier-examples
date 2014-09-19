@@ -179,6 +179,8 @@ end;
 class Employee
 
     attribute name : String;
+    
+    readonly id attribute username : String;
 
     attribute expenses : Expense[*];
 

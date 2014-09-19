@@ -11,13 +11,13 @@
     } ],
     "Employee" : [ {
       "name" : "John Ford",
-      "username" : null
+      "username" : "john@acme.com"
     }, {
       "name" : "Camille Jouel",
-      "username" : null
+      "username" : "camille@acme.com"
     }, {
       "name" : "Peter Jones",
-      "username" : null
+      "username" : "peter@acme.com"
     } ],
     "Expense" : [ {
       "description" : "Cab airport->downtown",

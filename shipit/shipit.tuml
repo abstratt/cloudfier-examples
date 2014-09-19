@@ -8,13 +8,11 @@ package shipit;
 [kirra::User]
 class User
 
-    id attribute username : String;
+    readonly id attribute email : String;
 
     id attribute fullName : String;
 
-    derived attribute email : String := { self.username };
-
-    attribute kind : UserKind;
+    readonly attribute kind : UserKind := Reporter;
 
     private derived static attribute current : User := { System#user() };
 
@@ -37,6 +35,17 @@ class User
     private derived static attribute provisioned : Boolean := {
         ! (System#user() == null)
     };
+    
+    operation promoteToCommitter()
+    precondition { ?User#current() and User#current().committer }; 
+    begin
+        self.kind := UserKind#Committer;
+    end;
+    
+    static query current() : User;
+    begin
+        return (System#user() as User);
+    end;
 end;
 
 enumeration UserKind

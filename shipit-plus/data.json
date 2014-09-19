@@ -2,23 +2,23 @@
   "shipit" : {
     "User" : [ {
       "fullName" : "Saulo Simon",
-      "username" : "ssimon@cloudfier.com",
+      "email" : "ssimon@cloudfier.com",
       "kind" : "Committer"
     }, {
       "fullName" : "Ricardo Perez",
-      "username" : "rperez@cloudfier.com",
+      "email" : "rperez@cloudfier.com",
       "kind" : "Committer"
     }, {
       "fullName" : "Gina Torres",
-      "username" : "gtorres@abstratt.com",
+      "email" : "gtorres@abstratt.com",
       "kind" : "Reporter"
     }, {
       "fullName" : "Felix Silveira",
-      "username" : "fsilveira@abstratt.com",
+      "email" : "fsilveira@abstratt.com",
       "kind" : "Reporter"
     }, {
       "fullName" : "AAA",
-      "username" : "rafael@abstratt.com",
+      "email" : "rafael@abstratt.com",
       "kind" : "Reporter"
     } ],
     "Label" : [ {
