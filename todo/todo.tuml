@@ -22,7 +22,7 @@ class Todo
 
     attribute description : String;
 
-    attribute details : Memo[0,1];
+    attribute details : Memo;
 
     attribute status : Status;
 
