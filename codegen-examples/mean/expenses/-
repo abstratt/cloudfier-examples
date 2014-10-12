@@ -1,0 +1,11 @@
+--2014-10-11 10:59:09--  http://localhost/services/generator/demo-cloudfier-examples-expenses/platform/mean/mapper/foo
+Resolving localhost (localhost)... 127.0.0.1
+Connecting to localhost (localhost)|127.0.0.1|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1823 (1,8K) [application/zip]
+Saving to: ‘generated.zip’
+
+     0K .                                                     100%  176M=0s
+
+2014-10-11 10:59:10 (176 MB/s) - ‘generated.zip’ saved [1823/1823]
+
