@@ -1,1 +1,18 @@
-java.lang.IllegalArgumentException: Unhandled parameter types: [org.eclipse.uml2.uml.internal.impl.ReadSelfActionImpl@ab8d86 (name: <unset>, visibility: <unset>) (isLeaf: false) (isLocallyReentrant: false)]
+    var EventEmitter = require('events').EventEmitter;        
+
+    /**
+     *  Shift modalities. 
+     */
+    var shiftSchema = new Schema({
+        description : String,
+        price : Number,
+        shiftsPerDay : Number
+    });
+    
+    /*************************** DERIVED PROPERTIES ****************/
+    
+    shiftSchema.methods.getTaxis = function () {
+        return this.model('Taxi').find().where('shift').eq(this);
+    };
+    var Shift = mongoose.model('Shift', shiftSchema);
+    Shift.emitter = new EventEmitter();
