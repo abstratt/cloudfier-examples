@@ -1,0 +1,1 @@
+java.lang.IllegalArgumentException: Unhandled parameter types: [org.eclipse.uml2.uml.internal.impl.ReadSelfActionImpl@ab8d86 (name: <unset>, visibility: <unset>) (isLeaf: false) (isLocallyReentrant: false)]
