@@ -1,9 +1,15 @@
-    var EventEmitter = require('events').EventEmitter;        
+    var EventEmitter = require('events').EventEmitter;
+    var mongoose = require('mongoose');        
+    var Schema = mongoose.Schema;
 
     var customerSchema = new Schema({
         name : String,
-        hasCurrentRental : Boolean
+        hasCurrentRental : Boolean,
+        rentals : [{ type: Schema.Types.ObjectId, ref: 'Rental' }],
+        currentRental : { type: Schema.Types.ObjectId, ref: 'Rental' }
     });
+    var Customer = mongoose.model('Customer', customerSchema);
+    Customer.emitter = new EventEmitter();
     
     /*************************** ACTIONS ***************************/
     
@@ -28,5 +34,5 @@
     customerSchema.methods.getCurrentRental = function () {
         return Rental.currentForCustomer(this);
     };
-    var Customer = mongoose.model('Customer', customerSchema);
-    Customer.emitter = new EventEmitter();
+    
+    var exports = module.exports = Customer;

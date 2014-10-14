@@ -1,4 +1,6 @@
-    var EventEmitter = require('events').EventEmitter;        
+    var EventEmitter = require('events').EventEmitter;
+    var mongoose = require('mongoose');        
+    var Schema = mongoose.Schema;
 
     /**
      *  An employee reports expenses. 

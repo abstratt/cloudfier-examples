@@ -1,11 +1,17 @@
-    var EventEmitter = require('events').EventEmitter;        
+    var EventEmitter = require('events').EventEmitter;
+    var mongoose = require('mongoose');        
+    var Schema = mongoose.Schema;
 
     var rentalSchema = new Schema({
         description : String,
         started : Date,
         returned : Date,
-        inProgress : Boolean
+        inProgress : Boolean,
+        car : { type: Schema.Types.ObjectId, ref: 'Car' },
+        customer : { type: Schema.Types.ObjectId, ref: 'Customer' }
     });
+    var Rental = mongoose.model('Rental', rentalSchema);
+    Rental.emitter = new EventEmitter();
     
     /*************************** DERIVED PROPERTIES ****************/
     
@@ -21,5 +27,5 @@
     rentalSchema.methods.finish = function () {
         this.returned = new Date();
     };
-    var Rental = mongoose.model('Rental', rentalSchema);
-    Rental.emitter = new EventEmitter();
+    
+    var exports = module.exports = Rental;

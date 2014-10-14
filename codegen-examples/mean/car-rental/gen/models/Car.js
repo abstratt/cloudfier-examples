@@ -1,4 +1,6 @@
-    var EventEmitter = require('events').EventEmitter;        
+    var EventEmitter = require('events').EventEmitter;
+    var mongoose = require('mongoose');        
+    var Schema = mongoose.Schema;
 
     var carSchema = new Schema({
         description : String,
@@ -9,8 +11,13 @@
         color : String,
         underRepair : Boolean,
         rented : Boolean,
-        status : Status
+        status : String,
+        currentRental : { type: Schema.Types.ObjectId, ref: 'Rental' },
+        model : { type: Schema.Types.ObjectId, ref: 'Model' },
+        rentals : [{ type: Schema.Types.ObjectId, ref: 'Rental' }]
     });
+    var Car = mongoose.model('Car', carSchema);
+    Car.emitter = new EventEmitter();
     
     /*************************** ACTIONS ***************************/
     
@@ -71,5 +78,5 @@
         }
     });     
     
-    var Car = mongoose.model('Car', carSchema);
-    Car.emitter = new EventEmitter();
+    
+    var exports = module.exports = Car;
