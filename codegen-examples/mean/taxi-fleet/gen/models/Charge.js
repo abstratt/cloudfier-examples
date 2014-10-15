@@ -1,16 +1,43 @@
-    var EventEmitter = require('events').EventEmitter;        
+    var EventEmitter = require('events').EventEmitter;
+    var mongoose = require('mongoose');        
+    var Schema = mongoose.Schema;
+    var cls = require('continuation-local-storage');
+    
 
     /**
      *  Charges for renting taxis. 
      */
     var chargeSchema = new Schema({
-        date : Date,
-        receivedOn : Date,
-        description : String,
-        amount : Number,
-        status : Status,
-        paid : Boolean
+        date : {
+            type : Date
+        },
+        receivedOn : {
+            type : Date
+        },
+        description : {
+            type : String
+        },
+        amount : {
+            type : Number
+        },
+        status : {
+            type : String,
+            enum : ["Pending", "Paid"]
+        },
+        paid : {
+            type : Boolean
+        },
+        driver : {
+            type : Schema.Types.ObjectId,
+            ref : "Driver"
+        },
+        taxi : {
+            type : Schema.Types.ObjectId,
+            ref : "Taxi"
+        }
     });
+    var Charge = mongoose.model('Charge', chargeSchema);
+    Charge.emitter = new EventEmitter();
     
     /*************************** ACTIONS ***************************/
     
@@ -44,7 +71,7 @@
     };
     /*************************** DERIVED PROPERTIES ****************/
     
-    chargeSchema.methods.getPaid = function () {
+    chargeSchema.methods.isPaid = function () {
         return this.status == null;
     };
     /*************************** STATE MACHINE ********************/
@@ -65,5 +92,5 @@
         }
     });     
     
-    var Charge = mongoose.model('Charge', chargeSchema);
-    Charge.emitter = new EventEmitter();
+    
+    var exports = module.exports = Charge;

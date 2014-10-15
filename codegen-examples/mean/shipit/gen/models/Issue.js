@@ -1,4 +1,8 @@
-    var EventEmitter = require('events').EventEmitter;        
+    var EventEmitter = require('events').EventEmitter;
+    var mongoose = require('mongoose');        
+    var Schema = mongoose.Schema;
+    var cls = require('continuation-local-storage');
+    
 
     /**
      * An issue describes a problem report, a feature request or just a work item for a project. Issues are reported by and
@@ -6,21 +10,98 @@
      * closed. 
      */
     var issueSchema = new Schema({
-        summary : String,
-        issueId : Number,
-        issueKey : String,
-        reportedOn : Date,
-        severity : Severity,
-        status : Status,
-        resolution : Resolution,
-        resolvedOn : Date,
-        votes : Number,
-        commentCount : Number,
-        waitingFor : String,
-        mine : Boolean,
-        free : Boolean,
-        description : String
+        summary : {
+            type : String,
+            required : true
+        },
+        issueId : {
+            type : Number
+        },
+        issueKey : {
+            type : String
+        },
+        reportedOn : {
+            type : Date
+        },
+        severity : {
+            type : String,
+            required : true,
+            enum : ["Minor", "Normal", "Major", "Blocker", "Enhancement"]
+        },
+        status : {
+            type : String,
+            enum : ["Open", "InProgress", "Assigned", "Resolved", "Verified"]
+        },
+        resolution : {
+            type : String,
+            enum : ["Fixed", "WorksForMe", "WontFix"]
+        },
+        resolvedOn : {
+            type : Date
+        },
+        votes : {
+            type : Number
+        },
+        commentCount : {
+            type : Number
+        },
+        waitingFor : {
+            type : String
+        },
+        mine : {
+            type : Boolean
+        },
+        free : {
+            type : Boolean
+        },
+        description : {
+            type : String,
+            required : true
+        },
+        labels : [{
+            type : Schema.Types.ObjectId,
+            ref : "Label"
+        }],
+        project : {
+            type : Schema.Types.ObjectId,
+            ref : "Project",
+            required : true
+        },
+        reporter : {
+            type : Schema.Types.ObjectId,
+            ref : "User"
+        },
+        assignee : {
+            type : Schema.Types.ObjectId,
+            ref : "User"
+        },
+        watchers : [{
+            type : Schema.Types.ObjectId,
+            ref : "User"
+        }],
+        voters : [{
+            type : Schema.Types.ObjectId,
+            ref : "User"
+        }],
+        comments : [{
+            text : {
+                type : String
+            },
+            commentedOn : {
+                type : Date
+            },
+            user : {
+                type : Schema.Types.ObjectId,
+                ref : "User"
+            },
+            inReplyTo : {
+                type : Schema.Types.ObjectId,
+                ref : "Comment"
+            }
+        }]
     });
+    var Issue = mongoose.model('Issue', issueSchema);
+    Issue.emitter = new EventEmitter();
     
     /*************************** ACTIONS ***************************/
     
@@ -75,7 +156,7 @@
     issueSchema.methods.reopen = function (reason) {
         this.resolvedOn = null;
         this.resolution = null;
-        if (reason.notEquals("")) {
+        if (reason !== "") {
             this.comment(reason);
         }
     };
@@ -96,7 +177,8 @@
     };
     
     issueSchema.methods.withdrawVote = function () {
-        delete this.voted;
+        this.voters = null;
+        this = null;
     };
     
     /**
@@ -135,22 +217,22 @@
     };
     
     issueSchema.methods.getVotes = function () {
-        return <UNSUPPORTED: CallOperationAction> ;
+        return count;
     };
     
     issueSchema.methods.getCommentCount = function () {
-        return <UNSUPPORTED: CallOperationAction> ;
+        return count;
     };
     
     issueSchema.methods.getWaitingFor = function () {
         return "" +  + " day(s)";
     };
     
-    issueSchema.methods.getMine = function () {
+    issueSchema.methods.isMine = function () {
         return User.current == this.assignee;
     };
     
-    issueSchema.methods.getFree = function () {
+    issueSchema.methods.isFree = function () {
         return this.assignee == null;
     };
     /*************************** PRIVATE OPS ***********************/
@@ -170,8 +252,8 @@
     issueSchema.methods.addComment = function (text, inReplyTo) {
         comment = new Comment();
         comment.user = User.current;
-        comment.on = new Date();
-        comment.commented = text;
+        comment.commentedOn = new Date();
+        comment.text = text;
         comment.inReplyTo = inReplyTo;
         this.issue = comment;
         this.userNotifier.commentAdded(this.issueKey, comment.user.email, this.reporter.email, text);
@@ -244,5 +326,5 @@
         }
     });     
     
-    var Issue = mongoose.model('Issue', issueSchema);
-    Issue.emitter = new EventEmitter();
+    
+    var exports = module.exports = Issue;

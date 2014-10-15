@@ -1,9 +1,14 @@
     var EventEmitter = require('events').EventEmitter;
     var mongoose = require('mongoose');        
     var Schema = mongoose.Schema;
+    var cls = require('continuation-local-storage');
+    
 
     var makeSchema = new Schema({
-        name : String
+        name : {
+            type : String,
+            required : true
+        }
     });
     var Make = mongoose.model('Make', makeSchema);
     Make.emitter = new EventEmitter();

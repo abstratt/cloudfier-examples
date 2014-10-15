@@ -1,10 +1,55 @@
-    var EventEmitter = require('events').EventEmitter;        
+    var EventEmitter = require('events').EventEmitter;
+    var mongoose = require('mongoose');        
+    var Schema = mongoose.Schema;
+    var cls = require('continuation-local-storage');
+    
 
     var taskSchema = new Schema({
-        description : String,
-        unitsReported : Number,
-        unitsToInvoice : Number
+        description : {
+            type : String,
+            required : true
+        },
+        unitsReported : {
+            type : Number
+        },
+        unitsToInvoice : {
+            type : Number
+        },
+        toInvoice : [{
+            type : Schema.Types.ObjectId,
+            ref : "Work"
+        }],
+        client : {
+            type : Schema.Types.ObjectId,
+            ref : "Client"
+        },
+        reported : [{
+            units : {
+                type : Number,
+                required : true
+            },
+            date : {
+                type : Date,
+                required : true
+            },
+            memo : {
+                type : String
+            },
+            invoiced : {
+                type : Boolean
+            },
+            client : {
+                type : Schema.Types.ObjectId,
+                ref : "Client"
+            },
+            invoice : {
+                type : Schema.Types.ObjectId,
+                ref : "Invoice"
+            }
+        }]
     });
+    var Task = mongoose.model('Task', taskSchema);
+    Task.emitter = new EventEmitter();
     
     /*************************** ACTIONS ***************************/
     
@@ -34,5 +79,5 @@
                       .group({ _id: null, result: { $sum: '$units' } })
                       .select('-id result');
     };
-    var Task = mongoose.model('Task', taskSchema);
-    Task.emitter = new EventEmitter();
+    
+    var exports = module.exports = Task;

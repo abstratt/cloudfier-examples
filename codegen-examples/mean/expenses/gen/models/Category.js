@@ -1,13 +1,24 @@
     var EventEmitter = require('events').EventEmitter;
     var mongoose = require('mongoose');        
     var Schema = mongoose.Schema;
+    var cls = require('continuation-local-storage');
+    
 
     /**
      *  The category for an expense. 
      */
     var categorySchema = new Schema({
-        name : String
+        name : {
+            type : String,
+            required : true
+        },
+        expensesInThisCategory : [{
+            type : Schema.Types.ObjectId,
+            ref : "Expense"
+        }]
     });
+    var Category = mongoose.model('Category', categorySchema);
+    Category.emitter = new EventEmitter();
     
     /*************************** ACTIONS ***************************/
     
@@ -21,5 +32,5 @@
     categorySchema.methods.getExpensesInThisCategory = function () {
         return Expense.findExpensesByCategory(this);
     };
-    var Category = mongoose.model('Category', categorySchema);
-    Category.emitter = new EventEmitter();
+    
+    var exports = module.exports = Category;

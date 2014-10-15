@@ -1,8 +1,25 @@
-    var EventEmitter = require('events').EventEmitter;        
+    var EventEmitter = require('events').EventEmitter;
+    var mongoose = require('mongoose');        
+    var Schema = mongoose.Schema;
+    var cls = require('continuation-local-storage');
+    
 
     var clientSchema = new Schema({
-        name : String
+        name : {
+            type : String,
+            required : true
+        },
+        tasks : [{
+            type : Schema.Types.ObjectId,
+            ref : "Task"
+        }],
+        invoices : [{
+            type : Schema.Types.ObjectId,
+            ref : "Invoice"
+        }]
     });
+    var Client = mongoose.model('Client', clientSchema);
+    Client.emitter = new EventEmitter();
     
     /*************************** ACTIONS ***************************/
     
@@ -18,5 +35,5 @@
         this.client = newInvoice;
         return newInvoice;
     };
-    var Client = mongoose.model('Client', clientSchema);
-    Client.emitter = new EventEmitter();
+    
+    var exports = module.exports = Client;

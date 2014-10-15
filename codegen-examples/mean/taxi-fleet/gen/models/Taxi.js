@@ -1,14 +1,42 @@
-    var EventEmitter = require('events').EventEmitter;        
+    var EventEmitter = require('events').EventEmitter;
+    var mongoose = require('mongoose');        
+    var Schema = mongoose.Schema;
+    var cls = require('continuation-local-storage');
+    
 
     /**
      *  The vehicles that make up the fleet. 
      */
     var taxiSchema = new Schema({
-        name : String,
-        driverCount : Number,
-        full : Boolean,
-        booked : Boolean
+        name : {
+            type : String,
+            required : true
+        },
+        driverCount : {
+            type : Number
+        },
+        full : {
+            type : Boolean
+        },
+        booked : {
+            type : Boolean
+        },
+        shift : {
+            type : Schema.Types.ObjectId,
+            ref : "Shift",
+            required : true
+        },
+        drivers : [{
+            type : Schema.Types.ObjectId,
+            ref : "Driver"
+        }],
+        pendingCharges : [{
+            type : Schema.Types.ObjectId,
+            ref : "Charge"
+        }]
     });
+    var Taxi = mongoose.model('Taxi', taxiSchema);
+    Taxi.emitter = new EventEmitter();
     
     /*************************** ACTIONS ***************************/
     
@@ -16,24 +44,24 @@
      *  Create charges for every driver 
      */
     taxiSchema.methods.charge = function (date) {
-        <UNSUPPORTED: CallOperationAction> ;
+        forEach;
     };
     /*************************** DERIVED PROPERTIES ****************/
     
     taxiSchema.methods.getDriverCount = function () {
-        return <UNSUPPORTED: CallOperationAction> ;
+        return count;
     };
     
-    taxiSchema.methods.getFull = function () {
-        return this.driverCount.greaterOrEquals(this.shift.shiftsPerDay);
+    taxiSchema.methods.isFull = function () {
+        return this.driverCount >= this.shift.shiftsPerDay;
     };
     
-    taxiSchema.methods.getBooked = function () {
-        return this.driverCount.greaterThan(UNKNOWN: 0);
+    taxiSchema.methods.isBooked = function () {
+        return this.driverCount > 0;
     };
     
     taxiSchema.methods.getPendingCharges = function () {
         return Charge.byTaxi(this).where('paid').ne(true);
     };
-    var Taxi = mongoose.model('Taxi', taxiSchema);
-    Taxi.emitter = new EventEmitter();
+    
+    var exports = module.exports = Taxi;

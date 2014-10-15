@@ -1,22 +1,59 @@
     var EventEmitter = require('events').EventEmitter;
     var mongoose = require('mongoose');        
     var Schema = mongoose.Schema;
+    var cls = require('continuation-local-storage');
+    
 
     /**
      *  The expense as reported by an employee. 
      */
     var expenseSchema = new Schema({
-        moniker : String,
-        description : String,
-        status : Status,
-        amount : Number,
-        date : Date,
-        processed : Date,
-        rejectionReason : String,
-        expenseId : Number,
-        automaticApproval : Boolean,
-        daysProcessed : Number
+        moniker : {
+            type : String
+        },
+        description : {
+            type : String
+        },
+        status : {
+            type : String,
+            enum : ["Draft", "Submitted", "Approved", "Rejected"]
+        },
+        amount : {
+            type : Number
+        },
+        date : {
+            type : Date
+        },
+        processed : {
+            type : Date
+        },
+        rejectionReason : {
+            type : String
+        },
+        expenseId : {
+            type : Number
+        },
+        automaticApproval : {
+            type : Boolean
+        },
+        daysProcessed : {
+            type : Number
+        },
+        category : {
+            type : Schema.Types.ObjectId,
+            ref : "Category"
+        },
+        employee : {
+            type : Schema.Types.ObjectId,
+            ref : "Employee"
+        },
+        approver : {
+            type : Schema.Types.ObjectId,
+            ref : "Employee"
+        }
     });
+    var Expense = mongoose.model('Expense', expenseSchema);
+    Expense.emitter = new EventEmitter();
     
     /*************************** ACTIONS ***************************/
     
@@ -31,7 +68,7 @@
     };
     
     expenseSchema.methods.approve = function () {
-        this.approver = System.user();
+        this.approver = cls.getNamespace('currentUser');
     };
     
     /**
@@ -39,7 +76,7 @@
      */
     expenseSchema.methods.reject = function (reason) {
         this.rejectionReason = reason;
-        this.approver = System.user();
+        this.approver = cls.getNamespace('currentUser');
     };
     
     /**
@@ -79,13 +116,13 @@
     /**
      *  Whether this expense qualifies for automatic approval. 
      */
-    expenseSchema.methods.getAutomaticApproval = function () {
-        return this.amount.lowerThan(UNKNOWN: 50);
+    expenseSchema.methods.isAutomaticApproval = function () {
+        return this.amount < 50;
     };
     
     expenseSchema.methods.getDaysProcessed = function () {
         if (this.processed == null) {
-            return UNKNOWN: 0;
+            return 0;
         } else  {
             return ;
         }
@@ -157,5 +194,5 @@
         }
     });     
     
-    var Expense = mongoose.model('Expense', expenseSchema);
-    Expense.emitter = new EventEmitter();
+    
+    var exports = module.exports = Expense;

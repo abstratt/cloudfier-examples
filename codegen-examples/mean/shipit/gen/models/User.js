@@ -1,25 +1,74 @@
-    var EventEmitter = require('events').EventEmitter;        
+    var EventEmitter = require('events').EventEmitter;
+    var mongoose = require('mongoose');        
+    var Schema = mongoose.Schema;
+    var cls = require('continuation-local-storage');
+    
 
     var userSchema = new Schema({
-        username : String,
-        fullName : String,
-        email : String,
-        kind : UserKind,
-        committer : Boolean
+        email : {
+            type : String
+        },
+        fullName : {
+            type : String,
+            required : true
+        },
+        kind : {
+            type : String,
+            enum : ["Reporter", "Committer"]
+        },
+        committer : {
+            type : Boolean
+        },
+        issuesReportedByUser : [{
+            type : Schema.Types.ObjectId,
+            ref : "Issue"
+        }],
+        issuesCurrentlyInProgress : [{
+            type : Schema.Types.ObjectId,
+            ref : "Issue"
+        }],
+        issuesCurrentlyAssigned : [{
+            type : Schema.Types.ObjectId,
+            ref : "Issue"
+        }],
+        current : {
+            type : Schema.Types.ObjectId,
+            ref : "User"
+        },
+        voted : [{
+            type : Schema.Types.ObjectId,
+            ref : "Issue"
+        }],
+        issuesAssignedToUser : [{
+            type : Schema.Types.ObjectId,
+            ref : "Issue"
+        }],
+        issuesWatched : [{
+            type : Schema.Types.ObjectId,
+            ref : "Issue"
+        }]
     });
+    var User = mongoose.model('User', userSchema);
+    User.emitter = new EventEmitter();
     
+    /*************************** ACTIONS ***************************/
+    
+    userSchema.methods.promoteToCommitter = function () {
+        this.kind = "Committer";
+    };
+    /*************************** QUERIES ***************************/
+    
+    userSchema.statics.current = function () {
+        return cls.getNamespace('currentUser').exec();
+    };
     /*************************** DERIVED PROPERTIES ****************/
     
-    userSchema.methods.getEmail = function () {
-        return this.username;
-    };
-    
     userSchema.statics.getCurrent = function () {
-        return System.user();
+        return cls.getNamespace('currentUser');
     };
     
-    userSchema.methods.getCommitter = function () {
-        return this.kind == <UNSUPPORTED: InstanceValue> ;
+    userSchema.methods.isCommitter = function () {
+        return this.kind == "Committer";
     };
     
     userSchema.methods.getIssuesCurrentlyInProgress = function () {
@@ -30,8 +79,8 @@
         return Issue.filterByStatus(this.issuesAssignedToUser, null);
     };
     
-    userSchema.statics.getProvisioned = function () {
-        return !(System.user() == null);
+    userSchema.statics.isProvisioned = function () {
+        return !(cls.getNamespace('currentUser') == null);
     };
-    var User = mongoose.model('User', userSchema);
-    User.emitter = new EventEmitter();
+    
+    var exports = module.exports = User;

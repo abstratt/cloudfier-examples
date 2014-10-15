@@ -1,12 +1,25 @@
     var EventEmitter = require('events').EventEmitter;
     var mongoose = require('mongoose');        
     var Schema = mongoose.Schema;
+    var cls = require('continuation-local-storage');
+    
 
     var customerSchema = new Schema({
-        name : String,
-        hasCurrentRental : Boolean,
-        rentals : [{ type: Schema.Types.ObjectId, ref: 'Rental' }],
-        currentRental : { type: Schema.Types.ObjectId, ref: 'Rental' }
+        name : {
+            type : String,
+            required : true
+        },
+        hasCurrentRental : {
+            type : Boolean
+        },
+        rentals : [{
+            type : Schema.Types.ObjectId,
+            ref : "Rental"
+        }],
+        currentRental : {
+            type : Schema.Types.ObjectId,
+            ref : "Rental"
+        }
     });
     var Customer = mongoose.model('Customer', customerSchema);
     Customer.emitter = new EventEmitter();
@@ -27,7 +40,7 @@
     };
     /*************************** DERIVED PROPERTIES ****************/
     
-    customerSchema.methods.getHasCurrentRental = function () {
+    customerSchema.methods.isHasCurrentRental = function () {
         return !(this.currentRental == null);
     };
     

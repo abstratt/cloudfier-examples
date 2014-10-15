@@ -1,18 +1,55 @@
     var EventEmitter = require('events').EventEmitter;
     var mongoose = require('mongoose');        
     var Schema = mongoose.Schema;
+    var cls = require('continuation-local-storage');
+    
 
     /**
      *  An employee reports expenses. 
      */
     var employeeSchema = new Schema({
-        name : String,
-        username : String,
-        totalRecorded : Number,
-        totalSubmitted : Number,
-        totalApproved : Number,
-        totalRejected : Number
+        name : {
+            type : String,
+            required : true
+        },
+        username : {
+            type : String
+        },
+        totalRecorded : {
+            type : Number
+        },
+        totalSubmitted : {
+            type : Number
+        },
+        totalApproved : {
+            type : Number
+        },
+        totalRejected : {
+            type : Number
+        },
+        expenses : [{
+            type : Schema.Types.ObjectId,
+            ref : "Expense"
+        }],
+        recordedExpenses : [{
+            type : Schema.Types.ObjectId,
+            ref : "Expense"
+        }],
+        submittedExpenses : [{
+            type : Schema.Types.ObjectId,
+            ref : "Expense"
+        }],
+        approvedExpenses : [{
+            type : Schema.Types.ObjectId,
+            ref : "Expense"
+        }],
+        rejectedExpenses : [{
+            type : Schema.Types.ObjectId,
+            ref : "Expense"
+        }]
     });
+    var Employee = mongoose.model('Employee', employeeSchema);
+    Employee.emitter = new EventEmitter();
     
     /*************************** ACTIONS ***************************/
     
@@ -61,5 +98,5 @@
     employeeSchema.methods.expensesByStatus = function (status) {
         return Unsupported ReadLinkAction.where('status').eq(status);
     };
-    var Employee = mongoose.model('Employee', employeeSchema);
-    Employee.emitter = new EventEmitter();
+    
+    var exports = module.exports = Employee;

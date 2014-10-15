@@ -1,13 +1,38 @@
-    var EventEmitter = require('events').EventEmitter;        
+    var EventEmitter = require('events').EventEmitter;
+    var mongoose = require('mongoose');        
+    var Schema = mongoose.Schema;
+    var cls = require('continuation-local-storage');
+    
 
     /**
      *  Drivers that can book taxis. 
      */
     var driverSchema = new Schema({
-        name : String,
-        hasBooking : Boolean,
-        paymentDue : Boolean
+        name : {
+            type : String,
+            required : true
+        },
+        hasBooking : {
+            type : Boolean
+        },
+        paymentDue : {
+            type : Boolean
+        },
+        taxi : {
+            type : Schema.Types.ObjectId,
+            ref : "Taxi"
+        },
+        charges : [{
+            type : Schema.Types.ObjectId,
+            ref : "Charge"
+        }],
+        pendingCharges : [{
+            type : Schema.Types.ObjectId,
+            ref : "Charge"
+        }]
     });
+    var Driver = mongoose.model('Driver', driverSchema);
+    Driver.emitter = new EventEmitter();
     
     /*************************** ACTIONS ***************************/
     
@@ -22,11 +47,12 @@
      *  Release a taxi that is currently booked 
      */
     driverSchema.methods.release = function () {
-        delete this.taxi.taxi;
+        this.taxi.drivers = null;
+        this.taxi = null;
     };
     /*************************** DERIVED PROPERTIES ****************/
     
-    driverSchema.methods.getHasBooking = function () {
+    driverSchema.methods.isHasBooking = function () {
         return !(this.taxi == null);
     };
     
@@ -34,8 +60,8 @@
         return this.charges.where('paid').ne(true);
     };
     
-    driverSchema.methods.getPaymentDue = function () {
-        return !(<UNSUPPORTED: CallOperationAction> );
+    driverSchema.methods.isPaymentDue = function () {
+        return !(isEmpty);
     };
-    var Driver = mongoose.model('Driver', driverSchema);
-    Driver.emitter = new EventEmitter();
+    
+    var exports = module.exports = Driver;

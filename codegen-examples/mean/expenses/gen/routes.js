@@ -1,68 +1,125 @@
 var mongoose = require('mongoose');
+var cls = require('continuation-local-storage');
 
-require('./models/Category.js');
-require('./models/Expense.js');
-require('./models/Employee.js');
+var Category = require('./models/Category.js');
+var Expense = require('./models/Expense.js');
+var Employee = require('./models/Employee.js');
 
 var exports = module.exports = { 
     build: function (app, resolveUrl) {
         app.get("/", function(req, res) {
-            res.json({
-                applicationName : "Expenses Application",
-                entities : resolveUrl("entities")
+            cls.getNamespace('session').run(function(context) {
+                res.json({
+                    applicationName : "Expenses Application",
+                    entities : resolveUrl("entities"),
+                    currentUser : context.username 
+                });
             });
         });
         
         app.get("/entities", function(req, res) {
             res.json([
                 {
-                   fullName : "expenses.Category",
-                   extentUri : resolveUrl("entities/expenses.Category/instances"),
-                   uri : resolveUrl("entities/expenses.Category")
-                }
-                ,
+                    fullName : "expenses.Category",
+                    label : "Category",
+                    description : "The category for an expense.",
+                    uri : resolveUrl("entities/expenses.Category"),
+                    extentUri : resolveUrl("entities/expenses.Category/instances"),
+                    user : false,
+                    concrete : true,
+                    standalone : true,
+                    templateUri : resolveUrl("entities/expenses.Category/template")
+                },
                  {
-                   fullName : "expenses.Expense",
-                   extentUri : resolveUrl("entities/expenses.Expense/instances"),
-                   uri : resolveUrl("entities/expenses.Expense")
-                }
-                ,
+                    fullName : "expenses.Expense",
+                    label : "Expense",
+                    description : "The expense as reported by an employee.",
+                    uri : resolveUrl("entities/expenses.Expense"),
+                    extentUri : resolveUrl("entities/expenses.Expense/instances"),
+                    user : false,
+                    concrete : true,
+                    standalone : true
+                },
                  {
-                   fullName : "expenses.Employee",
-                   extentUri : resolveUrl("entities/expenses.Employee/instances"),
-                   uri : resolveUrl("entities/expenses.Employee")
+                    fullName : "expenses.Employee",
+                    label : "Employee",
+                    description : "An employee reports expenses.",
+                    uri : resolveUrl("entities/expenses.Employee"),
+                    extentUri : resolveUrl("entities/expenses.Employee/instances"),
+                    user : true,
+                    concrete : true,
+                    standalone : true,
+                    templateUri : resolveUrl("entities/expenses.Employee/template")
                 }
             ]);
         });
         // routes for expenses.Category
         app.get("/entities/expenses.Category", function(req, res) {
             res.json({
-                extentUri: resolveUrl('entities/expenses.Category/instances')
+                fullName : "expenses.Category",
+                label : "Category",
+                description : "The category for an expense.",
+                uri : resolveUrl("entities/expenses.Category"),
+                extentUri : resolveUrl("entities/expenses.Category/instances"),
+                user : false,
+                concrete : true,
+                standalone : true,
+                templateUri : resolveUrl("entities/expenses.Category/template")
+            });
+        });
+        app.get("/entities/expenses.Category/instances/:objectId", function(req, res) {
+            return mongoose.model('Category').where({ _id: req.params.objectId}).findOne().lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    found.objectId = found._id;
+                    delete found._id;
+                    delete found.__v;
+                    found.uri = resolveUrl('entities/expenses.Category/instances/' + found.objectId);
+                    res.json(found);
+                }
             });
         });
         app.get("/entities/expenses.Category/instances", function(req, res) {
-            return mongoose.model('expenses.Category').find().then(function(block) {
-                res.json({
-                    offset: 0,
-                    length: block.size(),
-                    contents: block
-                });
+            return mongoose.model('Category').find().lean().exec(function(error, contents) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    contents.forEach(function(each) {
+                        each.objectId = each._id;
+                        delete each._id;
+                        delete each.__v;
+                        each.uri = resolveUrl('entities/expenses.Category/instances/' + each.objectId);
+                    });
+                    res.json({
+                        uri: resolveUrl('entities/expenses.Category/instances'),
+                        length: contents.length,
+                        contents: contents
+                    });
+                }
             });
         });
         app.get("/entities/expenses.Category/template", function(req, res) {
-            res.json(new Category());
+            var template = new Category();
+            res.json(template);
         });
         app.post("/entities/expenses.Category/instances", function(req, res) {
             var instanceData = req.body;
             var newCategory = new Category();
-            for (var p in instanceData) {
-                newCategory[p] = instanceData[p]; 
-            }
-            newCategory.save(function(err, created) {
+            newCategory.name = instanceData.name;
+            newCategory.save(function(err, doc) {
                 if (err) {
-                    respondWithError(req, err);
+                    console.log(err);
+                    res.status(400).json({message: err.message});
                 } else {
-                    res.json(created);    
+                    var created = doc.toObject();
+                    created.objectId = created._id;
+                    delete created._id;
+                    delete created.__v;
+                    created.uri = resolveUrl('entities/expenses.Category/instances/' + created.objectId);
+                    res.status(201).json(created);    
                 }
             });
         });
@@ -71,32 +128,47 @@ var exports = module.exports = {
         // routes for expenses.Expense
         app.get("/entities/expenses.Expense", function(req, res) {
             res.json({
-                extentUri: resolveUrl('entities/expenses.Expense/instances')
+                fullName : "expenses.Expense",
+                label : "Expense",
+                description : "The expense as reported by an employee.",
+                uri : resolveUrl("entities/expenses.Expense"),
+                extentUri : resolveUrl("entities/expenses.Expense/instances"),
+                user : false,
+                concrete : true,
+                standalone : true
+            });
+        });
+        app.get("/entities/expenses.Expense/instances/:objectId", function(req, res) {
+            return mongoose.model('Expense').where({ _id: req.params.objectId}).findOne().lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    found.objectId = found._id;
+                    delete found._id;
+                    delete found.__v;
+                    found.uri = resolveUrl('entities/expenses.Expense/instances/' + found.objectId);
+                    res.json(found);
+                }
             });
         });
         app.get("/entities/expenses.Expense/instances", function(req, res) {
-            return mongoose.model('expenses.Expense').find().then(function(block) {
-                res.json({
-                    offset: 0,
-                    length: block.size(),
-                    contents: block
-                });
-            });
-        });
-        app.get("/entities/expenses.Expense/template", function(req, res) {
-            res.json(new Expense());
-        });
-        app.post("/entities/expenses.Expense/instances", function(req, res) {
-            var instanceData = req.body;
-            var newExpense = new Expense();
-            for (var p in instanceData) {
-                newExpense[p] = instanceData[p]; 
-            }
-            newExpense.save(function(err, created) {
-                if (err) {
-                    respondWithError(req, err);
+            return mongoose.model('Expense').find().lean().exec(function(error, contents) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
                 } else {
-                    res.json(created);    
+                    contents.forEach(function(each) {
+                        each.objectId = each._id;
+                        delete each._id;
+                        delete each.__v;
+                        each.uri = resolveUrl('entities/expenses.Expense/instances/' + each.objectId);
+                    });
+                    res.json({
+                        uri: resolveUrl('entities/expenses.Expense/instances'),
+                        length: contents.length,
+                        contents: contents
+                    });
                 }
             });
         });
@@ -105,32 +177,71 @@ var exports = module.exports = {
         // routes for expenses.Employee
         app.get("/entities/expenses.Employee", function(req, res) {
             res.json({
-                extentUri: resolveUrl('entities/expenses.Employee/instances')
+                fullName : "expenses.Employee",
+                label : "Employee",
+                description : "An employee reports expenses.",
+                uri : resolveUrl("entities/expenses.Employee"),
+                extentUri : resolveUrl("entities/expenses.Employee/instances"),
+                user : true,
+                concrete : true,
+                standalone : true,
+                templateUri : resolveUrl("entities/expenses.Employee/template")
+            });
+        });
+        app.get("/entities/expenses.Employee/instances/:objectId", function(req, res) {
+            return mongoose.model('Employee').where({ _id: req.params.objectId}).findOne().lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    found.objectId = found._id;
+                    delete found._id;
+                    delete found.__v;
+                    found.uri = resolveUrl('entities/expenses.Employee/instances/' + found.objectId);
+                    res.json(found);
+                }
             });
         });
         app.get("/entities/expenses.Employee/instances", function(req, res) {
-            return mongoose.model('expenses.Employee').find().then(function(block) {
-                res.json({
-                    offset: 0,
-                    length: block.size(),
-                    contents: block
-                });
+            return mongoose.model('Employee').find().lean().exec(function(error, contents) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    contents.forEach(function(each) {
+                        each.objectId = each._id;
+                        delete each._id;
+                        delete each.__v;
+                        each.uri = resolveUrl('entities/expenses.Employee/instances/' + each.objectId);
+                    });
+                    res.json({
+                        uri: resolveUrl('entities/expenses.Employee/instances'),
+                        length: contents.length,
+                        contents: contents
+                    });
+                }
             });
         });
         app.get("/entities/expenses.Employee/template", function(req, res) {
-            res.json(new Employee());
+            var template = new Employee();
+            res.json(template);
         });
         app.post("/entities/expenses.Employee/instances", function(req, res) {
             var instanceData = req.body;
             var newEmployee = new Employee();
-            for (var p in instanceData) {
-                newEmployee[p] = instanceData[p]; 
-            }
-            newEmployee.save(function(err, created) {
+            newEmployee.name = instanceData.name;
+            newEmployee.username = instanceData.username;
+            newEmployee.save(function(err, doc) {
                 if (err) {
-                    respondWithError(req, err);
+                    console.log(err);
+                    res.status(400).json({message: err.message});
                 } else {
-                    res.json(created);    
+                    var created = doc.toObject();
+                    created.objectId = created._id;
+                    delete created._id;
+                    delete created.__v;
+                    created.uri = resolveUrl('entities/expenses.Employee/instances/' + created.objectId);
+                    res.status(201).json(created);    
                 }
             });
         });

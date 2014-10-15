@@ -1,20 +1,55 @@
     var EventEmitter = require('events').EventEmitter;
     var mongoose = require('mongoose');        
     var Schema = mongoose.Schema;
+    var cls = require('continuation-local-storage');
+    
 
     var carSchema = new Schema({
-        description : String,
-        plate : String,
-        price : Number,
-        available : Boolean,
-        year : Number,
-        color : String,
-        underRepair : Boolean,
-        rented : Boolean,
-        status : String,
-        currentRental : { type: Schema.Types.ObjectId, ref: 'Rental' },
-        model : { type: Schema.Types.ObjectId, ref: 'Model' },
-        rentals : [{ type: Schema.Types.ObjectId, ref: 'Rental' }]
+        description : {
+            type : String
+        },
+        plate : {
+            type : String,
+            required : true
+        },
+        price : {
+            type : Number,
+            required : true
+        },
+        available : {
+            type : Boolean
+        },
+        year : {
+            type : Number,
+            required : true
+        },
+        color : {
+            type : String,
+            required : true
+        },
+        underRepair : {
+            type : Boolean
+        },
+        rented : {
+            type : Boolean
+        },
+        status : {
+            type : String,
+            enum : ["Available", "Rented", "UnderRepair"]
+        },
+        currentRental : {
+            type : Schema.Types.ObjectId,
+            ref : "Rental"
+        },
+        model : {
+            type : Schema.Types.ObjectId,
+            ref : "Model",
+            required : true
+        },
+        rentals : [{
+            type : Schema.Types.ObjectId,
+            ref : "Rental"
+        }]
     });
     var Car = mongoose.model('Car', carSchema);
     Car.emitter = new EventEmitter();
@@ -34,7 +69,7 @@
         return this.model.description + " - " + this.plate;
     };
     
-    carSchema.methods.getAvailable = function () {
+    carSchema.methods.isAvailable = function () {
         return this.status == null;
     };
     
@@ -42,11 +77,11 @@
         return Rental.currentForCar(this);
     };
     
-    carSchema.methods.getUnderRepair = function () {
+    carSchema.methods.isUnderRepair = function () {
         return this.status == null;
     };
     
-    carSchema.methods.getRented = function () {
+    carSchema.methods.isRented = function () {
         return this.status == null;
     };
     /*************************** STATE MACHINE ********************/
