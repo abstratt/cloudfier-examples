@@ -45,23 +45,28 @@
         s.description = description;
         s.car = carToService;
         return s;
+        this.handleEvent('newService');
     };
     
     /**
      *  Cancels a service. 
      */
-    serviceSchema.methods.cancel = function () {};
+    serviceSchema.methods.cancel = function () {
+        this.handleEvent('cancel');    
+    };
     
     /**
      *  Starts the service. It can no longer be canceled. 
      */
     serviceSchema.methods.start = function () {
+        this.handleEvent('start');
     };
     
     /**
      *  Completes the service. 
      */
     serviceSchema.methods.complete = function () {
+        this.handleEvent('complete');
     };
     
     /**
@@ -69,6 +74,7 @@
      */
     serviceSchema.methods.assignTo = function (technician) {
         this.technician = technician;
+        this.handleEvent('assignTo');
     };
     
     /**
@@ -76,11 +82,13 @@
      */
     serviceSchema.methods.transfer = function (mechanic) {
         this.technician = mechanic;
+        this.handleEvent('transfer');
     };
     /*************************** QUERIES ***************************/
     
     serviceSchema.statics.byStatus = function (services, toMatch) {
         return services.where('status').eq(toMatch).exec();
+        this.handleEvent('byStatus');
     };
     /*************************** DERIVED PROPERTIES ****************/
     
@@ -96,26 +104,30 @@
         return !(this.technician == null);
     };
     /*************************** STATE MACHINE ********************/
-    Service.emitter.on('cancel', function () {
-        if (this.status == 'Booked') {
-            this.status = 'Cancelled';
-            return;
+    serviceSchema.methods.handleEvent = function (event) {
+        switch (event) {
+            case 'cancel' :
+                if (this.status == 'Booked') {
+                    this.status = 'Cancelled';
+                    return;
+                }
+                break;
+            
+            case 'start' :
+                if (this.status == 'Booked') {
+                    this.status = 'InProgress';
+                    return;
+                }
+                break;
+            
+            case 'complete' :
+                if (this.status == 'InProgress') {
+                    this.status = 'Completed';
+                    return;
+                }
+                break;
         }
-    });     
-    
-    Service.emitter.on('start', function () {
-        if (this.status == 'Booked') {
-            this.status = 'InProgress';
-            return;
-        }
-    });     
-    
-    Service.emitter.on('complete', function () {
-        if (this.status == 'InProgress') {
-            this.status = 'Completed';
-            return;
-        }
-    });     
+    };
     
     
     var exports = module.exports = Service;

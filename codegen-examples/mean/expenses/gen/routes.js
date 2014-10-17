@@ -7,6 +7,17 @@ var Employee = require('./models/Employee.js');
 
 var exports = module.exports = { 
     build: function (app, resolveUrl) {
+                    
+        // helps with removing internal metadata            
+        var renderInstance = function (entityName, instance) {
+            instance.objectId = instance._id;
+            delete instance._id;
+            delete instance.__v;
+            instance.uri = resolveUrl('entities/'+ entityName + '/instances/' + instance.objectId);
+            instance.entityUri = resolveUrl('entities/'+ entityName);
+            return instance;
+        };
+        
         app.get("/", function(req, res) {
             cls.getNamespace('session').run(function(context) {
                 res.json({
@@ -73,25 +84,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/expenses.Category/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('expenses.Category', found));
                 }
             });
         });
         app.get("/entities/expenses.Category/instances", function(req, res) {
-            return mongoose.model('Category').find().lean().exec(function(error, contents) {
+            return mongoose.model('Category').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/expenses.Category/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('expenses.Category', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/expenses.Category/instances'),
@@ -102,8 +107,8 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/expenses.Category/template", function(req, res) {
-            var template = new Category();
-            res.json(template);
+            var template = new Category().toObject();
+            res.json(renderInstance('expenses.Category', template));
         });
         app.post("/entities/expenses.Category/instances", function(req, res) {
             var instanceData = req.body;
@@ -144,25 +149,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/expenses.Expense/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('expenses.Expense', found));
                 }
             });
         });
         app.get("/entities/expenses.Expense/instances", function(req, res) {
-            return mongoose.model('Expense').find().lean().exec(function(error, contents) {
+            return mongoose.model('Expense').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/expenses.Expense/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('expenses.Expense', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/expenses.Expense/instances'),
@@ -194,25 +193,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/expenses.Employee/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('expenses.Employee', found));
                 }
             });
         });
         app.get("/entities/expenses.Employee/instances", function(req, res) {
-            return mongoose.model('Employee').find().lean().exec(function(error, contents) {
+            return mongoose.model('Employee').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/expenses.Employee/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('expenses.Employee', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/expenses.Employee/instances'),
@@ -223,8 +216,8 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/expenses.Employee/template", function(req, res) {
-            var template = new Employee();
-            res.json(template);
+            var template = new Employee().toObject();
+            res.json(renderInstance('expenses.Employee', template));
         });
         app.post("/entities/expenses.Employee/instances", function(req, res) {
             var instanceData = req.body;

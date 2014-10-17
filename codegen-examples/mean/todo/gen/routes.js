@@ -6,6 +6,17 @@ var Todo = require('./models/Todo.js');
 
 var exports = module.exports = { 
     build: function (app, resolveUrl) {
+                    
+        // helps with removing internal metadata            
+        var renderInstance = function (entityName, instance) {
+            instance.objectId = instance._id;
+            delete instance._id;
+            delete instance.__v;
+            instance.uri = resolveUrl('entities/'+ entityName + '/instances/' + instance.objectId);
+            instance.entityUri = resolveUrl('entities/'+ entityName);
+            return instance;
+        };
+        
         app.get("/", function(req, res) {
             cls.getNamespace('session').run(function(context) {
                 res.json({
@@ -62,25 +73,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/todo.User/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('todo.User', found));
                 }
             });
         });
         app.get("/entities/todo.User/instances", function(req, res) {
-            return mongoose.model('User').find().lean().exec(function(error, contents) {
+            return mongoose.model('User').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/todo.User/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('todo.User', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/todo.User/instances'),
@@ -91,8 +96,8 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/todo.User/template", function(req, res) {
-            var template = new User();
-            res.json(template);
+            var template = new User().toObject();
+            res.json(renderInstance('todo.User', template));
         });
         app.post("/entities/todo.User/instances", function(req, res) {
             var instanceData = req.body;
@@ -135,25 +140,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/todo.Todo/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('todo.Todo', found));
                 }
             });
         });
         app.get("/entities/todo.Todo/instances", function(req, res) {
-            return mongoose.model('Todo').find().lean().exec(function(error, contents) {
+            return mongoose.model('Todo').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/todo.Todo/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('todo.Todo', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/todo.Todo/instances'),
@@ -164,7 +163,7 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/todo.Todo/template", function(req, res) {
-            var template = new Todo();
+            var template = new Todo().toObject();
             template.creator = (function() {
                 return cls.getNamespace('currentUser');
             })();
@@ -172,7 +171,7 @@ var exports = module.exports = {
                 return cls.getNamespace('currentUser');
             })();
             template.status = "Open";
-            res.json(template);
+            res.json(renderInstance('todo.Todo', template));
         });
         app.post("/entities/todo.Todo/instances", function(req, res) {
             var instanceData = req.body;

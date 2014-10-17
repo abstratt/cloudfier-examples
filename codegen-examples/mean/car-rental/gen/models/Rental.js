@@ -42,6 +42,7 @@
     
     rentalSchema.methods.finish = function () {
         this.returned = new Date();
+        this.handleEvent('finish');
     };
     
     var exports = module.exports = Rental;

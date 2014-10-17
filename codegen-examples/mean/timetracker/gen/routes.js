@@ -7,6 +7,17 @@ var Invoice = require('./models/Invoice.js');
 
 var exports = module.exports = { 
     build: function (app, resolveUrl) {
+                    
+        // helps with removing internal metadata            
+        var renderInstance = function (entityName, instance) {
+            instance.objectId = instance._id;
+            delete instance._id;
+            delete instance.__v;
+            instance.uri = resolveUrl('entities/'+ entityName + '/instances/' + instance.objectId);
+            instance.entityUri = resolveUrl('entities/'+ entityName);
+            return instance;
+        };
+        
         app.get("/", function(req, res) {
             cls.getNamespace('session').run(function(context) {
                 res.json({
@@ -73,25 +84,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/timetracker.Client/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('timetracker.Client', found));
                 }
             });
         });
         app.get("/entities/timetracker.Client/instances", function(req, res) {
-            return mongoose.model('Client').find().lean().exec(function(error, contents) {
+            return mongoose.model('Client').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/timetracker.Client/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('timetracker.Client', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/timetracker.Client/instances'),
@@ -102,8 +107,8 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/timetracker.Client/template", function(req, res) {
-            var template = new Client();
-            res.json(template);
+            var template = new Client().toObject();
+            res.json(renderInstance('timetracker.Client', template));
         });
         app.post("/entities/timetracker.Client/instances", function(req, res) {
             var instanceData = req.body;
@@ -145,25 +150,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/timetracker.Task/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('timetracker.Task', found));
                 }
             });
         });
         app.get("/entities/timetracker.Task/instances", function(req, res) {
-            return mongoose.model('Task').find().lean().exec(function(error, contents) {
+            return mongoose.model('Task').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/timetracker.Task/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('timetracker.Task', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/timetracker.Task/instances'),
@@ -174,8 +173,8 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/timetracker.Task/template", function(req, res) {
-            var template = new Task();
-            res.json(template);
+            var template = new Task().toObject();
+            res.json(renderInstance('timetracker.Task', template));
         });
         app.post("/entities/timetracker.Task/instances", function(req, res) {
             var instanceData = req.body;
@@ -217,25 +216,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/timetracker.Invoice/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('timetracker.Invoice', found));
                 }
             });
         });
         app.get("/entities/timetracker.Invoice/instances", function(req, res) {
-            return mongoose.model('Invoice').find().lean().exec(function(error, contents) {
+            return mongoose.model('Invoice').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/timetracker.Invoice/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('timetracker.Invoice', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/timetracker.Invoice/instances'),

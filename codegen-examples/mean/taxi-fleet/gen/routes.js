@@ -8,6 +8,17 @@ var Charge = require('./models/Charge.js');
 
 var exports = module.exports = { 
     build: function (app, resolveUrl) {
+                    
+        // helps with removing internal metadata            
+        var renderInstance = function (entityName, instance) {
+            instance.objectId = instance._id;
+            delete instance._id;
+            delete instance.__v;
+            instance.uri = resolveUrl('entities/'+ entityName + '/instances/' + instance.objectId);
+            instance.entityUri = resolveUrl('entities/'+ entityName);
+            return instance;
+        };
+        
         app.get("/", function(req, res) {
             cls.getNamespace('session').run(function(context) {
                 res.json({
@@ -86,25 +97,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/taxi_fleet.Taxi/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('taxi_fleet.Taxi', found));
                 }
             });
         });
         app.get("/entities/taxi_fleet.Taxi/instances", function(req, res) {
-            return mongoose.model('Taxi').find().lean().exec(function(error, contents) {
+            return mongoose.model('Taxi').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/taxi_fleet.Taxi/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('taxi_fleet.Taxi', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/taxi_fleet.Taxi/instances'),
@@ -115,8 +120,8 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/taxi_fleet.Taxi/template", function(req, res) {
-            var template = new Taxi();
-            res.json(template);
+            var template = new Taxi().toObject();
+            res.json(renderInstance('taxi_fleet.Taxi', template));
         });
         app.post("/entities/taxi_fleet.Taxi/instances", function(req, res) {
             var instanceData = req.body;
@@ -159,25 +164,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/taxi_fleet.Shift/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('taxi_fleet.Shift', found));
                 }
             });
         });
         app.get("/entities/taxi_fleet.Shift/instances", function(req, res) {
-            return mongoose.model('Shift').find().lean().exec(function(error, contents) {
+            return mongoose.model('Shift').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/taxi_fleet.Shift/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('taxi_fleet.Shift', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/taxi_fleet.Shift/instances'),
@@ -188,9 +187,9 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/taxi_fleet.Shift/template", function(req, res) {
-            var template = new Shift();
+            var template = new Shift().toObject();
             template.shiftsPerDay = 1;
-            res.json(template);
+            res.json(renderInstance('taxi_fleet.Shift', template));
         });
         app.post("/entities/taxi_fleet.Shift/instances", function(req, res) {
             var instanceData = req.body;
@@ -234,25 +233,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/taxi_fleet.Driver/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('taxi_fleet.Driver', found));
                 }
             });
         });
         app.get("/entities/taxi_fleet.Driver/instances", function(req, res) {
-            return mongoose.model('Driver').find().lean().exec(function(error, contents) {
+            return mongoose.model('Driver').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/taxi_fleet.Driver/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('taxi_fleet.Driver', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/taxi_fleet.Driver/instances'),
@@ -263,8 +256,8 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/taxi_fleet.Driver/template", function(req, res) {
-            var template = new Driver();
-            res.json(template);
+            var template = new Driver().toObject();
+            res.json(renderInstance('taxi_fleet.Driver', template));
         });
         app.post("/entities/taxi_fleet.Driver/instances", function(req, res) {
             var instanceData = req.body;
@@ -307,25 +300,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/taxi_fleet.Charge/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('taxi_fleet.Charge', found));
                 }
             });
         });
         app.get("/entities/taxi_fleet.Charge/instances", function(req, res) {
-            return mongoose.model('Charge').find().lean().exec(function(error, contents) {
+            return mongoose.model('Charge').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/taxi_fleet.Charge/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('taxi_fleet.Charge', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/taxi_fleet.Charge/instances'),
@@ -336,8 +323,8 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/taxi_fleet.Charge/template", function(req, res) {
-            var template = new Charge();
-            res.json(template);
+            var template = new Charge().toObject();
+            res.json(renderInstance('taxi_fleet.Charge', template));
         });
         app.post("/entities/taxi_fleet.Charge/instances", function(req, res) {
             var instanceData = req.body;

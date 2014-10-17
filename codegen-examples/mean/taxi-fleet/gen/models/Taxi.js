@@ -45,6 +45,7 @@
      */
     taxiSchema.methods.charge = function (date) {
         forEach;
+        this.handleEvent('charge');
     };
     /*************************** DERIVED PROPERTIES ****************/
     

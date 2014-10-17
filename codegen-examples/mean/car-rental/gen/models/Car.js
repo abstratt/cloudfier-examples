@@ -58,10 +58,12 @@
     
     carSchema.methods.startRepair = function () {
         this.repairStarted();
+        this.handleEvent('startRepair');
     };
     
     carSchema.methods.finishRepair = function () {
         this.repairFinished();
+        this.handleEvent('finishRepair');
     };
     /*************************** DERIVED PROPERTIES ****************/
     
@@ -85,33 +87,37 @@
         return this.status == null;
     };
     /*************************** STATE MACHINE ********************/
-    Car.emitter.on('CarRented', function () {
-        if (this.status == 'Available') {
-            this.status = 'Rented';
-            return;
+    carSchema.methods.handleEvent = function (event) {
+        switch (event) {
+            case 'CarRented' :
+                if (this.status == 'Available') {
+                    this.status = 'Rented';
+                    return;
+                }
+                break;
+            
+            case 'RepairStarted' :
+                if (this.status == 'Available') {
+                    this.status = 'UnderRepair';
+                    return;
+                }
+                break;
+            
+            case 'CarReturned' :
+                if (this.status == 'Rented') {
+                    this.status = 'Available';
+                    return;
+                }
+                break;
+            
+            case 'RepairFinished' :
+                if (this.status == 'UnderRepair') {
+                    this.status = 'Available';
+                    return;
+                }
+                break;
         }
-    });     
-    
-    Car.emitter.on('RepairStarted', function () {
-        if (this.status == 'Available') {
-            this.status = 'UnderRepair';
-            return;
-        }
-    });     
-    
-    Car.emitter.on('CarReturned', function () {
-        if (this.status == 'Rented') {
-            this.status = 'Available';
-            return;
-        }
-    });     
-    
-    Car.emitter.on('RepairFinished', function () {
-        if (this.status == 'UnderRepair') {
-            this.status = 'Available';
-            return;
-        }
-    });     
+    };
     
     
     var exports = module.exports = Car;

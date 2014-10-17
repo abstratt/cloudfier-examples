@@ -28,12 +28,14 @@
         newTask.description = description;
         this.client = newTask;
         return newTask;
+        this.handleEvent('newTask');
     };
     
     clientSchema.methods.startInvoice = function () {
         newInvoice = new Invoice();
         this.client = newInvoice;
         return newInvoice;
+        this.handleEvent('startInvoice');
     };
     
     var exports = module.exports = Client;

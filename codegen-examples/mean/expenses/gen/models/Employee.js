@@ -55,6 +55,7 @@
     
     employeeSchema.methods.declareExpense = function (description, amount, date, category) {
         return Expense.newExpense(description, amount, date, category, this);
+        this.handleEvent('declareExpense');
     };
     /*************************** DERIVED PROPERTIES ****************/
     
@@ -93,10 +94,12 @@
     
     employeeSchema.methods.totalExpenses = function (toSum) {
         return reduce;
+        this.handleEvent('totalExpenses');
     };
     
     employeeSchema.methods.expensesByStatus = function (status) {
         return Unsupported ReadLinkAction.where('status').eq(status);
+        this.handleEvent('expensesByStatus');
     };
     
     var exports = module.exports = Employee;

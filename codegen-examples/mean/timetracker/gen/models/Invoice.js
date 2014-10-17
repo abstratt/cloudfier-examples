@@ -41,6 +41,7 @@
     
     invoiceSchema.methods.issue = function () {
         this.issueDate = new Date();
+        this.handleEvent('issue');
     };
     /*************************** DERIVED PROPERTIES ****************/
     
@@ -62,24 +63,30 @@
     
     invoiceSchema.methods.sendInvoice = function () {
         this.invoicer.invoiceIssued();
+        this.handleEvent('sendInvoice');
     };
     /*************************** STATE MACHINE ********************/
-    Invoice.emitter.on('issue', function () {
-        if (this.status == 'Preparation') {
-            this.status = 'Invoiced';
-            (function() {
-                this.sendInvoice();
-            })();
-            return;
+    invoiceSchema.methods.handleEvent = function (event) {
+        switch (event) {
+            case 'issue' :
+                if (this.status == 'Preparation') {
+                    this.status = 'Invoiced';
+                    // on entering Invoiced
+                    (function() {
+                        this.sendInvoice();
+                    })();
+                    return;
+                }
+                break;
+            
+            case 'InvoicePaid' :
+                if (this.status == 'Invoiced') {
+                    this.status = 'Received';
+                    return;
+                }
+                break;
         }
-    });     
-    
-    Invoice.emitter.on('InvoicePaid', function () {
-        if (this.status == 'Invoiced') {
-            this.status = 'Received';
-            return;
-        }
-    });     
+    };
     
     
     var exports = module.exports = Invoice;

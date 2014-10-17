@@ -11,6 +11,17 @@ var Model = require('./models/Model.js');
 
 var exports = module.exports = { 
     build: function (app, resolveUrl) {
+                    
+        // helps with removing internal metadata            
+        var renderInstance = function (entityName, instance) {
+            instance.objectId = instance._id;
+            delete instance._id;
+            delete instance.__v;
+            instance.uri = resolveUrl('entities/'+ entityName + '/instances/' + instance.objectId);
+            instance.entityUri = resolveUrl('entities/'+ entityName);
+            return instance;
+        };
+        
         app.get("/", function(req, res) {
             cls.getNamespace('session').run(function(context) {
                 res.json({
@@ -121,25 +132,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/carserv.Person/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('carserv.Person', found));
                 }
             });
         });
         app.get("/entities/carserv.Person/instances", function(req, res) {
-            return mongoose.model('Person').find().lean().exec(function(error, contents) {
+            return mongoose.model('Person').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/carserv.Person/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('carserv.Person', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/carserv.Person/instances'),
@@ -150,8 +155,8 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/carserv.Person/template", function(req, res) {
-            var template = new Person();
-            res.json(template);
+            var template = new Person().toObject();
+            res.json(renderInstance('carserv.Person', template));
         });
         app.post("/entities/carserv.Person/instances", function(req, res) {
             var instanceData = req.body;
@@ -195,25 +200,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/carserv.AutoMechanic/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('carserv.AutoMechanic', found));
                 }
             });
         });
         app.get("/entities/carserv.AutoMechanic/instances", function(req, res) {
-            return mongoose.model('AutoMechanic').find().lean().exec(function(error, contents) {
+            return mongoose.model('AutoMechanic').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/carserv.AutoMechanic/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('carserv.AutoMechanic', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/carserv.AutoMechanic/instances'),
@@ -224,8 +223,8 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/carserv.AutoMechanic/template", function(req, res) {
-            var template = new AutoMechanic();
-            res.json(template);
+            var template = new AutoMechanic().toObject();
+            res.json(renderInstance('carserv.AutoMechanic', template));
         });
         app.post("/entities/carserv.AutoMechanic/instances", function(req, res) {
             var instanceData = req.body;
@@ -270,25 +269,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/carserv.Customer/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('carserv.Customer', found));
                 }
             });
         });
         app.get("/entities/carserv.Customer/instances", function(req, res) {
-            return mongoose.model('Customer').find().lean().exec(function(error, contents) {
+            return mongoose.model('Customer').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/carserv.Customer/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('carserv.Customer', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/carserv.Customer/instances'),
@@ -299,8 +292,8 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/carserv.Customer/template", function(req, res) {
-            var template = new Customer();
-            res.json(template);
+            var template = new Customer().toObject();
+            res.json(renderInstance('carserv.Customer', template));
         });
         app.post("/entities/carserv.Customer/instances", function(req, res) {
             var instanceData = req.body;
@@ -345,25 +338,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/carserv.Car/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('carserv.Car', found));
                 }
             });
         });
         app.get("/entities/carserv.Car/instances", function(req, res) {
-            return mongoose.model('Car').find().lean().exec(function(error, contents) {
+            return mongoose.model('Car').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/carserv.Car/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('carserv.Car', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/carserv.Car/instances'),
@@ -374,8 +361,8 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/carserv.Car/template", function(req, res) {
-            var template = new Car();
-            res.json(template);
+            var template = new Car().toObject();
+            res.json(renderInstance('carserv.Car', template));
         });
         app.post("/entities/carserv.Car/instances", function(req, res) {
             var instanceData = req.body;
@@ -418,25 +405,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/carserv.Service/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('carserv.Service', found));
                 }
             });
         });
         app.get("/entities/carserv.Service/instances", function(req, res) {
-            return mongoose.model('Service').find().lean().exec(function(error, contents) {
+            return mongoose.model('Service').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/carserv.Service/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('carserv.Service', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/carserv.Service/instances'),
@@ -468,25 +449,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/carserv.Make/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('carserv.Make', found));
                 }
             });
         });
         app.get("/entities/carserv.Make/instances", function(req, res) {
-            return mongoose.model('Make').find().lean().exec(function(error, contents) {
+            return mongoose.model('Make').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/carserv.Make/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('carserv.Make', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/carserv.Make/instances'),
@@ -497,8 +472,8 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/carserv.Make/template", function(req, res) {
-            var template = new Make();
-            res.json(template);
+            var template = new Make().toObject();
+            res.json(renderInstance('carserv.Make', template));
         });
         app.post("/entities/carserv.Make/instances", function(req, res) {
             var instanceData = req.body;
@@ -540,25 +515,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/carserv.Model/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('carserv.Model', found));
                 }
             });
         });
         app.get("/entities/carserv.Model/instances", function(req, res) {
-            return mongoose.model('Model').find().lean().exec(function(error, contents) {
+            return mongoose.model('Model').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/carserv.Model/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('carserv.Model', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/carserv.Model/instances'),
@@ -569,8 +538,8 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/carserv.Model/template", function(req, res) {
-            var template = new Model();
-            res.json(template);
+            var template = new Model().toObject();
+            res.json(renderInstance('carserv.Model', template));
         });
         app.post("/entities/carserv.Model/instances", function(req, res) {
             var instanceData = req.body;

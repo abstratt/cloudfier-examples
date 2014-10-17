@@ -7,6 +7,17 @@ var User = require('./models/User.js');
 
 var exports = module.exports = { 
     build: function (app, resolveUrl) {
+                    
+        // helps with removing internal metadata            
+        var renderInstance = function (entityName, instance) {
+            instance.objectId = instance._id;
+            delete instance._id;
+            delete instance.__v;
+            instance.uri = resolveUrl('entities/'+ entityName + '/instances/' + instance.objectId);
+            instance.entityUri = resolveUrl('entities/'+ entityName);
+            return instance;
+        };
+        
         app.get("/", function(req, res) {
             cls.getNamespace('session').run(function(context) {
                 res.json({
@@ -74,25 +85,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/meeting.Meeting/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('meeting.Meeting', found));
                 }
             });
         });
         app.get("/entities/meeting.Meeting/instances", function(req, res) {
-            return mongoose.model('Meeting').find().lean().exec(function(error, contents) {
+            return mongoose.model('Meeting').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/meeting.Meeting/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('meeting.Meeting', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/meeting.Meeting/instances'),
@@ -103,8 +108,8 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/meeting.Meeting/template", function(req, res) {
-            var template = new Meeting();
-            res.json(template);
+            var template = new Meeting().toObject();
+            res.json(renderInstance('meeting.Meeting', template));
         });
         app.post("/entities/meeting.Meeting/instances", function(req, res) {
             var instanceData = req.body;
@@ -149,25 +154,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/meeting.Presentation/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('meeting.Presentation', found));
                 }
             });
         });
         app.get("/entities/meeting.Presentation/instances", function(req, res) {
-            return mongoose.model('Presentation').find().lean().exec(function(error, contents) {
+            return mongoose.model('Presentation').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/meeting.Presentation/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('meeting.Presentation', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/meeting.Presentation/instances'),
@@ -178,8 +177,8 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/meeting.Presentation/template", function(req, res) {
-            var template = new Presentation();
-            res.json(template);
+            var template = new Presentation().toObject();
+            res.json(renderInstance('meeting.Presentation', template));
         });
         app.post("/entities/meeting.Presentation/instances", function(req, res) {
             var instanceData = req.body;
@@ -223,25 +222,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/meeting.User/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('meeting.User', found));
                 }
             });
         });
         app.get("/entities/meeting.User/instances", function(req, res) {
-            return mongoose.model('User').find().lean().exec(function(error, contents) {
+            return mongoose.model('User').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/meeting.User/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('meeting.User', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/meeting.User/instances'),
@@ -252,8 +245,8 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/meeting.User/template", function(req, res) {
-            var template = new User();
-            res.json(template);
+            var template = new User().toObject();
+            res.json(renderInstance('meeting.User', template));
         });
         app.post("/entities/meeting.User/instances", function(req, res) {
             var instanceData = req.body;

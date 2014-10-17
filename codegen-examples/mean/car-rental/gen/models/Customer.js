@@ -32,11 +32,13 @@
         car.car = rental;
         rental.customer = this;
         car.carRented();
+        this.handleEvent('rent');
     };
     
     customerSchema.methods.finishRental = function () {
         this.currentRental.car.carReturned();
         this.currentRental.finish();
+        this.handleEvent('finishRental');
     };
     /*************************** DERIVED PROPERTIES ****************/
     

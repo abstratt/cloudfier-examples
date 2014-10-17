@@ -53,11 +53,16 @@
         i.product = product;
         i.quantity = quantity;
         i.order = this;
+        this.handleEvent('addItem');
     };
     
-    orderSchema.methods.complete = function () {};
+    orderSchema.methods.complete = function () {
+        this.handleEvent('complete');    
+    };
     
-    orderSchema.methods.process = function () {};
+    orderSchema.methods.process = function () {
+        this.handleEvent('process');    
+    };
     /*************************** DERIVED PROPERTIES ****************/
     
     orderSchema.methods.getOrderWeightTotal = function () {
@@ -71,29 +76,35 @@
     
     orderSchema.methods.computeOrderTotal = function () {
         return reduce;
+        this.handleEvent('computeOrderTotal');
     };
     
     orderSchema.methods.computeWeightTotal = function () {
         return reduce;
+        this.handleEvent('computeWeightTotal');
     };
     /*************************** STATE MACHINE ********************/
-    Order.emitter.on('process', function () {
-        if (this.orderStatus == 'New') {
-            this.orderStatus = 'Processing';
-            return;
+    orderSchema.methods.handleEvent = function (event) {
+        switch (event) {
+            case 'process' :
+                if (this.orderStatus == 'New') {
+                    this.orderStatus = 'Processing';
+                    return;
+                }
+                if (this.orderStatus == 'New') {
+                    this.orderStatus = 'New';
+                    return;
+                }
+                break;
+            
+            case 'complete' :
+                if (this.orderStatus == 'Processing') {
+                    this.orderStatus = 'Completed';
+                    return;
+                }
+                break;
         }
-        if (this.orderStatus == 'New') {
-            this.orderStatus = 'New';
-            return;
-        }
-    });     
-    
-    Order.emitter.on('complete', function () {
-        if (this.orderStatus == 'Processing') {
-            this.orderStatus = 'Completed';
-            return;
-        }
-    });     
+    };
     
     
     var exports = module.exports = Order;

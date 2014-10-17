@@ -116,6 +116,7 @@
         newIssue.reporter = User.current;
         newIssue.project = project;
         newIssue.userNotifier.issueReported(newIssue.issueKey, summary, description, newIssue.reporter.email);
+        this.handleEvent('reportIssue');
     };
     
     /**
@@ -123,6 +124,7 @@
      */
     issueSchema.methods.release = function () {
         this.assignee = null;
+        this.handleEvent('release');
     };
     
     /**
@@ -130,17 +132,22 @@
      */
     issueSchema.methods.assign = function (newAssignee) {
         this.assignee = newAssignee;
+        this.handleEvent('assign');
     };
     
     /**
      *  Suspend work on this issue. 
      */
-    issueSchema.methods.suspend = function () {};
+    issueSchema.methods.suspend = function () {
+        this.handleEvent('suspend');    
+    };
     
     /**
      *  Start/resume work on this issue. 
      */
-    issueSchema.methods.start = function () {};
+    issueSchema.methods.start = function () {
+        this.handleEvent('start');    
+    };
     
     /**
      *  Resolve the issue. 
@@ -148,6 +155,7 @@
     issueSchema.methods.resolve = function (resolution) {
         this.resolvedOn = new Date();
         this.resolution = resolution;
+        this.handleEvent('resolve');
     };
     
     /**
@@ -159,6 +167,7 @@
         if (reason !== "") {
             this.comment(reason);
         }
+        this.handleEvent('reopen');
     };
     
     /**
@@ -166,19 +175,23 @@
      */
     issueSchema.methods.comment = function (text) {
         this.addComment(text, null);
+        this.handleEvent('comment');
     };
     
     issueSchema.methods.addWatcher = function (userToAdd) {
         this.issuesWatched = userToAdd;
+        this.handleEvent('addWatcher');
     };
     
     issueSchema.methods.vote = function () {
         this.voted = User.current;
+        this.handleEvent('vote');
     };
     
     issueSchema.methods.withdrawVote = function () {
         this.voters = null;
         this = null;
+        this.handleEvent('withdrawVote');
     };
     
     /**
@@ -186,6 +199,7 @@
      */
     issueSchema.methods.assignToMe = function () {
         this.assignee = User.current;
+        this.handleEvent('assignToMe');
     };
     
     /**
@@ -193,21 +207,25 @@
      */
     issueSchema.methods.steal = function () {
         this.assignee = User.current;
+        this.handleEvent('steal');
     };
     
     /**
      *  Close the issue marking it as verified. 
      */
     issueSchema.methods.verify = function () {
+        this.handleEvent('verify');
     };
     /*************************** QUERIES ***************************/
     
     issueSchema.statics.bySeverity = function (toMatch) {
         return this.model('Issue').find().where('severity').eq(toMatch).exec();
+        this.handleEvent('bySeverity');
     };
     
     issueSchema.statics.byStatus = function (toMatch) {
         return Issue.filterByStatus(this.model('Issue').find(), toMatch).exec();
+        this.handleEvent('byStatus');
     };
     /*************************** DERIVED PROPERTIES ****************/
     
@@ -243,10 +261,12 @@
         } else  {
             return this.resolvedOn;
         }
+        this.handleEvent('referenceDate');
     };
     
     issueSchema.statics.filterByStatus = function (issues, toMatch) {
         return issues.where('status').eq(toMatch);
+        this.handleEvent('filterByStatus');
     };
     
     issueSchema.methods.addComment = function (text, inReplyTo) {
@@ -257,74 +277,79 @@
         comment.inReplyTo = inReplyTo;
         this.issue = comment;
         this.userNotifier.commentAdded(this.issueKey, comment.user.email, this.reporter.email, text);
+        this.handleEvent('addComment');
     };
     /*************************** STATE MACHINE ********************/
-    Issue.emitter.on('resolve', function () {
-        if (this.status == 'Open') {
-            this.status = 'Resolved';
-            return;
+    issueSchema.methods.handleEvent = function (event) {
+        switch (event) {
+            case 'resolve' :
+                if (this.status == 'Open') {
+                    this.status = 'Resolved';
+                    return;
+                }
+                if (this.status == 'Assigned') {
+                    this.status = 'Resolved';
+                    return;
+                }
+                break;
+            
+            case 'assignToMe' :
+                if (this.status == 'Open') {
+                    this.status = 'Assigned';
+                    return;
+                }
+                break;
+            
+            case 'assign' :
+                if (this.status == 'Open') {
+                    this.status = 'Assigned';
+                    return;
+                }
+                break;
+            
+            case 'suspend' :
+                if (this.status == 'InProgress') {
+                    this.status = 'Assigned';
+                    return;
+                }
+                break;
+            
+            case 'release' :
+                if (this.status == 'Assigned') {
+                    this.status = 'Open';
+                    return;
+                }
+                break;
+            
+            case 'steal' :
+                if (this.status == 'Assigned') {
+                    this.status = 'Assigned';
+                    return;
+                }
+                break;
+            
+            case 'start' :
+                if (this.status == 'Assigned') {
+                    this.status = 'InProgress';
+                    return;
+                }
+                break;
+            
+            case 'verify' :
+                if (this.status == 'Resolved') {
+                    this.status = 'Verified';
+                    return;
+                }
+                break;
+            
+            case 'reopen' :
+                if (this.status == 'Verified') {
+                    this.status = 'Open';
+                    return;
+                }
+                break;
         }
-        if (this.status == 'Assigned') {
-            this.status = 'Resolved';
-            return;
-        }
-    });     
-    
-    Issue.emitter.on('assignToMe', function () {
-        if (this.status == 'Open') {
-            this.status = 'Assigned';
-            return;
-        }
-    });     
-    
-    Issue.emitter.on('assign', function () {
-        if (this.status == 'Open') {
-            this.status = 'Assigned';
-            return;
-        }
-    });     
-    
-    Issue.emitter.on('suspend', function () {
-        if (this.status == 'InProgress') {
-            this.status = 'Assigned';
-            return;
-        }
-    });     
-    
-    Issue.emitter.on('release', function () {
-        if (this.status == 'Assigned') {
-            this.status = 'Open';
-            return;
-        }
-    });     
-    
-    Issue.emitter.on('steal', function () {
-        if (this.status == 'Assigned') {
-            this.status = 'Assigned';
-            return;
-        }
-    });     
-    
-    Issue.emitter.on('start', function () {
-        if (this.status == 'Assigned') {
-            this.status = 'InProgress';
-            return;
-        }
-    });     
-    
-    Issue.emitter.on('verify', function () {
-        if (this.status == 'Resolved') {
-            this.status = 'Verified';
-            return;
-        }
-    });     
-    
-    Issue.emitter.on('reopen', function () {
-        if (this.status == 'Verified') {
-            this.status = 'Open';
-            return;
-        }
-    });     
+    };
     
     
     var exports = module.exports = Issue;

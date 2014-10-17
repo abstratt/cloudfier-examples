@@ -41,9 +41,13 @@
     
     /*************************** ACTIONS ***************************/
     
-    chargeSchema.methods.pay = function () {};
+    chargeSchema.methods.pay = function () {
+        this.handleEvent('pay');    
+    };
     
-    chargeSchema.methods.cancelPayment = function () {};
+    chargeSchema.methods.cancelPayment = function () {
+        this.handleEvent('cancelPayment');    
+    };
     
     chargeSchema.statics.newCharge = function (taxi, payer, date) {
         if (date == null) {
@@ -55,19 +59,23 @@
         charge.taxi = taxi;
         charge.date = date;
         payer.driver = charge;
+        this.handleEvent('newCharge');
     };
     /*************************** QUERIES ***************************/
     
     chargeSchema.statics.pendingCharges = function () {
         return this.model('Charge').find().where('paid').ne(true).exec();
+        this.handleEvent('pendingCharges');
     };
     
     chargeSchema.statics.byTaxi = function (taxi) {
         return this.model('Charge').find().where('taxi').eq(taxi).exec();
+        this.handleEvent('byTaxi');
     };
     
     chargeSchema.statics.paidCharges = function () {
         return this.model('Charge').find().where('paid').exec();
+        this.handleEvent('paidCharges');
     };
     /*************************** DERIVED PROPERTIES ****************/
     
@@ -75,22 +83,27 @@
         return this.status == null;
     };
     /*************************** STATE MACHINE ********************/
-    Charge.emitter.on('pay', function () {
-        if (this.status == 'Pending') {
-            this.status = 'Paid';
-            (function() {
-                this.receivedOn = new Date();
-            })();
-            return;
+    chargeSchema.methods.handleEvent = function (event) {
+        switch (event) {
+            case 'pay' :
+                if (this.status == 'Pending') {
+                    this.status = 'Paid';
+                    // on entering Paid
+                    (function() {
+                        this.receivedOn = new Date();
+                    })();
+                    return;
+                }
+                break;
+            
+            case 'cancelPayment' :
+                if (this.status == 'Paid') {
+                    this.status = 'Pending';
+                    return;
+                }
+                break;
         }
-    });     
-    
-    Charge.emitter.on('cancelPayment', function () {
-        if (this.status == 'Paid') {
-            this.status = 'Pending';
-            return;
-        }
-    });     
+    };
     
     
     var exports = module.exports = Charge;

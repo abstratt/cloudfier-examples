@@ -58,6 +58,7 @@
         newWork.units = units;
         newWork.reported = this;
         return newWork;
+        this.handleEvent('addWork');
     };
     /*************************** DERIVED PROPERTIES ****************/
     
@@ -78,6 +79,7 @@
         return this.model('Work').aggregate()
                       .group({ _id: null, result: { $sum: '$units' } })
                       .select('-id result');
+        this.handleEvent('countUnits');
     };
     
     var exports = module.exports = Task;

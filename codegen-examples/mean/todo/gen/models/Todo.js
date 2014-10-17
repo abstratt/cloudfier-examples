@@ -44,6 +44,7 @@
     
     todoSchema.methods.complete = function () {
         this.status = "Done";
+        this.handleEvent('complete');
     };
     
     var exports = module.exports = Todo;

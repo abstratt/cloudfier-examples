@@ -65,10 +65,12 @@
         newExpense.category = category;
         newExpense.employee = employee;
         return newExpense;
+        this.handleEvent('newExpense');
     };
     
     expenseSchema.methods.approve = function () {
         this.approver = cls.getNamespace('currentUser');
+        this.handleEvent('approve');
     };
     
     /**
@@ -77,34 +79,44 @@
     expenseSchema.methods.reject = function (reason) {
         this.rejectionReason = reason;
         this.approver = cls.getNamespace('currentUser');
+        this.handleEvent('reject');
     };
     
     /**
      *  Reconsider this expense. 
      */
-    expenseSchema.methods.reconsider = function () {};
+    expenseSchema.methods.reconsider = function () {
+        this.handleEvent('reconsider');    
+    };
     
     /**
      *  Sends this expense back to Draft state. 
      */
-    expenseSchema.methods.review = function () {};
+    expenseSchema.methods.review = function () {
+        this.handleEvent('review');    
+    };
     
     /**
      *  Submit this expense. 
      */
-    expenseSchema.methods.submit = function () {};
+    expenseSchema.methods.submit = function () {
+        this.handleEvent('submit');    
+    };
     /*************************** QUERIES ***************************/
     
     expenseSchema.statics.findExpensesByCategory = function (category) {
         return this.model('Expense').find().where('category').eq(category).exec();
+        this.handleEvent('findExpensesByCategory');
     };
     
     expenseSchema.statics.findExpensesInPeriod = function (start, end_) {
         return this.model('Expense').find()start.eq(null).or(.where('date').gte(start)).and(end_.eq(null).or(.where('date').lte(end_))).exec();
+        this.handleEvent('findExpensesInPeriod');
     };
     
     expenseSchema.statics.findByStatus = function (status) {
         return this.model('Expense').find().where('status').eq(status).exec();
+        this.handleEvent('findByStatus');
     };
     /*************************** DERIVED PROPERTIES ****************/
     
@@ -131,68 +143,76 @@
     
     expenseSchema.methods.reportApproved = function () {
         this.expensePayer.expenseApproved(this.employee.name, this.amount, this.description + "(" + this.category.name + ")", this.expenseId);
+        this.handleEvent('reportApproved');
     };
     /*************************** STATE MACHINE ********************/
-    Expense.emitter.on('submit', function () {
+    expenseSchema.methods.handleEvent = function (event) {
         var guard;
-        if (this.status == 'Draft') {
-            guard = function() {
-                return this.automaticApproval;
-            };
-            if (guard()) {
-                this.status = 'Approved';
-                (function() {
-                    this.processed = new Date();
-                    this.reportApproved();
-                })();
-                return;
-            }
+        switch (event) {
+            case 'submit' :
+                if (this.status == 'Draft') {
+                    guard = function() {
+                        return this.automaticApproval;
+                    };
+                    if (guard()) {
+                        this.status = 'Approved';
+                        // on entering Approved
+                        (function() {
+                            this.processed = new Date();
+                            this.reportApproved();
+                        })();
+                        return;
+                    }
+                }
+                if (this.status == 'Draft') {
+                    guard = function() {
+                        return !(this.automaticApproval);
+                    };
+                    if (guard()) {
+                        this.status = 'Submitted';
+                        return;
+                    }
+                }
+                break;
+            
+            case 'approve' :
+                if (this.status == 'Submitted') {
+                    this.status = 'Approved';
+                    // on entering Approved
+                    (function() {
+                        this.processed = new Date();
+                        this.reportApproved();
+                    })();
+                    return;
+                }
+                break;
+            
+            case 'review' :
+                if (this.status == 'Submitted') {
+                    this.status = 'Draft';
+                    return;
+                }
+                break;
+            
+            case 'reject' :
+                if (this.status == 'Submitted') {
+                    this.status = 'Rejected';
+                    // on entering Rejected
+                    (function() {
+                        this.processed = new Date();
+                    })();
+                    return;
+                }
+                break;
+            
+            case 'reconsider' :
+                if (this.status == 'Rejected') {
+                    this.status = 'Submitted';
+                    return;
+                }
+                break;
         }
-        if (this.status == 'Draft') {
-            guard = function() {
-                return !(this.automaticApproval);
-            };
-            if (guard()) {
-                this.status = 'Submitted';
-                return;
-            }
-        }
-    });     
-    
-    Expense.emitter.on('approve', function () {
-        if (this.status == 'Submitted') {
-            this.status = 'Approved';
-            (function() {
-                this.processed = new Date();
-                this.reportApproved();
-            })();
-            return;
-        }
-    });     
-    
-    Expense.emitter.on('review', function () {
-        if (this.status == 'Submitted') {
-            this.status = 'Draft';
-            return;
-        }
-    });     
-    
-    Expense.emitter.on('reject', function () {
-        if (this.status == 'Submitted') {
-            this.status = 'Rejected';
-            (function() {
-                this.processed = new Date();
-            })();
-            return;
-        }
-    });     
-    
-    Expense.emitter.on('reconsider', function () {
-        if (this.status == 'Rejected') {
-            this.status = 'Submitted';
-            return;
-        }
-    });     
+    };
     
     
     var exports = module.exports = Expense;

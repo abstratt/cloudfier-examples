@@ -71,6 +71,7 @@
     
     carSchema.statics.findByRegistrationNumber = function (regNumber) {
         return count;
+        this.handleEvent('findByRegistrationNumber');
     };
     
     /**
@@ -78,11 +79,13 @@
      */
     carSchema.methods.bookService = function (description, estimateInDays) {
         Service.newService(this, description, estimateInDays);
+        this.handleEvent('bookService');
     };
     /*************************** QUERIES ***************************/
     
     carSchema.statics.findByOwner = function (owner) {
         return owner.cars.exec();
+        this.handleEvent('findByOwner');
     };
     /*************************** DERIVED PROPERTIES ****************/
     

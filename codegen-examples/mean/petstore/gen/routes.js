@@ -8,6 +8,17 @@ var Order = require('./models/Order.js');
 
 var exports = module.exports = { 
     build: function (app, resolveUrl) {
+                    
+        // helps with removing internal metadata            
+        var renderInstance = function (entityName, instance) {
+            instance.objectId = instance._id;
+            delete instance._id;
+            delete instance.__v;
+            instance.uri = resolveUrl('entities/'+ entityName + '/instances/' + instance.objectId);
+            instance.entityUri = resolveUrl('entities/'+ entityName);
+            return instance;
+        };
+        
         app.get("/", function(req, res) {
             cls.getNamespace('session').run(function(context) {
                 res.json({
@@ -86,25 +97,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/petstore.Customer/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('petstore.Customer', found));
                 }
             });
         });
         app.get("/entities/petstore.Customer/instances", function(req, res) {
-            return mongoose.model('Customer').find().lean().exec(function(error, contents) {
+            return mongoose.model('Customer').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/petstore.Customer/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('petstore.Customer', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/petstore.Customer/instances'),
@@ -115,8 +120,8 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/petstore.Customer/template", function(req, res) {
-            var template = new Customer();
-            res.json(template);
+            var template = new Customer().toObject();
+            res.json(renderInstance('petstore.Customer', template));
         });
         app.post("/entities/petstore.Customer/instances", function(req, res) {
             var instanceData = req.body;
@@ -159,25 +164,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/petstore.Product/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('petstore.Product', found));
                 }
             });
         });
         app.get("/entities/petstore.Product/instances", function(req, res) {
-            return mongoose.model('Product').find().lean().exec(function(error, contents) {
+            return mongoose.model('Product').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/petstore.Product/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('petstore.Product', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/petstore.Product/instances'),
@@ -188,9 +187,9 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/petstore.Product/template", function(req, res) {
-            var template = new Product();
+            var template = new Product().toObject();
             template.productWeight = 0.0;
-            res.json(template);
+            res.json(renderInstance('petstore.Product', template));
         });
         app.post("/entities/petstore.Product/instances", function(req, res) {
             var instanceData = req.body;
@@ -237,25 +236,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/petstore.Category/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('petstore.Category', found));
                 }
             });
         });
         app.get("/entities/petstore.Category/instances", function(req, res) {
-            return mongoose.model('Category').find().lean().exec(function(error, contents) {
+            return mongoose.model('Category').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/petstore.Category/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('petstore.Category', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/petstore.Category/instances'),
@@ -266,8 +259,8 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/petstore.Category/template", function(req, res) {
-            var template = new Category();
-            res.json(template);
+            var template = new Category().toObject();
+            res.json(renderInstance('petstore.Category', template));
         });
         app.post("/entities/petstore.Category/instances", function(req, res) {
             var instanceData = req.body;
@@ -309,25 +302,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/petstore.Order/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('petstore.Order', found));
                 }
             });
         });
         app.get("/entities/petstore.Order/instances", function(req, res) {
-            return mongoose.model('Order').find().lean().exec(function(error, contents) {
+            return mongoose.model('Order').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/petstore.Order/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('petstore.Order', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/petstore.Order/instances'),
@@ -338,11 +325,11 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/petstore.Order/template", function(req, res) {
-            var template = new Order();
+            var template = new Order().toObject();
             template.orderDate = (function() {
                 return new Date();
             })();
-            res.json(template);
+            res.json(renderInstance('petstore.Order', template));
         });
         app.post("/entities/petstore.Order/instances", function(req, res) {
             var instanceData = req.body;

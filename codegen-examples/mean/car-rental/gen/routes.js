@@ -9,6 +9,17 @@ var Customer = require('./models/Customer.js');
 
 var exports = module.exports = { 
     build: function (app, resolveUrl) {
+                    
+        // helps with removing internal metadata            
+        var renderInstance = function (entityName, instance) {
+            instance.objectId = instance._id;
+            delete instance._id;
+            delete instance.__v;
+            instance.uri = resolveUrl('entities/'+ entityName + '/instances/' + instance.objectId);
+            instance.entityUri = resolveUrl('entities/'+ entityName);
+            return instance;
+        };
+        
         app.get("/", function(req, res) {
             cls.getNamespace('session').run(function(context) {
                 res.json({
@@ -98,25 +109,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/car_rental.Car/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('car_rental.Car', found));
                 }
             });
         });
         app.get("/entities/car_rental.Car/instances", function(req, res) {
-            return mongoose.model('Car').find().lean().exec(function(error, contents) {
+            return mongoose.model('Car').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/car_rental.Car/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('car_rental.Car', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/car_rental.Car/instances'),
@@ -127,8 +132,8 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/car_rental.Car/template", function(req, res) {
-            var template = new Car();
-            res.json(template);
+            var template = new Car().toObject();
+            res.json(renderInstance('car_rental.Car', template));
         });
         app.post("/entities/car_rental.Car/instances", function(req, res) {
             var instanceData = req.body;
@@ -175,25 +180,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/car_rental.Rental/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('car_rental.Rental', found));
                 }
             });
         });
         app.get("/entities/car_rental.Rental/instances", function(req, res) {
-            return mongoose.model('Rental').find().lean().exec(function(error, contents) {
+            return mongoose.model('Rental').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/car_rental.Rental/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('car_rental.Rental', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/car_rental.Rental/instances'),
@@ -204,11 +203,11 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/car_rental.Rental/template", function(req, res) {
-            var template = new Rental();
+            var template = new Rental().toObject();
             template.started = (function() {
                 return new Date();
             })();
-            res.json(template);
+            res.json(renderInstance('car_rental.Rental', template));
         });
         app.post("/entities/car_rental.Rental/instances", function(req, res) {
             var instanceData = req.body;
@@ -253,25 +252,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/car_rental.Model/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('car_rental.Model', found));
                 }
             });
         });
         app.get("/entities/car_rental.Model/instances", function(req, res) {
-            return mongoose.model('Model').find().lean().exec(function(error, contents) {
+            return mongoose.model('Model').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/car_rental.Model/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('car_rental.Model', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/car_rental.Model/instances'),
@@ -282,8 +275,8 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/car_rental.Model/template", function(req, res) {
-            var template = new Model();
-            res.json(template);
+            var template = new Model().toObject();
+            res.json(renderInstance('car_rental.Model', template));
         });
         app.post("/entities/car_rental.Model/instances", function(req, res) {
             var instanceData = req.body;
@@ -326,25 +319,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/car_rental.Make/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('car_rental.Make', found));
                 }
             });
         });
         app.get("/entities/car_rental.Make/instances", function(req, res) {
-            return mongoose.model('Make').find().lean().exec(function(error, contents) {
+            return mongoose.model('Make').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/car_rental.Make/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('car_rental.Make', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/car_rental.Make/instances'),
@@ -355,8 +342,8 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/car_rental.Make/template", function(req, res) {
-            var template = new Make();
-            res.json(template);
+            var template = new Make().toObject();
+            res.json(renderInstance('car_rental.Make', template));
         });
         app.post("/entities/car_rental.Make/instances", function(req, res) {
             var instanceData = req.body;
@@ -398,25 +385,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/car_rental.Customer/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('car_rental.Customer', found));
                 }
             });
         });
         app.get("/entities/car_rental.Customer/instances", function(req, res) {
-            return mongoose.model('Customer').find().lean().exec(function(error, contents) {
+            return mongoose.model('Customer').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/car_rental.Customer/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('car_rental.Customer', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/car_rental.Customer/instances'),
@@ -427,8 +408,8 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/car_rental.Customer/template", function(req, res) {
-            var template = new Customer();
-            res.json(template);
+            var template = new Customer().toObject();
+            res.json(renderInstance('car_rental.Customer', template));
         });
         app.post("/entities/car_rental.Customer/instances", function(req, res) {
             var instanceData = req.body;

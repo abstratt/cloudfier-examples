@@ -8,6 +8,17 @@ var Issue = require('./models/Issue.js');
 
 var exports = module.exports = { 
     build: function (app, resolveUrl) {
+                    
+        // helps with removing internal metadata            
+        var renderInstance = function (entityName, instance) {
+            instance.objectId = instance._id;
+            delete instance._id;
+            delete instance.__v;
+            instance.uri = resolveUrl('entities/'+ entityName + '/instances/' + instance.objectId);
+            instance.entityUri = resolveUrl('entities/'+ entityName);
+            return instance;
+        };
+        
         app.get("/", function(req, res) {
             cls.getNamespace('session').run(function(context) {
                 res.json({
@@ -85,25 +96,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/shipit.User/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('shipit.User', found));
                 }
             });
         });
         app.get("/entities/shipit.User/instances", function(req, res) {
-            return mongoose.model('User').find().lean().exec(function(error, contents) {
+            return mongoose.model('User').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/shipit.User/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('shipit.User', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/shipit.User/instances'),
@@ -114,9 +119,9 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/shipit.User/template", function(req, res) {
-            var template = new User();
+            var template = new User().toObject();
             template.kind = "Reporter";
-            res.json(template);
+            res.json(renderInstance('shipit.User', template));
         });
         app.post("/entities/shipit.User/instances", function(req, res) {
             var instanceData = req.body;
@@ -160,25 +165,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/shipit.Label/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('shipit.Label', found));
                 }
             });
         });
         app.get("/entities/shipit.Label/instances", function(req, res) {
-            return mongoose.model('Label').find().lean().exec(function(error, contents) {
+            return mongoose.model('Label').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/shipit.Label/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('shipit.Label', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/shipit.Label/instances'),
@@ -189,8 +188,8 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/shipit.Label/template", function(req, res) {
-            var template = new Label();
-            res.json(template);
+            var template = new Label().toObject();
+            res.json(renderInstance('shipit.Label', template));
         });
         app.post("/entities/shipit.Label/instances", function(req, res) {
             var instanceData = req.body;
@@ -232,25 +231,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/shipit.Project/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('shipit.Project', found));
                 }
             });
         });
         app.get("/entities/shipit.Project/instances", function(req, res) {
-            return mongoose.model('Project').find().lean().exec(function(error, contents) {
+            return mongoose.model('Project').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/shipit.Project/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('shipit.Project', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/shipit.Project/instances'),
@@ -261,8 +254,8 @@ var exports = module.exports = {
             });
         });
         app.get("/entities/shipit.Project/template", function(req, res) {
-            var template = new Project();
-            res.json(template);
+            var template = new Project().toObject();
+            res.json(renderInstance('shipit.Project', template));
         });
         app.post("/entities/shipit.Project/instances", function(req, res) {
             var instanceData = req.body;
@@ -304,25 +297,19 @@ var exports = module.exports = {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    found.objectId = found._id;
-                    delete found._id;
-                    delete found.__v;
-                    found.uri = resolveUrl('entities/shipit.Issue/instances/' + found.objectId);
-                    res.json(found);
+                    res.json(renderInstance('shipit.Issue', found));
                 }
             });
         });
         app.get("/entities/shipit.Issue/instances", function(req, res) {
-            return mongoose.model('Issue').find().lean().exec(function(error, contents) {
+            return mongoose.model('Issue').find().lean().exec(function(error, documents) {
+                var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    contents.forEach(function(each) {
-                        each.objectId = each._id;
-                        delete each._id;
-                        delete each.__v;
-                        each.uri = resolveUrl('entities/shipit.Issue/instances/' + each.objectId);
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('shipit.Issue', each));
                     });
                     res.json({
                         uri: resolveUrl('entities/shipit.Issue/instances'),

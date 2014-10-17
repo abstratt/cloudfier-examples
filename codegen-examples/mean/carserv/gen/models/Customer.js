@@ -47,10 +47,12 @@
     
     customerSchema.statics.findByName = function (firstName, lastName) {
         return this.model('Customer').find().where('firstName').equals(firstName).or(.where('lastName').equals(lastName)).exec();
+        this.handleEvent('findByName');
     };
     
     customerSchema.statics.vipCustomers = function () {
         return this.model('Customer').find().where('vip').exec();
+        this.handleEvent('vipCustomers');
     };
     /*************************** DERIVED PROPERTIES ****************/
     

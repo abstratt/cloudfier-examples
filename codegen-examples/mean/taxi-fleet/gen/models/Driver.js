@@ -41,6 +41,7 @@
      */
     driverSchema.methods.book = function (toRent) {
         toRent.taxi = this;
+        this.handleEvent('book');
     };
     
     /**
@@ -49,6 +50,7 @@
     driverSchema.methods.release = function () {
         this.taxi.drivers = null;
         this.taxi = null;
+        this.handleEvent('release');
     };
     /*************************** DERIVED PROPERTIES ****************/
     

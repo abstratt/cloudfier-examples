@@ -55,11 +55,13 @@
     
     userSchema.methods.promoteToCommitter = function () {
         this.kind = "Committer";
+        this.handleEvent('promoteToCommitter');
     };
     /*************************** QUERIES ***************************/
     
     userSchema.statics.current = function () {
         return cls.getNamespace('currentUser').exec();
+        this.handleEvent('current');
     };
     /*************************** DERIVED PROPERTIES ****************/
     

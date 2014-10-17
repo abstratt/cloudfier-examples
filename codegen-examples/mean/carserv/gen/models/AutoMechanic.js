@@ -55,20 +55,25 @@
      */
     autoMechanicSchema.methods.unassign = function () {
         this.doUnassign();
+        this.handleEvent('unassign');
     };
     
     /**
      *  Puts employee into vacation. Unassigns any work scheduled. 
      */
     autoMechanicSchema.methods.beginVacation = function () {
+        this.handleEvent('beginVacation');
     };
     
     /**
      *  Brings the employee back from vacation. Employee can be assigned work again. 
      */
-    autoMechanicSchema.methods.endVacation = function () {};
+    autoMechanicSchema.methods.endVacation = function () {
+        this.handleEvent('endVacation');    
+    };
     
     autoMechanicSchema.methods.retire = function () {
+        this.handleEvent('retire');
     };
     /*************************** DERIVED PROPERTIES ****************/
     
@@ -105,28 +110,33 @@
     
     autoMechanicSchema.methods.doUnassign = function () {
         forEach;
+        this.handleEvent('doUnassign');
     };
     /*************************** STATE MACHINE ********************/
-    AutoMechanic.emitter.on('beginVacation', function () {
-        if (this.status == 'Working') {
-            this.status = 'Vacation';
-            return;
+    autoMechanicSchema.methods.handleEvent = function (event) {
+        switch (event) {
+            case 'beginVacation' :
+                if (this.status == 'Working') {
+                    this.status = 'Vacation';
+                    return;
+                }
+                break;
+            
+            case 'retire' :
+                if (this.status == 'Working') {
+                    this.status = 'Retired';
+                    return;
+                }
+                break;
+            
+            case 'endVacation' :
+                if (this.status == 'Vacation') {
+                    this.status = 'Working';
+                    return;
+                }
+                break;
         }
-    });     
-    
-    AutoMechanic.emitter.on('retire', function () {
-        if (this.status == 'Working') {
-            this.status = 'Retired';
-            return;
-        }
-    });     
-    
-    AutoMechanic.emitter.on('endVacation', function () {
-        if (this.status == 'Vacation') {
-            this.status = 'Working';
-            return;
-        }
-    });     
+    };
     
     
     var exports = module.exports = AutoMechanic;

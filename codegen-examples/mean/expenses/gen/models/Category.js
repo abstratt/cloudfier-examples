@@ -26,6 +26,7 @@
         newCategory = new Category();
         newCategory.name = name;
         return newCategory;
+        this.handleEvent('newCategory');
     };
     /*************************** DERIVED PROPERTIES ****************/
     
