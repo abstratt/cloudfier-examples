@@ -1,105 +1,72 @@
-    var EventEmitter = require('events').EventEmitter;
-    var mongoose = require('mongoose');        
-    var Schema = mongoose.Schema;
-    var cls = require('continuation-local-storage');
-    
+var mongoose = require('mongoose');        
+var Schema = mongoose.Schema;
+var cls = require('continuation-local-storage');
 
-    /**
-     *  An employee reports expenses. 
-     */
-    var employeeSchema = new Schema({
-        name : {
-            type : String,
-            required : true
-        },
-        username : {
-            type : String
-        },
-        totalRecorded : {
-            type : Number
-        },
-        totalSubmitted : {
-            type : Number
-        },
-        totalApproved : {
-            type : Number
-        },
-        totalRejected : {
-            type : Number
-        },
-        expenses : [{
-            type : Schema.Types.ObjectId,
-            ref : "Expense"
-        }],
-        recordedExpenses : [{
-            type : Schema.Types.ObjectId,
-            ref : "Expense"
-        }],
-        submittedExpenses : [{
-            type : Schema.Types.ObjectId,
-            ref : "Expense"
-        }],
-        approvedExpenses : [{
-            type : Schema.Types.ObjectId,
-            ref : "Expense"
-        }],
-        rejectedExpenses : [{
-            type : Schema.Types.ObjectId,
-            ref : "Expense"
-        }]
-    });
-    var Employee = mongoose.model('Employee', employeeSchema);
-    Employee.emitter = new EventEmitter();
-    
-    /*************************** ACTIONS ***************************/
-    
-    employeeSchema.methods.declareExpense = function (description, amount, date, category) {
-        return Expense.newExpense(description, amount, date, category, this);
-        this.handleEvent('declareExpense');
-    };
-    /*************************** DERIVED PROPERTIES ****************/
-    
-    employeeSchema.methods.getRecordedExpenses = function () {
-        return this.expensesByStatus(null);
-    };
-    
-    employeeSchema.methods.getSubmittedExpenses = function () {
-        return this.expensesByStatus(null);
-    };
-    
-    employeeSchema.methods.getApprovedExpenses = function () {
-        return this.expensesByStatus(null);
-    };
-    
-    employeeSchema.methods.getRejectedExpenses = function () {
-        return this.expensesByStatus(null);
-    };
-    
-    employeeSchema.methods.getTotalRecorded = function () {
-        return this.totalExpenses(this.recordedExpenses);
-    };
-    
-    employeeSchema.methods.getTotalSubmitted = function () {
-        return this.totalExpenses(this.submittedExpenses);
-    };
-    
-    employeeSchema.methods.getTotalApproved = function () {
-        return this.totalExpenses(this.approvedExpenses);
-    };
-    
-    employeeSchema.methods.getTotalRejected = function () {
-        return this.totalExpenses(this.rejectedExpenses);
-    };
-    /*************************** PRIVATE OPS ***********************/
-    
-    employeeSchema.methods.totalExpenses = function (toSum) {
-        return reduce;
-        this.handleEvent('totalExpenses');
-    };
-    
-    employeeSchema.methods.expensesByStatus = function (status) {
-        return Unsupported ReadLinkAction.where('status').eq(status);
-        this.handleEvent('expensesByStatus');
-    };
-    
-    var exports = module.exports = Employee;
+/**
+ *  An employee reports expenses. 
+ */
+var employeeSchema = new Schema({
+    name : {
+        type : String,
+        required : true
+    },
+    username : {
+        type : String
+    },
+    expenses : [{
+        type : Schema.Types.ObjectId,
+        ref : "Expense"
+    }]
+});
+var Employee = mongoose.model('Employee', employeeSchema);
+
+/*************************** ACTIONS ***************************/
+
+employeeSchema.methods.declareExpense = function (description, amount, date, category) {
+    return Expense.newExpense(description, amount, date, category, this);
+};
+/*************************** DERIVED PROPERTIES ****************/
+
+employeeSchema.virtual('totalRecorded').get(function () {
+    return this.totalExpenses(this.recordedExpenses);
+});
+
+employeeSchema.virtual('totalSubmitted').get(function () {
+    return this.totalExpenses(this.submittedExpenses);
+});
+
+employeeSchema.virtual('totalApproved').get(function () {
+    return this.totalExpenses(this.approvedExpenses);
+});
+
+employeeSchema.virtual('totalRejected').get(function () {
+    return this.totalExpenses(this.rejectedExpenses);
+});
+/*************************** DERIVED RELATIONSHIPS ****************/
+
+employeeSchema.method.getRecordedExpenses = function () {
+    return this.expensesByStatus(null);
+};
+
+employeeSchema.method.getSubmittedExpenses = function () {
+    return this.expensesByStatus(null);
+};
+
+employeeSchema.method.getApprovedExpenses = function () {
+    return this.expensesByStatus(null);
+};
+
+employeeSchema.method.getRejectedExpenses = function () {
+    return this.expensesByStatus(null);
+};
+/*************************** PRIVATE OPS ***********************/
+
+employeeSchema.methods.totalExpenses = function (toSum) {
+    return reduce;
+};
+
+employeeSchema.methods.expensesByStatus = function (status) {
+    return this.expenses.where('status').eq(status);
+};
+
+var exports = module.exports = Employee;

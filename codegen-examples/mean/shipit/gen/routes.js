@@ -143,6 +143,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/shipit.User/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('User').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('shipit.User', found));
+                }
+            });
+        });
+        
         
         
         // routes for shipit.Label
@@ -209,6 +221,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/shipit.Label/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Label').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('shipit.Label', found));
+                }
+            });
+        });
+        
         
         
         // routes for shipit.Project
@@ -276,6 +300,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/shipit.Project/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Project').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('shipit.Project', found));
+                }
+            });
+        });
+        
         
         
         // routes for shipit.Issue
@@ -319,5 +355,17 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/shipit.Issue/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Issue').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('shipit.Issue', found));
+                }
+            });
+        });
+        
     }
 };

@@ -128,6 +128,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/timetracker.Client/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Client').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('timetracker.Client', found));
+                }
+            });
+        });
+        
         
         
         // routes for timetracker.Task
@@ -195,6 +207,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/timetracker.Task/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Task').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('timetracker.Task', found));
+                }
+            });
+        });
+        
         
         
         // routes for timetracker.Invoice
@@ -238,5 +262,17 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/timetracker.Invoice/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Invoice').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('timetracker.Invoice', found));
+                }
+            });
+        });
+        
     }
 };

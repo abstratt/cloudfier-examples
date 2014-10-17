@@ -158,6 +158,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/car_rental.Car/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Car').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('car_rental.Car', found));
+                }
+            });
+        });
+        
         
         
         // routes for car_rental.Rental
@@ -230,6 +242,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/car_rental.Rental/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Rental').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('car_rental.Rental', found));
+                }
+            });
+        });
+        
         
         
         // routes for car_rental.Model
@@ -297,6 +321,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/car_rental.Model/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Model').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('car_rental.Model', found));
+                }
+            });
+        });
+        
         
         
         // routes for car_rental.Make
@@ -363,6 +399,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/car_rental.Make/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Make').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('car_rental.Make', found));
+                }
+            });
+        });
+        
         
         
         // routes for car_rental.Customer
@@ -429,5 +477,17 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/car_rental.Customer/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Customer').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('car_rental.Customer', found));
+                }
+            });
+        });
+        
     }
 };

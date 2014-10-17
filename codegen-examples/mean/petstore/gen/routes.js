@@ -142,6 +142,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/petstore.Customer/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Customer').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('petstore.Customer', found));
+                }
+            });
+        });
+        
         
         
         // routes for petstore.Product
@@ -214,6 +226,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/petstore.Product/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Product').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('petstore.Product', found));
+                }
+            });
+        });
+        
         
         
         // routes for petstore.Category
@@ -280,6 +304,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/petstore.Category/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Category').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('petstore.Category', found));
+                }
+            });
+        });
+        
         
         
         // routes for petstore.Order
@@ -351,5 +387,17 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/petstore.Order/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Order').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('petstore.Order', found));
+                }
+            });
+        });
+        
     }
 };

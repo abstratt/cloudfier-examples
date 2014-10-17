@@ -42,18 +42,7 @@ var createModel = function (values) {
     var toCreate = {};
     values = values || {};
     // set required properties
-    toCreate.name = values.name || "name-value";
-    // set required relationships (via callbacks)
-    var promise = q();
-    promise = promise.then(function() {
-        return createMake().then(function(requiredInstance) {
-            toCreate.make = { objectId: requiredInstance.objectId };
-        });
-    });
-    promise = promise.then(function() {
-        return createInstance('car_rental.Model', toCreate);
-    });
-    return promise;
+    return createInstance('car_rental.Model', toCreate);
 };
 
 var createCar = function (values) {
@@ -64,17 +53,7 @@ var createCar = function (values) {
     toCreate.price = values.price || 0;
     toCreate.year = values.year || 0;
     toCreate.color = values.color || "color-value";
-    // set required relationships (via callbacks)
-    var promise = q();
-    promise = promise.then(function() {
-        return createModel().then(function(requiredInstance) {
-            toCreate.model = { objectId: requiredInstance.objectId };
-        });
-    });
-    promise = promise.then(function() {
-        return createInstance('car_rental.Car', toCreate);
-    });
-    return promise;
+    return createInstance('car_rental.Car', toCreate);
 };
 
 var createRental = function (values) {
@@ -114,6 +93,28 @@ suite('Car rental CRUD tests', function() {
                 assert.ok(created.uri);
             }).then(done, done);
         });
+        test('GET one', function(done) {
+            var created;
+            createMake().then(function(result) {
+                created = result;
+                return kirra.performRequestOnURL(created.uri, null, 200);
+            }).then(function(retrieved) {
+                assert.ok(retrieved);
+                assert.ok(retrieved.uri);
+            }).then(done, done);
+        });
+        
+        test('PUT', function(done) {
+            var created;
+            createMake().then(function(result) {
+                created = result;
+                return kirra.performRequestOnURL(created.uri, 'PUT', 200, created);
+            }).then(function(updated) {
+                assert.ok(updated);
+                assert.ok(updated.uri);
+            }).then(done, done);
+        });
+        
     });
     
     
@@ -139,6 +140,28 @@ suite('Car rental CRUD tests', function() {
                 assert.ok(created.uri);
             }).then(done, done);
         });
+        test('GET one', function(done) {
+            var created;
+            createCustomer().then(function(result) {
+                created = result;
+                return kirra.performRequestOnURL(created.uri, null, 200);
+            }).then(function(retrieved) {
+                assert.ok(retrieved);
+                assert.ok(retrieved.uri);
+            }).then(done, done);
+        });
+        
+        test('PUT', function(done) {
+            var created;
+            createCustomer().then(function(result) {
+                created = result;
+                return kirra.performRequestOnURL(created.uri, 'PUT', 200, created);
+            }).then(function(updated) {
+                assert.ok(updated);
+                assert.ok(updated.uri);
+            }).then(done, done);
+        });
+        
     });
     
     
@@ -164,6 +187,28 @@ suite('Car rental CRUD tests', function() {
                 assert.ok(created.uri);
             }).then(done, done);
         });
+        test('GET one', function(done) {
+            var created;
+            createModel().then(function(result) {
+                created = result;
+                return kirra.performRequestOnURL(created.uri, null, 200);
+            }).then(function(retrieved) {
+                assert.ok(retrieved);
+                assert.ok(retrieved.uri);
+            }).then(done, done);
+        });
+        
+        test('PUT', function(done) {
+            var created;
+            createModel().then(function(result) {
+                created = result;
+                return kirra.performRequestOnURL(created.uri, 'PUT', 200, created);
+            }).then(function(updated) {
+                assert.ok(updated);
+                assert.ok(updated.uri);
+            }).then(done, done);
+        });
+        
     });
     
     
@@ -189,6 +234,28 @@ suite('Car rental CRUD tests', function() {
                 assert.ok(created.uri);
             }).then(done, done);
         });
+        test('GET one', function(done) {
+            var created;
+            createCar().then(function(result) {
+                created = result;
+                return kirra.performRequestOnURL(created.uri, null, 200);
+            }).then(function(retrieved) {
+                assert.ok(retrieved);
+                assert.ok(retrieved.uri);
+            }).then(done, done);
+        });
+        
+        test('PUT', function(done) {
+            var created;
+            createCar().then(function(result) {
+                created = result;
+                return kirra.performRequestOnURL(created.uri, 'PUT', 200, created);
+            }).then(function(updated) {
+                assert.ok(updated);
+                assert.ok(updated.uri);
+            }).then(done, done);
+        });
+        
     });
     
     
@@ -214,6 +281,28 @@ suite('Car rental CRUD tests', function() {
                 assert.ok(created.uri);
             }).then(done, done);
         });
+        test('GET one', function(done) {
+            var created;
+            createRental().then(function(result) {
+                created = result;
+                return kirra.performRequestOnURL(created.uri, null, 200);
+            }).then(function(retrieved) {
+                assert.ok(retrieved);
+                assert.ok(retrieved.uri);
+            }).then(done, done);
+        });
+        
+        test('PUT', function(done) {
+            var created;
+            createRental().then(function(result) {
+                created = result;
+                return kirra.performRequestOnURL(created.uri, 'PUT', 200, created);
+            }).then(function(updated) {
+                assert.ok(updated);
+                assert.ok(updated.uri);
+            }).then(done, done);
+        });
+        
     });
     
 });    

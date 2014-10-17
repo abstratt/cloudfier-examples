@@ -132,6 +132,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/meeting.Meeting/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Meeting').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('meeting.Meeting', found));
+                }
+            });
+        });
+        
         
         
         // routes for meeting.Presentation
@@ -200,6 +212,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/meeting.Presentation/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Presentation').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('meeting.Presentation', found));
+                }
+            });
+        });
+        
         
         
         // routes for meeting.User
@@ -267,5 +291,17 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/meeting.User/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('User').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('meeting.User', found));
+                }
+            });
+        });
+        
     }
 };

@@ -128,6 +128,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/expenses.Category/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Category').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('expenses.Category', found));
+                }
+            });
+        });
+        
         
         
         // routes for expenses.Expense
@@ -171,6 +183,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/expenses.Expense/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Expense').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('expenses.Expense', found));
+                }
+            });
+        });
+        
         
         
         // routes for expenses.Employee
@@ -238,5 +262,17 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/expenses.Employee/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Employee').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('expenses.Employee', found));
+                }
+            });
+        });
+        
     }
 };

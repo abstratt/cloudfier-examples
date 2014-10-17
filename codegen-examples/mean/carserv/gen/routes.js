@@ -178,6 +178,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/carserv.Person/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Person').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('carserv.Person', found));
+                }
+            });
+        });
+        
         
         
         // routes for carserv.AutoMechanic
@@ -247,6 +259,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/carserv.AutoMechanic/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('AutoMechanic').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('carserv.AutoMechanic', found));
+                }
+            });
+        });
+        
         
         
         // routes for carserv.Customer
@@ -316,6 +340,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/carserv.Customer/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Customer').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('carserv.Customer', found));
+                }
+            });
+        });
+        
         
         
         // routes for carserv.Car
@@ -384,6 +420,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/carserv.Car/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Car').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('carserv.Car', found));
+                }
+            });
+        });
+        
         
         
         // routes for carserv.Service
@@ -427,6 +475,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/carserv.Service/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Service').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('carserv.Service', found));
+                }
+            });
+        });
+        
         
         
         // routes for carserv.Make
@@ -493,6 +553,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/carserv.Make/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Make').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('carserv.Make', found));
+                }
+            });
+        });
+        
         
         
         // routes for carserv.Model
@@ -560,5 +632,17 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/carserv.Model/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Model').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('carserv.Model', found));
+                }
+            });
+        });
+        
     }
 };

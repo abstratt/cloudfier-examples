@@ -22,7 +22,7 @@ var exports = module.exports = {
         app.get("/", function(req, res) {
             cls.getNamespace('session').run(function(context) {
                 res.json({
-                    applicationName : "Taxi fleet",
+                    applicationName : "Taxi Fleet Management",
                     entities : resolveUrl("entities"),
                     currentUser : context.username 
                 });
@@ -142,6 +142,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/taxi_fleet.Taxi/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Taxi').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('taxi_fleet.Taxi', found));
+                }
+            });
+        });
+        
         
         
         // routes for taxi_fleet.Shift
@@ -211,6 +223,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/taxi_fleet.Shift/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Shift').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('taxi_fleet.Shift', found));
+                }
+            });
+        });
+        
         
         
         // routes for taxi_fleet.Driver
@@ -278,6 +302,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/taxi_fleet.Driver/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Driver').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('taxi_fleet.Driver', found));
+                }
+            });
+        });
+        
         
         
         // routes for taxi_fleet.Charge
@@ -350,5 +386,17 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/taxi_fleet.Charge/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Charge').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('taxi_fleet.Charge', found));
+                }
+            });
+        });
+        
     }
 };

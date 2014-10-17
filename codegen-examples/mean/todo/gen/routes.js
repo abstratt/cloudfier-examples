@@ -118,6 +118,18 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/todo.User/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('User').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('todo.User', found));
+                }
+            });
+        });
+        
         
         
         // routes for todo.Todo
@@ -195,5 +207,17 @@ var exports = module.exports = {
                 }
             });
         });
+        app.put("/entities/todo.Todo/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Todo').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('todo.Todo', found));
+                }
+            });
+        });
+        
     }
 };

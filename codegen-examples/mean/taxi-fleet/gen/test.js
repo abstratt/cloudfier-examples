@@ -64,7 +64,7 @@ var createCharge = function (values) {
     return createInstance('taxi_fleet.Charge', toCreate);
 };
 
-suite('Taxi fleet CRUD tests', function() {
+suite('Taxi Fleet Management CRUD tests', function() {
     this.timeout(10000);
 
     var checkStatus = function(m, expected) {
@@ -94,6 +94,28 @@ suite('Taxi fleet CRUD tests', function() {
                 assert.ok(created.uri);
             }).then(done, done);
         });
+        test('GET one', function(done) {
+            var created;
+            createShift().then(function(result) {
+                created = result;
+                return kirra.performRequestOnURL(created.uri, null, 200);
+            }).then(function(retrieved) {
+                assert.ok(retrieved);
+                assert.ok(retrieved.uri);
+            }).then(done, done);
+        });
+        
+        test('PUT', function(done) {
+            var created;
+            createShift().then(function(result) {
+                created = result;
+                return kirra.performRequestOnURL(created.uri, 'PUT', 200, created);
+            }).then(function(updated) {
+                assert.ok(updated);
+                assert.ok(updated.uri);
+            }).then(done, done);
+        });
+        
     });
     
     
@@ -119,6 +141,28 @@ suite('Taxi fleet CRUD tests', function() {
                 assert.ok(created.uri);
             }).then(done, done);
         });
+        test('GET one', function(done) {
+            var created;
+            createTaxi().then(function(result) {
+                created = result;
+                return kirra.performRequestOnURL(created.uri, null, 200);
+            }).then(function(retrieved) {
+                assert.ok(retrieved);
+                assert.ok(retrieved.uri);
+            }).then(done, done);
+        });
+        
+        test('PUT', function(done) {
+            var created;
+            createTaxi().then(function(result) {
+                created = result;
+                return kirra.performRequestOnURL(created.uri, 'PUT', 200, created);
+            }).then(function(updated) {
+                assert.ok(updated);
+                assert.ok(updated.uri);
+            }).then(done, done);
+        });
+        
     });
     
     
@@ -144,6 +188,28 @@ suite('Taxi fleet CRUD tests', function() {
                 assert.ok(created.uri);
             }).then(done, done);
         });
+        test('GET one', function(done) {
+            var created;
+            createDriver().then(function(result) {
+                created = result;
+                return kirra.performRequestOnURL(created.uri, null, 200);
+            }).then(function(retrieved) {
+                assert.ok(retrieved);
+                assert.ok(retrieved.uri);
+            }).then(done, done);
+        });
+        
+        test('PUT', function(done) {
+            var created;
+            createDriver().then(function(result) {
+                created = result;
+                return kirra.performRequestOnURL(created.uri, 'PUT', 200, created);
+            }).then(function(updated) {
+                assert.ok(updated);
+                assert.ok(updated.uri);
+            }).then(done, done);
+        });
+        
     });
     
     
@@ -169,6 +235,28 @@ suite('Taxi fleet CRUD tests', function() {
                 assert.ok(created.uri);
             }).then(done, done);
         });
+        test('GET one', function(done) {
+            var created;
+            createCharge().then(function(result) {
+                created = result;
+                return kirra.performRequestOnURL(created.uri, null, 200);
+            }).then(function(retrieved) {
+                assert.ok(retrieved);
+                assert.ok(retrieved.uri);
+            }).then(done, done);
+        });
+        
+        test('PUT', function(done) {
+            var created;
+            createCharge().then(function(result) {
+                created = result;
+                return kirra.performRequestOnURL(created.uri, 'PUT', 200, created);
+            }).then(function(updated) {
+                assert.ok(updated);
+                assert.ok(updated.uri);
+            }).then(done, done);
+        });
+        
     });
     
 });    
