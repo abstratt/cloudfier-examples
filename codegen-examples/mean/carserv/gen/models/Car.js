@@ -1,7 +1,8 @@
-var mongoose = require('mongoose');        
+var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+// declare schema
 var carSchema = new Schema({
     registrationNumber : {
         type : String,
@@ -39,19 +40,18 @@ var carSchema = new Schema({
         }
     }]
 });
-var Car = mongoose.model('Car', carSchema);
 
 /*************************** ACTIONS ***************************/
 
 carSchema.statics.findByRegistrationNumber = function (regNumber) {
-    return count;
+    return exists;
 };
 
 /**
  *  Book a service on this car. 
  */
 carSchema.methods.bookService = function (description, estimateInDays) {
-    Service.newService(this, description, estimateInDays);
+    require('./Service.js').newService(this, description, estimateInDays);
 };
 /*************************** QUERIES ***************************/
 
@@ -69,12 +69,13 @@ carSchema.virtual('pending').get(function () {
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
-carSchema.method.getPendingServices = function () {
+carSchema.methods.getPendingServices = function () {
     return this.services.where('pending');
 };
 
-carSchema.method.getCompletedServices = function () {
+carSchema.methods.getCompletedServices = function () {
     return this.services.where('pending').ne(true);
 };
 
-var exports = module.exports = Car;
+// declare model on the schema
+var exports = module.exports = mongoose.model('Car', carSchema);

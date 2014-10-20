@@ -1,10 +1,11 @@
-var mongoose = require('mongoose');        
+var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
 /**
  *  Drivers that can book taxis. 
  */
+// declare schema
 var driverSchema = new Schema({
     name : {
         type : String,
@@ -19,7 +20,6 @@ var driverSchema = new Schema({
         ref : "Charge"
     }]
 });
-var Driver = mongoose.model('Driver', driverSchema);
 
 /*************************** ACTIONS ***************************/
 
@@ -50,8 +50,9 @@ driverSchema.virtual('paymentDue').get(function () {
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
-driverSchema.method.getPendingCharges = function () {
+driverSchema.methods.getPendingCharges = function () {
     return this.charges.where('paid').ne(true);
 };
 
-var exports = module.exports = Driver;
+// declare model on the schema
+var exports = module.exports = mongoose.model('Driver', driverSchema);

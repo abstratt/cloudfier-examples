@@ -1,7 +1,8 @@
-var mongoose = require('mongoose');        
+var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+// declare schema
 var userSchema = new Schema({
     email : {
         type : String
@@ -11,7 +12,7 @@ var userSchema = new Schema({
         required : true
     }
 });
-var User = mongoose.model('User', userSchema);
 
 
-var exports = module.exports = User;
+// declare model on the schema
+var exports = module.exports = mongoose.model('User', userSchema);

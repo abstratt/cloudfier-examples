@@ -1,7 +1,8 @@
-var mongoose = require('mongoose');        
+var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+// declare schema
 var autoMechanicSchema = new Schema({
     firstName : {
         type : String,
@@ -23,7 +24,6 @@ var autoMechanicSchema = new Schema({
         ref : "Service"
     }]
 });
-var AutoMechanic = mongoose.model('AutoMechanic', autoMechanicSchema);
 
 /*************************** ACTIONS ***************************/
 
@@ -74,15 +74,15 @@ autoMechanicSchema.virtual('workScheduled').get(function () {
 /**
  *  Services currently in progress by this worker. 
  */
-autoMechanicSchema.method.getCurrentServices = function () {
-    return Service.byStatus(this.services, null);
+autoMechanicSchema.methods.getCurrentServices = function () {
+    return require('./Service.js').byStatus(this.services, null);
 };
 
 /**
  *  Services assigned to this worker but not yet started. 
  */
-autoMechanicSchema.method.getUpcomingServices = function () {
-    return Service.byStatus(this.services, null);
+autoMechanicSchema.methods.getUpcomingServices = function () {
+    return require('./Service.js').byStatus(this.services, null);
 };
 /*************************** PRIVATE OPS ***********************/
 
@@ -117,4 +117,5 @@ autoMechanicSchema.methods.handleEvent = function (event) {
 };
 
 
-var exports = module.exports = AutoMechanic;
+// declare model on the schema
+var exports = module.exports = mongoose.model('AutoMechanic', autoMechanicSchema);

@@ -1,10 +1,11 @@
-var mongoose = require('mongoose');        
+var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
 /**
  *  The expense as reported by an employee. 
  */
+// declare schema
 var expenseSchema = new Schema({
     description : {
         type : String
@@ -38,12 +39,11 @@ var expenseSchema = new Schema({
         ref : "Employee"
     }
 });
-var Expense = mongoose.model('Expense', expenseSchema);
 
 /*************************** ACTIONS ***************************/
 
 expenseSchema.statics.newExpense = function (description, amount, date, category, employee) {
-    var newExpense = new Expense();
+    var newExpense = new require('./Expense.js') ();
     newExpense.description = description;
     newExpense.amount = amount;
     newExpense.date = date;
@@ -89,15 +89,15 @@ expenseSchema.methods.submit = function () {
 /*************************** QUERIES ***************************/
 
 expenseSchema.statics.findExpensesByCategory = function (category) {
-    return this.model('Expense').find().where('category').eq(category).exec();
+    return getEntity('Expense').find().where('category').eq(category).exec();
 };
 
 expenseSchema.statics.findExpensesInPeriod = function (start, end_) {
-    return this.model('Expense').find()start.eq(null).or(.where('date').gte(start)).and(end_.eq(null).or(.where('date').lte(end_))).exec();
+    return getEntity('Expense').find()start.eq(null).or(.where('date').gte(start)).and(end_.eq(null).or(.where('date').lte(end_))).exec();
 };
 
 expenseSchema.statics.findByStatus = function (status) {
-    return this.model('Expense').find().where('status').eq(status).exec();
+    return getEntity('Expense').find().where('status').eq(status).exec();
 };
 /*************************** DERIVED PROPERTIES ****************/
 
@@ -123,7 +123,7 @@ expenseSchema.virtual('daysProcessed').get(function () {
 /*************************** PRIVATE OPS ***********************/
 
 expenseSchema.methods.reportApproved = function () {
-    this.expensePayer.expenseApproved(this.employee.name, this.amount, this.description + "(" + this.category.name + ")", this.expenseId);
+    /*this.expensePayer.expenseApproved(this.employee.name, this.amount, this.description + "(" + this.category.name + ")", this.expenseId)*/;
     this.handleEvent('reportApproved');
 };
 /*************************** STATE MACHINE ********************/
@@ -196,4 +196,5 @@ expenseSchema.methods.handleEvent = function (event) {
 };
 
 
-var exports = module.exports = Expense;
+// declare model on the schema
+var exports = module.exports = mongoose.model('Expense', expenseSchema);

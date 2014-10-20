@@ -1,7 +1,8 @@
-var mongoose = require('mongoose');        
+var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+// declare schema
 var rentalSchema = new Schema({
     started : {
         type : Date
@@ -18,16 +19,15 @@ var rentalSchema = new Schema({
         ref : "Customer"
     }
 });
-var Rental = mongoose.model('Rental', rentalSchema);
 
 /*************************** QUERIES ***************************/
 
 rentalSchema.statics.currentForCar = function (c) {
-    return count.exec();
+    return exists.exec();
 };
 
 rentalSchema.statics.currentForCustomer = function (c) {
-    return count.exec();
+    return exists.exec();
 };
 /*************************** DERIVED PROPERTIES ****************/
 
@@ -44,4 +44,5 @@ rentalSchema.methods.finish = function () {
     this.returned = new Date();
 };
 
-var exports = module.exports = Rental;
+// declare model on the schema
+var exports = module.exports = mongoose.model('Rental', rentalSchema);

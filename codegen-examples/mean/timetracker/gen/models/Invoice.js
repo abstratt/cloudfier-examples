@@ -1,7 +1,8 @@
-var mongoose = require('mongoose');        
+var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+// declare schema
 var invoiceSchema = new Schema({
     issueDate : {
         type : Date,
@@ -20,7 +21,6 @@ var invoiceSchema = new Schema({
         ref : "Work"
     }]
 });
-var Invoice = mongoose.model('Invoice', invoiceSchema);
 
 /*************************** ACTIONS ***************************/
 
@@ -31,7 +31,7 @@ invoiceSchema.methods.issue = function () {
 /*************************** DERIVED PROPERTIES ****************/
 
 invoiceSchema.virtual('number').get(function () {
-    return "" + .getYear() + "." + this.invoiceId;
+    return "" + this.issueDate.getYear() + "." + this.invoiceId;
 });
 
 
@@ -40,14 +40,14 @@ invoiceSchema.virtual('open').get(function () {
 });
 
 invoiceSchema.virtual('totalUnits').get(function () {
-    return this.model('Work').aggregate()
+    return getEntity('Work').aggregate()
                   .group({ _id: null, result: { $sum: '$units' } })
                   .select('-id result');
 });
 /*************************** PRIVATE OPS ***********************/
 
 invoiceSchema.methods.sendInvoice = function () {
-    this.invoicer.invoiceIssued();
+    /*this.invoicer.invoiceIssued()*/;
     this.handleEvent('sendInvoice');
 };
 /*************************** STATE MACHINE ********************/
@@ -74,4 +74,5 @@ invoiceSchema.methods.handleEvent = function (event) {
 };
 
 
-var exports = module.exports = Invoice;
+// declare model on the schema
+var exports = module.exports = mongoose.model('Invoice', invoiceSchema);

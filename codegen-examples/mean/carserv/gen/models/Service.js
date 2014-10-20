@@ -1,7 +1,8 @@
-var mongoose = require('mongoose');        
+var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+// declare schema
 var serviceSchema = new Schema({
     description : {
         type : String,
@@ -23,12 +24,11 @@ var serviceSchema = new Schema({
         ref : "AutoMechanic"
     }
 });
-var Service = mongoose.model('Service', serviceSchema);
 
 /*************************** ACTIONS ***************************/
 
 serviceSchema.statics.newService = function (carToService, description, estimate) {
-    var s = new Service();
+    var s = new require('./Service.js') ();
     s.estimatedReady = new Date(s.bookedOn + estimate);
     s.description = description;
     s.car = carToService;
@@ -116,4 +116,5 @@ serviceSchema.methods.handleEvent = function (event) {
 };
 
 
-var exports = module.exports = Service;
+// declare model on the schema
+var exports = module.exports = mongoose.model('Service', serviceSchema);

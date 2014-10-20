@@ -1,7 +1,8 @@
-var mongoose = require('mongoose');        
+var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+// declare schema
 var personSchema = new Schema({
     firstName : {
         type : String,
@@ -15,7 +16,6 @@ var personSchema = new Schema({
         type : String
     }
 });
-var Person = mongoose.model('Person', personSchema);
 
 /*************************** DERIVED PROPERTIES ****************/
 
@@ -23,4 +23,5 @@ personSchema.virtual('fullName').get(function () {
     return this.firstName + " " + this.lastName;
 });
 
-var exports = module.exports = Person;
+// declare model on the schema
+var exports = module.exports = mongoose.model('Person', personSchema);

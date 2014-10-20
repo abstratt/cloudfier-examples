@@ -1,14 +1,15 @@
-var mongoose = require('mongoose');        
+var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+// declare schema
 var categorySchema = new Schema({
     name : {
         type : String,
         required : true
     }
 });
-var Category = mongoose.model('Category', categorySchema);
 
 
-var exports = module.exports = Category;
+// declare model on the schema
+var exports = module.exports = mongoose.model('Category', categorySchema);

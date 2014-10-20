@@ -1,7 +1,8 @@
-var mongoose = require('mongoose');        
+var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+// declare schema
 var productSchema = new Schema({
     productName : {
         type : String,
@@ -25,7 +26,7 @@ var productSchema = new Schema({
         required : true
     }
 });
-var Product = mongoose.model('Product', productSchema);
 
 
-var exports = module.exports = Product;
+// declare model on the schema
+var exports = module.exports = mongoose.model('Product', productSchema);

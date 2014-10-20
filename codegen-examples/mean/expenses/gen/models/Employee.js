@@ -1,10 +1,11 @@
-var mongoose = require('mongoose');        
+var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
 /**
  *  An employee reports expenses. 
  */
+// declare schema
 var employeeSchema = new Schema({
     name : {
         type : String,
@@ -18,45 +19,44 @@ var employeeSchema = new Schema({
         ref : "Expense"
     }]
 });
-var Employee = mongoose.model('Employee', employeeSchema);
 
 /*************************** ACTIONS ***************************/
 
 employeeSchema.methods.declareExpense = function (description, amount, date, category) {
-    return Expense.newExpense(description, amount, date, category, this);
+    return require('./Expense.js').newExpense(description, amount, date, category, this);
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 employeeSchema.virtual('totalRecorded').get(function () {
-    return this.totalExpenses(this.recordedExpenses);
+    return this.totalExpenses(this.getRecordedExpenses());
 });
 
 employeeSchema.virtual('totalSubmitted').get(function () {
-    return this.totalExpenses(this.submittedExpenses);
+    return this.totalExpenses(this.getSubmittedExpenses());
 });
 
 employeeSchema.virtual('totalApproved').get(function () {
-    return this.totalExpenses(this.approvedExpenses);
+    return this.totalExpenses(this.getApprovedExpenses());
 });
 
 employeeSchema.virtual('totalRejected').get(function () {
-    return this.totalExpenses(this.rejectedExpenses);
+    return this.totalExpenses(this.getRejectedExpenses());
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
-employeeSchema.method.getRecordedExpenses = function () {
+employeeSchema.methods.getRecordedExpenses = function () {
     return this.expensesByStatus(null);
 };
 
-employeeSchema.method.getSubmittedExpenses = function () {
+employeeSchema.methods.getSubmittedExpenses = function () {
     return this.expensesByStatus(null);
 };
 
-employeeSchema.method.getApprovedExpenses = function () {
+employeeSchema.methods.getApprovedExpenses = function () {
     return this.expensesByStatus(null);
 };
 
-employeeSchema.method.getRejectedExpenses = function () {
+employeeSchema.methods.getRejectedExpenses = function () {
     return this.expensesByStatus(null);
 };
 /*************************** PRIVATE OPS ***********************/
@@ -69,4 +69,5 @@ employeeSchema.methods.expensesByStatus = function (status) {
     return this.expenses.where('status').eq(status);
 };
 
-var exports = module.exports = Employee;
+// declare model on the schema
+var exports = module.exports = mongoose.model('Employee', employeeSchema);

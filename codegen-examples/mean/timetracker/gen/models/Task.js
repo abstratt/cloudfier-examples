@@ -1,7 +1,8 @@
-var mongoose = require('mongoose');        
+var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+// declare schema
 var taskSchema = new Schema({
     description : {
         type : String,
@@ -29,12 +30,11 @@ var taskSchema = new Schema({
         }
     }]
 });
-var Task = mongoose.model('Task', taskSchema);
 
 /*************************** ACTIONS ***************************/
 
 taskSchema.methods.addWork = function (units) {
-    var newWork = new Work();
+    var newWork = new require('./Work.js') ();
     newWork.units = units;
     // link reported and task
     this.reported.push(newWork);
@@ -48,19 +48,20 @@ taskSchema.virtual('unitsReported').get(function () {
 });
 
 taskSchema.virtual('unitsToInvoice').get(function () {
-    return this.countUnits(this.toInvoice);
+    return this.countUnits(this.getToInvoice());
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
-taskSchema.method.getToInvoice = function () {
+taskSchema.methods.getToInvoice = function () {
     return this.reported.where('invoiced').ne(true);
 };
 /*************************** PRIVATE OPS ***********************/
 
 taskSchema.methods.countUnits = function (work) {
-    return this.model('Work').aggregate()
+    return getEntity('Work').aggregate()
                   .group({ _id: null, result: { $sum: '$units' } })
                   .select('-id result');
 };
 
-var exports = module.exports = Task;
+// declare model on the schema
+var exports = module.exports = mongoose.model('Task', taskSchema);

@@ -1,7 +1,8 @@
-var mongoose = require('mongoose');        
+var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+// declare schema
 var makeSchema = new Schema({
     name : {
         type : String,
@@ -12,7 +13,7 @@ var makeSchema = new Schema({
         ref : "Model"
     }]
 });
-var Make = mongoose.model('Make', makeSchema);
 
 
-var exports = module.exports = Make;
+// declare model on the schema
+var exports = module.exports = mongoose.model('Make', makeSchema);

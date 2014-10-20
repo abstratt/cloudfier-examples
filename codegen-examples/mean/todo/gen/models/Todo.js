@@ -1,7 +1,8 @@
-var mongoose = require('mongoose');        
+var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+// declare schema
 var todoSchema = new Schema({
     description : {
         type : String,
@@ -35,7 +36,6 @@ var todoSchema = new Schema({
         }
     }]
 });
-var Todo = mongoose.model('Todo', todoSchema);
 
 /*************************** ACTIONS ***************************/
 
@@ -43,4 +43,5 @@ todoSchema.methods.complete = function () {
     this.status = "Done";
 };
 
-var exports = module.exports = Todo;
+// declare model on the schema
+var exports = module.exports = mongoose.model('Todo', todoSchema);

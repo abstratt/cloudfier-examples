@@ -1,10 +1,11 @@
-var mongoose = require('mongoose');        
+var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
 /**
  *  Shift modalities. 
  */
+// declare schema
 var shiftSchema = new Schema({
     description : {
         type : String,
@@ -19,12 +20,12 @@ var shiftSchema = new Schema({
         required : true
     }
 });
-var Shift = mongoose.model('Shift', shiftSchema);
 
 /*************************** DERIVED RELATIONSHIPS ****************/
 
-shiftSchema.method.getTaxis = function () {
-    return this.model('Taxi').find().where('shift').eq(this);
+shiftSchema.methods.getTaxis = function () {
+    return getEntity('Taxi').find().where('shift').eq(this);
 };
 
-var exports = module.exports = Shift;
+// declare model on the schema
+var exports = module.exports = mongoose.model('Shift', shiftSchema);

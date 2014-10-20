@@ -1,7 +1,8 @@
-var mongoose = require('mongoose');        
+var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+// declare schema
 var customerSchema = new Schema({
     firstName : {
         type : String,
@@ -24,16 +25,15 @@ var customerSchema = new Schema({
         ref : "Car"
     }]
 });
-var Customer = mongoose.model('Customer', customerSchema);
 
 /*************************** QUERIES ***************************/
 
 customerSchema.statics.findByName = function (firstName, lastName) {
-    return this.model('Customer').find().where('firstName').equals(firstName).or(.where('lastName').equals(lastName)).exec();
+    return getEntity('Customer').find().where('firstName').equals(firstName).or(.where('lastName').equals(lastName)).exec();
 };
 
 customerSchema.statics.vipCustomers = function () {
-    return this.model('Customer').find().where('vip').exec();
+    return getEntity('Customer').find().where('vip').exec();
 };
 /*************************** DERIVED PROPERTIES ****************/
 
@@ -49,12 +49,13 @@ customerSchema.virtual('vip').get(function () {
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
-customerSchema.method.getPendingServices = function () {
+customerSchema.methods.getPendingServices = function () {
     return reduce;
 };
 
-customerSchema.method.getCompletedServices = function () {
+customerSchema.methods.getCompletedServices = function () {
     return reduce;
 };
 
-var exports = module.exports = Customer;
+// declare model on the schema
+var exports = module.exports = mongoose.model('Customer', customerSchema);

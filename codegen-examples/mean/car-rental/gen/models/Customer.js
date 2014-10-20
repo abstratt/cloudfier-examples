@@ -1,7 +1,8 @@
-var mongoose = require('mongoose');        
+var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+// declare schema
 var customerSchema = new Schema({
     name : {
         type : String,
@@ -12,34 +13,34 @@ var customerSchema = new Schema({
         ref : "Rental"
     }]
 });
-var Customer = mongoose.model('Customer', customerSchema);
 
 /*************************** ACTIONS ***************************/
 
 customerSchema.methods.rent = function (car) {
-    var rental = new Rental();
+    var rental = new require('./Rental.js') ();
     // link customer and rentals
     rental.customer = this;
     this.rentals.push(rental);
     // link car and rentals
     rental.car = car;
     car.rentals.push(rental);
-    car.carRented();
+    /*car.carRented()*/;
 };
 
 customerSchema.methods.finishRental = function () {
-    this.currentRental.car.carReturned();
-    this.currentRental.finish();
+    /*this.getCurrentRental().car.carReturned()*/;
+    this.getCurrentRental().finish();
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 customerSchema.virtual('hasCurrentRental').get(function () {
-    return !(this.currentRental == null);
+    return !(this.getCurrentRental() == null);
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
-customerSchema.method.getCurrentRental = function () {
-    return Rental.currentForCustomer(this);
+customerSchema.methods.getCurrentRental = function () {
+    return require('./Rental.js').currentForCustomer(this);
 };
 
-var exports = module.exports = Customer;
+// declare model on the schema
+var exports = module.exports = mongoose.model('Customer', customerSchema);

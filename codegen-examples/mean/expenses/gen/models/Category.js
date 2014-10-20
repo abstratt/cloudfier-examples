@@ -1,29 +1,30 @@
-var mongoose = require('mongoose');        
+var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
 /**
  *  The category for an expense. 
  */
+// declare schema
 var categorySchema = new Schema({
     name : {
         type : String,
         required : true
     }
 });
-var Category = mongoose.model('Category', categorySchema);
 
 /*************************** ACTIONS ***************************/
 
 categorySchema.statics.newCategory = function (name) {
-    var newCategory = new Category();
+    var newCategory = new require('./Category.js') ();
     newCategory.name = name;
     return newCategory;
 };
 /*************************** DERIVED RELATIONSHIPS ****************/
 
-categorySchema.method.getExpensesInThisCategory = function () {
-    return Expense.findExpensesByCategory(this);
+categorySchema.methods.getExpensesInThisCategory = function () {
+    return require('./Expense.js').findExpensesByCategory(this);
 };
 
-var exports = module.exports = Category;
+// declare model on the schema
+var exports = module.exports = mongoose.model('Category', categorySchema);

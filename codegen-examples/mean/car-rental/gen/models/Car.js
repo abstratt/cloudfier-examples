@@ -1,7 +1,8 @@
-var mongoose = require('mongoose');        
+var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+// declare schema
 var carSchema = new Schema({
     plate : {
         type : String,
@@ -32,17 +33,16 @@ var carSchema = new Schema({
         ref : "Rental"
     }]
 });
-var Car = mongoose.model('Car', carSchema);
 
 /*************************** ACTIONS ***************************/
 
 carSchema.methods.startRepair = function () {
-    this.repairStarted();
+    /*this.repairStarted()*/;
     this.handleEvent('startRepair');
 };
 
 carSchema.methods.finishRepair = function () {
-    this.repairFinished();
+    /*this.repairFinished()*/;
     this.handleEvent('finishRepair');
 };
 /*************************** DERIVED PROPERTIES ****************/
@@ -64,8 +64,8 @@ carSchema.virtual('rented').get(function () {
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
-carSchema.method.getCurrentRental = function () {
-    return Rental.currentForCar(this);
+carSchema.methods.getCurrentRental = function () {
+    return require('./Rental.js').currentForCar(this);
 };
 /*************************** STATE MACHINE ********************/
 carSchema.methods.handleEvent = function (event) {
@@ -101,4 +101,5 @@ carSchema.methods.handleEvent = function (event) {
 };
 
 
-var exports = module.exports = Car;
+// declare model on the schema
+var exports = module.exports = mongoose.model('Car', carSchema);

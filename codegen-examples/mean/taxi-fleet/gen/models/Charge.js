@@ -1,10 +1,11 @@
-var mongoose = require('mongoose');        
+var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
 /**
  *  Charges for renting taxis. 
  */
+// declare schema
 var chargeSchema = new Schema({
     date : {
         type : Date
@@ -31,7 +32,6 @@ var chargeSchema = new Schema({
         ref : "Taxi"
     }
 });
-var Charge = mongoose.model('Charge', chargeSchema);
 
 /*************************** ACTIONS ***************************/
 
@@ -44,7 +44,7 @@ chargeSchema.methods.cancelPayment = function () {
 };
 
 chargeSchema.statics.newCharge = function (taxi, payer, date) {
-    var charge = new Charge();
+    var charge = new require('./Charge.js') ();
     charge.description = taxi.name + " - " + taxi.shift.description;
     charge.amount = taxi.shift.price;
     charge.taxi = taxi;
@@ -56,15 +56,15 @@ chargeSchema.statics.newCharge = function (taxi, payer, date) {
 /*************************** QUERIES ***************************/
 
 chargeSchema.statics.pendingCharges = function () {
-    return this.model('Charge').find().where('paid').ne(true).exec();
+    return getEntity('Charge').find().where('paid').ne(true).exec();
 };
 
 chargeSchema.statics.byTaxi = function (taxi) {
-    return this.model('Charge').find().where('taxi').eq(taxi).exec();
+    return getEntity('Charge').find().where('taxi').eq(taxi).exec();
 };
 
 chargeSchema.statics.paidCharges = function () {
-    return this.model('Charge').find().where('paid').exec();
+    return getEntity('Charge').find().where('paid').exec();
 };
 /*************************** DERIVED PROPERTIES ****************/
 
@@ -95,4 +95,5 @@ chargeSchema.methods.handleEvent = function (event) {
 };
 
 
-var exports = module.exports = Charge;
+// declare model on the schema
+var exports = module.exports = mongoose.model('Charge', chargeSchema);

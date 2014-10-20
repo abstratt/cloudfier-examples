@@ -1,7 +1,8 @@
-var mongoose = require('mongoose');        
+var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+// declare schema
 var orderSchema = new Schema({
     orderDate : {
         type : Date
@@ -26,12 +27,11 @@ var orderSchema = new Schema({
         }
     }]
 });
-var Order = mongoose.model('Order', orderSchema);
 
 /*************************** ACTIONS ***************************/
 
 orderSchema.methods.addItem = function (product, quantity) {
-    var i = new OrderDetail();
+    var i = new require('./OrderDetail.js') ();
     i.product = product;
     i.quantity = quantity;
     i.order = this;
@@ -89,4 +89,5 @@ orderSchema.methods.handleEvent = function (event) {
 };
 
 
-var exports = module.exports = Order;
+// declare model on the schema
+var exports = module.exports = mongoose.model('Order', orderSchema);
