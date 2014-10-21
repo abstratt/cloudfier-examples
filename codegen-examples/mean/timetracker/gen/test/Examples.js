@@ -1,23 +1,25 @@
 var mongoose = require('mongoose');
-require('../models');
+var Client = require('../models/Client.js');
+var Task = require('../models/Task.js');
+var Invoice = require('../models/Invoice.js');
 
 var Examples = {
     clientWithName : function(name) {
-        var client = new require('../models/Client.js') ();
+        var client = new Client();
         client.name = name;
         return client;
     },
     client : function() {
-        return require('./Examples.js').clientWithName("New Client");
+        return Examples.clientWithName("New Client");
     },
     taskWithName : function(description, client) {
-        var task = new require('../models/Task.js') ();
+        var task = new Task();
         task.description = description;
         task.client = client;
         return task;
     },
     task : function() {
-        return require('./Examples.js').taskWithName("New Task", require('./Examples.js').client());
+        return Examples.taskWithName("New Task", Examples.client());
     }
 };
 

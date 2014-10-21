@@ -19,8 +19,8 @@ suite('Car rental functional tests - RentalScenarios', function() {
     
     test('startsAsInProgress', function(done) {
         // a block
-        var car = require('./Examples.js').car();
-        var customer = require('./Examples.js').customer();
+        var car = Examples.car();
+        var customer = Examples.customer();
         assert.ok(customer.getCurrentRental() == null, 'customer.getCurrentRental()');
         customer.rent(car);
         assert.ok(customer.getCurrentRental() != null, 'customer.getCurrentRental(): ' + customer.getCurrentRental());
@@ -29,8 +29,8 @@ suite('Car rental functional tests - RentalScenarios', function() {
     });
     test('finishedUponReturn', function(done) {
         // a block
-        var car = require('./Examples.js').car();
-        var customer = require('./Examples.js').customer();
+        var car = Examples.car();
+        var customer = Examples.customer();
         customer.rent(car);
         var rental = customer.getCurrentRental();
         assert.ok(rental.inProgress === true, 'rental.inProgress: ' + rental.inProgress);
@@ -39,23 +39,33 @@ suite('Car rental functional tests - RentalScenarios', function() {
         done();
     });
     test('oneCarPerCustomer', function(done) {
+        try {
         // a block
-        var car1 = require('./Examples.js').car();
-        var customer = require('./Examples.js').customer();
+        var car1 = Examples.car();
+        var customer = Examples.customer();
         customer.rent(car1);
-        var car2 = require('./Examples.js').car();
+        var car2 = Examples.car();
         customer.rent(car2);
-        done();
+        } catch (e) {
+            done();
+            return;
+        }
+        throw "Failure expected, but no failure occurred"
     });
     test('carUnavailable', function(done) {
+        try {
         // a block
-        var car = require('./Examples.js').car();
-        var customer1 = require('./Examples.js').customer();
+        var car = Examples.car();
+        var customer1 = Examples.customer();
         customer1.rent(car);
         assert.ok(car.rented === true, 'car.rented: ' + car.rented);
-        var customer2 = require('./Examples.js').customer();
+        var customer2 = Examples.customer();
         customer2.rent(car);
-        done();
+        } catch (e) {
+            done();
+            return;
+        }
+        throw "Failure expected, but no failure occurred"
     });
 });
 

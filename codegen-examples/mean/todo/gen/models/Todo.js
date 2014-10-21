@@ -2,20 +2,25 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+var User = require('./User.js');
+
 // declare schema
 var todoSchema = new Schema({
     description : {
         type : String,
-        required : true
+        required : true,
+        default : null
     },
     details : {
         type : String,
-        required : true
+        required : true,
+        default : null
     },
     status : {
         type : String,
         required : true,
-        enum : ["Open", "Done", "Cancelled"]
+        enum : ["Open", "Done", "Cancelled"],
+        default : "Open"
     },
     assignee : {
         type : Schema.Types.ObjectId,
@@ -28,7 +33,8 @@ var todoSchema = new Schema({
     comments : [{
         text : {
             type : String,
-            required : true
+            required : true,
+            default : null
         },
         commenter : {
             type : Schema.Types.ObjectId,
@@ -41,6 +47,7 @@ var todoSchema = new Schema({
 
 todoSchema.methods.complete = function () {
     this.status = "Done";
+    return this.save();
 };
 
 // declare model on the schema

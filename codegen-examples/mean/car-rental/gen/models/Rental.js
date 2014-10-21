@@ -2,13 +2,22 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+var Make = require('./Make.js');
+var Customer = require('./Customer.js');
+var Model = require('./Model.js');
+var Car = require('./Car.js');
+
 // declare schema
 var rentalSchema = new Schema({
     started : {
-        type : Date
+        type : Date,
+        default : (function() {
+            return new Date();
+        })()
     },
     returned : {
-        type : Date
+        type : Date,
+        default : new Date()
     },
     car : {
         type : Schema.Types.ObjectId,
@@ -41,6 +50,12 @@ rentalSchema.virtual('inProgress').get(function () {
 /*************************** PRIVATE OPS ***********************/
 
 rentalSchema.methods.finish = function () {
+    var precondition = function() {
+        return this.inProgress;
+    };
+    if (!precondition.call(this)) {
+        throw "Precondition on finish was violated"
+    }
     this.returned = new Date();
 };
 

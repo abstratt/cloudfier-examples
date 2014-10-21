@@ -2,11 +2,15 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+var Client = require('./Client.js');
+var Invoice = require('./Invoice.js');
+
 // declare schema
 var taskSchema = new Schema({
     description : {
         type : String,
-        required : true
+        required : true,
+        default : null
     },
     client : {
         type : Schema.Types.ObjectId,
@@ -15,14 +19,19 @@ var taskSchema = new Schema({
     reported : [{
         units : {
             type : Number,
-            required : true
+            required : true,
+            default : 0
         },
         date : {
             type : Date,
-            required : true
+            required : true,
+            default : (function() {
+                return new Date();
+            })()
         },
         memo : {
-            type : String
+            type : String,
+            default : null
         },
         invoice : {
             type : Schema.Types.ObjectId,
@@ -34,12 +43,13 @@ var taskSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 taskSchema.methods.addWork = function (units) {
-    var newWork = new require('./Work.js') ();
+    var newWork = new Work();
     newWork.units = units;
     // link reported and task
     this.reported.push(newWork);
     newWork.task = this;
     return newWork;
+    return this.save();
 };
 /*************************** DERIVED PROPERTIES ****************/
 
@@ -60,7 +70,7 @@ taskSchema.methods.getToInvoice = function () {
 taskSchema.methods.countUnits = function (work) {
     return getEntity('Work').aggregate()
                   .group({ _id: null, result: { $sum: '$units' } })
-                  .select('-id result');
+                  .select('-id result').exec();
 };
 
 // declare model on the schema

@@ -2,15 +2,22 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+var Client = require('./Client.js');
+var Task = require('./Task.js');
+
 // declare schema
 var invoiceSchema = new Schema({
     issueDate : {
         type : Date,
-        required : true
+        required : true,
+        default : (function() {
+            return new Date();
+        })()
     },
     status : {
         type : String,
-        enum : ["Preparation", "Invoiced", "Received"]
+        enum : ["Preparation", "Invoiced", "Received"],
+        default : "Preparation"
     },
     client : {
         type : Schema.Types.ObjectId,
@@ -25,18 +32,25 @@ var invoiceSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 invoiceSchema.methods.issue = function () {
+    var precondition = function() {
+        return !(isEmpty);
+    };
+    if (!precondition.call(this)) {
+        throw "Precondition on issue was violated"
+    }
     this.issueDate = new Date();
     this.handleEvent('issue');
+    return this.save();
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 invoiceSchema.virtual('number').get(function () {
-    return "" + this.issueDate.getYear() + "." + this.invoiceId;
+    return "" + (this.issueDate.getYear() + 1900) + "." + this.invoiceId;
 });
 
 
 invoiceSchema.virtual('open').get(function () {
-    return this.status == null;
+    return this.status == "Preparation";
 });
 
 invoiceSchema.virtual('totalUnits').get(function () {
@@ -48,7 +62,6 @@ invoiceSchema.virtual('totalUnits').get(function () {
 
 invoiceSchema.methods.sendInvoice = function () {
     /*this.invoicer.invoiceIssued()*/;
-    this.handleEvent('sendInvoice');
 };
 /*************************** STATE MACHINE ********************/
 invoiceSchema.methods.handleEvent = function (event) {

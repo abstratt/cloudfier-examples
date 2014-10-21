@@ -2,24 +2,23 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
-var Customer = require('./Customer.js');
-var Model = require('./Model.js');
-var Car = require('./Car.js');
-var Rental = require('./Rental.js');
+var User = require('./User.js');
+var Project = require('./Project.js');
+var Issue = require('./Issue.js');
 
 // declare schema
-var makeSchema = new Schema({
+var labelSchema = new Schema({
     name : {
         type : String,
         required : true,
         default : null
     },
-    models : [{
+    labeled : [{
         type : Schema.Types.ObjectId,
-        ref : "Model"
+        ref : "Issue"
     }]
 });
 
 
 // declare model on the schema
-var exports = module.exports = mongoose.model('Make', makeSchema);
+var exports = module.exports = mongoose.model('Label', labelSchema);

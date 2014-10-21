@@ -2,14 +2,22 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+var Category = require('./Category.js');
+var Customer = require('./Customer.js');
+var Product = require('./Product.js');
+
 // declare schema
 var orderSchema = new Schema({
     orderDate : {
-        type : Date
+        type : Date,
+        default : (function() {
+            return new Date();
+        })()
     },
     orderStatus : {
         type : String,
-        enum : ["New", "Processing", "Completed"]
+        enum : ["New", "Processing", "Completed"],
+        default : "New"
     },
     customer : {
         type : Schema.Types.ObjectId,
@@ -19,7 +27,8 @@ var orderSchema = new Schema({
     items : [{
         quantity : {
             type : Number,
-            required : true
+            required : true,
+            default : 1
         },
         product : {
             type : Schema.Types.ObjectId,
@@ -31,11 +40,18 @@ var orderSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 orderSchema.methods.addItem = function (product, quantity) {
-    var i = new require('./OrderDetail.js') ();
+    var precondition = function() {
+        return this.orderStatus == "New";
+    };
+    if (!precondition.call(this)) {
+        throw "Precondition on addItem was violated"
+    }
+    var i = new OrderDetail();
     i.product = product;
     i.quantity = quantity;
     i.order = this;
     this.handleEvent('addItem');
+    return this.save();
 };
 
 orderSchema.methods.complete = function () {
@@ -43,6 +59,12 @@ orderSchema.methods.complete = function () {
 };
 
 orderSchema.methods.process = function () {
+    var precondition = function() {
+        return !(isEmpty);
+    };
+    if (!precondition.call(this)) {
+        throw "Precondition on process was violated"
+    }
     this.handleEvent('process');    
 };
 /*************************** DERIVED PROPERTIES ****************/
@@ -57,13 +79,11 @@ orderSchema.virtual('orderTotal').get(function () {
 /*************************** PRIVATE OPS ***********************/
 
 orderSchema.methods.computeOrderTotal = function () {
-    return reduce;
-    this.handleEvent('computeOrderTotal');
+    return reduce.exec();
 };
 
 orderSchema.methods.computeWeightTotal = function () {
-    return reduce;
-    this.handleEvent('computeWeightTotal');
+    return reduce.exec();
 };
 /*************************** STATE MACHINE ********************/
 orderSchema.methods.handleEvent = function (event) {

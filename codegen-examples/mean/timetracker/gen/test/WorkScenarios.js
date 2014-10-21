@@ -19,35 +19,55 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
     
     test('workDateDefaultsToToday', function(done) {
         // a block
-        var work = require('./Examples.js').task().addWork(1);
-        assert.equal(new Date(), work.date), 'new Date() == work.date' ;
+        var work = Examples.task().addWork(1);
+        assert.equal(new Date(), work.date, 'new Date() == work.date');
         done();
     });
     test('cannotAssignWorkToInvoiceFromAnotherClient', function(done) {
+        try {
         // a block
-        var client1 = require('./Examples.js').client();
-        var client2 = require('./Examples.js').client();
+        var client1 = Examples.client();
+        var client2 = Examples.client();
         var work = client1.newTask("Some task").addWork(1);
         work.submit(client2.startInvoice());
-        done();
+        } catch (e) {
+            done();
+            return;
+        }
+        throw "Failure expected, but no failure occurred"
     });
     test('cannotSubmitWorkToInvoiceAlreadyInvoiced', function(done) {
+        try {
         // a block
-        var work = require('./Examples.js').client().newTask("Some task").addWork(1);
+        var work = Examples.client().newTask("Some task").addWork(1);
         var invoice = work.getClient().startInvoice();
         work.submit(invoice);
         work.submit(invoice);
-        done();
+        } catch (e) {
+            done();
+            return;
+        }
+        throw "Failure expected, but no failure occurred"
     });
     test('unitsWorkedMustBePositive', function(done) {
+        try {
         // a block
-        require('./Examples.js').task().addWork(-(1));
-        done();
+        Examples.task().addWork(-(1));
+        } catch (e) {
+            done();
+            return;
+        }
+        throw "Failure expected, but no failure occurred"
     });
     test('unitsWorkedMayNotBeZero', function(done) {
+        try {
         // a block
-        require('./Examples.js').task().addWork(0);
-        done();
+        Examples.task().addWork(0);
+        } catch (e) {
+            done();
+            return;
+        }
+        throw "Failure expected, but no failure occurred"
     });
 });
 

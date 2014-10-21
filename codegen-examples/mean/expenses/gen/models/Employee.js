@@ -2,6 +2,9 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+var Category = require('./Category.js');
+var Expense = require('./Expense.js');
+
 /**
  *  An employee reports expenses. 
  */
@@ -9,10 +12,12 @@ var cls = require('continuation-local-storage');
 var employeeSchema = new Schema({
     name : {
         type : String,
-        required : true
+        required : true,
+        default : null
     },
     username : {
-        type : String
+        type : String,
+        default : null
     },
     expenses : [{
         type : Schema.Types.ObjectId,
@@ -23,7 +28,8 @@ var employeeSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 employeeSchema.methods.declareExpense = function (description, amount, date, category) {
-    return require('./Expense.js').newExpense(description, amount, date, category, this);
+    return Expense.newExpense(description, amount, date, category, this);
+    return this.save();
 };
 /*************************** DERIVED PROPERTIES ****************/
 
@@ -45,28 +51,28 @@ employeeSchema.virtual('totalRejected').get(function () {
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 employeeSchema.methods.getRecordedExpenses = function () {
-    return this.expensesByStatus(null);
+    return this.expensesByStatus("Draft");
 };
 
 employeeSchema.methods.getSubmittedExpenses = function () {
-    return this.expensesByStatus(null);
+    return this.expensesByStatus("Submitted");
 };
 
 employeeSchema.methods.getApprovedExpenses = function () {
-    return this.expensesByStatus(null);
+    return this.expensesByStatus("Approved");
 };
 
 employeeSchema.methods.getRejectedExpenses = function () {
-    return this.expensesByStatus(null);
+    return this.expensesByStatus("Rejected");
 };
 /*************************** PRIVATE OPS ***********************/
 
 employeeSchema.methods.totalExpenses = function (toSum) {
-    return reduce;
+    return reduce.exec();
 };
 
 employeeSchema.methods.expensesByStatus = function (status) {
-    return this.expenses.where('status').eq(status);
+    return this.expenses.where('status').eq(status).exec();
 };
 
 // declare model on the schema

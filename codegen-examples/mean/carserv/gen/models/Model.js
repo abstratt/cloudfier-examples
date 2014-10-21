@@ -2,11 +2,19 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+var Make = require('./Make.js');
+var Customer = require('./Customer.js');
+var AutoMechanic = require('./AutoMechanic.js');
+var Car = require('./Car.js');
+var Service = require('./Service.js');
+var Person = require('./Person.js');
+
 // declare schema
 var modelSchema = new Schema({
     name : {
         type : String,
-        required : true
+        required : true,
+        default : null
     },
     make : {
         type : Schema.Types.ObjectId,

@@ -2,29 +2,40 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+var Employee = require('./Employee.js');
+var Category = require('./Category.js');
+
 /**
  *  The expense as reported by an employee. 
  */
 // declare schema
 var expenseSchema = new Schema({
     description : {
-        type : String
+        type : String,
+        default : null
     },
     status : {
         type : String,
-        enum : ["Draft", "Submitted", "Approved", "Rejected"]
+        enum : ["Draft", "Submitted", "Approved", "Rejected"],
+        default : "Draft"
     },
     amount : {
-        type : Number
+        type : Number,
+        default : 0
     },
     date : {
-        type : Date
+        type : Date,
+        default : (function() {
+            return new Date();
+        })()
     },
     processed : {
-        type : Date
+        type : Date,
+        default : new Date()
     },
     rejectionReason : {
-        type : String
+        type : String,
+        default : null
     },
     category : {
         type : Schema.Types.ObjectId,
@@ -43,7 +54,7 @@ var expenseSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 expenseSchema.statics.newExpense = function (description, amount, date, category, employee) {
-    var newExpense = new require('./Expense.js') ();
+    var newExpense = new Expense();
     newExpense.description = description;
     newExpense.amount = amount;
     newExpense.date = date;
@@ -53,23 +64,43 @@ expenseSchema.statics.newExpense = function (description, amount, date, category
 };
 
 expenseSchema.methods.approve = function () {
+    var precondition = function() {
+        return !cls.getNamespace('currentUser') == this.employee;
+    };
+    if (!precondition.call(this)) {
+        throw "Precondition on approve was violated"
+    }
     this.approver = cls.getNamespace('currentUser');
     this.handleEvent('approve');
+    return this.save();
 };
 
 /**
  *  Reject this expense. Please provide a reason. 
  */
 expenseSchema.methods.reject = function (reason) {
+    var precondition = function() {
+        return !this.automaticApproval;
+    };
+    if (!precondition.call(this)) {
+        throw "Precondition on reject was violated"
+    }
     this.rejectionReason = reason;
     this.approver = cls.getNamespace('currentUser');
     this.handleEvent('reject');
+    return this.save();
 };
 
 /**
  *  Reconsider this expense. 
  */
 expenseSchema.methods.reconsider = function () {
+    var precondition = function() {
+        return this.daysProcessed < 7;
+    };
+    if (!precondition.call(this)) {
+        throw "Precondition on reconsider was violated"
+    }
     this.handleEvent('reconsider');    
 };
 
@@ -124,7 +155,6 @@ expenseSchema.virtual('daysProcessed').get(function () {
 
 expenseSchema.methods.reportApproved = function () {
     /*this.expensePayer.expenseApproved(this.employee.name, this.amount, this.description + "(" + this.category.name + ")", this.expenseId)*/;
-    this.handleEvent('reportApproved');
 };
 /*************************** STATE MACHINE ********************/
 expenseSchema.methods.handleEvent = function (event) {
@@ -135,7 +165,7 @@ expenseSchema.methods.handleEvent = function (event) {
                 guard = function() {
                     return this.automaticApproval;
                 };
-                if (guard()) {
+                if (guard.call(this)) {
                     this.status = 'Approved';
                     // on entering Approved
                     (function() {
@@ -147,9 +177,9 @@ expenseSchema.methods.handleEvent = function (event) {
             }
             if (this.status == 'Draft') {
                 guard = function() {
-                    return !(this.automaticApproval);
+                    return !this.automaticApproval;
                 };
-                if (guard()) {
+                if (guard.call(this)) {
                     this.status = 'Submitted';
                     return;
                 }

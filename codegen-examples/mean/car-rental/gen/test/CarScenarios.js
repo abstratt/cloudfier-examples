@@ -19,43 +19,63 @@ suite('Car rental functional tests - CarScenarios', function() {
     
     test('startsAsValid', function(done) {
         // a block
-        var car = require('./Examples.js').car();
+        var car = Examples.car();
         done();
     });
     test('startsAsAvailable', function(done) {
         // a block
-        var car = require('./Examples.js').car();
+        var car = Examples.car();
         assert.ok(car.available === true, 'car.available: ' + car.available);
         done();
     });
     test('tooOld', function(done) {
+        try {
         // a block
-        var car = require('./Examples.js').car();
+        var car = Examples.car();
         car.year = 1900;
-        done();
+        } catch (e) {
+            done();
+            return;
+        }
+        throw "Failure expected, but no failure occurred"
     });
     test('tooNew', function(done) {
+        try {
         // a block
-        var car = require('./Examples.js').car();
+        var car = Examples.car();
         car.year = 2500;
-        done();
+        } catch (e) {
+            done();
+            return;
+        }
+        throw "Failure expected, but no failure occurred"
     });
     test('priceIsTooLow', function(done) {
+        try {
         // a block
-        var car = require('./Examples.js').car();
+        var car = Examples.car();
         car.price = 49;
-        done();
+        } catch (e) {
+            done();
+            return;
+        }
+        throw "Failure expected, but no failure occurred"
     });
     test('priceIsTooHigh', function(done) {
+        try {
         // a block
-        var car = require('./Examples.js').car();
+        var car = Examples.car();
         car.price = 2000;
-        done();
+        } catch (e) {
+            done();
+            return;
+        }
+        throw "Failure expected, but no failure occurred"
     });
     test('unavailableWhenRented', function(done) {
         // a block
-        var car = require('./Examples.js').car();
-        var customer = require('./Examples.js').customer();
+        var car = Examples.car();
+        var customer = Examples.customer();
         assert.ok(car.available === true, 'car.available: ' + car.available);
         customer.rent(car);
         assert.ok(!(car.available) === true, '!(car.available): ' + !(car.available));
@@ -64,8 +84,8 @@ suite('Car rental functional tests - CarScenarios', function() {
     });
     test('availableUponReturn', function(done) {
         // a block
-        var car = require('./Examples.js').car();
-        var customer = require('./Examples.js').customer();
+        var car = Examples.car();
+        var customer = Examples.customer();
         assert.ok(car.available === true, 'car.available: ' + car.available);
         customer.rent(car);
         assert.ok(!(car.available) === true, '!(car.available): ' + !(car.available));
@@ -75,7 +95,8 @@ suite('Car rental functional tests - CarScenarios', function() {
     });
     test('unavailableWhenUnderRepair', function(done) {
         // a block
-        var car = require('./Examples.js').car();
+        var car = Examples.car();
+        assert.ok(!(car.underRepair) === true, '!(car.underRepair): ' + !(car.underRepair));
         car.startRepair();
         assert.ok(car.underRepair === true, 'car.underRepair: ' + car.underRepair);
         done();

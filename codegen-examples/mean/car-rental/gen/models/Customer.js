@@ -2,11 +2,17 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+var Make = require('./Make.js');
+var Model = require('./Model.js');
+var Car = require('./Car.js');
+var Rental = require('./Rental.js');
+
 // declare schema
 var customerSchema = new Schema({
     name : {
         type : String,
-        required : true
+        required : true,
+        default : null
     },
     rentals : [{
         type : Schema.Types.ObjectId,
@@ -17,7 +23,19 @@ var customerSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 customerSchema.methods.rent = function (car) {
-    var rental = new require('./Rental.js') ();
+    var precondition = function() {
+        return car.available;
+    };
+    if (!precondition.call(this)) {
+        throw "Precondition on rent was violated"
+    }
+    var precondition = function() {
+        return this.getCurrentRental() == null;
+    };
+    if (!precondition.call(this)) {
+        throw "Precondition on rent was violated"
+    }
+    var rental = new Rental();
     // link customer and rentals
     rental.customer = this;
     this.rentals.push(rental);
@@ -25,11 +43,19 @@ customerSchema.methods.rent = function (car) {
     rental.car = car;
     car.rentals.push(rental);
     /*car.carRented()*/;
+    return this.save();
 };
 
 customerSchema.methods.finishRental = function () {
+    var precondition = function() {
+        return this.hasCurrentRental;
+    };
+    if (!precondition.call(this)) {
+        throw "Precondition on finishRental was violated"
+    }
     /*this.getCurrentRental().car.carReturned()*/;
     this.getCurrentRental().finish();
+    return this.save();
 };
 /*************************** DERIVED PROPERTIES ****************/
 
@@ -39,7 +65,7 @@ customerSchema.virtual('hasCurrentRental').get(function () {
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 customerSchema.methods.getCurrentRental = function () {
-    return require('./Rental.js').currentForCustomer(this);
+    return Rental.currentForCustomer(this);
 };
 
 // declare model on the schema

@@ -2,26 +2,35 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+var Shift = require('./Shift.js');
+var Taxi = require('./Taxi.js');
+var Driver = require('./Driver.js');
+
 /**
  *  Charges for renting taxis. 
  */
 // declare schema
 var chargeSchema = new Schema({
     date : {
-        type : Date
+        type : Date,
+        default : new Date()
     },
     receivedOn : {
-        type : Date
+        type : Date,
+        default : new Date()
     },
     description : {
-        type : String
+        type : String,
+        default : null
     },
     amount : {
-        type : Number
+        type : Number,
+        default : 0
     },
     status : {
         type : String,
-        enum : ["Pending", "Paid"]
+        enum : ["Pending", "Paid"],
+        default : "Pending"
     },
     driver : {
         type : Schema.Types.ObjectId,
@@ -44,7 +53,7 @@ chargeSchema.methods.cancelPayment = function () {
 };
 
 chargeSchema.statics.newCharge = function (taxi, payer, date) {
-    var charge = new require('./Charge.js') ();
+    var charge = new Charge();
     charge.description = taxi.name + " - " + taxi.shift.description;
     charge.amount = taxi.shift.price;
     charge.taxi = taxi;
@@ -69,7 +78,7 @@ chargeSchema.statics.paidCharges = function () {
 /*************************** DERIVED PROPERTIES ****************/
 
 chargeSchema.virtual('paid').get(function () {
-    return this.status == null;
+    return this.status == "Paid";
 });
 /*************************** STATE MACHINE ********************/
 chargeSchema.methods.handleEvent = function (event) {

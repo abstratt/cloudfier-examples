@@ -19,37 +19,47 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
     
     test('issueInvoice', function(done) {
         // a block
-        var client = require('./Examples.js').client();
+        var client = Examples.client();
         var work = client.newTask("Some task").addWork(1);
         var invoice = client.startInvoice();
         work.submit(invoice);
-        assert.equal(null, invoice.status), 'null == invoice.status' ;
+        assert.equal("Preparation", invoice.status, '"Preparation" == invoice.status');
         invoice.issue();
-        assert.equal(null, invoice.status), 'null == invoice.status' ;
+        assert.equal("Invoiced", invoice.status, '"Invoiced" == invoice.status');
         done();
     });
     test('invoicePaid', function(done) {
         // a block
-        var invoice = require('./Examples.js').client().startInvoice();
+        var invoice = Examples.client().startInvoice();
         invoice.client.newTask("Some task").addWork(1).submit(invoice);
         invoice.issue();
         /*invoice.invoicePaid()*/;
-        assert.equal(null, invoice.status), 'null == invoice.status' ;
+        assert.equal("Received", invoice.status, '"Received" == invoice.status');
         done();
     });
     test('cannotSubmitWorkIfInvoiceNotOpen', function(done) {
+        try {
         // a block
-        var task = require('./Examples.js').task();
+        var task = Examples.task();
         var invoice = task.client.startInvoice();
         task.addWork(1).submit(invoice);
         invoice.issue();
         task.addWork(2).submit(invoice);
-        done();
+        } catch (e) {
+            done();
+            return;
+        }
+        throw "Failure expected, but no failure occurred"
     });
     test('cannotIssueInvoiceWithoutAnyWork', function(done) {
+        try {
         // a block
-        require('./Examples.js').client().startInvoice().issue();
-        done();
+        Examples.client().startInvoice().issue();
+        } catch (e) {
+            done();
+            return;
+        }
+        throw "Failure expected, but no failure occurred"
     });
 });
 

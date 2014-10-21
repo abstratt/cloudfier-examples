@@ -2,11 +2,19 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+var Make = require('./Make.js');
+var Customer = require('./Customer.js');
+var Model = require('./Model.js');
+var AutoMechanic = require('./AutoMechanic.js');
+var Service = require('./Service.js');
+var Person = require('./Person.js');
+
 // declare schema
 var carSchema = new Schema({
     registrationNumber : {
         type : String,
-        required : true
+        required : true,
+        default : null
     },
     model : {
         type : Schema.Types.ObjectId,
@@ -21,18 +29,26 @@ var carSchema = new Schema({
     services : [{
         description : {
             type : String,
-            required : true
+            required : true,
+            default : null
         },
         bookedOn : {
-            type : Date
+            type : Date,
+            default : (function() {
+                return new Date();
+            })()
         },
         estimatedReady : {
             type : Date,
-            required : true
+            required : true,
+            default : (function() {
+                return new Date(new Date() + 1);
+            })()
         },
         status : {
             type : String,
-            enum : ["Booked", "InProgress", "Completed", "Cancelled"]
+            enum : ["Booked", "InProgress", "Completed", "Cancelled"],
+            default : "Booked"
         },
         technician : {
             type : Schema.Types.ObjectId,
@@ -51,12 +67,13 @@ carSchema.statics.findByRegistrationNumber = function (regNumber) {
  *  Book a service on this car. 
  */
 carSchema.methods.bookService = function (description, estimateInDays) {
-    require('./Service.js').newService(this, description, estimateInDays);
+    Service.newService(this, description, estimateInDays);
+    return this.save();
 };
 /*************************** QUERIES ***************************/
 
 carSchema.statics.findByOwner = function (owner) {
-    return owner.cars.exec();
+    return owner.cars;
 };
 /*************************** DERIVED PROPERTIES ****************/
 

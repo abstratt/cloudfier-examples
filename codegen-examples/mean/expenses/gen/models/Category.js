@@ -2,6 +2,9 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+var Employee = require('./Employee.js');
+var Expense = require('./Expense.js');
+
 /**
  *  The category for an expense. 
  */
@@ -9,21 +12,22 @@ var cls = require('continuation-local-storage');
 var categorySchema = new Schema({
     name : {
         type : String,
-        required : true
+        required : true,
+        default : null
     }
 });
 
 /*************************** ACTIONS ***************************/
 
 categorySchema.statics.newCategory = function (name) {
-    var newCategory = new require('./Category.js') ();
+    var newCategory = new Category();
     newCategory.name = name;
     return newCategory;
 };
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 categorySchema.methods.getExpensesInThisCategory = function () {
-    return require('./Expense.js').findExpensesByCategory(this);
+    return Expense.findExpensesByCategory(this);
 };
 
 // declare model on the schema

@@ -2,6 +2,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
+var Shift = require('./Shift.js');
+var Taxi = require('./Taxi.js');
+var Charge = require('./Charge.js');
+
 /**
  *  Drivers that can book taxis. 
  */
@@ -9,7 +13,8 @@ var cls = require('continuation-local-storage');
 var driverSchema = new Schema({
     name : {
         type : String,
-        required : true
+        required : true,
+        default : null
     },
     taxi : {
         type : Schema.Types.ObjectId,
@@ -27,17 +32,43 @@ var driverSchema = new Schema({
  *  Book a taxi that is currently available 
  */
 driverSchema.methods.book = function (toRent) {
+    var precondition = function() {
+        return <UNSUPPORTED: CallOperationAction> ;
+    };
+    if (!precondition.call(this)) {
+        throw "Precondition on book was violated"
+    }
+    var precondition = function() {
+        return !(toRent.full);
+    };
+    if (!precondition.call(this)) {
+        throw "Precondition on book was violated"
+    }
+    var precondition = function() {
+        return !(toRent == this.taxi);
+    };
+    if (!precondition.call(this)) {
+        throw "Precondition on book was violated"
+    }
     // link taxi and drivers
     this.taxi = toRent;
     toRent.drivers.push(this);
+    return this.save();
 };
 
 /**
  *  Release a taxi that is currently booked 
  */
 driverSchema.methods.release = function () {
+    var precondition = function() {
+        return this.hasBooking;
+    };
+    if (!precondition.call(this)) {
+        throw "Precondition on release was violated"
+    }
     this.taxi.drivers = null;
     this.taxi = null;
+    return this.save();
 };
 /*************************** DERIVED PROPERTIES ****************/
 

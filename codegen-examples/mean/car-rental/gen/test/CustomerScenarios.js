@@ -19,13 +19,13 @@ suite('Car rental functional tests - CustomerScenarios', function() {
     
     test('rentalHistory', function(done) {
         // a block
-        var car = require('./Examples.js').car();
-        var customer = require('./Examples.js').customer();
+        var car = Examples.car();
+        var customer = Examples.customer();
         customer.rent(car);
-        assert.equal(1, count), '1 == count' ;
+        assert.equal(1, count, '1 == count');
         customer.finishRental();
         customer.rent(car);
-        assert.equal(2, count), '2 == count' ;
+        assert.equal(2, count, '2 == count');
         done();
     });
 });
