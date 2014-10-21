@@ -5,8 +5,6 @@ var assert = require("assert");
 
 var Examples = require('./Examples.js');
 
-var WorkScenarios = {
-};
 
 suite('Time Tracker functional tests - WorkScenarios', function() {
     this.timeout(10000);

@@ -5,8 +5,6 @@ var assert = require("assert");
 
 var Examples = require('./Examples.js');
 
-var CustomerScenarios = {
-};
 
 suite('Car rental functional tests - CustomerScenarios', function() {
     this.timeout(10000);
