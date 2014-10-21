@@ -60,7 +60,7 @@ orderSchema.methods.complete = function () {
 
 orderSchema.methods.process = function () {
     var precondition = function() {
-        return !(isEmpty);
+        return !isEmpty;
     };
     if (!precondition.call(this)) {
         throw "Precondition on process was violated"

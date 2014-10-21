@@ -17,33 +17,33 @@ suite('Expenses Application functional tests - Tests', function() {
 
     test('declaredExpenseRemainsInDraft', function(done) {
         var expense = Tests.declare(10.0);
-        assert.equal("Draft", expense.status);
+        assert.equal("Draft", expense.status, '"Draft" == expense.status');
         done();
     });
     test('automaticApproval', function(done) {
-        assert.strictEqual(Tests.declare(49.9).automaticApproval, true);
-        assert.strictEqual(!Tests.declare(50.0).automaticApproval, true);
+        assert.strictEqual(Tests.declare(49.9).automaticApproval, true, 'Tests.declare(49.9).automaticApproval === true');
+        assert.strictEqual(!Tests.declare(50.0).automaticApproval, true, '!Tests.declare(50.0).automaticApproval === true');
         done();
     });
     test('submitExpenseUnder50IsAutomaticallyApproved', function(done) {
         var expense = Tests.declare(10.0);
-        assert.strictEqual(expense.automaticApproval, true);
+        assert.strictEqual(expense.automaticApproval, true, 'expense.automaticApproval === true');
         expense.submit();
-        assert.equal("Approved", expense.status);
+        assert.equal("Approved", expense.status, '"Approved" == expense.status');
         done();
     });
     test('submitExpense50AndOverNeedsApproval', function(done) {
         var expense = Tests.declare(100.0);
-        assert.strictEqual(!expense.automaticApproval, true);
+        assert.strictEqual(!expense.automaticApproval, true, '!expense.automaticApproval === true');
         expense.submit();
-        assert.equal("Submitted", expense.status);
+        assert.equal("Submitted", expense.status, '"Submitted" == expense.status');
         done();
     });
     test('rejectedExpense', function(done) {
         var expense = Tests.declare(100.0);
         expense.submit();
         expense.reject("Non-reimbursable");
-        assert.equal("Rejected", expense.status);
+        assert.equal("Rejected", expense.status, '"Rejected" == expense.status');
         done();
     });
 });

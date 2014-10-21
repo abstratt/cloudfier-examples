@@ -33,7 +33,7 @@ var invoiceSchema = new Schema({
 
 invoiceSchema.methods.issue = function () {
     var precondition = function() {
-        return !(isEmpty);
+        return !isEmpty;
     };
     if (!precondition.call(this)) {
         throw "Precondition on issue was violated"

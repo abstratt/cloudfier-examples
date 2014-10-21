@@ -221,19 +221,19 @@ issueSchema.methods.addWatcher = function (userToAdd) {
 
 issueSchema.methods.vote = function () {
     var precondition = function() {
-        return !(User.current == null);
+        return !User.current == null;
     };
     if (!precondition.call(this)) {
         throw "Precondition on vote was violated"
     }
     var precondition = function() {
-        return !(this.mine);
+        return !this.mine;
     };
     if (!precondition.call(this)) {
         throw "Precondition on vote was violated"
     }
     var precondition = function() {
-        return !(includes);
+        return !includes;
     };
     if (!precondition.call(this)) {
         throw "Precondition on vote was violated"
@@ -247,7 +247,7 @@ issueSchema.methods.vote = function () {
 
 issueSchema.methods.withdrawVote = function () {
     var precondition = function() {
-        return !(User.current == null);
+        return !User.current == null;
     };
     if (!precondition.call(this)) {
         throw "Precondition on withdrawVote was violated"
@@ -275,7 +275,7 @@ issueSchema.methods.assignToMe = function () {
         throw "Precondition on assignToMe was violated"
     }
     var precondition = function() {
-        return !(this.mine);
+        return !this.mine;
     };
     if (!precondition.call(this)) {
         throw "Precondition on assignToMe was violated"
@@ -296,7 +296,7 @@ issueSchema.methods.steal = function () {
         throw "Precondition on steal was violated"
     }
     var precondition = function() {
-        return !(this.mine);
+        return !this.mine;
     };
     if (!precondition.call(this)) {
         throw "Precondition on steal was violated"

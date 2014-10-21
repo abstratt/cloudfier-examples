@@ -39,13 +39,13 @@ driverSchema.methods.book = function (toRent) {
         throw "Precondition on book was violated"
     }
     var precondition = function() {
-        return !(toRent.full);
+        return !toRent.full;
     };
     if (!precondition.call(this)) {
         throw "Precondition on book was violated"
     }
     var precondition = function() {
-        return !(toRent == this.taxi);
+        return !toRent == this.taxi;
     };
     if (!precondition.call(this)) {
         throw "Precondition on book was violated"
@@ -73,11 +73,11 @@ driverSchema.methods.release = function () {
 /*************************** DERIVED PROPERTIES ****************/
 
 driverSchema.virtual('hasBooking').get(function () {
-    return !(this.taxi == null);
+    return !this.taxi == null;
 });
 
 driverSchema.virtual('paymentDue').get(function () {
-    return !(isEmpty);
+    return !isEmpty;
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 

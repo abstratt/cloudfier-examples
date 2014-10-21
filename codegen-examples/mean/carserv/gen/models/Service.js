@@ -104,7 +104,7 @@ serviceSchema.methods.assignTo = function (technician) {
         throw "Precondition on assignTo was violated"
     }
     var precondition = function() {
-        return !(this.assigned);
+        return !this.assigned;
     };
     if (!precondition.call(this)) {
         throw "Precondition on assignTo was violated"
@@ -137,7 +137,7 @@ serviceSchema.methods.transfer = function (mechanic) {
         throw "Precondition on transfer was violated"
     }
     var precondition = function() {
-        return !(this.technician == mechanic);
+        return !this.technician == mechanic;
     };
     if (!precondition.call(this)) {
         throw "Precondition on transfer was violated"
@@ -168,7 +168,7 @@ serviceSchema.virtual('estimatedDays').get(function () {
 });
 
 serviceSchema.virtual('assigned').get(function () {
-    return !(this.technician == null);
+    return !this.technician == null;
 });
 /*************************** STATE MACHINE ********************/
 serviceSchema.methods.handleEvent = function (event) {

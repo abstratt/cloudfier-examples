@@ -41,7 +41,7 @@ var customerSchema = new Schema({
 
 customerSchema.statics.findByName = function (firstName, lastName) {
     var precondition = function() {
-        return !(firstName == null && lastName == null);
+        return !firstName == null && lastName == null;
     };
     if (!precondition.call(this)) {
         throw "Precondition on findByName was violated"

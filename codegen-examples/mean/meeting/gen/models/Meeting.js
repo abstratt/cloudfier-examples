@@ -55,7 +55,7 @@ meetingSchema.methods.leave = function () {
  */
 meetingSchema.methods.join = function () {
     var precondition = function() {
-        return !(this.isParticipating(User.current));
+        return !this.isParticipating(User.current);
     };
     if (!precondition.call(this)) {
         throw "Precondition on join was violated"
@@ -81,7 +81,7 @@ meetingSchema.methods.addParticipant = function (newParticipant) {
  */
 meetingSchema.statics.startMeeting = function (title, description, date) {
     var precondition = function() {
-        return !(User.current == null);
+        return !User.current == null;
     };
     if (!precondition.call(this)) {
         throw "Precondition on startMeeting was violated"

@@ -58,7 +58,7 @@ autoMechanicSchema.methods.unassign = function () {
  */
 autoMechanicSchema.methods.beginVacation = function () {
     var precondition = function() {
-        return !(this.workInProgress);
+        return !this.workInProgress;
     };
     if (!precondition.call(this)) {
         throw "Precondition on beginVacation was violated"
@@ -76,7 +76,7 @@ autoMechanicSchema.methods.endVacation = function () {
 
 autoMechanicSchema.methods.retire = function () {
     var precondition = function() {
-        return !(this.workInProgress);
+        return !this.workInProgress;
     };
     if (!precondition.call(this)) {
         throw "Precondition on retire was violated"
@@ -95,11 +95,11 @@ autoMechanicSchema.virtual('working').get(function () {
 });
 
 autoMechanicSchema.virtual('workInProgress').get(function () {
-    return !(isEmpty);
+    return !isEmpty;
 });
 
 autoMechanicSchema.virtual('workScheduled').get(function () {
-    return !(isEmpty);
+    return !isEmpty;
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 

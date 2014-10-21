@@ -60,7 +60,7 @@ customerSchema.methods.finishRental = function () {
 /*************************** DERIVED PROPERTIES ****************/
 
 customerSchema.virtual('hasCurrentRental').get(function () {
-    return !(this.getCurrentRental() == null);
+    return !this.getCurrentRental() == null;
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
