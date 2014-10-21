@@ -29,11 +29,11 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
     });
     test('cannotSubmitWorkIfInvoiceNotOpen', function(done) {
         try {
-        var task = Examples.task();
-        var invoice = task.client.startInvoice();
-        task.addWork(1).submit(invoice);
-        invoice.issue();
-        task.addWork(2).submit(invoice);
+            var task = Examples.task();
+            var invoice = task.client.startInvoice();
+            task.addWork(1).submit(invoice);
+            invoice.issue();
+            task.addWork(2).submit(invoice);
         } catch (e) {
             done();
             return;
@@ -42,7 +42,7 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
     });
     test('cannotIssueInvoiceWithoutAnyWork', function(done) {
         try {
-        Examples.client().startInvoice().issue();
+            Examples.client().startInvoice().issue();
         } catch (e) {
             done();
             return;

@@ -30,11 +30,11 @@ suite('Car rental functional tests - RentalScenarios', function() {
     });
     test('oneCarPerCustomer', function(done) {
         try {
-        var car1 = Examples.car();
-        var customer = Examples.customer();
-        customer.rent(car1);
-        var car2 = Examples.car();
-        customer.rent(car2);
+            var car1 = Examples.car();
+            var customer = Examples.customer();
+            customer.rent(car1);
+            var car2 = Examples.car();
+            customer.rent(car2);
         } catch (e) {
             done();
             return;
@@ -43,12 +43,12 @@ suite('Car rental functional tests - RentalScenarios', function() {
     });
     test('carUnavailable', function(done) {
         try {
-        var car = Examples.car();
-        var customer1 = Examples.customer();
-        customer1.rent(car);
-        assert.strictEqual(car.rented, true, 'car.rented === true');
-        var customer2 = Examples.customer();
-        customer2.rent(car);
+            var car = Examples.car();
+            var customer1 = Examples.customer();
+            customer1.rent(car);
+            assert.strictEqual(car.rented, true, 'car.rented === true');
+            var customer2 = Examples.customer();
+            customer2.rent(car);
         } catch (e) {
             done();
             return;

@@ -16,10 +16,10 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
     });
     test('cannotAssignWorkToInvoiceFromAnotherClient', function(done) {
         try {
-        var client1 = Examples.client();
-        var client2 = Examples.client();
-        var work = client1.newTask("Some task").addWork(1);
-        work.submit(client2.startInvoice());
+            var client1 = Examples.client();
+            var client2 = Examples.client();
+            var work = client1.newTask("Some task").addWork(1);
+            work.submit(client2.startInvoice());
         } catch (e) {
             done();
             return;
@@ -28,10 +28,10 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
     });
     test('cannotSubmitWorkToInvoiceAlreadyInvoiced', function(done) {
         try {
-        var work = Examples.client().newTask("Some task").addWork(1);
-        var invoice = work.getClient().startInvoice();
-        work.submit(invoice);
-        work.submit(invoice);
+            var work = Examples.client().newTask("Some task").addWork(1);
+            var invoice = work.getClient().startInvoice();
+            work.submit(invoice);
+            work.submit(invoice);
         } catch (e) {
             done();
             return;
@@ -40,7 +40,7 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
     });
     test('unitsWorkedMustBePositive', function(done) {
         try {
-        Examples.task().addWork(-1);
+            Examples.task().addWork(-1);
         } catch (e) {
             done();
             return;
@@ -49,7 +49,7 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
     });
     test('unitsWorkedMayNotBeZero', function(done) {
         try {
-        Examples.task().addWork(0);
+            Examples.task().addWork(0);
         } catch (e) {
             done();
             return;

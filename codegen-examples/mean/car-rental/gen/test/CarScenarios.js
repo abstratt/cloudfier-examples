@@ -20,8 +20,8 @@ suite('Car rental functional tests - CarScenarios', function() {
     });
     test('tooOld', function(done) {
         try {
-        var car = Examples.car();
-        car.year = 1900;
+            var car = Examples.car();
+            car.year = 1900;
         } catch (e) {
             done();
             return;
@@ -30,8 +30,8 @@ suite('Car rental functional tests - CarScenarios', function() {
     });
     test('tooNew', function(done) {
         try {
-        var car = Examples.car();
-        car.year = 2500;
+            var car = Examples.car();
+            car.year = 2500;
         } catch (e) {
             done();
             return;
@@ -40,8 +40,8 @@ suite('Car rental functional tests - CarScenarios', function() {
     });
     test('priceIsTooLow', function(done) {
         try {
-        var car = Examples.car();
-        car.price = 49;
+            var car = Examples.car();
+            car.price = 49;
         } catch (e) {
             done();
             return;
@@ -50,8 +50,8 @@ suite('Car rental functional tests - CarScenarios', function() {
     });
     test('priceIsTooHigh', function(done) {
         try {
-        var car = Examples.car();
-        car.price = 2000;
+            var car = Examples.car();
+            car.price = 2000;
         } catch (e) {
             done();
             return;
