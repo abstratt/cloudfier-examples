@@ -46,7 +46,7 @@ shiftSchema.path('shiftsPerDay').validate(
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 shiftSchema.methods.getTaxis = function () {
-    return getEntity('Taxi').find().where('shift').eq(this);
+    return Taxi.find().where('shift').eq(this);
 };
 
 // declare model on the schema

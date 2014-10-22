@@ -32,11 +32,11 @@ var rentalSchema = new Schema({
 /*************************** QUERIES ***************************/
 
 rentalSchema.statics.currentForCar = function (c) {
-    return exists.exec();
+    return Rental.find().where('car').eq(c).and(.where('inProgress')).findOne().exec();
 };
 
 rentalSchema.statics.currentForCustomer = function (c) {
-    return exists.exec();
+    return Rental.find().where('customer').eq(c).and(.where('inProgress')).findOne().exec();
 };
 /*************************** DERIVED PROPERTIES ****************/
 

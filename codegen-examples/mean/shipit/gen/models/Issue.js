@@ -108,7 +108,8 @@ issueSchema.statics.reportIssue = function (project, summary, description, sever
     if (!precondition.call(this)) {
         throw "Precondition on reportIssue was violated"
     }
-    var newIssue = new Issue();
+    var newIssue;
+    newIssue = new Issue();
     newIssue.summary = summary;
     newIssue.description = description;
     newIssue.severity = severity;
@@ -316,11 +317,11 @@ issueSchema.methods.verify = function () {
 /*************************** QUERIES ***************************/
 
 issueSchema.statics.bySeverity = function (toMatch) {
-    return getEntity('Issue').find().where('severity').eq(toMatch).exec();
+    return Issue.find().where('severity').eq(toMatch).exec();
 };
 
 issueSchema.statics.byStatus = function (toMatch) {
-    return Issue.filterByStatus(getEntity('Issue').find(), toMatch).exec();
+    return Issue.filterByStatus(Issue.find(), toMatch).exec();
 };
 /*************************** DERIVED PROPERTIES ****************/
 
@@ -363,7 +364,8 @@ issueSchema.statics.filterByStatus = function (issues, toMatch) {
 };
 
 issueSchema.methods.addComment = function (text, inReplyTo) {
-    var comment = new Comment();
+    var comment;
+    comment = new Comment();
     comment.user = User.current;
     comment.commentedOn = new Date();
     comment.text = text;

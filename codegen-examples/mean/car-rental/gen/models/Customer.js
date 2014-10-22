@@ -35,7 +35,8 @@ customerSchema.methods.rent = function (car) {
     if (!precondition.call(this)) {
         throw "Precondition on rent was violated"
     }
-    var rental = new Rental();
+    var rental;
+    rental = new Rental();
     // link customer and rentals
     rental.customer = this;
     this.rentals.push(rental);

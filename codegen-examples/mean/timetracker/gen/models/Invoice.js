@@ -54,7 +54,7 @@ invoiceSchema.virtual('open').get(function () {
 });
 
 invoiceSchema.virtual('totalUnits').get(function () {
-    return getEntity('Work').aggregate()
+    return Work.aggregate()
                   .group({ _id: null, result: { $sum: '$units' } })
                   .select('-id result');
 });

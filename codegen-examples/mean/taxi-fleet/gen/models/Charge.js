@@ -53,7 +53,8 @@ chargeSchema.methods.cancelPayment = function () {
 };
 
 chargeSchema.statics.newCharge = function (taxi, payer, date) {
-    var charge = new Charge();
+    var charge;
+    charge = new Charge();
     charge.description = taxi.name + " - " + taxi.shift.description;
     charge.amount = taxi.shift.price;
     charge.taxi = taxi;
@@ -65,15 +66,15 @@ chargeSchema.statics.newCharge = function (taxi, payer, date) {
 /*************************** QUERIES ***************************/
 
 chargeSchema.statics.pendingCharges = function () {
-    return getEntity('Charge').find().where('paid').ne(true).exec();
+    return Charge.find().where('paid').ne(true).exec();
 };
 
 chargeSchema.statics.byTaxi = function (taxi) {
-    return getEntity('Charge').find().where('taxi').eq(taxi).exec();
+    return Charge.find().where('taxi').eq(taxi).exec();
 };
 
 chargeSchema.statics.paidCharges = function () {
-    return getEntity('Charge').find().where('paid').exec();
+    return Charge.find().where('paid').exec();
 };
 /*************************** DERIVED PROPERTIES ****************/
 

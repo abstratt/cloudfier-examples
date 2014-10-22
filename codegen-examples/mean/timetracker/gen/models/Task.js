@@ -43,7 +43,8 @@ var taskSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 taskSchema.methods.addWork = function (units) {
-    var newWork = new Work();
+    var newWork;
+    newWork = new Work();
     newWork.units = units;
     // link reported and task
     this.reported.push(newWork);
@@ -68,7 +69,7 @@ taskSchema.methods.getToInvoice = function () {
 /*************************** PRIVATE OPS ***********************/
 
 taskSchema.methods.countUnits = function (work) {
-    return getEntity('Work').aggregate()
+    return Work.aggregate()
                   .group({ _id: null, result: { $sum: '$units' } })
                   .select('-id result').exec();
 };

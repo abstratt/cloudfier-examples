@@ -57,7 +57,8 @@ serviceSchema.statics.newService = function (carToService, description, estimate
     if (!precondition.call(this)) {
         throw "Precondition on newService was violated"
     }
-    var s = new Service();
+    var s;
+    s = new Service();
     s.estimatedReady = new Date(s.bookedOn + estimate);
     s.description = description;
     s.car = carToService;

@@ -25,7 +25,8 @@ var clientSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 clientSchema.methods.newTask = function (description) {
-    var newTask = new Task();
+    var newTask;
+    newTask = new Task();
     newTask.description = description;
     // link client and tasks
     newTask.client = this;
@@ -35,7 +36,8 @@ clientSchema.methods.newTask = function (description) {
 };
 
 clientSchema.methods.startInvoice = function () {
-    var newInvoice = new Invoice();
+    var newInvoice;
+    newInvoice = new Invoice();
     // link client and invoices
     newInvoice.client = this;
     this.invoices.push(newInvoice);

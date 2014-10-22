@@ -46,7 +46,8 @@ orderSchema.methods.addItem = function (product, quantity) {
     if (!precondition.call(this)) {
         throw "Precondition on addItem was violated"
     }
-    var i = new OrderDetail();
+    var i;
+    i = new OrderDetail();
     i.product = product;
     i.quantity = quantity;
     i.order = this;

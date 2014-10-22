@@ -60,7 +60,7 @@ var carSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 carSchema.statics.findByRegistrationNumber = function (regNumber) {
-    return exists;
+    return Car.find()regNumber.equals(.where('registrationNumber')).findOne();
 };
 
 /**

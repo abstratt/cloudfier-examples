@@ -28,7 +28,8 @@ var userSchema = new Schema({
  *  Creates a meeting organized by this participant. 
  */
 userSchema.methods.startMeetingOnBehalf = function (title, description, date) {
-    var newMeeting = new Meeting();
+    var newMeeting;
+    newMeeting = new Meeting();
     newMeeting.date = date;
     newMeeting.title = title;
     newMeeting.description = description;

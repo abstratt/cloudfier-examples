@@ -46,11 +46,11 @@ customerSchema.statics.findByName = function (firstName, lastName) {
     if (!precondition.call(this)) {
         throw "Precondition on findByName was violated"
     }
-    return getEntity('Customer').find().where('firstName').equals(firstName).or(.where('lastName').equals(lastName));
+    return Customer.find().where('firstName').equals(firstName).or(.where('lastName').equals(lastName));
 };
 
 customerSchema.statics.vipCustomers = function () {
-    return getEntity('Customer').find().where('vip');
+    return Customer.find().where('vip');
 };
 /*************************** DERIVED PROPERTIES ****************/
 

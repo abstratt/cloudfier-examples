@@ -20,7 +20,8 @@ var categorySchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 categorySchema.statics.newCategory = function (name) {
-    var newCategory = new Category();
+    var newCategory;
+    newCategory = new Category();
     newCategory.name = name;
     return newCategory;
 };

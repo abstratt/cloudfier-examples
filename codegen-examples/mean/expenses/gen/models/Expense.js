@@ -54,7 +54,8 @@ var expenseSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 expenseSchema.statics.newExpense = function (description, amount, date, category, employee) {
-    var newExpense = new Expense();
+    var newExpense;
+    newExpense = new Expense();
     newExpense.description = description;
     newExpense.amount = amount;
     newExpense.date = date;
@@ -120,15 +121,15 @@ expenseSchema.methods.submit = function () {
 /*************************** QUERIES ***************************/
 
 expenseSchema.statics.findExpensesByCategory = function (category) {
-    return getEntity('Expense').find().where('category').eq(category).exec();
+    return Expense.find().where('category').eq(category).exec();
 };
 
 expenseSchema.statics.findExpensesInPeriod = function (start, end_) {
-    return getEntity('Expense').find()start.eq(null).or(.where('date').gte(start)).and(end_.eq(null).or(.where('date').lte(end_))).exec();
+    return Expense.find()start.eq(null).or(.where('date').gte(start)).and(end_.eq(null).or(.where('date').lte(end_))).exec();
 };
 
 expenseSchema.statics.findByStatus = function (status) {
-    return getEntity('Expense').find().where('status').eq(status).exec();
+    return Expense.find().where('status').eq(status).exec();
 };
 /*************************** DERIVED PROPERTIES ****************/
 

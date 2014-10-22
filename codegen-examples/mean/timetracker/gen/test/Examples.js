@@ -1,11 +1,12 @@
 var mongoose = require('mongoose');
+var q = require("q");
 var Client = require('../models/Client.js');
 var Task = require('../models/Task.js');
 var Invoice = require('../models/Invoice.js');
 
 var Examples = {
     clientWithName : function(name) {
-        var client = new Client();
+        client = new Client();
         client.name = name;
         return client;
     },
@@ -13,7 +14,7 @@ var Examples = {
         return Examples.clientWithName("New Client");
     },
     taskWithName : function(description, client) {
-        var task = new Task();
+        task = new Task();
         task.description = description;
         task.client = client;
         return task;

@@ -33,7 +33,7 @@ var driverSchema = new Schema({
  */
 driverSchema.methods.book = function (toRent) {
     var precondition = function() {
-        return <UNSUPPORTED: CallOperationAction> ;
+        return <UNSUPPORTED: CallOperationAction> (exists);
     };
     if (!precondition.call(this)) {
         throw "Precondition on book was violated"
