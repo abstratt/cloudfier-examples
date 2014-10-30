@@ -46,8 +46,13 @@ var todoSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 todoSchema.methods.complete = function () {
+    // isAsynchronous: true        
+    console.log("this.status = 'Done'");
     this.status = "Done";
-    return this.save();
+    console.log('Saving...');
+    var _savePromise = new Promise;
+    this.save(_savePromise.reject, _savePromise.fulfill); 
+    return _savePromise;
 };
 
 // declare model on the schema

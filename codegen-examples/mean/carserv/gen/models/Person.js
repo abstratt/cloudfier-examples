@@ -30,6 +30,8 @@ var personSchema = new Schema({
 /*************************** DERIVED PROPERTIES ****************/
 
 personSchema.virtual('fullName').get(function () {
+    // isAsynchronous: false        
+    console.log("return this.firstName + ' ' + this.lastName");
     return this.firstName + " " + this.lastName;
 });
 

@@ -20,14 +20,22 @@ var categorySchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 categorySchema.statics.newCategory = function (name) {
+    // isAsynchronous: true        
     var newCategory;
+    console.log("newCategory = new Category()");
     newCategory = new Category();
+    
+    console.log("newCategory.name = name");
     newCategory.name = name;
+    
+    console.log("return newCategory");
     return newCategory;
 };
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 categorySchema.methods.getExpensesInThisCategory = function () {
+    // isAsynchronous: true        
+    console.log("return Expense.findExpensesByCategory(this)");
     return Expense.findExpensesByCategory(this);
 };
 

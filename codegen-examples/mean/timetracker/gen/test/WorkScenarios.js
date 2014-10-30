@@ -14,16 +14,16 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
 
     test('workDateDefaultsToToday', function(done) {
         var work;
-        q().then(function () {
+        return q().then(function () {
             work = Examples.task().addWork(1)
         }).then(function () {
             assert.equal(new Date(), work.date, 'new Date() == work.date')
-        }).then(done, done);
+        });
     });
     test('cannotAssignWorkToInvoiceFromAnotherClient', function(done) {
         try {
             var client1, client2, work;
-            q().then(function () {
+            return q().then(function () {
                 client1 = Examples.client()
             }).then(function () {
                 client2 = Examples.client()
@@ -31,7 +31,7 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
                 work = client1.newTask("Some task").addWork(1)
             }).then(function () {
                 work.submit(client2.startInvoice())
-            }).then(done, done);
+            });
         } catch (e) {
             return;
         }
@@ -40,7 +40,7 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
     test('cannotSubmitWorkToInvoiceAlreadyInvoiced', function(done) {
         try {
             var invoice, work;
-            q().then(function () {
+            return q().then(function () {
                 work = Examples.client().newTask("Some task").addWork(1)
             }).then(function () {
                 invoice = work.getClient().startInvoice()
@@ -48,7 +48,7 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
                 work.submit(invoice)
             }).then(function () {
                 work.submit(invoice)
-            }).then(done, done);
+            });
         } catch (e) {
             return;
         }
@@ -56,9 +56,9 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
     });
     test('unitsWorkedMustBePositive', function(done) {
         try {
-            q().then(function () {
+            return q().then(function () {
                 Examples.task().addWork(-1)
-            }).then(done, done);
+            });
         } catch (e) {
             return;
         }
@@ -66,9 +66,9 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
     });
     test('unitsWorkedMayNotBeZero', function(done) {
         try {
-            q().then(function () {
+            return q().then(function () {
                 Examples.task().addWork(0)
-            }).then(done, done);
+            });
         } catch (e) {
             return;
         }

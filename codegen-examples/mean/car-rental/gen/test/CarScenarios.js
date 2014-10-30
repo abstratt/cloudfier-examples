@@ -16,26 +16,26 @@ suite('Car rental functional tests - CarScenarios', function() {
 
     test('startsAsValid', function(done) {
         var car;
-        q().then(function () {
+        return q().then(function () {
             car = Examples.car()
-        }).then(done, done);
+        });
     });
     test('startsAsAvailable', function(done) {
         var car;
-        q().then(function () {
+        return q().then(function () {
             car = Examples.car()
         }).then(function () {
             assert.strictEqual(car.available, true, 'car.available === true')
-        }).then(done, done);
+        });
     });
     test('tooOld', function(done) {
         try {
             var car;
-            q().then(function () {
+            return q().then(function () {
                 car = Examples.car()
             }).then(function () {
                 car.year = 1900
-            }).then(done, done);
+            });
         } catch (e) {
             return;
         }
@@ -44,11 +44,11 @@ suite('Car rental functional tests - CarScenarios', function() {
     test('tooNew', function(done) {
         try {
             var car;
-            q().then(function () {
+            return q().then(function () {
                 car = Examples.car()
             }).then(function () {
                 car.year = 2500
-            }).then(done, done);
+            });
         } catch (e) {
             return;
         }
@@ -57,11 +57,11 @@ suite('Car rental functional tests - CarScenarios', function() {
     test('priceIsTooLow', function(done) {
         try {
             var car;
-            q().then(function () {
+            return q().then(function () {
                 car = Examples.car()
             }).then(function () {
                 car.price = 49
-            }).then(done, done);
+            });
         } catch (e) {
             return;
         }
@@ -70,11 +70,11 @@ suite('Car rental functional tests - CarScenarios', function() {
     test('priceIsTooHigh', function(done) {
         try {
             var car;
-            q().then(function () {
+            return q().then(function () {
                 car = Examples.car()
             }).then(function () {
                 car.price = 2000
-            }).then(done, done);
+            });
         } catch (e) {
             return;
         }
@@ -82,40 +82,66 @@ suite('Car rental functional tests - CarScenarios', function() {
     });
     test('unavailableWhenRented', function(done) {
         var car, customer;
-        q().then(function () {
+        return q().then(function () {
+            console.log("car = Examples.car()");
             car = Examples.car();
+            
+            console.log("customer = Examples.customer()");
             customer = Examples.customer();
+            
+            console.log("assert.strictEqual(car.available, true, 'car.available === true')");
             assert.strictEqual(car.available, true, 'car.available === true');
+            
+            console.log("customer.rent(car)");
             customer.rent(car);
         }).then(function () {
+            console.log("assert.strictEqual(!car.available, true, '!car.available === true')");
             assert.strictEqual(!car.available, true, '!car.available === true');
+            
+            console.log("customer.finishRental()");
             customer.finishRental();
-        }).then(done, done);
+        });
     });
     test('availableUponReturn', function(done) {
         var car, customer;
-        q().then(function () {
+        return q().then(function () {
+            console.log("car = Examples.car()");
             car = Examples.car();
+            
+            console.log("customer = Examples.customer()");
             customer = Examples.customer();
         }).then(function () {
+            console.log("assert.strictEqual(car.available, true, 'car.available === true')");
             assert.strictEqual(car.available, true, 'car.available === true');
+            
+            console.log("customer.rent(car)");
             customer.rent(car);
         }).then(function () {
+            console.log("assert.strictEqual(!car.available, true, '!car.available === true')");
             assert.strictEqual(!car.available, true, '!car.available === true');
+            
+            console.log("customer.finishRental()");
             customer.finishRental();
         }).then(function () {
+            console.log("assert.strictEqual(car.available, true, 'car.available === true')");
             assert.strictEqual(car.available, true, 'car.available === true');
-        }).then(done, done);
+        });
     });
     test('unavailableWhenUnderRepair', function(done) {
         var car;
-        q().then(function () {
+        return q().then(function () {
+            console.log("car = Examples.car()");
             car = Examples.car();
+            
+            console.log("assert.strictEqual(!car.underRepair, true, '!car.underRepair === true')");
             assert.strictEqual(!car.underRepair, true, '!car.underRepair === true');
+            
+            console.log("car.startRepair()");
             car.startRepair();
         }).then(function () {
+            console.log("assert.strictEqual(car.underRepair, true, 'car.underRepair === true')");
             assert.strictEqual(car.underRepair, true, 'car.underRepair === true');
-        }).then(done, done);
+        });
     });
 });
 

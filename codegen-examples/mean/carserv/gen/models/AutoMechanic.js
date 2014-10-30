@@ -42,29 +42,44 @@ var autoMechanicSchema = new Schema({
  *  Unassigns any work scheduled. Does not affect work in progress. 
  */
 autoMechanicSchema.methods.unassign = function () {
+    // isAsynchronous: false        
     var precondition = function() {
+        // isAsynchronous: false        
+        console.log("return this.workScheduled");
         return this.workScheduled;
     };
     if (!precondition.call(this)) {
+        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return this.workScheduled');\n    return this.workScheduled;\n}");
         throw "Precondition on unassign was violated"
     }
+    console.log("this.doUnassign()");
     this.doUnassign();
     this.handleEvent('unassign');
-    return this.save();
+    console.log('Saving...');
+    var _savePromise = new Promise;
+    this.save(_savePromise.reject, _savePromise.fulfill); 
+    return _savePromise;
 };
 
 /**
  *  Puts employee into vacation. Unassigns any work scheduled. 
  */
 autoMechanicSchema.methods.beginVacation = function () {
+    // isAsynchronous: false        
     var precondition = function() {
+        // isAsynchronous: false        
+        console.log("return !this.workInProgress");
         return !this.workInProgress;
     };
     if (!precondition.call(this)) {
+        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return !this.workInProgress');\n    return !this.workInProgress;\n}");
         throw "Precondition on beginVacation was violated"
     }
     this.handleEvent('beginVacation');
-    return this.save();
+    console.log('Saving...');
+    var _savePromise = new Promise;
+    this.save(_savePromise.reject, _savePromise.fulfill); 
+    return _savePromise;
 };
 
 /**
@@ -75,30 +90,45 @@ autoMechanicSchema.methods.endVacation = function () {
 };
 
 autoMechanicSchema.methods.retire = function () {
+    // isAsynchronous: false        
     var precondition = function() {
+        // isAsynchronous: false        
+        console.log("return !this.workInProgress");
         return !this.workInProgress;
     };
     if (!precondition.call(this)) {
+        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return !this.workInProgress');\n    return !this.workInProgress;\n}");
         throw "Precondition on retire was violated"
     }
     this.handleEvent('retire');
-    return this.save();
+    console.log('Saving...');
+    var _savePromise = new Promise;
+    this.save(_savePromise.reject, _savePromise.fulfill); 
+    return _savePromise;
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 personSchema.virtual('fullName').get(function () {
+    // isAsynchronous: false        
+    console.log("return this.firstName + ' ' + this.lastName");
     return this.firstName + " " + this.lastName;
 });
 
 autoMechanicSchema.virtual('working').get(function () {
+    // isAsynchronous: false        
+    console.log("return this.status == 'Working'");
     return this.status == "Working";
 });
 
 autoMechanicSchema.virtual('workInProgress').get(function () {
+    // isAsynchronous: false        
+    console.log("return !isEmpty");
     return !isEmpty;
 });
 
 autoMechanicSchema.virtual('workScheduled').get(function () {
+    // isAsynchronous: false        
+    console.log("return !isEmpty");
     return !isEmpty;
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
@@ -107,6 +137,8 @@ autoMechanicSchema.virtual('workScheduled').get(function () {
  *  Services currently in progress by this worker. 
  */
 autoMechanicSchema.methods.getCurrentServices = function () {
+    // isAsynchronous: false        
+    console.log("return Service.byStatus(this.services, 'InProgress')");
     return Service.byStatus(this.services, "InProgress");
 };
 
@@ -114,11 +146,15 @@ autoMechanicSchema.methods.getCurrentServices = function () {
  *  Services assigned to this worker but not yet started. 
  */
 autoMechanicSchema.methods.getUpcomingServices = function () {
+    // isAsynchronous: false        
+    console.log("return Service.byStatus(this.services, 'Booked')");
     return Service.byStatus(this.services, "Booked");
 };
 /*************************** PRIVATE OPS ***********************/
 
 autoMechanicSchema.methods.doUnassign = function () {
+    // isAsynchronous: false        
+    console.log("forEach");
     forEach;
 };
 /*************************** STATE MACHINE ********************/

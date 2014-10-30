@@ -16,41 +16,70 @@ suite('Car rental functional tests - RentalScenarios', function() {
 
     test('startsAsInProgress', function(done) {
         var car, customer;
-        q().then(function () {
+        return q().then(function () {
+            console.log("car = Examples.car()");
             car = Examples.car();
+            
+            console.log("customer = Examples.customer()");
             customer = Examples.customer();
+            
+            console.log("assert.ok(customer.getCurrentRental() == null, 'customer.getCurrentRental() == null')");
             assert.ok(customer.getCurrentRental() == null, 'customer.getCurrentRental() == null');
+            
+            console.log("customer.rent(car)");
             customer.rent(car);
         }).then(function () {
+            console.log("assert.ok(customer.getCurrentRental() != null, 'customer.getCurrentRental() != null')");
             assert.ok(customer.getCurrentRental() != null, 'customer.getCurrentRental() != null');
+            
+            console.log("assert.strictEqual(customer.getCurrentRental().inProgress, true, 'customer.getCurrentRental().inProgress === true')");
             assert.strictEqual(customer.getCurrentRental().inProgress, true, 'customer.getCurrentRental().inProgress === true');
-        }).then(done, done);
+        });
     });
     test('finishedUponReturn', function(done) {
         var car, customer, rental;
-        q().then(function () {
+        return q().then(function () {
+            console.log("car = Examples.car()");
             car = Examples.car();
+            
+            console.log("customer = Examples.customer()");
             customer = Examples.customer();
+            
+            console.log("customer.rent(car)");
             customer.rent(car);
+            
+            console.log("rental = customer.getCurrentRental()");
             rental = customer.getCurrentRental();
         }).then(function () {
+            console.log("assert.strictEqual(rental.inProgress, true, 'rental.inProgress === true')");
             assert.strictEqual(rental.inProgress, true, 'rental.inProgress === true');
+            
+            console.log("customer.finishRental()");
             customer.finishRental();
         }).then(function () {
+            console.log("assert.strictEqual(!rental.inProgress, true, '!rental.inProgress === true')");
             assert.strictEqual(!rental.inProgress, true, '!rental.inProgress === true');
-        }).then(done, done);
+        });
     });
     test('oneCarPerCustomer', function(done) {
         try {
             var car1, car2, customer;
-            q().then(function () {
+            return q().then(function () {
+                console.log("car1 = Examples.car()");
                 car1 = Examples.car();
+                
+                console.log("customer = Examples.customer()");
                 customer = Examples.customer();
+                
+                console.log("customer.rent(car1)");
                 customer.rent(car1);
             }).then(function () {
+                console.log("car2 = Examples.car()");
                 car2 = Examples.car();
+                
+                console.log("customer.rent(car2)");
                 customer.rent(car2);
-            }).then(done, done);
+            });
         } catch (e) {
             return;
         }
@@ -59,15 +88,25 @@ suite('Car rental functional tests - RentalScenarios', function() {
     test('carUnavailable', function(done) {
         try {
             var car, customer1, customer2;
-            q().then(function () {
+            return q().then(function () {
+                console.log("car = Examples.car()");
                 car = Examples.car();
+                
+                console.log("customer1 = Examples.customer()");
                 customer1 = Examples.customer();
+                
+                console.log("customer1.rent(car)");
                 customer1.rent(car);
             }).then(function () {
+                console.log("assert.strictEqual(car.rented, true, 'car.rented === true')");
                 assert.strictEqual(car.rented, true, 'car.rented === true');
+                
+                console.log("customer2 = Examples.customer()");
                 customer2 = Examples.customer();
+                
+                console.log("customer2.rent(car)");
                 customer2.rent(car);
-            }).then(done, done);
+            });
         } catch (e) {
             return;
         }

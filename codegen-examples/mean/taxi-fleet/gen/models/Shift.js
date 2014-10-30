@@ -31,6 +31,8 @@ var shiftSchema = new Schema({
 
 shiftSchema.path('shiftsPerDay').validate(
     function() {
+        // isAsynchronous: false        
+        console.log("return this.shiftsPerDay > 0");
         return this.shiftsPerDay > 0;
     },
     'validation of `{PATH}` failed with value `{VALUE}`'
@@ -38,6 +40,8 @@ shiftSchema.path('shiftsPerDay').validate(
 
 shiftSchema.path('shiftsPerDay').validate(
     function() {
+        // isAsynchronous: false        
+        console.log("return this.shiftsPerDay <= 3");
         return this.shiftsPerDay <= 3;
     },
     'validation of `{PATH}` failed with value `{VALUE}`'
@@ -46,7 +50,9 @@ shiftSchema.path('shiftsPerDay').validate(
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 shiftSchema.methods.getTaxis = function () {
-    return Taxi.find().where('shift').eq(this);
+    // isAsynchronous: true        
+    console.log("return this.model('Taxi').find().where({ shift : this })");
+    return this.model('Taxi').find().where({ shift : this });
 };
 
 // declare model on the schema

@@ -53,12 +53,24 @@ chargeSchema.methods.cancelPayment = function () {
 };
 
 chargeSchema.statics.newCharge = function (taxi, payer, date) {
+    // isAsynchronous: true        
     var charge;
+    console.log("charge = new Charge()");
     charge = new Charge();
+    
+    console.log("charge.description = taxi.name + ' - ' + taxi.shift.description");
     charge.description = taxi.name + " - " + taxi.shift.description;
+    
+    console.log("charge.amount = taxi.shift.price");
     charge.amount = taxi.shift.price;
+    
+    console.log("charge.taxi = taxi");
     charge.taxi = taxi;
+    
+    console.log("charge.date = date");
     charge.date = date;
+    
+    console.log("// link driver and chargesncharge.driver = payer;npayer.charges.push(charge)");
     // link driver and charges
     charge.driver = payer;
     payer.charges.push(charge);
@@ -66,19 +78,32 @@ chargeSchema.statics.newCharge = function (taxi, payer, date) {
 /*************************** QUERIES ***************************/
 
 chargeSchema.statics.pendingCharges = function () {
-    return Charge.find().where('paid').ne(true).exec();
+    // isAsynchronous: true        
+    console.log("return this.model('Charge').find().where({n    $ne : [ n        { 'paid' : true },n        truen    ]n}).exec()");
+    return this.model('Charge').find().where({
+        $ne : [ 
+            { 'paid' : true },
+            true
+        ]
+    }).exec();
 };
 
 chargeSchema.statics.byTaxi = function (taxi) {
-    return Charge.find().where('taxi').eq(taxi).exec();
+    // isAsynchronous: true        
+    console.log("return this.model('Charge').find().where({ taxi : taxi }).exec()");
+    return this.model('Charge').find().where({ taxi : taxi }).exec();
 };
 
 chargeSchema.statics.paidCharges = function () {
-    return Charge.find().where('paid').exec();
+    // isAsynchronous: true        
+    console.log("return this.model('Charge').find().where({ 'paid' : true }).exec()");
+    return this.model('Charge').find().where({ 'paid' : true }).exec();
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 chargeSchema.virtual('paid').get(function () {
+    // isAsynchronous: false        
+    console.log("return this.status == 'Paid'");
     return this.status == "Paid";
 });
 /*************************** STATE MACHINE ********************/
@@ -89,6 +114,8 @@ chargeSchema.methods.handleEvent = function (event) {
                 this.status = 'Paid';
                 // on entering Paid
                 (function() {
+                    // isAsynchronous: true        
+                    console.log("this.receivedOn = new Date()");
                     this.receivedOn = new Date();
                 })();
                 return;

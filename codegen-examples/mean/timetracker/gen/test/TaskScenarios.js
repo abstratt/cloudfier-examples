@@ -14,7 +14,7 @@ suite('Time Tracker functional tests - TaskScenarios', function() {
 
     test('timeReported', function(done) {
         var task;
-        q().then(function () {
+        return q().then(function () {
             task = Examples.task()
         }).then(function () {
             task.addWork(4)
@@ -24,11 +24,11 @@ suite('Time Tracker functional tests - TaskScenarios', function() {
             assert.equal(2, count, '2 == count')
         }).then(function () {
             assert.equal(7, task.unitsReported, '7 == task.unitsReported')
-        }).then(done, done);
+        });
     });
     test('timeToInvoice', function(done) {
         var task, invoice, work1, work2;
-        q().then(function () {
+        return q().then(function () {
             task = Examples.task()
         }).then(function () {
             work1 = task.addWork(4)
@@ -42,7 +42,7 @@ suite('Time Tracker functional tests - TaskScenarios', function() {
             assert.equal(1, count, '1 == count')
         }).then(function () {
             assert.equal(3, task.unitsToInvoice, '3 == task.unitsToInvoice')
-        }).then(done, done);
+        });
     });
 });
 

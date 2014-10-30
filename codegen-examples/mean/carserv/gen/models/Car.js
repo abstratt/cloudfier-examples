@@ -35,6 +35,8 @@ var carSchema = new Schema({
         bookedOn : {
             type : Date,
             default : (function() {
+                // isAsynchronous: false        
+                console.log("return new Date()");
                 return new Date();
             })()
         },
@@ -42,6 +44,8 @@ var carSchema = new Schema({
             type : Date,
             required : true,
             default : (function() {
+                // isAsynchronous: false        
+                console.log("return new Date(new Date() + 1)");
                 return new Date(new Date() + 1);
             })()
         },
@@ -60,38 +64,65 @@ var carSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 carSchema.statics.findByRegistrationNumber = function (regNumber) {
-    return Car.find()regNumber.equals(.where('registrationNumber')).findOne();
+    // isAsynchronous: true        
+    console.log("return this.model('Car').find().where({n    $eq : [ n        regNumber,n        registrationNumbern    ]n}).findOne()");
+    return this.model('Car').find().where({
+        $eq : [ 
+            regNumber,
+            registrationNumber
+        ]
+    }).findOne();
 };
 
 /**
  *  Book a service on this car. 
  */
 carSchema.methods.bookService = function (description, estimateInDays) {
+    // isAsynchronous: true        
+    console.log("Service.newService(this, description, estimateInDays)");
     Service.newService(this, description, estimateInDays);
-    return this.save();
+    console.log('Saving...');
+    var _savePromise = new Promise;
+    this.save(_savePromise.reject, _savePromise.fulfill); 
+    return _savePromise;
 };
 /*************************** QUERIES ***************************/
 
 carSchema.statics.findByOwner = function (owner) {
+    // isAsynchronous: false        
+    console.log("return owner.cars");
     return owner.cars;
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 carSchema.virtual('modelName').get(function () {
+    // isAsynchronous: false        
+    console.log("return this.model.makeAndModel()");
     return this.model.makeAndModel();
 });
 
 carSchema.virtual('pending').get(function () {
+    // isAsynchronous: false        
+    console.log("return count");
     return count;
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 carSchema.methods.getPendingServices = function () {
-    return this.services.where('pending');
+    // isAsynchronous: false        
+    console.log("return this.services.where({ 'pending' : true })");
+    return this.services.where({ 'pending' : true });
 };
 
 carSchema.methods.getCompletedServices = function () {
-    return this.services.where('pending').ne(true);
+    // isAsynchronous: false        
+    console.log("return this.services.where({n    $ne : [ n        { 'pending' : true },n        truen    ]n})");
+    return this.services.where({
+        $ne : [ 
+            { 'pending' : true },
+            true
+        ]
+    });
 };
 
 // declare model on the schema

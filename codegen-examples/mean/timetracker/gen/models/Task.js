@@ -26,6 +26,8 @@ var taskSchema = new Schema({
             type : Date,
             required : true,
             default : (function() {
+                // isAsynchronous: false        
+                console.log("return new Date()");
                 return new Date();
             })()
         },
@@ -43,32 +45,56 @@ var taskSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 taskSchema.methods.addWork = function (units) {
+    // isAsynchronous: true        
     var newWork;
+    console.log("newWork = new Work()");
     newWork = new Work();
+    
+    console.log("newWork.units = units");
     newWork.units = units;
+    
+    console.log("// link reported and tasknthis.reported.push(newWork);nnewWork.task = this");
     // link reported and task
     this.reported.push(newWork);
     newWork.task = this;
+    
+    console.log("return newWork");
     return newWork;
-    return this.save();
+    console.log('Saving...');
+    var _savePromise = new Promise;
+    this.save(_savePromise.reject, _savePromise.fulfill); 
+    return _savePromise;
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 taskSchema.virtual('unitsReported').get(function () {
+    // isAsynchronous: false        
+    console.log("return this.countUnits(this.reported)");
     return this.countUnits(this.reported);
 });
 
 taskSchema.virtual('unitsToInvoice').get(function () {
+    // isAsynchronous: false        
+    console.log("return this.countUnits(this.getToInvoice())");
     return this.countUnits(this.getToInvoice());
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 taskSchema.methods.getToInvoice = function () {
-    return this.reported.where('invoiced').ne(true);
+    // isAsynchronous: false        
+    console.log("return this.reported.where({n    $ne : [ n        { 'invoiced' : true },n        truen    ]n})");
+    return this.reported.where({
+        $ne : [ 
+            { 'invoiced' : true },
+            true
+        ]
+    });
 };
 /*************************** PRIVATE OPS ***********************/
 
 taskSchema.methods.countUnits = function (work) {
+    // isAsynchronous: false        
+    console.log("return Work.aggregate()n              .group({ _id: null, result: { $sum: '$units' } })n              .select('-id result').exec()");
     return Work.aggregate()
                   .group({ _id: null, result: { $sum: '$units' } })
                   .select('-id result').exec();

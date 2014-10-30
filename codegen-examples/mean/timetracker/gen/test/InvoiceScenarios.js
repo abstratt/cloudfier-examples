@@ -14,39 +14,67 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
 
     test('issueInvoice', function(done) {
         var invoice, work, client;
-        q().then(function () {
+        return q().then(function () {
+            console.log("client = Examples.client()");
             client = Examples.client();
+            
+            console.log("work = client.newTask('Some task').addWork(1)");
             work = client.newTask("Some task").addWork(1);
+            
+            console.log("invoice = client.startInvoice()");
             invoice = client.startInvoice();
+            
+            console.log("work.submit(invoice)");
             work.submit(invoice);
+            
+            console.log("assert.equal('Preparation', invoice.status, ''Preparation' == invoice.status')");
             assert.equal("Preparation", invoice.status, '"Preparation" == invoice.status');
+            
+            console.log("invoice.issue()");
             invoice.issue();
         }).then(function () {
+            console.log("assert.equal('Invoiced', invoice.status, ''Invoiced' == invoice.status')");
             assert.equal("Invoiced", invoice.status, '"Invoiced" == invoice.status');
-        }).then(done, done);
+        });
     });
     test('invoicePaid', function(done) {
         var invoice;
-        q().then(function () {
+        return q().then(function () {
+            console.log("invoice = Examples.client().startInvoice()");
             invoice = Examples.client().startInvoice();
+            
+            console.log("invoice.client.newTask('Some task').addWork(1).submit(invoice)");
             invoice.client.newTask("Some task").addWork(1).submit(invoice);
+            
+            console.log("invoice.issue()");
             invoice.issue();
+            
+            console.log("/*invoice.invoicePaid()*/");
             /*invoice.invoicePaid()*/;
         }).then(function () {
+            console.log("assert.equal('Received', invoice.status, ''Received' == invoice.status')");
             assert.equal("Received", invoice.status, '"Received" == invoice.status');
-        }).then(done, done);
+        });
     });
     test('cannotSubmitWorkIfInvoiceNotOpen', function(done) {
         try {
             var task, invoice, work;
-            q().then(function () {
+            return q().then(function () {
+                console.log("task = Examples.task()");
                 task = Examples.task();
+                
+                console.log("invoice = task.client.startInvoice()");
                 invoice = task.client.startInvoice();
+                
+                console.log("task.addWork(1).submit(invoice)");
                 task.addWork(1).submit(invoice);
+                
+                console.log("invoice.issue()");
                 invoice.issue();
             }).then(function () {
+                console.log("task.addWork(2).submit(invoice)");
                 task.addWork(2).submit(invoice);
-            }).then(done, done);
+            });
         } catch (e) {
             return;
         }
@@ -54,9 +82,9 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
     });
     test('cannotIssueInvoiceWithoutAnyWork', function(done) {
         try {
-            q().then(function () {
+            return q().then(function () {
                 Examples.client().startInvoice().issue()
-            }).then(done, done);
+            });
         } catch (e) {
             return;
         }

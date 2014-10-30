@@ -22,6 +22,8 @@ var modelSchema = new Schema({
 /*************************** DERIVED PROPERTIES ****************/
 
 modelSchema.virtual('description').get(function () {
+    // isAsynchronous: false        
+    console.log("return this.make.name + ' ' + this.name");
     return this.make.name + " " + this.name;
 });
 

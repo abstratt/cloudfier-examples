@@ -16,16 +16,28 @@ suite('Car rental functional tests - CustomerScenarios', function() {
 
     test('rentalHistory', function(done) {
         var car, customer;
-        q().then(function () {
+        return q().then(function () {
+            console.log("car = Examples.car()");
             car = Examples.car();
+            
+            console.log("customer = Examples.customer()");
             customer = Examples.customer();
+            
+            console.log("customer.rent(car)");
             customer.rent(car);
+            
+            console.log("assert.equal(1, count, '1 == count')");
             assert.equal(1, count, '1 == count');
+            
+            console.log("customer.finishRental()");
             customer.finishRental();
         }).then(function () {
+            console.log("customer.rent(car)");
             customer.rent(car);
+            
+            console.log("assert.equal(2, count, '2 == count')");
             assert.equal(2, count, '2 == count');
-        }).then(done, done);
+        });
     });
 });
 

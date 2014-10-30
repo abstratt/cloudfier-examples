@@ -9,8 +9,13 @@ var Employee = require('../models/Employee.js');
 
 var Tests = {
     declare : function(amount) {
-        emp = Employee.find();
-        cat = Category.find();
+        console.log("emp = this.model('Employee').find()");
+        emp = this.model('Employee').find();
+        
+        console.log("cat = this.model('Category').find()");
+        cat = this.model('Category').find();
+        
+        console.log("return emp.declareExpense('just a test expense', amount, new Date(), cat)");
         return emp.declareExpense("just a test expense", amount, new Date(), cat);
     }
 };
@@ -20,52 +25,68 @@ suite('Expenses Application functional tests - Tests', function() {
 
     test('declaredExpenseRemainsInDraft', function(done) {
         var expense;
-        q().then(function () {
+        return q().then(function () {
+            console.log("expense = Tests.declare(10.0)");
             expense = Tests.declare(10.0);
         }).then(function () {
+            console.log("assert.equal('Draft', expense.status, ''Draft' == expense.status')");
             assert.equal("Draft", expense.status, '"Draft" == expense.status');
-        }).then(done, done);
+        });
     });
     test('automaticApproval', function(done) {
-        q().then(function () {
+        return q().then(function () {
             assert.strictEqual(Tests.declare(49.9).automaticApproval, true, 'Tests.declare(49.9).automaticApproval === true')
         }).then(function () {
             assert.strictEqual(!Tests.declare(50.0).automaticApproval, true, '!Tests.declare(50.0).automaticApproval === true')
-        }).then(done, done);
+        });
     });
     test('submitExpenseUnder50IsAutomaticallyApproved', function(done) {
         var expense;
-        q().then(function () {
+        return q().then(function () {
+            console.log("expense = Tests.declare(10.0)");
             expense = Tests.declare(10.0);
+            
+            console.log("assert.strictEqual(expense.automaticApproval, true, 'expense.automaticApproval === true')");
             assert.strictEqual(expense.automaticApproval, true, 'expense.automaticApproval === true');
         }).then(function () {
+            console.log("expense.submit()");
             expense.submit();
         }).then(function () {
+            console.log("assert.equal('Approved', expense.status, ''Approved' == expense.status')");
             assert.equal("Approved", expense.status, '"Approved" == expense.status');
-        }).then(done, done);
+        });
     });
     test('submitExpense50AndOverNeedsApproval', function(done) {
         var expense;
-        q().then(function () {
+        return q().then(function () {
+            console.log("expense = Tests.declare(100.0)");
             expense = Tests.declare(100.0);
+            
+            console.log("assert.strictEqual(!expense.automaticApproval, true, '!expense.automaticApproval === true')");
             assert.strictEqual(!expense.automaticApproval, true, '!expense.automaticApproval === true');
         }).then(function () {
+            console.log("expense.submit()");
             expense.submit();
         }).then(function () {
+            console.log("assert.equal('Submitted', expense.status, ''Submitted' == expense.status')");
             assert.equal("Submitted", expense.status, '"Submitted" == expense.status');
-        }).then(done, done);
+        });
     });
     test('rejectedExpense', function(done) {
         var expense;
-        q().then(function () {
+        return q().then(function () {
+            console.log("expense = Tests.declare(100.0)");
             expense = Tests.declare(100.0);
         }).then(function () {
+            console.log("expense.submit()");
             expense.submit();
         }).then(function () {
+            console.log("expense.reject('Non-reimbursable')");
             expense.reject("Non-reimbursable");
         }).then(function () {
+            console.log("assert.equal('Rejected', expense.status, ''Rejected' == expense.status')");
             assert.equal("Rejected", expense.status, '"Rejected" == expense.status');
-        }).then(done, done);
+        });
     });
 });
 
