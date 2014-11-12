@@ -98,11 +98,11 @@ end;
 
 class Comment
 
-    readonly attribute commented : Memo;
+    readonly attribute text : Memo;
 
     readonly attribute user : User := { User#current };
 
-    readonly attribute \on : Date := { Date#now() };
+    readonly attribute commentedOn : Date := { Date#now() };
 
     readonly attribute inReplyTo : Comment[0, 1];
 
@@ -328,8 +328,8 @@ class Issue
         var comment;
         comment := new Comment;
         comment.user := User#current;
-        comment.\on := Date#today();
-        comment.commented := text;
+        comment.commentedOn := Date#today();
+        comment.text := text;
         comment.inReplyTo := inReplyTo;
         link IssueComments(issue := self, comments := comment);
         send CommentAdded(
