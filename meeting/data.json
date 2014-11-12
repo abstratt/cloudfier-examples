@@ -1,17 +1,14 @@
 {
   "meeting" : {
     "User" : [ {
-      "name" : "Andrew Eisenberg",
-      "email" : "andrew@eclipse.org",
-      "username" : null
+      "name" : "Andrew E.",
+      "email" : "andrew-example@abstratt.com"
     }, {
       "name" : "Rafael Chaves",
-      "email" : "rafael@abstratt.com",
-      "username" : "rafael@abstratt.com"
+      "email" : "rafael-example@abstratt.com"
     }, {
-      "name" : "David Green",
-      "email" : "dgreen@tasktop.com",
-      "username" : null
+      "name" : "David G.",
+      "email" : "andrew-example@abstratt.com"
     } ],
     "Meeting" : [ {
       "title" : "Eclipse DemoCamp YVR",

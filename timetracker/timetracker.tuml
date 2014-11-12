@@ -1,4 +1,4 @@
-package timetracker;
+package timetracker; 
 
 import invoicer;
 
@@ -50,9 +50,9 @@ class Task
 
     private query countUnits(work : Work[*]) : Integer;
     begin
-        return (work.reduce((w : Work, count : Integer) : Integer {
-            count + w.units
-        }, 0) as Integer);
+        return (work.sum((w : Work) : Integer {
+            w.units
+        }) as Integer);
     end;
 
     operation addWork(units : Integer) : Work;
@@ -62,7 +62,7 @@ class Task
         newWork.units := units;
         link TaskWork(reported := newWork, task := self);
         return newWork;
-    end;
+    end; 
 end;
 
 class Invoice
@@ -86,9 +86,9 @@ class Invoice
     required port invoicer : Invoicer;
 
     derived attribute totalUnits : Integer := {
-        (self.reported.reduce((w : Work, sum : Integer) : Integer {
-            w.units + sum
-        }, 0) as Integer)
+        (self.reported.sum((w : Work) : Integer {
+            w.units
+        }) as Integer)
     };
 
     operation issue()

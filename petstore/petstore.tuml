@@ -12,7 +12,7 @@ apply kirra;
 [kirra::User]
 class Customer
 
-    attribute name : String;
+    readonly id attribute name : String;
 
     attribute orders : Order[*];
 end;

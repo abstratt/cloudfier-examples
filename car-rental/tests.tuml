@@ -181,6 +181,7 @@ class CarScenarios
         var car;
         begin
             car := Examples#car();
+            Assert#isTrue(!car.underRepair);
             car.startRepair();
         end;
         begin

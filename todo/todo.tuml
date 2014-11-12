@@ -100,8 +100,8 @@ class Todo
 end;
 
 class Comment
-    readonly attribute author : User := { (System#user() as User) };
     attribute text : Memo;
+    readonly attribute author : User := { (System#user() as User) };
 end;
 
 composition

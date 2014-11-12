@@ -130,11 +130,9 @@ class Charge
 
     operation cancelPayment();
 
-    static operation newCharge(taxi : Taxi, payer : Driver, date : Date);
+    static operation newCharge(taxi : Taxi, payer : Driver, date : Date := { Date#today() });
     begin
         var charge;
-        if (date == null) then
-            date := Date#today();
         charge := new Charge;
         charge.description := taxi.name + " - " + taxi.shift.description;
         charge.amount := taxi.shift.price;
