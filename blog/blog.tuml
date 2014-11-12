@@ -1,0 +1,24 @@
+package blog;
+
+[kirra::User]
+class User
+    readonly id attribute email : String;
+    attribute name : String;
+end;
+
+class Article
+    attribute title : String;
+    attribute body : Memo;    
+    readonly attribute user : User := { System#user() };
+    composition comments : Comment[*];
+    attribute tags : String[*];
+    readonly attribute createdAt : Date := { Date#now() };    
+end;
+
+class Comment
+    attribute body : Memo;        
+    readonly attribute user : User := { System#user() };
+    readonly attribute createdAt : Date := { Date#now() };
+end;
+
+end.
