@@ -8,8 +8,8 @@ class Tests
     static operation declare(amount : Double) : Expense;
     begin
         var emp : Employee, cat : Category, expense : Expense;
-        emp := Employee extent.\any((e : Employee) : Boolean { true });
-        cat := Category extent.\any((e : Category) : Boolean { true });
+        emp := Employee extent.asSequence().head();
+        cat := Category extent.asSequence().head();
         return emp.declareExpense("just a test expense", amount, Date#today(), cat);
     end;
 
