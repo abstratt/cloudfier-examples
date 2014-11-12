@@ -36,7 +36,8 @@ enumeration Status
 end;
 
 class Comment
-    attribute comment : Memo;
+    attribute text : Memo;
+    private readonly attribute commenter : User := { (System#user() as User) };
 end;
 
 composition
