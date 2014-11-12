@@ -1,3 +1,4 @@
+var q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -45,41 +46,31 @@ var chargeSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 chargeSchema.methods.pay = function () {
-    this.handleEvent('pay');    
 };
 
 chargeSchema.methods.cancelPayment = function () {
-    this.handleEvent('cancelPayment');    
 };
 
 chargeSchema.statics.newCharge = function (taxi, payer, date) {
-    // isAsynchronous: true        
-    var charge;
-    console.log("charge = new Charge()");
-    charge = new Charge();
-    
-    console.log("charge.description = taxi.name + ' - ' + taxi.shift.description");
-    charge.description = taxi.name + " - " + taxi.shift.description;
-    
-    console.log("charge.amount = taxi.shift.price");
-    charge.amount = taxi.shift.price;
-    
-    console.log("charge.taxi = taxi");
-    charge.taxi = taxi;
-    
-    console.log("charge.date = date");
-    charge.date = date;
-    
-    console.log("// link driver and chargesncharge.driver = payer;npayer.charges.push(charge)");
-    // link driver and charges
-    charge.driver = payer;
-    payer.charges.push(charge);
+    return q().all([q().then(function() {
+        return Shift.findOne({ _id : taxi.shift }).exec();
+    }), q().then(function() {
+        return Shift.findOne({ _id : taxi.shift }).exec();
+    })]).spread(function(shift, shift) {
+        var charge;
+        charge = new Charge();
+        charge['description'] = taxi['name'] + " - " + shift['description'];
+        charge['amount'] = shift['price'];
+        charge['taxi'] = taxi;
+        charge['date'] = date;
+        // link driver and charges
+        charge.driver = payer;
+        payer.charges.push(charge);
+    });
 };
 /*************************** QUERIES ***************************/
 
 chargeSchema.statics.pendingCharges = function () {
-    // isAsynchronous: true        
-    console.log("return this.model('Charge').find().where({n    $ne : [ n        { 'paid' : true },n        truen    ]n}).exec()");
     return this.model('Charge').find().where({
         $ne : [ 
             { 'paid' : true },
@@ -89,22 +80,18 @@ chargeSchema.statics.pendingCharges = function () {
 };
 
 chargeSchema.statics.byTaxi = function (taxi) {
-    // isAsynchronous: true        
-    console.log("return this.model('Charge').find().where({ taxi : taxi }).exec()");
-    return this.model('Charge').find().where({ taxi : taxi }).exec();
+    return q().then(function() {
+        return this.model('Charge').find().where({ taxi : taxi }).exec();
+    });
 };
 
 chargeSchema.statics.paidCharges = function () {
-    // isAsynchronous: true        
-    console.log("return this.model('Charge').find().where({ 'paid' : true }).exec()");
     return this.model('Charge').find().where({ 'paid' : true }).exec();
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 chargeSchema.virtual('paid').get(function () {
-    // isAsynchronous: false        
-    console.log("return this.status == 'Paid'");
-    return this.status == "Paid";
+    return this['status'] == "Paid";
 });
 /*************************** STATE MACHINE ********************/
 chargeSchema.methods.handleEvent = function (event) {
@@ -114,9 +101,7 @@ chargeSchema.methods.handleEvent = function (event) {
                 this.status = 'Paid';
                 // on entering Paid
                 (function() {
-                    // isAsynchronous: true        
-                    console.log("this.receivedOn = new Date()");
-                    this.receivedOn = new Date();
+                    this['receivedOn'] = new Date();
                 })();
                 return;
             }
@@ -129,6 +114,13 @@ chargeSchema.methods.handleEvent = function (event) {
             }
             break;
     }
+};
+
+chargeSchema.methods.pay = function () {
+    this.handleEvent('pay');
+};
+chargeSchema.methods.cancelPayment = function () {
+    this.handleEvent('cancelPayment');
 };
 
 

@@ -1,3 +1,4 @@
+var q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -40,17 +41,6 @@ var customerSchema = new Schema({
 /*************************** QUERIES ***************************/
 
 customerSchema.statics.findByName = function (firstName, lastName) {
-    // isAsynchronous: true        
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return !firstName == null && lastName == null");
-        return !firstName == null && lastName == null;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return !firstName == null && lastName == null');\n    return !firstName == null && lastName == null;\n}");
-        throw "Precondition on findByName was violated"
-    }
-    console.log("return this.model('Customer').find().where({n    $or : [ n        {n            $eq : [ n                firstName,n                firstNamen            ]n        },n        {n            $eq : [ n                lastName,n                lastNamen            ]n        }n    ]n})");
     return this.model('Customer').find().where({
         $or : [ 
             {
@@ -66,42 +56,46 @@ customerSchema.statics.findByName = function (firstName, lastName) {
                 ]
             }
         ]
-    });
+    }).save();
 };
 
 customerSchema.statics.vipCustomers = function () {
-    // isAsynchronous: true        
-    console.log("return this.model('Customer').find().where({ 'vip' : true })");
-    return this.model('Customer').find().where({ 'vip' : true });
+    return q().then(function() {
+        return this.model('Customer').find().where({ 'vip' : true }).save();
+    });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 personSchema.virtual('fullName').get(function () {
-    // isAsynchronous: false        
-    console.log("return this.firstName + ' ' + this.lastName");
-    return this.firstName + " " + this.lastName;
+    return this['firstName'] + " " + this['lastName'];
 });
 
 /**
  *  A valuable customer is a customer that has two or more cars with us 
  */
 customerSchema.virtual('vip').get(function () {
-    // isAsynchronous: false        
-    console.log("return count >= 2");
-    return count >= 2;
+    return q().then(function() {
+        return Car.findOne({ _id : this.cars }).exec();
+    }).then(function(cars) {
+        return count >= 2;
+    });
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 customerSchema.methods.getPendingServices = function () {
-    // isAsynchronous: false        
-    console.log("return reduce");
-    return reduce;
+    return q().then(function() {
+        return Car.findOne({ _id : this.cars }).exec();
+    }).then(function(cars) {
+        return reduce;
+    });
 };
 
 customerSchema.methods.getCompletedServices = function () {
-    // isAsynchronous: false        
-    console.log("return reduce");
-    return reduce;
+    return q().then(function() {
+        return Car.findOne({ _id : this.cars }).exec();
+    }).then(function(cars) {
+        return reduce;
+    });
 };
 
 // declare model on the schema

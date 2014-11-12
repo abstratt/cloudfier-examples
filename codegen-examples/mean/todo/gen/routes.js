@@ -177,13 +177,9 @@ var exports = module.exports = {
         app.get("/entities/todo.Todo/template", function(req, res) {
             var template = new Todo().toObject();
             template.creator = (function() {
-                // isAsynchronous: false        
-                console.log("return cls.getNamespace('currentUser')");
                 return cls.getNamespace('currentUser');
             })();
             template.assignee = (function() {
-                // isAsynchronous: false        
-                console.log("return cls.getNamespace('currentUser')");
                 return cls.getNamespace('currentUser');
             })();
             template.status = "Open";

@@ -1,3 +1,4 @@
+var q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -19,8 +20,6 @@ var serviceSchema = new Schema({
     bookedOn : {
         type : Date,
         default : (function() {
-            // isAsynchronous: false        
-            console.log("return new Date()");
             return new Date();
         })()
     },
@@ -28,8 +27,6 @@ var serviceSchema = new Schema({
         type : Date,
         required : true,
         default : (function() {
-            // isAsynchronous: false        
-            console.log("return new Date(new Date() + 1)");
             return new Date(new Date() + 1);
         })()
     },
@@ -47,9 +44,7 @@ var serviceSchema = new Schema({
 
 serviceSchema.path('estimatedReady').validate(
     function() {
-        // isAsynchronous: false        
-        console.log("return this.estimatedReady == null || this.bookedOn == null || this.estimatedDays >= 0");
-        return this.estimatedReady == null || this.bookedOn == null || this.estimatedDays >= 0;
+        return this['estimatedReady'] == null || this['bookedOn'] == null || this['estimatedDays'] >= 0;
     },
     'validation of `{PATH}` failed with value `{VALUE}`'
 );
@@ -57,188 +52,76 @@ serviceSchema.path('estimatedReady').validate(
 /*************************** ACTIONS ***************************/
 
 serviceSchema.statics.newService = function (carToService, description, estimate) {
-    // isAsynchronous: true        
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return estimate > 0");
-        return estimate > 0;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return estimate > 0');\n    return estimate > 0;\n}");
-        throw "Precondition on newService was violated"
-    }
-    var s;
-    console.log("s = new Service()");
-    s = new Service();
-    
-    console.log("s.estimatedReady = new Date(s.bookedOn + estimate)");
-    s.estimatedReady = new Date(s.bookedOn + estimate);
-    
-    console.log("s.description = description");
-    s.description = description;
-    
-    console.log("s.car = carToService");
-    s.car = carToService;
-    
-    console.log("return s");
-    return s;
+    return q().then(function() {
+        var s;
+        s = new Service();
+        s['estimatedReady'] = new Date(s['bookedOn'] + estimate);
+        s['description'] = description;
+        s['car'] = carToService;
+        return s.save();
+    });
 };
 
 /**
  *  Cancels a service. 
  */
 serviceSchema.methods.cancel = function () {
-    this.handleEvent('cancel');    
 };
 
 /**
  *  Starts the service. It can no longer be canceled. 
  */
 serviceSchema.methods.start = function () {
-    // isAsynchronous: false        
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return this.assigned");
-        return this.assigned;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return this.assigned');\n    return this.assigned;\n}");
-        throw "Precondition on start was violated"
-    }
-    this.handleEvent('start');
-    console.log('Saving...');
-    var _savePromise = new Promise;
-    this.save(_savePromise.reject, _savePromise.fulfill); 
-    return _savePromise;
+    return q().then(function() {
+    });
 };
 
 /**
  *  Completes the service. 
  */
 serviceSchema.methods.complete = function () {
-    // isAsynchronous: false        
-    this.handleEvent('complete');
-    console.log('Saving...');
-    var _savePromise = new Promise;
-    this.save(_savePromise.reject, _savePromise.fulfill); 
-    return _savePromise;
+    return q().then(function() {
+    });
 };
 
 /**
  *  Assigns a service that is available to a technician. 
  */
 serviceSchema.methods.assignTo = function (technician) {
-    // isAsynchronous: true        
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return this.pending");
-        return this.pending;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return this.pending');\n    return this.pending;\n}");
-        throw "Precondition on assignTo was violated"
-    }
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return !this.assigned");
-        return !this.assigned;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return !this.assigned');\n    return !this.assigned;\n}");
-        throw "Precondition on assignTo was violated"
-    }
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return technician.working");
-        return technician.working;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return technician.working');\n    return technician.working;\n}");
-        throw "Precondition on assignTo was violated"
-    }
-    console.log("this.technician = technician");
-    this.technician = technician;
-    this.handleEvent('assignTo');
-    console.log('Saving...');
-    var _savePromise = new Promise;
-    this.save(_savePromise.reject, _savePromise.fulfill); 
-    return _savePromise;
+    return q().then(function() {
+        this['technician'] = technician;
+    });
 };
 
 /**
  *  Assigns a service to a different technician other than the one currently assigned. 
  */
 serviceSchema.methods.transfer = function (mechanic) {
-    // isAsynchronous: true        
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return this.pending");
-        return this.pending;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return this.pending');\n    return this.pending;\n}");
-        throw "Precondition on transfer was violated"
-    }
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return this.assigned");
-        return this.assigned;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return this.assigned');\n    return this.assigned;\n}");
-        throw "Precondition on transfer was violated"
-    }
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return !this.technician == mechanic");
-        return !this.technician == mechanic;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return !this.technician == mechanic');\n    return !this.technician == mechanic;\n}");
-        throw "Precondition on transfer was violated"
-    }
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return mechanic.working");
-        return mechanic.working;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return mechanic.working');\n    return mechanic.working;\n}");
-        throw "Precondition on transfer was violated"
-    }
-    console.log("this.technician = mechanic");
-    this.technician = mechanic;
-    this.handleEvent('transfer');
-    console.log('Saving...');
-    var _savePromise = new Promise;
-    this.save(_savePromise.reject, _savePromise.fulfill); 
-    return _savePromise;
+    return q().then(function() {
+        this['technician'] = mechanic;
+    });
 };
 /*************************** QUERIES ***************************/
 
 serviceSchema.statics.byStatus = function (services, toMatch) {
-    // isAsynchronous: false        
-    console.log("return services.where({ status : toMatch }).exec()");
     return services.where({ status : toMatch }).exec();
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 serviceSchema.virtual('pending').get(function () {
-    // isAsynchronous: false        
-    console.log("return this.status == 'Booked' || this.status == 'InProgress'");
-    return this.status == "Booked" || this.status == "InProgress";
+    return this['status'] == "Booked" || this['status'] == "InProgress";
 });
 
 serviceSchema.virtual('estimatedDays').get(function () {
-    // isAsynchronous: false        
-    console.log("return (this.estimatedReady - this.bookedOn) / (1000*60*60*24)");
-    return (this.estimatedReady - this.bookedOn) / (1000*60*60*24);
+    return (this['estimatedReady'] - this['bookedOn']) / (1000*60*60*24);
 });
 
 serviceSchema.virtual('assigned').get(function () {
-    // isAsynchronous: false        
-    console.log("return !this.technician == null");
-    return !this.technician == null;
+    return q().then(function() {
+        return AutoMechanic.find({ _id : this.technician }).exec();
+    }).then(function(technician) {
+        return !technician == null;
+    });
 });
 /*************************** STATE MACHINE ********************/
 serviceSchema.methods.handleEvent = function (event) {
@@ -264,6 +147,16 @@ serviceSchema.methods.handleEvent = function (event) {
             }
             break;
     }
+};
+
+serviceSchema.methods.cancel = function () {
+    this.handleEvent('cancel');
+};
+serviceSchema.methods.start = function () {
+    this.handleEvent('start');
+};
+serviceSchema.methods.complete = function () {
+    this.handleEvent('complete');
 };
 
 

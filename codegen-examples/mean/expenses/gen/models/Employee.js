@@ -1,3 +1,4 @@
+var q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -28,76 +29,90 @@ var employeeSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 employeeSchema.methods.declareExpense = function (description, amount, date, category) {
-    // isAsynchronous: true        
-    console.log("return Expense.newExpense(description, amount, date, category, this)");
-    return Expense.newExpense(description, amount, date, category, this);
-    console.log('Saving...');
-    var _savePromise = new Promise;
-    this.save(_savePromise.reject, _savePromise.fulfill); 
-    return _savePromise;
+    return q().then(function() {
+        return Expense.newExpense(description, amount, date, category, this);
+    }).then(function(newExpense) {
+        return newExpense.save();
+    });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 employeeSchema.virtual('totalRecorded').get(function () {
-    // isAsynchronous: false        
-    console.log("return this.totalExpenses(this.getRecordedExpenses())");
-    return this.totalExpenses(this.getRecordedExpenses());
+    return q().then(function() {
+        return this.getRecordedExpenses();
+    }).then(function(recordedExpenses) {
+        return this.totalExpenses(recordedExpenses);
+    });
 });
 
 employeeSchema.virtual('totalSubmitted').get(function () {
-    // isAsynchronous: false        
-    console.log("return this.totalExpenses(this.getSubmittedExpenses())");
-    return this.totalExpenses(this.getSubmittedExpenses());
+    return q().then(function() {
+        return this.getSubmittedExpenses();
+    }).then(function(submittedExpenses) {
+        return this.totalExpenses(submittedExpenses);
+    });
 });
 
 employeeSchema.virtual('totalApproved').get(function () {
-    // isAsynchronous: false        
-    console.log("return this.totalExpenses(this.getApprovedExpenses())");
-    return this.totalExpenses(this.getApprovedExpenses());
+    return q().then(function() {
+        return this.getApprovedExpenses();
+    }).then(function(approvedExpenses) {
+        return this.totalExpenses(approvedExpenses);
+    });
 });
 
 employeeSchema.virtual('totalRejected').get(function () {
-    // isAsynchronous: false        
-    console.log("return this.totalExpenses(this.getRejectedExpenses())");
-    return this.totalExpenses(this.getRejectedExpenses());
+    return q().then(function() {
+        return this.getRejectedExpenses();
+    }).then(function(rejectedExpenses) {
+        return this.totalExpenses(rejectedExpenses);
+    });
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 employeeSchema.methods.getRecordedExpenses = function () {
-    // isAsynchronous: false        
-    console.log("return this.expensesByStatus('Draft')");
-    return this.expensesByStatus("Draft");
+    return q().then(function() {
+        return this.expensesByStatus("Draft");
+    }).then(function(expensesByStatus) {
+        return expensesByStatus;
+    });
 };
 
 employeeSchema.methods.getSubmittedExpenses = function () {
-    // isAsynchronous: false        
-    console.log("return this.expensesByStatus('Submitted')");
-    return this.expensesByStatus("Submitted");
+    return q().then(function() {
+        return this.expensesByStatus("Submitted");
+    }).then(function(expensesByStatus) {
+        return expensesByStatus;
+    });
 };
 
 employeeSchema.methods.getApprovedExpenses = function () {
-    // isAsynchronous: false        
-    console.log("return this.expensesByStatus('Approved')");
-    return this.expensesByStatus("Approved");
+    return q().then(function() {
+        return this.expensesByStatus("Approved");
+    }).then(function(expensesByStatus) {
+        return expensesByStatus;
+    });
 };
 
 employeeSchema.methods.getRejectedExpenses = function () {
-    // isAsynchronous: false        
-    console.log("return this.expensesByStatus('Rejected')");
-    return this.expensesByStatus("Rejected");
+    return q().then(function() {
+        return this.expensesByStatus("Rejected");
+    }).then(function(expensesByStatus) {
+        return expensesByStatus;
+    });
 };
 /*************************** PRIVATE OPS ***********************/
 
 employeeSchema.methods.totalExpenses = function (toSum) {
-    // isAsynchronous: false        
-    console.log("return reduce.exec()");
     return reduce.exec();
 };
 
 employeeSchema.methods.expensesByStatus = function (status) {
-    // isAsynchronous: false        
-    console.log("return this.expenses.where({ status : status }).exec()");
-    return this.expenses.where({ status : status }).exec();
+    return q().then(function() {
+        return Expense.findOne({ _id : this.expenses }).exec();
+    }).then(function(readLinkAction) {
+        return readLinkAction.where({ status : status }).exec();
+    });
 };
 
 // declare model on the schema

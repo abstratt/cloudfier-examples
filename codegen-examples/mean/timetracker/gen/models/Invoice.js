@@ -1,3 +1,4 @@
+var q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -11,8 +12,6 @@ var invoiceSchema = new Schema({
         type : Date,
         required : true,
         default : (function() {
-            // isAsynchronous: false        
-            console.log("return new Date()");
             return new Date();
         })()
     },
@@ -34,52 +33,34 @@ var invoiceSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 invoiceSchema.methods.issue = function () {
-    // isAsynchronous: true        
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return !isEmpty");
-        return !isEmpty;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return !isEmpty');\n    return !isEmpty;\n}");
-        throw "Precondition on issue was violated"
-    }
-    console.log("this.issueDate = new Date()");
-    this.issueDate = new Date();
-    this.handleEvent('issue');
-    console.log('Saving...');
-    var _savePromise = new Promise;
-    this.save(_savePromise.reject, _savePromise.fulfill); 
-    return _savePromise;
+    return q().then(function() {
+        this['issueDate'] = new Date();
+    });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 invoiceSchema.virtual('number').get(function () {
-    // isAsynchronous: false        
-    console.log("return '' + (this.issueDate.getYear() + 1900) + '.' + this.invoiceId");
-    return "" + (this.issueDate.getYear() + 1900) + "." + this.invoiceId;
+    return "" + (this['issueDate'].getYear() + 1900) + "." + this['invoiceId'];
 });
 
 
 invoiceSchema.virtual('open').get(function () {
-    // isAsynchronous: false        
-    console.log("return this.status == 'Preparation'");
-    return this.status == "Preparation";
+    return this['status'] == "Preparation";
 });
 
 invoiceSchema.virtual('totalUnits').get(function () {
-    // isAsynchronous: false        
-    console.log("return Work.aggregate()n              .group({ _id: null, result: { $sum: '$units' } })n              .select('-id result')");
-    return Work.aggregate()
-                  .group({ _id: null, result: { $sum: '$units' } })
-                  .select('-id result');
+    return q().then(function() {
+        return Work.findOne({ _id : this.reported }).exec();
+    }).then(function(reported) {
+        return Work.aggregate()
+                      .group({ _id: null, result: { $sum: '$units' } })
+                      .select('-id result');
+    });
 });
 /*************************** PRIVATE OPS ***********************/
 
 invoiceSchema.methods.sendInvoice = function () {
-    // isAsynchronous: true        
-    console.log("/*this.invoicer.invoiceIssued()*/");
-    /*this.invoicer.invoiceIssued()*/;
+    this['invoicer'].invoiceIssued();
 };
 /*************************** STATE MACHINE ********************/
 invoiceSchema.methods.handleEvent = function (event) {
@@ -89,8 +70,6 @@ invoiceSchema.methods.handleEvent = function (event) {
                 this.status = 'Invoiced';
                 // on entering Invoiced
                 (function() {
-                    // isAsynchronous: true        
-                    console.log("this.sendInvoice()");
                     this.sendInvoice();
                 })();
                 return;
@@ -104,6 +83,13 @@ invoiceSchema.methods.handleEvent = function (event) {
             }
             break;
     }
+};
+
+invoiceSchema.methods.issue = function () {
+    this.handleEvent('issue');
+};
+invoiceSchema.methods.invoicePaid = function () {
+    this.handleEvent('InvoicePaid');
 };
 
 

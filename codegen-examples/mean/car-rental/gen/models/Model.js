@@ -1,3 +1,4 @@
+var q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -22,9 +23,11 @@ var modelSchema = new Schema({
 /*************************** DERIVED PROPERTIES ****************/
 
 modelSchema.virtual('description').get(function () {
-    // isAsynchronous: false        
-    console.log("return this.make.name + ' ' + this.name");
-    return this.make.name + " " + this.name;
+    return q().then(function() {
+        return Make.find({ _id : this.make }).exec();
+    }).then(function(make) {
+        return make['name'] + " " + this['name'];
+    });
 });
 
 // declare model on the schema

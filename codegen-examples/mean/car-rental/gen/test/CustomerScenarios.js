@@ -15,28 +15,24 @@ suite('Car rental functional tests - CustomerScenarios', function() {
     this.timeout(10000);
 
     test('rentalHistory', function(done) {
-        var car, customer;
-        return q().then(function () {
-            console.log("car = Examples.car()");
+        return q().all([q().then(function() {
+            customer.rent(car)
+        }), q().then(function() {
+            return Rental.findOne({ _id : customer.rentals }).exec();
+        }), q().then(function() {
+            customer.finishRental()
+        }), q().then(function() {
+            customer.rent(car)
+        }), q().then(function() {
+            return Rental.findOne({ _id : customer.rentals }).exec();
+        })]).spread(function(rent, rentals, finishRental, rent, rentals) {
             car = Examples.car();
-            
-            console.log("customer = Examples.customer()");
             customer = Examples.customer();
-            
-            console.log("customer.rent(car)");
-            customer.rent(car);
-            
-            console.log("assert.equal(1, count, '1 == count')");
-            assert.equal(1, count, '1 == count');
-            
-            console.log("customer.finishRental()");
-            customer.finishRental();
-        }).then(function () {
-            console.log("customer.rent(car)");
-            customer.rent(car);
-            
-            console.log("assert.equal(2, count, '2 == count')");
-            assert.equal(2, count, '2 == count');
+            rent;
+            assert.equal(1, count);
+            finishRental;
+            rent;
+            assert.equal(2, count);
         });
     });
 });

@@ -1,3 +1,4 @@
+var q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -35,8 +36,6 @@ var carSchema = new Schema({
         bookedOn : {
             type : Date,
             default : (function() {
-                // isAsynchronous: false        
-                console.log("return new Date()");
                 return new Date();
             })()
         },
@@ -44,8 +43,6 @@ var carSchema = new Schema({
             type : Date,
             required : true,
             default : (function() {
-                // isAsynchronous: false        
-                console.log("return new Date(new Date() + 1)");
                 return new Date(new Date() + 1);
             })()
         },
@@ -64,60 +61,58 @@ var carSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 carSchema.statics.findByRegistrationNumber = function (regNumber) {
-    // isAsynchronous: true        
-    console.log("return this.model('Car').find().where({n    $eq : [ n        regNumber,n        registrationNumbern    ]n}).findOne()");
-    return this.model('Car').find().where({
-        $eq : [ 
-            regNumber,
-            registrationNumber
-        ]
-    }).findOne();
+    return q().then(function() {
+        return this.model('Car').find().where({
+            $eq : [ 
+                regNumber,
+                registrationNumber
+            ]
+        }).findOne().save();
+    });
 };
 
 /**
  *  Book a service on this car. 
  */
 carSchema.methods.bookService = function (description, estimateInDays) {
-    // isAsynchronous: true        
-    console.log("Service.newService(this, description, estimateInDays)");
-    Service.newService(this, description, estimateInDays);
-    console.log('Saving...');
-    var _savePromise = new Promise;
-    this.save(_savePromise.reject, _savePromise.fulfill); 
-    return _savePromise;
+    return q().then(function() {
+        return Service.newService(this, description, estimateInDays);
+    }).then(function(newService) {
+        newService;
+    });
 };
 /*************************** QUERIES ***************************/
 
 carSchema.statics.findByOwner = function (owner) {
-    // isAsynchronous: false        
-    console.log("return owner.cars");
-    return owner.cars;
+    return q().then(function() {
+        return Car.findOne({ _id : owner.cars }).exec();
+    }).then(function(cars) {
+        return cars.save();
+    });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 carSchema.virtual('modelName').get(function () {
-    // isAsynchronous: false        
-    console.log("return this.model.makeAndModel()");
-    return this.model.makeAndModel();
+    return q().then(function() {
+        return Model.findOne({ _id : this.model }).exec();
+    }).then(function(model) {
+        return model.makeAndModel();
+    }).then(function(makeAndModel) {
+        return makeAndModel;
+    });
 });
 
 carSchema.virtual('pending').get(function () {
-    // isAsynchronous: false        
-    console.log("return count");
     return count;
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 carSchema.methods.getPendingServices = function () {
-    // isAsynchronous: false        
-    console.log("return this.services.where({ 'pending' : true })");
-    return this.services.where({ 'pending' : true });
+    return this['services'].where({ 'pending' : true });
 };
 
 carSchema.methods.getCompletedServices = function () {
-    // isAsynchronous: false        
-    console.log("return this.services.where({n    $ne : [ n        { 'pending' : true },n        truen    ]n})");
-    return this.services.where({
+    return this['services'].where({
         $ne : [ 
             { 'pending' : true },
             true

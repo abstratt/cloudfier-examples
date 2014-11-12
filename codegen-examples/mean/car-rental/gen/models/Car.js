@@ -1,3 +1,4 @@
+var q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -47,36 +48,28 @@ var carSchema = new Schema({
 
 carSchema.path('price').validate(
     function() {
-        // isAsynchronous: false        
-        console.log("return this.price >= 50.0");
-        return this.price >= 50.0;
+        return this['price'] >= 50.0;
     },
     'validation of `{PATH}` failed with value `{VALUE}`'
 );
 
 carSchema.path('price').validate(
     function() {
-        // isAsynchronous: false        
-        console.log("return this.price <= 500.0");
-        return this.price <= 500.0;
+        return this['price'] <= 500.0;
     },
     'validation of `{PATH}` failed with value `{VALUE}`'
 );
 
 carSchema.path('year').validate(
     function() {
-        // isAsynchronous: false        
-        console.log("return this.year > 1990");
-        return this.year > 1990;
+        return this['year'] > 1990;
     },
     'validation of `{PATH}` failed with value `{VALUE}`'
 );
 
 carSchema.path('year').validate(
     function() {
-        // isAsynchronous: false        
-        console.log("return this.year <= (new Date().getYear() + 1900)");
-        return this.year <= (new Date().getYear() + 1900);
+        return this['year'] <= (new Date().getYear() + 1900);
     },
     'validation of `{PATH}` failed with value `{VALUE}`'
 );
@@ -84,75 +77,47 @@ carSchema.path('year').validate(
 /*************************** ACTIONS ***************************/
 
 carSchema.methods.startRepair = function () {
-    // isAsynchronous: true        
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return this.status == 'Available'");
-        return this.status == "Available";
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return this.status == 'Available'');\n    return this.status == 'Available';\n}");
-        throw "Precondition on startRepair was violated"
-    }
-    console.log("/*this.repairStarted()*/");
-    /*this.repairStarted()*/;
-    this.handleEvent('startRepair');
-    console.log('Saving...');
-    var _savePromise = new Promise;
-    this.save(_savePromise.reject, _savePromise.fulfill); 
-    return _savePromise;
+    return q().then(function() {
+        this.repairStarted();
+    });
 };
 
 carSchema.methods.finishRepair = function () {
-    // isAsynchronous: true        
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return this.status == 'UnderRepair'");
-        return this.status == "UnderRepair";
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return this.status == 'UnderRepair'');\n    return this.status == 'UnderRepair';\n}");
-        throw "Precondition on finishRepair was violated"
-    }
-    console.log("/*this.repairFinished()*/");
-    /*this.repairFinished()*/;
-    this.handleEvent('finishRepair');
-    console.log('Saving...');
-    var _savePromise = new Promise;
-    this.save(_savePromise.reject, _savePromise.fulfill); 
-    return _savePromise;
+    return q().then(function() {
+        this.repairFinished();
+    });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 carSchema.virtual('description').get(function () {
-    // isAsynchronous: false        
-    console.log("return this.model.description + ' - ' + this.plate");
-    return this.model.description + " - " + this.plate;
+    return q().then(function() {
+        return Model.findOne({ _id : this.model }).exec();
+    }).then(function(model) {
+        return model['description'];
+    }).then(function(description) {
+        return description + " - " + this['plate'];
+    });
 });
 
 carSchema.virtual('available').get(function () {
-    // isAsynchronous: false        
-    console.log("return this.status == 'Available'");
-    return this.status == "Available";
+    return this['status'] == "Available";
 });
 
 carSchema.virtual('underRepair').get(function () {
-    // isAsynchronous: false        
-    console.log("return this.status == 'UnderRepair'");
-    return this.status == "UnderRepair";
+    return this['status'] == "UnderRepair";
 });
 
 carSchema.virtual('rented').get(function () {
-    // isAsynchronous: false        
-    console.log("return this.status == 'Rented'");
-    return this.status == "Rented";
+    return this['status'] == "Rented";
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 carSchema.methods.getCurrentRental = function () {
-    // isAsynchronous: true        
-    console.log("return Rental.currentForCar(this)");
-    return Rental.currentForCar(this);
+    return q().then(function() {
+        return Rental.currentForCar(this);
+    }).then(function(currentForCar) {
+        return currentForCar;
+    });
 };
 /*************************** STATE MACHINE ********************/
 carSchema.methods.handleEvent = function (event) {
@@ -185,6 +150,19 @@ carSchema.methods.handleEvent = function (event) {
             }
             break;
     }
+};
+
+carSchema.methods.carRented = function () {
+    this.handleEvent('CarRented');
+};
+carSchema.methods.repairStarted = function () {
+    this.handleEvent('RepairStarted');
+};
+carSchema.methods.carReturned = function () {
+    this.handleEvent('CarReturned');
+};
+carSchema.methods.repairFinished = function () {
+    this.handleEvent('RepairFinished');
 };
 
 

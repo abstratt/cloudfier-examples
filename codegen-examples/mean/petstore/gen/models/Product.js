@@ -1,3 +1,4 @@
+var q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -39,27 +40,21 @@ var productSchema = new Schema({
 
 productSchema.path('productPrice').validate(
     function() {
-        // isAsynchronous: false        
-        console.log("return this.productPrice > 0");
-        return this.productPrice > 0;
+        return this['productPrice'] > 0;
     },
     'validation of `{PATH}` failed with value `{VALUE}`'
 );
 
 productSchema.path('unitCost').validate(
     function() {
-        // isAsynchronous: false        
-        console.log("return this.unitCost > 0");
-        return this.unitCost > 0;
+        return this['unitCost'] > 0;
     },
     'validation of `{PATH}` failed with value `{VALUE}`'
 );
 
 productSchema.path('productWeight').validate(
     function() {
-        // isAsynchronous: false        
-        console.log("return this.productWeight >= 0");
-        return this.productWeight >= 0;
+        return this['productWeight'] >= 0;
     },
     'validation of `{PATH}` failed with value `{VALUE}`'
 );

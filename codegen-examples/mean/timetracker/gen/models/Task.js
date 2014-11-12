@@ -1,3 +1,4 @@
+var q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -26,8 +27,6 @@ var taskSchema = new Schema({
             type : Date,
             required : true,
             default : (function() {
-                // isAsynchronous: false        
-                console.log("return new Date()");
                 return new Date();
             })()
         },
@@ -45,56 +44,44 @@ var taskSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 taskSchema.methods.addWork = function (units) {
-    // isAsynchronous: true        
-    var newWork;
-    console.log("newWork = new Work()");
-    newWork = new Work();
-    
-    console.log("newWork.units = units");
-    newWork.units = units;
-    
-    console.log("// link reported and tasknthis.reported.push(newWork);nnewWork.task = this");
-    // link reported and task
-    this.reported.push(newWork);
-    newWork.task = this;
-    
-    console.log("return newWork");
-    return newWork;
-    console.log('Saving...');
-    var _savePromise = new Promise;
-    this.save(_savePromise.reject, _savePromise.fulfill); 
-    return _savePromise;
+    return q().then(function() {
+        var newWork;
+        newWork = new Work();
+        newWork['units'] = units;
+        // link reported and task
+        this.reported.push(newWork);
+        newWork.task = this;
+        return newWork.save();
+    });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 taskSchema.virtual('unitsReported').get(function () {
-    // isAsynchronous: false        
-    console.log("return this.countUnits(this.reported)");
-    return this.countUnits(this.reported);
+    return this.countUnits(this['reported']);
 });
 
 taskSchema.virtual('unitsToInvoice').get(function () {
-    // isAsynchronous: false        
-    console.log("return this.countUnits(this.getToInvoice())");
-    return this.countUnits(this.getToInvoice());
+    return q().then(function() {
+        return this.getToInvoice();
+    }).then(function(toInvoice) {
+        return this.countUnits(toInvoice);
+    });
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 taskSchema.methods.getToInvoice = function () {
-    // isAsynchronous: false        
-    console.log("return this.reported.where({n    $ne : [ n        { 'invoiced' : true },n        truen    ]n})");
-    return this.reported.where({
-        $ne : [ 
-            { 'invoiced' : true },
-            true
-        ]
+    return q().then(function() {
+        return this['reported'].where({
+            $ne : [ 
+                { 'invoiced' : true },
+                true
+            ]
+        });
     });
 };
 /*************************** PRIVATE OPS ***********************/
 
 taskSchema.methods.countUnits = function (work) {
-    // isAsynchronous: false        
-    console.log("return Work.aggregate()n              .group({ _id: null, result: { $sum: '$units' } })n              .select('-id result').exec()");
     return Work.aggregate()
                   .group({ _id: null, result: { $sum: '$units' } })
                   .select('-id result').exec();

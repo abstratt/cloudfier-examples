@@ -1,3 +1,4 @@
+var q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -30,9 +31,7 @@ var personSchema = new Schema({
 /*************************** DERIVED PROPERTIES ****************/
 
 personSchema.virtual('fullName').get(function () {
-    // isAsynchronous: false        
-    console.log("return this.firstName + ' ' + this.lastName");
-    return this.firstName + " " + this.lastName;
+    return this['firstName'] + " " + this['lastName'];
 });
 
 // declare model on the schema

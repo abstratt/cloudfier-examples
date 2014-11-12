@@ -1,3 +1,4 @@
+var q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -46,13 +47,9 @@ var todoSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 todoSchema.methods.complete = function () {
-    // isAsynchronous: true        
-    console.log("this.status = 'Done'");
-    this.status = "Done";
-    console.log('Saving...');
-    var _savePromise = new Promise;
-    this.save(_savePromise.reject, _savePromise.fulfill); 
-    return _savePromise;
+    return q().then(function() {
+        this['status'] = "Done";
+    });
 };
 
 // declare model on the schema

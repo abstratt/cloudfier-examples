@@ -6,39 +6,21 @@ var Invoice = require('../models/Invoice.js');
 
 var Examples = {
     clientWithName : function(name) {
-        // isAsynchronous: true        
-        console.log("client = new Client()");
         client = new Client();
-        
-        console.log("client.name = name");
-        client.name = name;
-        
-        console.log("return client");
-        return client;
+        client['name'] = name;
+        return client.save();
     },
     client : function() {
-        // isAsynchronous: true        
-        console.log("return Examples.clientWithName('New Client')");
-        return Examples.clientWithName("New Client");
+        return Examples.clientWithName("New Client").save();
     },
     taskWithName : function(description, client) {
-        // isAsynchronous: true        
-        console.log("task = new Task()");
         task = new Task();
-        
-        console.log("task.description = description");
-        task.description = description;
-        
-        console.log("task.client = client");
-        task.client = client;
-        
-        console.log("return task");
-        return task;
+        task['description'] = description;
+        task['client'] = client;
+        return task.save();
     },
     task : function() {
-        // isAsynchronous: true        
-        console.log("return Examples.taskWithName('New Task', Examples.client())");
-        return Examples.taskWithName("New Task", Examples.client());
+        return Examples.taskWithName("New Task", Examples.client()).save();
     }
 };
 

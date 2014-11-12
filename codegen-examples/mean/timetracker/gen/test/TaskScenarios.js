@@ -13,35 +13,41 @@ suite('Time Tracker functional tests - TaskScenarios', function() {
     this.timeout(10000);
 
     test('timeReported', function(done) {
-        var task;
-        return q().then(function () {
-            task = Examples.task()
-        }).then(function () {
-            task.addWork(4)
-        }).then(function () {
-            task.addWork(3)
-        }).then(function () {
-            assert.equal(2, count, '2 == count')
-        }).then(function () {
-            assert.equal(7, task.unitsReported, '7 == task.unitsReported')
+        return q().all([q().then(function() {
+            return task.addWork(4);
+        }), q().then(function() {
+            return task.addWork(3);
+        })]).spread(function(addWork, addWork) {
+            task = Examples.task();
+            addWork;
+            addWork;
+            assert.equal(2, count);
+            assert.equal(7, task['unitsReported']);
         });
     });
     test('timeToInvoice', function(done) {
-        var task, invoice, work1, work2;
-        return q().then(function () {
-            task = Examples.task()
-        }).then(function () {
-            work1 = task.addWork(4)
-        }).then(function () {
-            work2 = task.addWork(3)
-        }).then(function () {
-            invoice = task.client.startInvoice()
-        }).then(function () {
+        return q().all([q().then(function() {
+            return task.addWork(4);
+        }), q().then(function() {
+            return task.addWork(3);
+        }), q().then(function() {
+            return Client.find({ _id : task.client }).exec();
+        }).then(function(client) {
+            return client.startInvoice();
+        }), q().then(function() {
             work1.submit(invoice)
-        }).then(function () {
-            assert.equal(1, count, '1 == count')
-        }).then(function () {
-            assert.equal(3, task.unitsToInvoice, '3 == task.unitsToInvoice')
+        }), q().then(function() {
+            return task.getToInvoice();
+        }), q().then(function() {
+            return task['unitsToInvoice'];
+        })]).spread(function(addWork, addWork, startInvoice, submit, toInvoice, unitsToInvoice) {
+            task = Examples.task();
+            work1 = addWork;
+            work2 = addWork;
+            invoice = startInvoice;
+            submit;
+            assert.equal(1, count);
+            assert.equal(3, unitsToInvoice);
         });
     });
 });

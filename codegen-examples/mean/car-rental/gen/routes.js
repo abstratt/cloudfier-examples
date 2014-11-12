@@ -217,8 +217,6 @@ var exports = module.exports = {
         app.get("/entities/car_rental.Rental/template", function(req, res) {
             var template = new Rental().toObject();
             template.started = (function() {
-                // isAsynchronous: false        
-                console.log("return new Date()");
                 return new Date();
             })();
             res.json(renderInstance('car_rental.Rental', template));

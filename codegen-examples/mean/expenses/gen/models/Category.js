@@ -1,3 +1,4 @@
+var q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -20,23 +21,21 @@ var categorySchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 categorySchema.statics.newCategory = function (name) {
-    // isAsynchronous: true        
-    var newCategory;
-    console.log("newCategory = new Category()");
-    newCategory = new Category();
-    
-    console.log("newCategory.name = name");
-    newCategory.name = name;
-    
-    console.log("return newCategory");
-    return newCategory;
+    return q().then(function() {
+        var newCategory;
+        newCategory = new Category();
+        newCategory['name'] = name;
+        return newCategory.save();
+    });
 };
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 categorySchema.methods.getExpensesInThisCategory = function () {
-    // isAsynchronous: true        
-    console.log("return Expense.findExpensesByCategory(this)");
-    return Expense.findExpensesByCategory(this);
+    return q().then(function() {
+        return Expense.findExpensesByCategory(this);
+    }).then(function(findExpensesByCategory) {
+        return findExpensesByCategory;
+    });
 };
 
 // declare model on the schema

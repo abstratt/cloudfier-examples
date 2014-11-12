@@ -1,3 +1,4 @@
+var q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -26,8 +27,6 @@ var expenseSchema = new Schema({
     date : {
         type : Date,
         default : (function() {
-            // isAsynchronous: false        
-            console.log("return new Date()");
             return new Date();
         })()
     },
@@ -56,116 +55,60 @@ var expenseSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 expenseSchema.statics.newExpense = function (description, amount, date, category, employee) {
-    // isAsynchronous: true        
-    var newExpense;
-    console.log("newExpense = new Expense()");
-    newExpense = new Expense();
-    
-    console.log("newExpense.description = description");
-    newExpense.description = description;
-    
-    console.log("newExpense.amount = amount");
-    newExpense.amount = amount;
-    
-    console.log("newExpense.date = date");
-    newExpense.date = date;
-    
-    console.log("newExpense.category = category");
-    newExpense.category = category;
-    
-    console.log("newExpense.employee = employee");
-    newExpense.employee = employee;
-    
-    console.log("return newExpense");
-    return newExpense;
+    return q().then(function() {
+        var newExpense;
+        newExpense = new Expense();
+        newExpense['description'] = description;
+        newExpense['amount'] = amount;
+        newExpense['date'] = date;
+        newExpense['category'] = category;
+        newExpense['employee'] = employee;
+        return newExpense.save();
+    });
 };
 
 expenseSchema.methods.approve = function () {
-    // isAsynchronous: true        
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return !cls.getNamespace('currentUser') == this.employee");
-        return !cls.getNamespace('currentUser') == this.employee;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return !cls.getNamespace('currentUser') == this.employee');\n    return !cls.getNamespace('currentUser') == this.employee;\n}");
-        throw "Precondition on approve was violated"
-    }
-    console.log("this.approver = cls.getNamespace('currentUser')");
-    this.approver = cls.getNamespace('currentUser');
-    this.handleEvent('approve');
-    console.log('Saving...');
-    var _savePromise = new Promise;
-    this.save(_savePromise.reject, _savePromise.fulfill); 
-    return _savePromise;
+    return q().then(function() {
+        this['approver'] = cls.getNamespace('currentUser');
+    });
 };
 
 /**
  *  Reject this expense. Please provide a reason. 
  */
 expenseSchema.methods.reject = function (reason) {
-    // isAsynchronous: true        
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return !this.automaticApproval");
-        return !this.automaticApproval;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return !this.automaticApproval');\n    return !this.automaticApproval;\n}");
-        throw "Precondition on reject was violated"
-    }
-    console.log("this.rejectionReason = reason");
-    this.rejectionReason = reason;
-    
-    console.log("this.approver = cls.getNamespace('currentUser')");
-    this.approver = cls.getNamespace('currentUser');
-    this.handleEvent('reject');
-    console.log('Saving...');
-    var _savePromise = new Promise;
-    this.save(_savePromise.reject, _savePromise.fulfill); 
-    return _savePromise;
+    return q().then(function() {
+        this['rejectionReason'] = reason;
+        this['approver'] = cls.getNamespace('currentUser');
+    });
 };
 
 /**
  *  Reconsider this expense. 
  */
 expenseSchema.methods.reconsider = function () {
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return this.daysProcessed < 7");
-        return this.daysProcessed < 7;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return this.daysProcessed < 7');\n    return this.daysProcessed < 7;\n}");
-        throw "Precondition on reconsider was violated"
-    }
-    this.handleEvent('reconsider');    
 };
 
 /**
  *  Sends this expense back to Draft state. 
  */
 expenseSchema.methods.review = function () {
-    this.handleEvent('review');    
 };
 
 /**
  *  Submit this expense. 
  */
 expenseSchema.methods.submit = function () {
-    this.handleEvent('submit');    
 };
 /*************************** QUERIES ***************************/
 
 expenseSchema.statics.findExpensesByCategory = function (category) {
-    // isAsynchronous: true        
-    console.log("return this.model('Expense').find().where({ { 'category' : e  } : category }).exec()");
-    return this.model('Expense').find().where({ { 'category' : e  } : category }).exec();
+    return q().then(function() {
+        return this.model('Expense').find().where({ { 'category' : e  } : category }).exec();
+    });
 };
 
 expenseSchema.statics.findExpensesInPeriod = function (start, end_) {
-    // isAsynchronous: true        
-    console.log("return this.model('Expense').find().where({n    $and : [ n        {n            $or : [ n                { start : null },n                {n                    $gte : [ n                        date,n                        startn                    ]n                }n            ]n        },n        {n            $or : [ n                { end_ : null },n                {n                    $lte : [ n                        date,n                        end_n                    ]n                }n            ]n        }n    ]n}).exec()");
     return this.model('Expense').find().where({
         $and : [ 
             {
@@ -195,16 +138,12 @@ expenseSchema.statics.findExpensesInPeriod = function (start, end_) {
 };
 
 expenseSchema.statics.findByStatus = function (status) {
-    // isAsynchronous: true        
-    console.log("return this.model('Expense').find().where({ status : status }).exec()");
     return this.model('Expense').find().where({ status : status }).exec();
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 expenseSchema.virtual('moniker').get(function () {
-    // isAsynchronous: false        
-    console.log("return this.description + ' on ' + this.date");
-    return this.description + " on " + this.date;
+    return this['description'] + " on " + this['date'];
 });
 
 
@@ -212,27 +151,26 @@ expenseSchema.virtual('moniker').get(function () {
  *  Whether this expense qualifies for automatic approval. 
  */
 expenseSchema.virtual('automaticApproval').get(function () {
-    // isAsynchronous: false        
-    console.log("return this.amount < 50");
-    return this.amount < 50;
+    return this['amount'] < 50;
 });
 
 expenseSchema.virtual('daysProcessed').get(function () {
-    // isAsynchronous: false        
-    if (this.processed == null) {
-        console.log("return 0");
+    if (this['processed'] == null) {
         return 0;
     } else  {
-        console.log("return (this.processed - new Date()) / (1000*60*60*24)");
-        return (this.processed - new Date()) / (1000*60*60*24);
+        return (this['processed'] - new Date()) / (1000*60*60*24);
     }
 });
 /*************************** PRIVATE OPS ***********************/
 
 expenseSchema.methods.reportApproved = function () {
-    // isAsynchronous: true        
-    console.log("/*this.expensePayer.expenseApproved(this.employee.name, this.amount, this.description + '(' + this.category.name + ')', this.expenseId)*/");
-    /*this.expensePayer.expenseApproved(this.employee.name, this.amount, this.description + "(" + this.category.name + ")", this.expenseId)*/;
+    return q().all([q().then(function() {
+        return Employee.find({ _id : this.employee }).exec();
+    }), q().then(function() {
+        return Category.findOne({ _id : this.category }).exec();
+    })]).spread(function(employee, category) {
+        this['expensePayer'].expenseApproved(employee['name'], this['amount'], this['description'] + "(" + category['name'] + ")", this['expenseId']);
+    });
 };
 /*************************** STATE MACHINE ********************/
 expenseSchema.methods.handleEvent = function (event) {
@@ -241,30 +179,28 @@ expenseSchema.methods.handleEvent = function (event) {
         case 'submit' :
             if (this.status == 'Draft') {
                 guard = function() {
-                    // isAsynchronous: false        
-                    console.log("return this.automaticApproval");
-                    return this.automaticApproval;
-                };
+                    return this['automaticApproval'];
+                }
+                ;
                 if (guard.call(this)) {
                     this.status = 'Approved';
                     // on entering Approved
                     (function() {
-                        // isAsynchronous: true        
-                        console.log("this.processed = new Date()");
-                        this.processed = new Date();
-                        
-                        console.log("this.reportApproved()");
-                        this.reportApproved();
+                        return q().then(function() {
+                            this.reportApproved()
+                        }).then(function(reportApproved) {
+                            this['processed'] = new Date();
+                            reportApproved;
+                        });
                     })();
                     return;
                 }
             }
             if (this.status == 'Draft') {
                 guard = function() {
-                    // isAsynchronous: false        
-                    console.log("return !this.automaticApproval");
-                    return !this.automaticApproval;
-                };
+                    return !this['automaticApproval'];
+                }
+                ;
                 if (guard.call(this)) {
                     this.status = 'Submitted';
                     return;
@@ -277,12 +213,12 @@ expenseSchema.methods.handleEvent = function (event) {
                 this.status = 'Approved';
                 // on entering Approved
                 (function() {
-                    // isAsynchronous: true        
-                    console.log("this.processed = new Date()");
-                    this.processed = new Date();
-                    
-                    console.log("this.reportApproved()");
-                    this.reportApproved();
+                    return q().then(function() {
+                        this.reportApproved()
+                    }).then(function(reportApproved) {
+                        this['processed'] = new Date();
+                        reportApproved;
+                    });
                 })();
                 return;
             }
@@ -300,9 +236,7 @@ expenseSchema.methods.handleEvent = function (event) {
                 this.status = 'Rejected';
                 // on entering Rejected
                 (function() {
-                    // isAsynchronous: true        
-                    console.log("this.processed = new Date()");
-                    this.processed = new Date();
+                    this['processed'] = new Date();
                 })();
                 return;
             }
@@ -315,6 +249,22 @@ expenseSchema.methods.handleEvent = function (event) {
             }
             break;
     }
+};
+
+expenseSchema.methods.submit = function () {
+    this.handleEvent('submit');
+};
+expenseSchema.methods.approve = function () {
+    this.handleEvent('approve');
+};
+expenseSchema.methods.review = function () {
+    this.handleEvent('review');
+};
+expenseSchema.methods.reject = function () {
+    this.handleEvent('reject');
+};
+expenseSchema.methods.reconsider = function () {
+    this.handleEvent('reconsider');
 };
 
 

@@ -8,63 +8,29 @@ var Customer = require('../models/Customer.js');
 
 var Examples = {
     make : function() {
-        // isAsynchronous: true        
-        console.log("make = new Make()");
         make = new Make();
-        
-        console.log("make.name = 'Fiat'");
-        make.name = "Fiat";
-        
-        console.log("return make");
-        return make;
+        make['name'] = "Fiat";
+        return make.save();
     },
     model : function() {
-        // isAsynchronous: true        
-        console.log("carModel = new Model()");
         carModel = new Model();
-        
-        console.log("carModel.name = 'Mille'");
-        carModel.name = "Mille";
-        
-        console.log("carModel.make = Examples.make()");
-        carModel.make = Examples.make();
-        
-        console.log("return carModel");
-        return carModel;
+        carModel['name'] = "Mille";
+        carModel['make'] = Examples.make();
+        return carModel.save();
     },
     car : function() {
-        // isAsynchronous: true        
-        console.log("car = new Car()");
         car = new Car();
-        
-        console.log("car.year = (new Date().getYear() + 1900)");
-        car.year = (new Date().getYear() + 1900);
-        
-        console.log("car.price = 100");
-        car.price = 100;
-        
-        console.log("car.color = 'black'");
-        car.color = "black";
-        
-        console.log("car.plate = 'ABC-1234'");
-        car.plate = "ABC-1234";
-        
-        console.log("car.model = Examples.model()");
-        car.model = Examples.model();
-        
-        console.log("return car");
-        return car;
+        car['year'] = (new Date().getYear() + 1900);
+        car['price'] = 100;
+        car['color'] = "black";
+        car['plate'] = "ABC-1234";
+        car['model'] = Examples.model();
+        return car.save();
     },
     customer : function() {
-        // isAsynchronous: true        
-        console.log("customer = new Customer()");
         customer = new Customer();
-        
-        console.log("customer.name = 'Joana de Almeida'");
-        customer.name = "Joana de Almeida";
-        
-        console.log("return customer");
-        return customer;
+        customer['name'] = "Joana de Almeida";
+        return customer.save();
     }
 };
 

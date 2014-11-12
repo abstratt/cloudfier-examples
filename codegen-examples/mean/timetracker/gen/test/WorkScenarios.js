@@ -13,24 +13,28 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
     this.timeout(10000);
 
     test('workDateDefaultsToToday', function(done) {
-        var work;
-        return q().then(function () {
-            work = Examples.task().addWork(1)
-        }).then(function () {
-            assert.equal(new Date(), work.date, 'new Date() == work.date')
+        return q().then(function() {
+            return Examples.task().addWork(1);
+        }).then(function(addWork) {
+            work = addWork;
+            assert.equal(new Date(), work['date']);
         });
     });
     test('cannotAssignWorkToInvoiceFromAnotherClient', function(done) {
         try {
-            var client1, client2, work;
-            return q().then(function () {
-                client1 = Examples.client()
-            }).then(function () {
-                client2 = Examples.client()
-            }).then(function () {
-                work = client1.newTask("Some task").addWork(1)
-            }).then(function () {
-                work.submit(client2.startInvoice())
+            return q().all([q().then(function() {
+                return client1.newTask("Some task");
+            }).then(function(newTask) {
+                return newTask.addWork(1);
+            }), q().then(function() {
+                return client2.startInvoice();
+            }).then(function(startInvoice) {
+                work.submit(startInvoice)
+            })]).spread(function(addWork, submit) {
+                client1 = Examples.client();
+                client2 = Examples.client();
+                work = addWork;
+                submit;
             });
         } catch (e) {
             return;
@@ -39,15 +43,23 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
     });
     test('cannotSubmitWorkToInvoiceAlreadyInvoiced', function(done) {
         try {
-            var invoice, work;
-            return q().then(function () {
-                work = Examples.client().newTask("Some task").addWork(1)
-            }).then(function () {
-                invoice = work.getClient().startInvoice()
-            }).then(function () {
+            return q().all([q().then(function() {
+                return Examples.client().newTask("Some task");
+            }).then(function(newTask) {
+                return newTask.addWork(1);
+            }), q().then(function() {
+                return work.getClient();
+            }).then(function(client) {
+                return client.startInvoice();
+            }), q().then(function() {
                 work.submit(invoice)
-            }).then(function () {
+            }), q().then(function() {
                 work.submit(invoice)
+            })]).spread(function(addWork, startInvoice, submit, submit) {
+                work = addWork;
+                invoice = startInvoice;
+                submit;
+                submit;
             });
         } catch (e) {
             return;
@@ -56,8 +68,10 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
     });
     test('unitsWorkedMustBePositive', function(done) {
         try {
-            return q().then(function () {
-                Examples.task().addWork(-1)
+            return q().then(function() {
+                return Examples.task().addWork(-1);
+            }).then(function(addWork) {
+                addWork;
             });
         } catch (e) {
             return;
@@ -66,8 +80,10 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
     });
     test('unitsWorkedMayNotBeZero', function(done) {
         try {
-            return q().then(function () {
-                Examples.task().addWork(0)
+            return q().then(function() {
+                return Examples.task().addWork(0);
+            }).then(function(addWork) {
+                addWork;
             });
         } catch (e) {
             return;

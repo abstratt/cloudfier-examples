@@ -1,3 +1,4 @@
+var q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -21,8 +22,6 @@ var issueSchema = new Schema({
     reportedOn : {
         type : Date,
         default : (function() {
-            // isAsynchronous: false        
-            console.log("return new Date()");
             return new Date();
         })()
     },
@@ -84,8 +83,6 @@ var issueSchema = new Schema({
         commentedOn : {
             type : Date,
             default : (function() {
-                // isAsynchronous: false        
-                console.log("return new Date()");
                 return new Date();
             })()
         },
@@ -106,432 +103,220 @@ var issueSchema = new Schema({
  *  Report a new issue. 
  */
 issueSchema.statics.reportIssue = function (project, summary, description, severity) {
-    // isAsynchronous: true        
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return User.provisioned");
-        return User.provisioned;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return User.provisioned');\n    return User.provisioned;\n}");
-        throw "Precondition on reportIssue was violated"
-    }
-    var newIssue;
-    console.log("newIssue = new Issue()");
-    newIssue = new Issue();
-    
-    console.log("newIssue.summary = summary");
-    newIssue.summary = summary;
-    
-    console.log("newIssue.description = description");
-    newIssue.description = description;
-    
-    console.log("newIssue.severity = severity");
-    newIssue.severity = severity;
-    
-    console.log("newIssue.reporter = User.current");
-    newIssue.reporter = User.current;
-    
-    console.log("newIssue.project = project");
-    newIssue.project = project;
-    
-    console.log("/*newIssue.userNotifier.issueReported(newIssue.issueKey, summary, description, newIssue.reporter.email)*/");
-    /*newIssue.userNotifier.issueReported(newIssue.issueKey, summary, description, newIssue.reporter.email)*/;
+    return q().all([q().then(function() {
+        return newIssue['issueKey'];
+    }), q().then(function() {
+        return User.find({ _id : newIssue.reporter }).exec();
+    })]).spread(function(issueKey, reporter) {
+        var newIssue;
+        newIssue = new Issue();
+        newIssue['summary'] = summary;
+        newIssue['description'] = description;
+        newIssue['severity'] = severity;
+        newIssue['reporter'] = User['current'];
+        newIssue['project'] = project;
+        newIssue['userNotifier'].issueReported(issueKey, summary, description, reporter['email']);
+    });
 };
 
 /**
  *  Release the issue so another committer can work on it. 
  */
 issueSchema.methods.release = function () {
-    // isAsynchronous: true        
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return this.mine");
-        return this.mine;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return this.mine');\n    return this.mine;\n}");
-        throw "Precondition on release was violated"
-    }
-    console.log("this.assignee = null");
-    this.assignee = null;
-    this.handleEvent('release');
-    console.log('Saving...');
-    var _savePromise = new Promise;
-    this.save(_savePromise.reject, _savePromise.fulfill); 
-    return _savePromise;
+    return q().then(function() {
+        this['assignee'] = null;
+    });
 };
 
 /**
  *  Assign an issue to a user. 
  */
 issueSchema.methods.assign = function (newAssignee) {
-    // isAsynchronous: true        
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return this.mine || this.free");
-        return this.mine || this.free;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return this.mine || this.free');\n    return this.mine || this.free;\n}");
-        throw "Precondition on assign was violated"
-    }
-    console.log("this.assignee = newAssignee");
-    this.assignee = newAssignee;
-    this.handleEvent('assign');
-    console.log('Saving...');
-    var _savePromise = new Promise;
-    this.save(_savePromise.reject, _savePromise.fulfill); 
-    return _savePromise;
+    return q().then(function() {
+        this['assignee'] = newAssignee;
+    });
 };
 
 /**
  *  Suspend work on this issue. 
  */
 issueSchema.methods.suspend = function () {
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return this.mine");
-        return this.mine;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return this.mine');\n    return this.mine;\n}");
-        throw "Precondition on suspend was violated"
-    }
-    this.handleEvent('suspend');    
 };
 
 /**
  *  Start/resume work on this issue. 
  */
 issueSchema.methods.start = function () {
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return this.mine");
-        return this.mine;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return this.mine');\n    return this.mine;\n}");
-        throw "Precondition on start was violated"
-    }
-    this.handleEvent('start');    
 };
 
 /**
  *  Resolve the issue. 
  */
 issueSchema.methods.resolve = function (resolution) {
-    // isAsynchronous: true        
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return this.mine || this.free");
-        return this.mine || this.free;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return this.mine || this.free');\n    return this.mine || this.free;\n}");
-        throw "Precondition on resolve was violated"
-    }
-    console.log("this.resolvedOn = new Date()");
-    this.resolvedOn = new Date();
-    
-    console.log("this.resolution = resolution");
-    this.resolution = resolution;
-    this.handleEvent('resolve');
-    console.log('Saving...');
-    var _savePromise = new Promise;
-    this.save(_savePromise.reject, _savePromise.fulfill); 
-    return _savePromise;
+    return q().then(function() {
+        this['resolvedOn'] = new Date();
+        this['resolution'] = resolution;
+    });
 };
 
 /**
  *  Reopen the issue. 
  */
 issueSchema.methods.reopen = function (reason) {
-    // isAsynchronous: true        
-    console.log("this.resolvedOn = null");
-    this.resolvedOn = null;
-    
-    console.log("this.resolution = null");
-    this.resolution = null;
-    
-    if (reason !== "") {
-        console.log("this.comment(reason)");
-        this.comment(reason);
-    }
-    this.handleEvent('reopen');
-    console.log('Saving...');
-    var _savePromise = new Promise;
-    this.save(_savePromise.reject, _savePromise.fulfill); 
-    return _savePromise;
+    return q().then(function() {
+        this.comment(reason)
+    }).then(function(comment) {
+        this['resolvedOn'] = null;
+        this['resolution'] = null;
+        if (reason !== "") {
+            comment;
+        }
+    });
 };
 
 /**
  *  Add a comment to the issue 
  */
 issueSchema.methods.comment = function (text) {
-    // isAsynchronous: true        
-    console.log("this.addComment(text, null)");
-    this.addComment(text, null);
-    this.handleEvent('comment');
-    console.log('Saving...');
-    var _savePromise = new Promise;
-    this.save(_savePromise.reject, _savePromise.fulfill); 
-    return _savePromise;
+    return q().then(function() {
+        this.addComment(text, null)
+    }).then(function(addComment) {
+        addComment;
+    });
 };
 
 issueSchema.methods.addWatcher = function (userToAdd) {
-    // isAsynchronous: true        
-    console.log("// link issuesWatched and watchersnuserToAdd.issuesWatched.push(this);nthis.watchers.push(userToAdd)");
-    // link issuesWatched and watchers
-    userToAdd.issuesWatched.push(this);
-    this.watchers.push(userToAdd);
-    this.handleEvent('addWatcher');
-    console.log('Saving...');
-    var _savePromise = new Promise;
-    this.save(_savePromise.reject, _savePromise.fulfill); 
-    return _savePromise;
+    return q().then(function() {
+        // link issuesWatched and watchers
+        userToAdd.issuesWatched.push(this);
+        this.watchers.push(userToAdd);
+    });
 };
 
 issueSchema.methods.vote = function () {
-    // isAsynchronous: true        
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return !User.current == null");
-        return !User.current == null;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return !User.current == null');\n    return !User.current == null;\n}");
-        throw "Precondition on vote was violated"
-    }
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return !this.mine");
-        return !this.mine;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return !this.mine');\n    return !this.mine;\n}");
-        throw "Precondition on vote was violated"
-    }
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return !includes");
-        return !includes;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return !includes');\n    return !includes;\n}");
-        throw "Precondition on vote was violated"
-    }
-    console.log("// link voted and votersnUser.current.voted.push(this);nthis.voters.push(User.current)");
-    // link voted and voters
-    User.current.voted.push(this);
-    this.voters.push(User.current);
-    this.handleEvent('vote');
-    console.log('Saving...');
-    var _savePromise = new Promise;
-    this.save(_savePromise.reject, _savePromise.fulfill); 
-    return _savePromise;
+    return q().then(function() {
+        // link voted and voters
+        User['current'].voted.push(this);
+        this.voters.push(User['current']);
+    });
 };
 
 issueSchema.methods.withdrawVote = function () {
-    // isAsynchronous: false        
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return !User.current == null");
-        return !User.current == null;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return !User.current == null');\n    return !User.current == null;\n}");
-        throw "Precondition on withdrawVote was violated"
-    }
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return includes");
-        return includes;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return includes');\n    return includes;\n}");
-        throw "Precondition on withdrawVote was violated"
-    }
-    console.log("this.voters = null;nthis = null");
-    this.voters = null;
-    this = null;
-    this.handleEvent('withdrawVote');
-    console.log('Saving...');
-    var _savePromise = new Promise;
-    this.save(_savePromise.reject, _savePromise.fulfill); 
-    return _savePromise;
+    return q().then(function() {
+        this.voters = null;
+        this = null;
+    });
 };
 
 /**
  *  Take over an issue currently available. 
  */
 issueSchema.methods.assignToMe = function () {
-    // isAsynchronous: true        
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return User.current.committer");
-        return User.current.committer;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return User.current.committer');\n    return User.current.committer;\n}");
-        throw "Precondition on assignToMe was violated"
-    }
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return !this.mine");
-        return !this.mine;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return !this.mine');\n    return !this.mine;\n}");
-        throw "Precondition on assignToMe was violated"
-    }
-    console.log("this.assignee = User.current");
-    this.assignee = User.current;
-    this.handleEvent('assignToMe');
-    console.log('Saving...');
-    var _savePromise = new Promise;
-    this.save(_savePromise.reject, _savePromise.fulfill); 
-    return _savePromise;
+    return q().then(function() {
+        this['assignee'] = User['current'];
+    });
 };
 
 /**
  *  Take over an issue currently assigned to another user (not in progress). 
  */
 issueSchema.methods.steal = function () {
-    // isAsynchronous: true        
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return User.current.committer");
-        return User.current.committer;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return User.current.committer');\n    return User.current.committer;\n}");
-        throw "Precondition on steal was violated"
-    }
-    var precondition = function() {
-        // isAsynchronous: false        
-        console.log("return !this.mine");
-        return !this.mine;
-    };
-    if (!precondition.call(this)) {
-        console.log("Violated: function() {\n    // isAsynchronous: false        \n    console.log('return !this.mine');\n    return !this.mine;\n}");
-        throw "Precondition on steal was violated"
-    }
-    console.log("this.assignee = User.current");
-    this.assignee = User.current;
-    this.handleEvent('steal');
-    console.log('Saving...');
-    var _savePromise = new Promise;
-    this.save(_savePromise.reject, _savePromise.fulfill); 
-    return _savePromise;
+    return q().then(function() {
+        this['assignee'] = User['current'];
+    });
 };
 
 /**
  *  Close the issue marking it as verified. 
  */
 issueSchema.methods.verify = function () {
-    // isAsynchronous: false        
-    this.handleEvent('verify');
-    console.log('Saving...');
-    var _savePromise = new Promise;
-    this.save(_savePromise.reject, _savePromise.fulfill); 
-    return _savePromise;
+    return q().then(function() {
+    });
 };
 /*************************** QUERIES ***************************/
 
 issueSchema.statics.bySeverity = function (toMatch) {
-    // isAsynchronous: true        
-    console.log("return this.model('Issue').find().where({ severity : toMatch }).exec()");
     return this.model('Issue').find().where({ severity : toMatch }).exec();
 };
 
 issueSchema.statics.byStatus = function (toMatch) {
-    // isAsynchronous: true        
-    console.log("return Issue.filterByStatus(this.model('Issue').find(), toMatch).exec()");
     return Issue.filterByStatus(this.model('Issue').find(), toMatch).exec();
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 
 issueSchema.virtual('issueKey').get(function () {
-    // isAsynchronous: false        
-    console.log("return this.project.token + '-' + this.issueId");
-    return this.project.token + "-" + this.issueId;
+    return q().then(function() {
+        return Project.find({ _id : this.project }).exec();
+    }).then(function(project) {
+        return project['token'] + "-" + this['issueId'];
+    });
 });
 
 issueSchema.virtual('votes').get(function () {
-    // isAsynchronous: false        
-    console.log("return count");
-    return count;
+    return q().then(function() {
+        return User.find({ _id : this.voters }).exec();
+    }).then(function(readLinkAction) {
+        return count;
+    });
 });
 
 issueSchema.virtual('commentCount').get(function () {
-    // isAsynchronous: false        
-    console.log("return count");
     return count;
 });
 
 issueSchema.virtual('waitingFor').get(function () {
-    // isAsynchronous: false        
-    console.log("return '' + (this.referenceDate() - this.reportedOn) / (1000*60*60*24) + ' day(s)'");
-    return "" + (this.referenceDate() - this.reportedOn) / (1000*60*60*24) + " day(s)";
+    return "" + (this.referenceDate() - this['reportedOn']) / (1000*60*60*24) + " day(s)";
 });
 
 issueSchema.virtual('mine').get(function () {
-    // isAsynchronous: false        
-    console.log("return User.current == this.assignee");
-    return User.current == this.assignee;
+    return q().then(function() {
+        return User.find({ _id : this.assignee }).exec();
+    }).then(function(assignee) {
+        return User['current'] == assignee;
+    });
 });
 
 issueSchema.virtual('free').get(function () {
-    // isAsynchronous: false        
-    console.log("return this.assignee == null");
-    return this.assignee == null;
+    return q().then(function() {
+        return User.find({ _id : this.assignee }).exec();
+    }).then(function(assignee) {
+        return assignee == null;
+    });
 });
 /*************************** PRIVATE OPS ***********************/
 
 issueSchema.methods.referenceDate = function () {
-    // isAsynchronous: false        
-    if (this.resolvedOn == null) {
-        console.log("return new Date().exec()");
+    if (this['resolvedOn'] == null) {
         return new Date().exec();
     } else  {
-        console.log("return this.resolvedOn.exec()");
-        return this.resolvedOn.exec();
+        return this['resolvedOn'].exec();
     }
 };
 
 issueSchema.statics.filterByStatus = function (issues, toMatch) {
-    // isAsynchronous: false        
-    console.log("return issues.where({ status : toMatch }).exec()");
     return issues.where({ status : toMatch }).exec();
 };
 
 issueSchema.methods.addComment = function (text, inReplyTo) {
-    // isAsynchronous: true        
-    var comment;
-    console.log("comment = new Comment()");
-    comment = new Comment();
-    
-    console.log("comment.user = User.current");
-    comment.user = User.current;
-    
-    console.log("comment.commentedOn = new Date()");
-    comment.commentedOn = new Date();
-    
-    console.log("comment.text = text");
-    comment.text = text;
-    
-    console.log("comment.inReplyTo = inReplyTo");
-    comment.inReplyTo = inReplyTo;
-    
-    console.log("// link issue and commentsncomment.issue = this;nthis.comments.push(comment)");
-    // link issue and comments
-    comment.issue = this;
-    this.comments.push(comment);
-    
-    console.log("/*this.userNotifier.commentAdded(this.issueKey, comment.user.email, this.reporter.email, text)*/");
-    /*this.userNotifier.commentAdded(this.issueKey, comment.user.email, this.reporter.email, text)*/;
+    return q().all([q().then(function() {
+        return this['issueKey'];
+    }), q().then(function() {
+        return User.findOne({ _id : comment.user }).exec();
+    }), q().then(function() {
+        return User.find({ _id : this.reporter }).exec();
+    })]).spread(function(issueKey, user, reporter) {
+        var comment;
+        comment = new Comment();
+        comment['user'] = User['current'];
+        comment['commentedOn'] = new Date();
+        comment['text'] = text;
+        comment['inReplyTo'] = inReplyTo;
+        // link issue and comments
+        comment.issue = this;
+        this.comments.push(comment);
+        this['userNotifier'].commentAdded(issueKey, user['email'], reporter['email'], text);
+    });
 };
 /*************************** STATE MACHINE ********************/
 issueSchema.methods.handleEvent = function (event) {
@@ -603,6 +388,34 @@ issueSchema.methods.handleEvent = function (event) {
             }
             break;
     }
+};
+
+issueSchema.methods.resolve = function () {
+    this.handleEvent('resolve');
+};
+issueSchema.methods.assignToMe = function () {
+    this.handleEvent('assignToMe');
+};
+issueSchema.methods.assign = function () {
+    this.handleEvent('assign');
+};
+issueSchema.methods.suspend = function () {
+    this.handleEvent('suspend');
+};
+issueSchema.methods.release = function () {
+    this.handleEvent('release');
+};
+issueSchema.methods.steal = function () {
+    this.handleEvent('steal');
+};
+issueSchema.methods.start = function () {
+    this.handleEvent('start');
+};
+issueSchema.methods.verify = function () {
+    this.handleEvent('verify');
+};
+issueSchema.methods.reopen = function () {
+    this.handleEvent('reopen');
 };
 
 
