@@ -23,54 +23,69 @@ suite('Expenses Application functional tests - Tests', function() {
     this.timeout(10000);
 
     test('declaredExpenseRemainsInDraft', function(done) {
-        return q().then(function() {
-            return Tests.declare(10.0);
-        }).then(function(declare) {
-            expense = declare;
-            assert.equal("Draft", expense['status']);
-        });
+        var behavior = function() {
+            return q().then(function() {
+                return Tests.declare(10.0);
+            }).then(function(declare) {
+                expense = declare;
+                assert.equal("Draft", expense['status']);
+            });
+        };
+        behavior().then(done, done);
     });
     test('automaticApproval', function(done) {
-        return q().all([q().then(function() {
-            return Tests.declare(49.9);
-        }), q().then(function() {
-            return Tests.declare(50.0);
-        })]).spread(function(declare, declare) {
-            assert.strictEqual(declare['automaticApproval'], true);
-            assert.strictEqual(!declare['automaticApproval'], true);
-        });
+        var behavior = function() {
+            return q().all([q().then(function() {
+                return Tests.declare(49.9);
+            }), q().then(function() {
+                return Tests.declare(50.0);
+            })]).spread(function(declare, declare) {
+                assert.strictEqual(declare['automaticApproval'], true);
+                assert.strictEqual(!declare['automaticApproval'], true);
+            });
+        };
+        behavior().then(done, done);
     });
     test('submitExpenseUnder50IsAutomaticallyApproved', function(done) {
-        return q().then(function() {
-            return Tests.declare(10.0);
-        }).then(function(declare) {
-            expense = declare;
-            assert.strictEqual(expense['automaticApproval'], true);
-            expense.submit();
-            assert.equal("Approved", expense['status']);
-        });
+        var behavior = function() {
+            return q().then(function() {
+                return Tests.declare(10.0);
+            }).then(function(declare) {
+                expense = declare;
+                assert.strictEqual(expense['automaticApproval'], true);
+                expense.submit();
+                assert.equal("Approved", expense['status']);
+            });
+        };
+        behavior().then(done, done);
     });
     test('submitExpense50AndOverNeedsApproval', function(done) {
-        return q().then(function() {
-            return Tests.declare(100.0);
-        }).then(function(declare) {
-            expense = declare;
-            assert.strictEqual(!expense['automaticApproval'], true);
-            expense.submit();
-            assert.equal("Submitted", expense['status']);
-        });
+        var behavior = function() {
+            return q().then(function() {
+                return Tests.declare(100.0);
+            }).then(function(declare) {
+                expense = declare;
+                assert.strictEqual(!expense['automaticApproval'], true);
+                expense.submit();
+                assert.equal("Submitted", expense['status']);
+            });
+        };
+        behavior().then(done, done);
     });
     test('rejectedExpense', function(done) {
-        return q().all([q().then(function() {
-            return Tests.declare(100.0);
-        }), q().then(function() {
-            expense.reject("Non-reimbursable")
-        })]).spread(function(declare, reject) {
-            expense = declare;
-            expense.submit();
-            reject;
-            assert.equal("Rejected", expense['status']);
-        });
+        var behavior = function() {
+            return q().all([q().then(function() {
+                return Tests.declare(100.0);
+            }), q().then(function() {
+                expense.reject("Non-reimbursable")
+            })]).spread(function(declare, reject) {
+                expense = declare;
+                expense.submit();
+                reject;
+                assert.equal("Rejected", expense['status']);
+            });
+        };
+        behavior().then(done, done);
     });
 });
 

@@ -15,16 +15,25 @@ suite('Car rental functional tests - CarScenarios', function() {
     this.timeout(10000);
 
     test('startsAsValid', function(done) {
-        car = Examples.car();
+        var behavior = function() {
+            car = Examples.car();
+        };
+        behavior().then(done, done);
     });
     test('startsAsAvailable', function(done) {
-        car = Examples.car();
-        assert.strictEqual(car['available'], true);
+        var behavior = function() {
+            car = Examples.car();
+            assert.strictEqual(car['available'], true);
+        };
+        behavior().then(done, done);
     });
     test('tooOld', function(done) {
         try {
-            car = Examples.car();
-            car['year'] = 1900;
+            var behavior = function() {
+                car = Examples.car();
+                car['year'] = 1900;
+            };
+            behavior().then(done, done);
         } catch (e) {
             return;
         }
@@ -32,8 +41,11 @@ suite('Car rental functional tests - CarScenarios', function() {
     });
     test('tooNew', function(done) {
         try {
-            car = Examples.car();
-            car['year'] = 2500;
+            var behavior = function() {
+                car = Examples.car();
+                car['year'] = 2500;
+            };
+            behavior().then(done, done);
         } catch (e) {
             return;
         }
@@ -41,8 +53,11 @@ suite('Car rental functional tests - CarScenarios', function() {
     });
     test('priceIsTooLow', function(done) {
         try {
-            car = Examples.car();
-            car['price'] = 49;
+            var behavior = function() {
+                car = Examples.car();
+                car['price'] = 49;
+            };
+            behavior().then(done, done);
         } catch (e) {
             return;
         }
@@ -50,51 +65,63 @@ suite('Car rental functional tests - CarScenarios', function() {
     });
     test('priceIsTooHigh', function(done) {
         try {
-            car = Examples.car();
-            car['price'] = 2000;
+            var behavior = function() {
+                car = Examples.car();
+                car['price'] = 2000;
+            };
+            behavior().then(done, done);
         } catch (e) {
             return;
         }
         throw "Failure expected, but no failure occurred"
     });
     test('unavailableWhenRented', function(done) {
-        return q().all([q().then(function() {
-            customer.rent(car)
-        }), q().then(function() {
-            customer.finishRental()
-        })]).spread(function(rent, finishRental) {
-            car = Examples.car();
-            customer = Examples.customer();
-            assert.strictEqual(car['available'], true);
-            rent;
-            assert.strictEqual(!car['available'], true);
-            finishRental;
-        });
+        var behavior = function() {
+            return q().all([q().then(function() {
+                customer.rent(car)
+            }), q().then(function() {
+                customer.finishRental()
+            })]).spread(function(rent, finishRental) {
+                car = Examples.car();
+                customer = Examples.customer();
+                assert.strictEqual(car['available'], true);
+                rent;
+                assert.strictEqual(!car['available'], true);
+                finishRental;
+            });
+        };
+        behavior().then(done, done);
     });
     test('availableUponReturn', function(done) {
-        return q().all([q().then(function() {
-            customer.rent(car)
-        }), q().then(function() {
-            customer.finishRental()
-        })]).spread(function(rent, finishRental) {
-            car = Examples.car();
-            customer = Examples.customer();
-            assert.strictEqual(car['available'], true);
-            rent;
-            assert.strictEqual(!car['available'], true);
-            finishRental;
-            assert.strictEqual(car['available'], true);
-        });
+        var behavior = function() {
+            return q().all([q().then(function() {
+                customer.rent(car)
+            }), q().then(function() {
+                customer.finishRental()
+            })]).spread(function(rent, finishRental) {
+                car = Examples.car();
+                customer = Examples.customer();
+                assert.strictEqual(car['available'], true);
+                rent;
+                assert.strictEqual(!car['available'], true);
+                finishRental;
+                assert.strictEqual(car['available'], true);
+            });
+        };
+        behavior().then(done, done);
     });
     test('unavailableWhenUnderRepair', function(done) {
-        return q().then(function() {
-            car.startRepair()
-        }).then(function(startRepair) {
-            car = Examples.car();
-            assert.strictEqual(!car['underRepair'], true);
-            startRepair;
-            assert.strictEqual(car['underRepair'], true);
-        });
+        var behavior = function() {
+            return q().then(function() {
+                car.startRepair()
+            }).then(function(startRepair) {
+                car = Examples.car();
+                assert.strictEqual(!car['underRepair'], true);
+                startRepair;
+                assert.strictEqual(car['underRepair'], true);
+            });
+        };
+        behavior().then(done, done);
     });
 });
 
