@@ -1,48 +1,120 @@
-package todo; 
+package todo;
 
 [kirra::User]
 class User
+
     readonly id attribute email : String;
+
     attribute name : String;
+    
+    attribute todos : Todo[*];
+
+    derived attribute openTodos : Todo[*] := { Todo#byStatus(self.todos, Todo::Status#Open) };
+    
+    private static derived attribute me : User := { (System#user() as User) };
 end;
 
-class Todo 
+class Todo
 
     private readonly attribute creator : User := { (System#user() as User) };
 
     attribute assignee : User[0, 1] := { (System#user() as User) };
 
     attribute description : String;
-    
+
     attribute details : Memo;
-    
-    attribute status : Status := Open;
-    
-    /* 
-     * Not really necessary, as you can change the status directly, 
-     * just for demo purposes.
-     */
+
+    attribute status : Status;
+
+    readonly attribute openedOn : Date := { Date#today() };
+
+    readonly attribute completedOn : Date;
+
     operation complete();
+
+    operation cancel();
+
+    static query open() : Todo[*];
     begin
-        self.status := Status#Done;
+        return Todo#byStatus(Todo extent, Status#Open);
+    end;
+    
+    static query mine() : Todo[*];
+    begin
+        return User#me.todos;
+    end;
+    
+    static query mineOpen() : Todo[*];
+    begin
+        return Todo#byStatus(User#me.todos, Status#Open);
+    end;
+    
+    static query openedToday() : Todo[*];
+    begin
+        return Todo#byOpeningDate(Todo extent, 0);
+    end;
+    
+    static query completedToday() : Todo[*];
+    begin
+        return Todo#byCompletionDate(Todo extent, 0);
+    end;
+
+    private static query byStatus(todos : Todo[*], status : Status) : Todo[*];
+    begin
+        return todos.select((t : Todo) : Boolean {
+        	t.status == status
+    	});
+    end;
+    
+    private static query byOpeningDate(todos : Todo[*], days : Integer) : Todo[*];
+    begin
+        return todos.select((t : Todo) : Boolean {
+        	t.openedOn.differenceInDays(Date#today()) <= days
+    	});
+    end;
+    
+    private static query byCompletionDate(todos : Todo[*], days : Integer) : Todo[*];
+    begin
+        return todos.select((t : Todo) : Boolean {
+        	t.status == Status#Completed and (t.completedOn.differenceInDays(Date#today()) <= days)
+    	});
+    end;
+
+    statemachine Status
+
+        initial state Open
+            transition on call(complete) to Completed;
+            transition on call(cancel) to Cancelled;
+        end;
+
+        state Completed
+            entry {
+                self.completedOn := Date#now();
+            };
+        end;
+
+        terminate state Cancelled end;
+
     end;
 
 end;
 
-enumeration Status
-    Open;
-    Done;
-    Cancelled;
-end;
-
 class Comment
     attribute text : Memo;
-    private readonly attribute commenter : User := { (System#user() as User) };
+    readonly attribute author : User := { (System#user() as User) };
 end;
 
 composition
-	navigable role comments : Comment[*];
-    navigable role todo : Todo; 
+
+    navigable role comments : Comment[*];
+
+    navigable role todo : Todo;
+
+end;
+
+association
+    role User.todos;
+    role Todo.assignee;
 end;
 
 end.
