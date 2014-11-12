@@ -122,6 +122,17 @@ class Rental
             (l.customer == c) and l.inProgress
         });
     end;
+    
+    static query inProgress() : Rental[*];
+    begin
+        return Rental extent.select((l : Rental) : Boolean {
+            l.inProgress
+        });
+    end;
+    static query all() : Rental[*];
+    begin
+        return Rental extent;
+    end;    
 end;
 
 class Model
@@ -158,7 +169,7 @@ class Customer
 
     private derived attribute hasCurrentRental : Boolean := {
         not (self.currentRental == null)
-    };
+    };   
 
     operation rent(car : Car)
         precondition car_available(car) { car.available }
@@ -173,7 +184,7 @@ class Customer
 
     derived attribute currentRental : Rental := {
         Rental#currentForCustomer(self)
-    };
+    }; 
 
     operation finishRental()
         precondition current_rental_exists { self.hasCurrentRental };
