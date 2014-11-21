@@ -33,7 +33,7 @@ var rentalSchema = new Schema({
 /*************************** QUERIES ***************************/
 
 rentalSchema.statics.currentForCar = function (c) {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return this.model('Rental').find().where({
             $and : [ 
                 { car : c },
@@ -44,7 +44,7 @@ rentalSchema.statics.currentForCar = function (c) {
 };
 
 rentalSchema.statics.currentForCustomer = function (c) {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return this.model('Rental').find().where({
             $and : [ 
                 { customer : c },
@@ -55,23 +55,27 @@ rentalSchema.statics.currentForCustomer = function (c) {
 };
 
 rentalSchema.statics.inProgress = function () {
-    return this.model('Rental').find().where({ 'inProgress' : true }).exec();
+    return q(/*leaf*/).then(function() {
+        return this.model('Rental').find().where({ 'inProgress' : true }).exec();
+    });
 };
 
 rentalSchema.statics.all = function () {
-    return this.model('Rental').find().exec();
+    return q(/*leaf*/).then(function() {
+        return this.model('Rental').find().exec();
+    });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 rentalSchema.virtual('description').get(function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return Car.find({ _id : this.car }).exec();
-    }).then(function(car) {
-        return Model.findOne({ _id : car.model }).exec();
-    }).then(function(model) {
-        return model['description'];
-    }).then(function(description) {
-        return description + " on " + this['started'];
+    }).then(function(/*singleChild*/read_car) {
+        return Model.findOne({ _id : read_car.model }).exec();
+    }).then(function(/*singleChild*/read_model) {
+        return read_model['description'];
+    }).then(function(/*singleChild*/read_description) {
+        return read_description + " on " + this['started'];
     });
 });
 

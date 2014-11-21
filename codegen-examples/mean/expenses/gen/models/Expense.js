@@ -55,20 +55,41 @@ var expenseSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 expenseSchema.statics.newExpense = function (description, amount, date, category, employee) {
-    return q().then(function() {
-        var newExpense;
-        newExpense = new Expense();
-        newExpense['description'] = description;
-        newExpense['amount'] = amount;
-        newExpense['date'] = date;
-        newExpense['category'] = category;
-        newExpense['employee'] = employee;
-        return newExpense.save();
+    var newExpense;
+    return q(/*sequential*/).then(function() {
+        return q(/*leaf*/).then(function() {
+            newExpense = new Expense();
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            newExpense['description'] = description;
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            newExpense['amount'] = amount;
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            newExpense['date'] = date;
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            newExpense['category'] = category;
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            newExpense['employee'] = employee;
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            newExpense.save();
+            return q(newExpense);
+        });
     });
 };
 
 expenseSchema.methods.approve = function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         this['approver'] = cls.getNamespace('currentUser');
     });
 };
@@ -77,9 +98,14 @@ expenseSchema.methods.approve = function () {
  *  Reject this expense. Please provide a reason. 
  */
 expenseSchema.methods.reject = function (reason) {
-    return q().then(function() {
-        this['rejectionReason'] = reason;
-        this['approver'] = cls.getNamespace('currentUser');
+    return q(/*sequential*/).then(function() {
+        return q(/*leaf*/).then(function() {
+            this['rejectionReason'] = reason;
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            this['approver'] = cls.getNamespace('currentUser');
+        });
     });
 };
 
@@ -103,42 +129,46 @@ expenseSchema.methods.submit = function () {
 /*************************** QUERIES ***************************/
 
 expenseSchema.statics.findExpensesByCategory = function (category) {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return this.model('Expense').find().where({ { 'category' : e  } : category }).exec();
     });
 };
 
 expenseSchema.statics.findExpensesInPeriod = function (start, end_) {
-    return this.model('Expense').find().where({
-        $and : [ 
-            {
-                $or : [ 
-                    { start : null },
-                    {
-                        $gte : [ 
-                            date,
-                            start
-                        ]
-                    }
-                ]
-            },
-            {
-                $or : [ 
-                    { end_ : null },
-                    {
-                        $lte : [ 
-                            date,
-                            end_
-                        ]
-                    }
-                ]
-            }
-        ]
-    }).exec();
+    return q(/*leaf*/).then(function() {
+        return this.model('Expense').find().where({
+            $and : [ 
+                {
+                    $or : [ 
+                        { start : null },
+                        {
+                            $gte : [ 
+                                date,
+                                start
+                            ]
+                        }
+                    ]
+                },
+                {
+                    $or : [ 
+                        { end_ : null },
+                        {
+                            $lte : [ 
+                                date,
+                                end_
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }).exec();
+    });
 };
 
 expenseSchema.statics.findByStatus = function (status) {
-    return this.model('Expense').find().where({ status : status }).exec();
+    return q(/*leaf*/).then(function() {
+        return this.model('Expense').find().where({ status : status }).exec();
+    });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
@@ -164,12 +194,26 @@ expenseSchema.virtual('daysProcessed').get(function () {
 /*************************** PRIVATE OPS ***********************/
 
 expenseSchema.methods.reportApproved = function () {
-    return q().all([q().then(function() {
-        return Employee.find({ _id : this.employee }).exec();
-    }), q().then(function() {
-        return Category.findOne({ _id : this.category }).exec();
-    })]).spread(function(employee, category) {
-        this['expensePayer'].expenseApproved(employee['name'], this['amount'], this['description'] + "(" + category['name'] + ")", this['expenseId']);
+    return q(/*parallel*/).all([
+        q(/*leaf*/).then(function() {
+            return Employee.find({ _id : this.employee }).exec();
+        }), q(/*leaf*/).then(function() {
+            return this['amount'];
+        }), q(/*parallel*/).all([
+            q(/*leaf*/).then(function() {
+                return Category.findOne({ _id : this.category }).exec();
+            }), q(/*leaf*/).then(function() {
+                return this['description'] + "(";
+            })
+        ]).spread(function(read_category, call_add) {
+            return call_add + read_category['name'] + ")";
+        }), q(/*leaf*/).then(function() {
+            return this['expenseId'];
+        }), q(/*leaf*/).then(function() {
+            return this['expensePayer'];
+        })
+    ]).spread(function(read_employee, read_amount, call_add, read_expenseId, read_expensePayer) {
+        read_expensePayer.expenseApproved(read_employee['name'], read_amount, call_add, read_expenseId);
     });
 };
 /*************************** STATE MACHINE ********************/
@@ -186,11 +230,14 @@ expenseSchema.methods.handleEvent = function (event) {
                     this.status = 'Approved';
                     // on entering Approved
                     (function() {
-                        return q().then(function() {
-                            this.reportApproved()
-                        }).then(function(reportApproved) {
-                            this['processed'] = new Date();
-                            reportApproved;
+                        return q(/*sequential*/).then(function() {
+                            return q(/*leaf*/).then(function() {
+                                this['processed'] = new Date();
+                            });
+                        }).then(function() {
+                            return q(/*leaf*/).then(function() {
+                                this.reportApproved();
+                            });
                         });
                     })();
                     return;
@@ -213,11 +260,14 @@ expenseSchema.methods.handleEvent = function (event) {
                 this.status = 'Approved';
                 // on entering Approved
                 (function() {
-                    return q().then(function() {
-                        this.reportApproved()
-                    }).then(function(reportApproved) {
-                        this['processed'] = new Date();
-                        reportApproved;
+                    return q(/*sequential*/).then(function() {
+                        return q(/*leaf*/).then(function() {
+                            this['processed'] = new Date();
+                        });
+                    }).then(function() {
+                        return q(/*leaf*/).then(function() {
+                            this.reportApproved();
+                        });
                     });
                 })();
                 return;

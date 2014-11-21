@@ -16,22 +16,47 @@ suite('Car rental functional tests - CarScenarios', function() {
 
     test('startsAsValid', function(done) {
         var behavior = function() {
-            car = Examples.car();
+            var car;
+            return q(/*leaf*/).then(function() {
+                return Examples.newCar();
+            }).then(function(/*singleChild*/call_newCar) {
+                car = call_newCar;
+            });
         };
         behavior().then(done, done);
     });
     test('startsAsAvailable', function(done) {
         var behavior = function() {
-            car = Examples.car();
-            assert.strictEqual(car['available'], true);
+            var car;
+            return q(/*sequential*/).then(function() {
+                return q(/*leaf*/).then(function() {
+                    return Examples.newCar();
+                }).then(function(/*singleChild*/call_newCar) {
+                    car = call_newCar;
+                });
+            }).then(function() {
+                return q(/*leaf*/).then(function() {
+                    assert.strictEqual(car['available'], true);
+                });
+            });
         };
         behavior().then(done, done);
     });
     test('tooOld', function(done) {
         try {
             var behavior = function() {
-                car = Examples.car();
-                car['year'] = 1900;
+                var car;
+                return q(/*sequential*/).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return Examples.newCar();
+                    }).then(function(/*singleChild*/call_newCar) {
+                        car = call_newCar;
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        car['year'] = 1900;
+                    });
+                });
             };
             behavior().then(done, done);
         } catch (e) {
@@ -42,8 +67,18 @@ suite('Car rental functional tests - CarScenarios', function() {
     test('tooNew', function(done) {
         try {
             var behavior = function() {
-                car = Examples.car();
-                car['year'] = 2500;
+                var car;
+                return q(/*sequential*/).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return Examples.newCar();
+                    }).then(function(/*singleChild*/call_newCar) {
+                        car = call_newCar;
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        car['year'] = 2500;
+                    });
+                });
             };
             behavior().then(done, done);
         } catch (e) {
@@ -54,8 +89,18 @@ suite('Car rental functional tests - CarScenarios', function() {
     test('priceIsTooLow', function(done) {
         try {
             var behavior = function() {
-                car = Examples.car();
-                car['price'] = 49;
+                var car;
+                return q(/*sequential*/).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return Examples.newCar();
+                    }).then(function(/*singleChild*/call_newCar) {
+                        car = call_newCar;
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        car['price'] = 49;
+                    });
+                });
             };
             behavior().then(done, done);
         } catch (e) {
@@ -66,8 +111,18 @@ suite('Car rental functional tests - CarScenarios', function() {
     test('priceIsTooHigh', function(done) {
         try {
             var behavior = function() {
-                car = Examples.car();
-                car['price'] = 2000;
+                var car;
+                return q(/*sequential*/).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return Examples.newCar();
+                    }).then(function(/*singleChild*/call_newCar) {
+                        car = call_newCar;
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        car['price'] = 2000;
+                    });
+                });
             };
             behavior().then(done, done);
         } catch (e) {
@@ -77,48 +132,113 @@ suite('Car rental functional tests - CarScenarios', function() {
     });
     test('unavailableWhenRented', function(done) {
         var behavior = function() {
-            return q().all([q().then(function() {
-                customer.rent(car)
-            }), q().then(function() {
-                customer.finishRental()
-            })]).spread(function(rent, finishRental) {
-                car = Examples.car();
-                customer = Examples.customer();
-                assert.strictEqual(car['available'], true);
-                rent;
-                assert.strictEqual(!car['available'], true);
-                finishRental;
+            var car;
+            var customer;
+            return q(/*sequential*/).then(function() {
+                return q(/*sequential*/).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return Examples.newCar();
+                    }).then(function(/*singleChild*/call_newCar) {
+                        car = call_newCar;
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return Examples.newCustomer();
+                    }).then(function(/*singleChild*/call_newCustomer) {
+                        customer = call_newCustomer;
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        assert.strictEqual(car['available'], true);
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        customer.rent(car);
+                    });
+                });
+            }).then(function() {
+                return q(/*sequential*/).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        assert.strictEqual(!car['available'], true);
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        customer.finishRental();
+                    });
+                });
             });
         };
         behavior().then(done, done);
     });
     test('availableUponReturn', function(done) {
         var behavior = function() {
-            return q().all([q().then(function() {
-                customer.rent(car)
-            }), q().then(function() {
-                customer.finishRental()
-            })]).spread(function(rent, finishRental) {
-                car = Examples.car();
-                customer = Examples.customer();
-                assert.strictEqual(car['available'], true);
-                rent;
-                assert.strictEqual(!car['available'], true);
-                finishRental;
-                assert.strictEqual(car['available'], true);
+            var car;
+            var customer;
+            return q(/*sequential*/).then(function() {
+                return q(/*sequential*/).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return Examples.newCar();
+                    }).then(function(/*singleChild*/call_newCar) {
+                        car = call_newCar;
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return Examples.newCustomer();
+                    }).then(function(/*singleChild*/call_newCustomer) {
+                        customer = call_newCustomer;
+                    });
+                });
+            }).then(function() {
+                return q(/*sequential*/).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        assert.strictEqual(car['available'], true);
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        customer.rent(car);
+                    });
+                });
+            }).then(function() {
+                return q(/*sequential*/).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        assert.strictEqual(!car['available'], true);
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        customer.finishRental();
+                    });
+                });
+            }).then(function() {
+                return q(/*leaf*/).then(function() {
+                    assert.strictEqual(car['available'], true);
+                });
             });
         };
         behavior().then(done, done);
     });
     test('unavailableWhenUnderRepair', function(done) {
         var behavior = function() {
-            return q().then(function() {
-                car.startRepair()
-            }).then(function(startRepair) {
-                car = Examples.car();
-                assert.strictEqual(!car['underRepair'], true);
-                startRepair;
-                assert.strictEqual(car['underRepair'], true);
+            var car;
+            return q(/*sequential*/).then(function() {
+                return q(/*sequential*/).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return Examples.newCar();
+                    }).then(function(/*singleChild*/call_newCar) {
+                        car = call_newCar;
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        assert.strictEqual(!car['underRepair'], true);
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        car.startRepair();
+                    });
+                });
+            }).then(function() {
+                return q(/*leaf*/).then(function() {
+                    assert.strictEqual(car['underRepair'], true);
+                });
             });
         };
         behavior().then(done, done);

@@ -29,18 +29,37 @@ var userSchema = new Schema({
  *  Creates a meeting organized by this participant. 
  */
 userSchema.methods.startMeetingOnBehalf = function (title, description, date) {
-    return q().then(function() {
-        return User.findOne({ _id : newMeeting.organizer }).exec();
-    }).then(function(organizer) {
-        newMeeting.addParticipant(organizer)
-    }).then(function(addParticipant) {
-        var newMeeting;
-        newMeeting = new Meeting();
-        newMeeting['date'] = date;
-        newMeeting['title'] = title;
-        newMeeting['description'] = description;
-        newMeeting['organizer'] = this;
-        addParticipant;
+    var newMeeting;
+    return q(/*sequential*/).then(function() {
+        return q(/*leaf*/).then(function() {
+            newMeeting = new Meeting();
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            newMeeting['date'] = date;
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            newMeeting['title'] = title;
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            newMeeting['description'] = description;
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            newMeeting['organizer'] = this;
+        });
+    }).then(function() {
+        return q(/*parallel*/).all([
+            q(/*leaf*/).then(function() {
+                return User.findOne({ _id : newMeeting.organizer }).exec();
+            }), q(/*leaf*/).then(function() {
+                return newMeeting;
+            })
+        ]).spread(function(read_organizer, read_NewMeeting) {
+            read_NewMeeting.addParticipant(read_organizer);
+        });
     });
 };
 /*************************** DERIVED RELATIONSHIPS ****************/

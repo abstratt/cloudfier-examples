@@ -41,27 +41,46 @@ var customerSchema = new Schema({
 /*************************** QUERIES ***************************/
 
 customerSchema.statics.findByName = function (firstName, lastName) {
-    return this.model('Customer').find().where({
-        $or : [ 
-            {
-                $eq : [ 
-                    firstName,
-                    firstName
-                ]
-            },
-            {
-                $eq : [ 
-                    lastName,
-                    lastName
-                ]
-            }
-        ]
-    }).save();
+    return q(/*leaf*/).then(function() {
+        this.model('Customer').find().where({
+            $or : [ 
+                {
+                    $eq : [ 
+                        firstName,
+                        firstName
+                    ]
+                },
+                {
+                    $eq : [ 
+                        lastName,
+                        lastName
+                    ]
+                }
+            ]
+        }).save();
+        return q(this.model('Customer').find().where({
+            $or : [ 
+                {
+                    $eq : [ 
+                        firstName,
+                        firstName
+                    ]
+                },
+                {
+                    $eq : [ 
+                        lastName,
+                        lastName
+                    ]
+                }
+            ]
+        }));
+    });
 };
 
 customerSchema.statics.vipCustomers = function () {
-    return q().then(function() {
-        return this.model('Customer').find().where({ 'vip' : true }).save();
+    return q(/*leaf*/).then(function() {
+        this.model('Customer').find().where({ 'vip' : true }).save();
+        return q(this.model('Customer').find().where({ 'vip' : true }));
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
@@ -74,27 +93,27 @@ personSchema.virtual('fullName').get(function () {
  *  A valuable customer is a customer that has two or more cars with us 
  */
 customerSchema.virtual('vip').get(function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return Car.findOne({ _id : this.cars }).exec();
-    }).then(function(cars) {
-        return count >= 2;
+    }).then(function(/*singleChild*/read_cars) {
+        return /*TBD*/count >= 2;
     });
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 customerSchema.methods.getPendingServices = function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return Car.findOne({ _id : this.cars }).exec();
-    }).then(function(cars) {
-        return reduce;
+    }).then(function(/*singleChild*/read_cars) {
+        return /*TBD*/reduce;
     });
 };
 
 customerSchema.methods.getCompletedServices = function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return Car.findOne({ _id : this.cars }).exec();
-    }).then(function(cars) {
-        return reduce;
+    }).then(function(/*singleChild*/read_cars) {
+        return /*TBD*/reduce;
     });
 };
 

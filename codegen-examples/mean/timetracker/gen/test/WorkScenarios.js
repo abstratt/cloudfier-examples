@@ -14,11 +14,19 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
 
     test('workDateDefaultsToToday', function(done) {
         var behavior = function() {
-            return q().then(function() {
-                return Examples.task().addWork(1);
-            }).then(function(addWork) {
-                work = addWork;
-                assert.equal(new Date(), work['date']);
+            var work;
+            return q(/*sequential*/).then(function() {
+                return q(/*leaf*/).then(function() {
+                    return Examples.task();
+                }).then(function(/*singleChild*/call_task) {
+                    return call_task.addWork(1);
+                }).then(function(/*singleChild*/call_addWork) {
+                    work = call_addWork;
+                });
+            }).then(function() {
+                return q(/*leaf*/).then(function() {
+                    assert.equal(new Date(), work['date']);
+                });
             });
         };
         behavior().then(done, done);
@@ -26,19 +34,39 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
     test('cannotAssignWorkToInvoiceFromAnotherClient', function(done) {
         try {
             var behavior = function() {
-                return q().all([q().then(function() {
-                    return client1.newTask("Some task");
-                }).then(function(newTask) {
-                    return newTask.addWork(1);
-                }), q().then(function() {
-                    return client2.startInvoice();
-                }).then(function(startInvoice) {
-                    work.submit(startInvoice)
-                })]).spread(function(addWork, submit) {
-                    client1 = Examples.client();
-                    client2 = Examples.client();
-                    work = addWork;
-                    submit;
+                var client1;
+                var client2;
+                var work;
+                return q(/*sequential*/).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return Examples.client();
+                    }).then(function(/*singleChild*/call_client) {
+                        client1 = call_client;
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return Examples.client();
+                    }).then(function(/*singleChild*/call_client) {
+                        client2 = call_client;
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return client1.newTask("Some task");
+                    }).then(function(/*singleChild*/call_newTask) {
+                        return call_newTask.addWork(1);
+                    }).then(function(/*singleChild*/call_addWork) {
+                        work = call_addWork;
+                    });
+                }).then(function() {
+                    return q(/*parallel*/).all([
+                        q(/*leaf*/).then(function() {
+                            return client2.startInvoice();
+                        }), q(/*leaf*/).then(function() {
+                            return work;
+                        })
+                    ]).spread(function(call_startInvoice, read_Work) {
+                        read_Work.submit(call_startInvoice);
+                    });
                 });
             };
             behavior().then(done, done);
@@ -50,23 +78,34 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
     test('cannotSubmitWorkToInvoiceAlreadyInvoiced', function(done) {
         try {
             var behavior = function() {
-                return q().all([q().then(function() {
-                    return Examples.client().newTask("Some task");
-                }).then(function(newTask) {
-                    return newTask.addWork(1);
-                }), q().then(function() {
-                    return work.getClient();
-                }).then(function(client) {
-                    return client.startInvoice();
-                }), q().then(function() {
-                    work.submit(invoice)
-                }), q().then(function() {
-                    work.submit(invoice)
-                })]).spread(function(addWork, startInvoice, submit, submit) {
-                    work = addWork;
-                    invoice = startInvoice;
-                    submit;
-                    submit;
+                var invoice;
+                var work;
+                return q(/*sequential*/).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return Examples.client();
+                    }).then(function(/*singleChild*/call_client) {
+                        return call_client.newTask("Some task");
+                    }).then(function(/*singleChild*/call_newTask) {
+                        return call_newTask.addWork(1);
+                    }).then(function(/*singleChild*/call_addWork) {
+                        work = call_addWork;
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return work.getClient();
+                    }).then(function(/*singleChild*/read_client) {
+                        return read_client.startInvoice();
+                    }).then(function(/*singleChild*/call_startInvoice) {
+                        invoice = call_startInvoice;
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        work.submit(invoice);
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        work.submit(invoice);
+                    });
                 });
             };
             behavior().then(done, done);
@@ -78,10 +117,10 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
     test('unitsWorkedMustBePositive', function(done) {
         try {
             var behavior = function() {
-                return q().then(function() {
-                    return Examples.task().addWork(-1);
-                }).then(function(addWork) {
-                    addWork;
+                return q(/*leaf*/).then(function() {
+                    return Examples.task();
+                }).then(function(/*singleChild*/call_task) {
+                    return call_task.addWork(-1);
                 });
             };
             behavior().then(done, done);
@@ -93,10 +132,10 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
     test('unitsWorkedMayNotBeZero', function(done) {
         try {
             var behavior = function() {
-                return q().then(function() {
-                    return Examples.task().addWork(0);
-                }).then(function(addWork) {
-                    addWork;
+                return q(/*leaf*/).then(function() {
+                    return Examples.task();
+                }).then(function(/*singleChild*/call_task) {
+                    return call_task.addWork(0);
                 });
             };
             behavior().then(done, done);

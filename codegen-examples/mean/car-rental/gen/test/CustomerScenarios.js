@@ -16,24 +16,48 @@ suite('Car rental functional tests - CustomerScenarios', function() {
 
     test('rentalHistory', function(done) {
         var behavior = function() {
-            return q().all([q().then(function() {
-                customer.rent(car)
-            }), q().then(function() {
-                return Rental.findOne({ _id : customer.rentals }).exec();
-            }), q().then(function() {
-                customer.finishRental()
-            }), q().then(function() {
-                customer.rent(car)
-            }), q().then(function() {
-                return Rental.findOne({ _id : customer.rentals }).exec();
-            })]).spread(function(rent, rentals, finishRental, rent, rentals) {
-                car = Examples.car();
-                customer = Examples.customer();
-                rent;
-                assert.equal(1, count);
-                finishRental;
-                rent;
-                assert.equal(2, count);
+            var car;
+            var customer;
+            return q(/*sequential*/).then(function() {
+                return q(/*sequential*/).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return Examples.newCar();
+                    }).then(function(/*singleChild*/call_newCar) {
+                        car = call_newCar;
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return Examples.newCustomer();
+                    }).then(function(/*singleChild*/call_newCustomer) {
+                        customer = call_newCustomer;
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        customer.rent(car);
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return Rental.findOne({ _id : customer.rentals }).exec();
+                    }).then(function(/*singleChild*/read_rentals) {
+                        assert.equal(1, /*TBD*/count);
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        customer.finishRental();
+                    });
+                });
+            }).then(function() {
+                return q(/*sequential*/).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        customer.rent(car);
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return Rental.findOne({ _id : customer.rentals }).exec();
+                    }).then(function(/*singleChild*/read_rentals) {
+                        assert.equal(2, /*TBD*/count);
+                    });
+                });
             });
         };
         behavior().then(done, done);

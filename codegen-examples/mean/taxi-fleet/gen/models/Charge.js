@@ -52,41 +52,66 @@ chargeSchema.methods.cancelPayment = function () {
 };
 
 chargeSchema.statics.newCharge = function (taxi, payer, date) {
-    return q().all([q().then(function() {
-        return Shift.findOne({ _id : taxi.shift }).exec();
-    }), q().then(function() {
-        return Shift.findOne({ _id : taxi.shift }).exec();
-    })]).spread(function(shift, shift) {
-        var charge;
-        charge = new Charge();
-        charge['description'] = taxi['name'] + " - " + shift['description'];
-        charge['amount'] = shift['price'];
-        charge['taxi'] = taxi;
-        charge['date'] = date;
-        // link driver and charges
-        charge.driver = payer;
-        payer.charges.push(charge);
+    var charge;
+    return q(/*sequential*/).then(function() {
+        return q(/*leaf*/).then(function() {
+            charge = new Charge();
+        });
+    }).then(function() {
+        return q(/*parallel*/).all([
+            q(/*leaf*/).then(function() {
+                return Shift.findOne({ _id : taxi.shift }).exec();
+            }), q(/*leaf*/).then(function() {
+                return taxi['name'] + " - ";
+            })
+        ]).spread(function(read_shift, call_add) {
+            charge['description'] = call_add + read_shift['description'];
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            return Shift.findOne({ _id : taxi.shift }).exec();
+        }).then(function(/*singleChild*/read_shift) {
+            charge['amount'] = read_shift['price'];
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            charge['taxi'] = taxi;
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            charge['date'] = date;
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            // link driver and charges
+            charge.driver = payer;
+            payer.charges.push(charge);
+        });
     });
 };
 /*************************** QUERIES ***************************/
 
 chargeSchema.statics.pendingCharges = function () {
-    return this.model('Charge').find().where({
-        $ne : [ 
-            { 'paid' : true },
-            true
-        ]
-    }).exec();
+    return q(/*leaf*/).then(function() {
+        return this.model('Charge').find().where({
+            $ne : [ 
+                { 'paid' : true },
+                true
+            ]
+        }).exec();
+    });
 };
 
 chargeSchema.statics.byTaxi = function (taxi) {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return this.model('Charge').find().where({ taxi : taxi }).exec();
     });
 };
 
 chargeSchema.statics.paidCharges = function () {
-    return this.model('Charge').find().where({ 'paid' : true }).exec();
+    return q(/*leaf*/).then(function() {
+        return this.model('Charge').find().where({ 'paid' : true }).exec();
+    });
 };
 /*************************** DERIVED PROPERTIES ****************/
 

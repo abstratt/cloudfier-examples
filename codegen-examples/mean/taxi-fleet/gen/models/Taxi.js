@@ -34,46 +34,48 @@ var taxiSchema = new Schema({
  *  Create charges for every driver 
  */
 taxiSchema.methods.charge = function (date) {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return Driver.findOne({ _id : this.drivers }).exec();
-    }).then(function(drivers) {
-        forEach;
+    }).then(function(/*singleChild*/read_drivers) {
+        /*TBD*/forEach;
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 taxiSchema.virtual('driverCount').get(function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return Driver.findOne({ _id : this.drivers }).exec();
-    }).then(function(drivers) {
-        return count;
+    }).then(function(/*singleChild*/read_drivers) {
+        return /*TBD*/count;
     });
 });
 
 taxiSchema.virtual('full').get(function () {
-    return q().all([q().then(function() {
-        return Shift.findOne({ _id : this.shift }).exec();
-    }), q().then(function() {
-        return this['driverCount'];
-    })]).spread(function(shift, driverCount) {
-        return driverCount >= shift['shiftsPerDay'];
+    return q(/*parallel*/).all([
+        q(/*leaf*/).then(function() {
+            return Shift.findOne({ _id : this.shift }).exec();
+        }), q(/*leaf*/).then(function() {
+            return this['driverCount'];
+        })
+    ]).spread(function(read_shift, read_driverCount) {
+        return read_driverCount >= read_shift['shiftsPerDay'];
     });
 });
 
 taxiSchema.virtual('booked').get(function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return this['driverCount'];
-    }).then(function(driverCount) {
-        return driverCount > 0;
+    }).then(function(/*singleChild*/read_driverCount) {
+        return read_driverCount > 0;
     });
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 taxiSchema.methods.getPendingCharges = function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return Charge.byTaxi(this);
-    }).then(function(byTaxi) {
-        return byTaxi.where({
+    }).then(function(/*singleChild*/call_byTaxi) {
+        return call_byTaxi.where({
             $ne : [ 
                 { 'paid' : true },
                 true

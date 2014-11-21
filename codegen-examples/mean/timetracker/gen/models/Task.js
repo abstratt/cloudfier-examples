@@ -44,14 +44,26 @@ var taskSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 taskSchema.methods.addWork = function (units) {
-    return q().then(function() {
-        var newWork;
-        newWork = new Work();
-        newWork['units'] = units;
-        // link reported and task
-        this.reported.push(newWork);
-        newWork.task = this;
-        return newWork.save();
+    var newWork;
+    return q(/*sequential*/).then(function() {
+        return q(/*leaf*/).then(function() {
+            newWork = new Work();
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            newWork['units'] = units;
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            // link reported and task
+            this.reported.push(newWork);
+            newWork.task = this;
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            newWork.save();
+            return q(newWork);
+        });
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
@@ -61,16 +73,20 @@ taskSchema.virtual('unitsReported').get(function () {
 });
 
 taskSchema.virtual('unitsToInvoice').get(function () {
-    return q().then(function() {
-        return this.getToInvoice();
-    }).then(function(toInvoice) {
-        return this.countUnits(toInvoice);
+    return q(/*parallel*/).all([
+        q(/*leaf*/).then(function() {
+            return this.getToInvoice();
+        }), q(/*leaf*/).then(function() {
+            return this;
+        })
+    ]).spread(function(read_toInvoice, readSelfAction) {
+        return readSelfAction.countUnits(read_toInvoice);
     });
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 taskSchema.methods.getToInvoice = function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return this['reported'].where({
             $ne : [ 
                 { 'invoiced' : true },

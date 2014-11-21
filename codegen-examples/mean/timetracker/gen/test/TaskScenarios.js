@@ -14,44 +14,81 @@ suite('Time Tracker functional tests - TaskScenarios', function() {
 
     test('timeReported', function(done) {
         var behavior = function() {
-            return q().all([q().then(function() {
-                return task.addWork(4);
-            }), q().then(function() {
-                return task.addWork(3);
-            })]).spread(function(addWork, addWork) {
-                task = Examples.task();
-                addWork;
-                addWork;
-                assert.equal(2, count);
-                assert.equal(7, task['unitsReported']);
+            var task;
+            return q(/*sequential*/).then(function() {
+                return q(/*leaf*/).then(function() {
+                    return Examples.task();
+                }).then(function(/*singleChild*/call_task) {
+                    task = call_task;
+                });
+            }).then(function() {
+                return q(/*leaf*/).then(function() {
+                    return task.addWork(4);
+                });
+            }).then(function() {
+                return q(/*leaf*/).then(function() {
+                    return task.addWork(3);
+                });
+            }).then(function() {
+                return q(/*leaf*/).then(function() {
+                    assert.equal(2, /*TBD*/count);
+                });
+            }).then(function() {
+                return q(/*leaf*/).then(function() {
+                    assert.equal(7, task['unitsReported']);
+                });
             });
         };
         behavior().then(done, done);
     });
     test('timeToInvoice', function(done) {
         var behavior = function() {
-            return q().all([q().then(function() {
-                return task.addWork(4);
-            }), q().then(function() {
-                return task.addWork(3);
-            }), q().then(function() {
-                return Client.find({ _id : task.client }).exec();
-            }).then(function(client) {
-                return client.startInvoice();
-            }), q().then(function() {
-                work1.submit(invoice)
-            }), q().then(function() {
-                return task.getToInvoice();
-            }), q().then(function() {
-                return task['unitsToInvoice'];
-            })]).spread(function(addWork, addWork, startInvoice, submit, toInvoice, unitsToInvoice) {
-                task = Examples.task();
-                work1 = addWork;
-                work2 = addWork;
-                invoice = startInvoice;
-                submit;
-                assert.equal(1, count);
-                assert.equal(3, unitsToInvoice);
+            var task;
+            var invoice;
+            var work1;
+            var work2;
+            return q(/*sequential*/).then(function() {
+                return q(/*leaf*/).then(function() {
+                    return Examples.task();
+                }).then(function(/*singleChild*/call_task) {
+                    task = call_task;
+                });
+            }).then(function() {
+                return q(/*leaf*/).then(function() {
+                    return task.addWork(4);
+                }).then(function(/*singleChild*/call_addWork) {
+                    work1 = call_addWork;
+                });
+            }).then(function() {
+                return q(/*leaf*/).then(function() {
+                    return task.addWork(3);
+                }).then(function(/*singleChild*/call_addWork) {
+                    work2 = call_addWork;
+                });
+            }).then(function() {
+                return q(/*leaf*/).then(function() {
+                    return Client.find({ _id : task.client }).exec();
+                }).then(function(/*singleChild*/read_client) {
+                    return read_client.startInvoice();
+                }).then(function(/*singleChild*/call_startInvoice) {
+                    invoice = call_startInvoice;
+                });
+            }).then(function() {
+                return q(/*leaf*/).then(function() {
+                    work1.submit(invoice);
+                });
+            }).then(function() {
+                return q(/*leaf*/).then(function() {
+                    return task.getToInvoice();
+                }).then(function(/*singleChild*/read_toInvoice) {
+                    assert.equal(1, /*TBD*/count);
+                });
+            }).then(function() {
+                return q(/*leaf*/).then(function() {
+                    return task['unitsToInvoice'];
+                }).then(function(/*singleChild*/read_unitsToInvoice) {
+                    assert.equal(3, read_unitsToInvoice);
+                });
             });
         };
         behavior().then(done, done);

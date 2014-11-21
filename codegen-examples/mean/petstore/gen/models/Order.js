@@ -41,12 +41,23 @@ var orderSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 orderSchema.methods.addItem = function (product, quantity) {
-    return q().then(function() {
-        var i;
-        i = new OrderDetail();
-        i['product'] = product;
-        i['quantity'] = quantity;
-        i['order'] = this;
+    var i;
+    return q(/*sequential*/).then(function() {
+        return q(/*leaf*/).then(function() {
+            i = new OrderDetail();
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            i['product'] = product;
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            i['quantity'] = quantity;
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            i['order'] = this;
+        });
     });
 };
 
@@ -58,31 +69,31 @@ orderSchema.methods.process = function () {
 /*************************** DERIVED PROPERTIES ****************/
 
 orderSchema.virtual('orderWeightTotal').get(function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return this.computeWeightTotal();
-    }).then(function(computeWeightTotal) {
-        return computeWeightTotal;
+    }).then(function(/*singleChild*/call_computeWeightTotal) {
+        return call_computeWeightTotal;
     });
 });
 
 orderSchema.virtual('orderTotal').get(function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return this.computeOrderTotal();
-    }).then(function(computeOrderTotal) {
-        return computeOrderTotal;
+    }).then(function(/*singleChild*/call_computeOrderTotal) {
+        return call_computeOrderTotal;
     });
 });
 /*************************** PRIVATE OPS ***********************/
 
 orderSchema.methods.computeOrderTotal = function () {
-    return q().then(function() {
-        return reduce.exec();
+    return q(/*leaf*/).then(function() {
+        return /*TBD*/reduce.exec();
     });
 };
 
 orderSchema.methods.computeWeightTotal = function () {
-    return q().then(function() {
-        return reduce.exec();
+    return q(/*leaf*/).then(function() {
+        return /*TBD*/reduce.exec();
     });
 };
 /*************************** STATE MACHINE ********************/

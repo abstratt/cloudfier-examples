@@ -24,47 +24,67 @@ var customerSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 customerSchema.methods.rent = function (car) {
-    return q().then(function() {
-        var rental;
-        rental = new Rental();
-        // link customer and rentals
-        rental.customer = this;
-        this.rentals.push(rental);
-        // link car and rentals
-        rental.car = car;
-        car.rentals.push(rental);
-        car.carRented();
+    var rental;
+    return q(/*sequential*/).then(function() {
+        return q(/*leaf*/).then(function() {
+            rental = new Rental();
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            // link customer and rentals
+            rental.customer = this;
+            this.rentals.push(rental);
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            // link car and rentals
+            rental.car = car;
+            car.rentals.push(rental);
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            car.carRented();
+        });
     });
 };
 
 customerSchema.methods.finishRental = function () {
-    return q().all([q().then(function() {
-        return this.getCurrentRental();
-    }).then(function(currentRental) {
-        return Car.find({ _id : currentRental.car }).exec();
-    }), q().then(function() {
-        return this.getCurrentRental();
-    })]).spread(function(car, currentRental) {
-        car.carReturned();
-        currentRental.finish();
+    return q(/*sequential*/).then(function() {
+        return q(/*leaf*/).then(function() {
+            return this.getCurrentRental();
+        }).then(function(/*singleChild*/read_currentRental) {
+            return Car.find({ _id : read_currentRental.car }).exec();
+        }).then(function(/*singleChild*/read_car) {
+            read_car.carReturned();
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            return this.getCurrentRental();
+        }).then(function(/*singleChild*/read_currentRental) {
+            read_currentRental.finish();
+        });
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 customerSchema.virtual('hasCurrentRental').get(function () {
-    return q().then(function() {
-        return this.getCurrentRental();
-    }).then(function(currentRental) {
-        return !currentRental == null;
+    return q(/*parallel*/).all([
+        q(/*leaf*/).then(function() {
+            return this.getCurrentRental();
+        }), q(/*leaf*/).then(function() {
+            return null;
+        })
+    ]).spread(function(read_currentRental, valueSpecificationAction) {
+        return !read_currentRental == valueSpecificationAction;
     });
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 customerSchema.methods.getCurrentRental = function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return Rental.currentForCustomer(this);
-    }).then(function(currentForCustomer) {
-        return currentForCustomer;
+    }).then(function(/*singleChild*/call_currentForCustomer) {
+        return call_currentForCustomer;
     });
 };
 

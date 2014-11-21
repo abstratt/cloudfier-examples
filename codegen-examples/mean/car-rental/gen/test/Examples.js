@@ -7,30 +7,97 @@ var Make = require('../models/Make.js');
 var Customer = require('../models/Customer.js');
 
 var Examples = {
-    make : function() {
-        make = new Make();
-        make['name'] = "Fiat";
-        return make.save();
+    newMake : function() {
+        var make;
+        return q(/*sequential*/).then(function() {
+            return q(/*leaf*/).then(function() {
+                make = new Make();
+            });
+        }).then(function() {
+            return q(/*leaf*/).then(function() {
+                make['name'] = "Fiat";
+            });
+        }).then(function() {
+            return q(/*leaf*/).then(function() {
+                make.save();
+                return q(make);
+            });
+        });
     },
-    model : function() {
-        carModel = new Model();
-        carModel['name'] = "Mille";
-        carModel['make'] = Examples.make();
-        return carModel.save();
+    newModel : function() {
+        var carModel;
+        return q(/*sequential*/).then(function() {
+            return q(/*leaf*/).then(function() {
+                carModel = new Model();
+            });
+        }).then(function() {
+            return q(/*leaf*/).then(function() {
+                carModel['name'] = "Mille";
+            });
+        }).then(function() {
+            return q(/*leaf*/).then(function() {
+                return Examples.newMake();
+            }).then(function(/*singleChild*/call_newMake) {
+                carModel['make'] = call_newMake;
+            });
+        }).then(function() {
+            return q(/*leaf*/).then(function() {
+                carModel.save();
+                return q(carModel);
+            });
+        });
     },
-    car : function() {
-        car = new Car();
-        car['year'] = (new Date().getYear() + 1900);
-        car['price'] = 100;
-        car['color'] = "black";
-        car['plate'] = "ABC-1234";
-        car['model'] = Examples.model();
-        return car.save();
+    newCar : function() {
+        var car;
+        return q(/*sequential*/).then(function() {
+            return q(/*leaf*/).then(function() {
+                car = new Car();
+            });
+        }).then(function() {
+            return q(/*leaf*/).then(function() {
+                car['year'] = (new Date().getYear() + 1900);
+            });
+        }).then(function() {
+            return q(/*leaf*/).then(function() {
+                car['price'] = 100;
+            });
+        }).then(function() {
+            return q(/*leaf*/).then(function() {
+                car['color'] = "black";
+            });
+        }).then(function() {
+            return q(/*leaf*/).then(function() {
+                car['plate'] = "ABC-1234";
+            });
+        }).then(function() {
+            return q(/*leaf*/).then(function() {
+                return Examples.newModel();
+            }).then(function(/*singleChild*/call_newModel) {
+                car['model'] = call_newModel;
+            });
+        }).then(function() {
+            return q(/*leaf*/).then(function() {
+                car.save();
+                return q(car);
+            });
+        });
     },
-    customer : function() {
-        customer = new Customer();
-        customer['name'] = "Joana de Almeida";
-        return customer.save();
+    newCustomer : function() {
+        var customer;
+        return q(/*sequential*/).then(function() {
+            return q(/*leaf*/).then(function() {
+                customer = new Customer();
+            });
+        }).then(function() {
+            return q(/*leaf*/).then(function() {
+                customer['name'] = "Joana de Almeida";
+            });
+        }).then(function() {
+            return q(/*leaf*/).then(function() {
+                customer.save();
+                return q(customer);
+            });
+        });
     }
 };
 

@@ -23,10 +23,10 @@ var modelSchema = new Schema({
 /*************************** DERIVED PROPERTIES ****************/
 
 modelSchema.virtual('description').get(function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return Make.find({ _id : this.make }).exec();
-    }).then(function(make) {
-        return make['name'] + " " + this['name'];
+    }).then(function(/*singleChild*/read_make) {
+        return read_make['name'] + " " + this['name'];
     });
 });
 

@@ -61,13 +61,19 @@ var carSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 carSchema.statics.findByRegistrationNumber = function (regNumber) {
-    return q().then(function() {
-        return this.model('Car').find().where({
+    return q(/*leaf*/).then(function() {
+        this.model('Car').find().where({
             $eq : [ 
                 regNumber,
                 registrationNumber
             ]
         }).findOne().save();
+        return q(this.model('Car').find().where({
+            $eq : [ 
+                regNumber,
+                registrationNumber
+            ]
+        }).findOne());
     });
 };
 
@@ -75,35 +81,34 @@ carSchema.statics.findByRegistrationNumber = function (regNumber) {
  *  Book a service on this car. 
  */
 carSchema.methods.bookService = function (description, estimateInDays) {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return Service.newService(this, description, estimateInDays);
-    }).then(function(newService) {
-        newService;
     });
 };
 /*************************** QUERIES ***************************/
 
 carSchema.statics.findByOwner = function (owner) {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return Car.findOne({ _id : owner.cars }).exec();
-    }).then(function(cars) {
-        return cars.save();
+    }).then(function(/*singleChild*/read_cars) {
+        read_cars.save();
+        return q(read_cars);
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 carSchema.virtual('modelName').get(function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return Model.findOne({ _id : this.model }).exec();
-    }).then(function(model) {
-        return model.makeAndModel();
-    }).then(function(makeAndModel) {
-        return makeAndModel;
+    }).then(function(/*singleChild*/read_model) {
+        return read_model.makeAndModel();
+    }).then(function(/*singleChild*/call_makeAndModel) {
+        return call_makeAndModel;
     });
 });
 
 carSchema.virtual('pending').get(function () {
-    return count;
+    return /*TBD*/count;
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 

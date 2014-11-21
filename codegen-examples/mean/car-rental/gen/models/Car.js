@@ -77,25 +77,25 @@ carSchema.path('year').validate(
 /*************************** ACTIONS ***************************/
 
 carSchema.methods.startRepair = function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         this.repairStarted();
     });
 };
 
 carSchema.methods.finishRepair = function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         this.repairFinished();
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 carSchema.virtual('description').get(function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return Model.findOne({ _id : this.model }).exec();
-    }).then(function(model) {
-        return model['description'];
-    }).then(function(description) {
-        return description + " - " + this['plate'];
+    }).then(function(/*singleChild*/read_model) {
+        return read_model['description'];
+    }).then(function(/*singleChild*/read_description) {
+        return read_description + " - " + this['plate'];
     });
 });
 
@@ -113,10 +113,10 @@ carSchema.virtual('rented').get(function () {
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 carSchema.methods.getCurrentRental = function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return Rental.currentForCar(this);
-    }).then(function(currentForCar) {
-        return currentForCar;
+    }).then(function(/*singleChild*/call_currentForCar) {
+        return call_currentForCar;
     });
 };
 /*************************** STATE MACHINE ********************/

@@ -16,41 +16,93 @@ suite('Car rental functional tests - RentalScenarios', function() {
 
     test('startsAsInProgress', function(done) {
         var behavior = function() {
-            return q().all([q().then(function() {
-                return customer.getCurrentRental();
-            }), q().then(function() {
-                customer.rent(car)
-            }), q().then(function() {
-                return customer.getCurrentRental();
-            }), q().then(function() {
-                return customer.getCurrentRental();
-            })]).spread(function(currentRental, rent, currentRental, currentRental) {
-                car = Examples.car();
-                customer = Examples.customer();
-                assert.ok(currentRental == null);
-                rent;
-                assert.ok(currentRental != null);
-                assert.strictEqual(currentRental['inProgress'], true);
+            var car;
+            var customer;
+            return q(/*sequential*/).then(function() {
+                return q(/*sequential*/).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return Examples.newCar();
+                    }).then(function(/*singleChild*/call_newCar) {
+                        car = call_newCar;
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return Examples.newCustomer();
+                    }).then(function(/*singleChild*/call_newCustomer) {
+                        customer = call_newCustomer;
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return customer.getCurrentRental();
+                    }).then(function(/*singleChild*/read_currentRental) {
+                        assert.ok(read_currentRental == null);
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        customer.rent(car);
+                    });
+                });
+            }).then(function() {
+                return q(/*sequential*/).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return customer.getCurrentRental();
+                    }).then(function(/*singleChild*/read_currentRental) {
+                        assert.ok(read_currentRental != null);
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return customer.getCurrentRental();
+                    }).then(function(/*singleChild*/read_currentRental) {
+                        assert.strictEqual(read_currentRental['inProgress'], true);
+                    });
+                });
             });
         };
         behavior().then(done, done);
     });
     test('finishedUponReturn', function(done) {
         var behavior = function() {
-            return q().all([q().then(function() {
-                customer.rent(car)
-            }), q().then(function() {
-                return customer.getCurrentRental();
-            }), q().then(function() {
-                customer.finishRental()
-            })]).spread(function(rent, currentRental, finishRental) {
-                car = Examples.car();
-                customer = Examples.customer();
-                rent;
-                rental = currentRental;
-                assert.strictEqual(rental['inProgress'], true);
-                finishRental;
-                assert.strictEqual(!rental['inProgress'], true);
+            var car;
+            var customer;
+            var rental;
+            return q(/*sequential*/).then(function() {
+                return q(/*sequential*/).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return Examples.newCar();
+                    }).then(function(/*singleChild*/call_newCar) {
+                        car = call_newCar;
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return Examples.newCustomer();
+                    }).then(function(/*singleChild*/call_newCustomer) {
+                        customer = call_newCustomer;
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        customer.rent(car);
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        return customer.getCurrentRental();
+                    }).then(function(/*singleChild*/read_currentRental) {
+                        rental = read_currentRental;
+                    });
+                });
+            }).then(function() {
+                return q(/*sequential*/).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        assert.strictEqual(rental['inProgress'], true);
+                    });
+                }).then(function() {
+                    return q(/*leaf*/).then(function() {
+                        customer.finishRental();
+                    });
+                });
+            }).then(function() {
+                return q(/*leaf*/).then(function() {
+                    assert.strictEqual(!rental['inProgress'], true);
+                });
             });
         };
         behavior().then(done, done);
@@ -58,16 +110,39 @@ suite('Car rental functional tests - RentalScenarios', function() {
     test('oneCarPerCustomer', function(done) {
         try {
             var behavior = function() {
-                return q().all([q().then(function() {
-                    customer.rent(car1)
-                }), q().then(function() {
-                    customer.rent(car2)
-                })]).spread(function(rent, rent) {
-                    car1 = Examples.car();
-                    customer = Examples.customer();
-                    rent;
-                    car2 = Examples.car();
-                    rent;
+                var car1;
+                var car2;
+                var customer;
+                return q(/*sequential*/).then(function() {
+                    return q(/*sequential*/).then(function() {
+                        return q(/*leaf*/).then(function() {
+                            return Examples.newCar();
+                        }).then(function(/*singleChild*/call_newCar) {
+                            car1 = call_newCar;
+                        });
+                    }).then(function() {
+                        return q(/*leaf*/).then(function() {
+                            return Examples.newCustomer();
+                        }).then(function(/*singleChild*/call_newCustomer) {
+                            customer = call_newCustomer;
+                        });
+                    }).then(function() {
+                        return q(/*leaf*/).then(function() {
+                            customer.rent(car1);
+                        });
+                    });
+                }).then(function() {
+                    return q(/*sequential*/).then(function() {
+                        return q(/*leaf*/).then(function() {
+                            return Examples.newCar();
+                        }).then(function(/*singleChild*/call_newCar) {
+                            car2 = call_newCar;
+                        });
+                    }).then(function() {
+                        return q(/*leaf*/).then(function() {
+                            customer.rent(car2);
+                        });
+                    });
                 });
             };
             behavior().then(done, done);
@@ -79,17 +154,43 @@ suite('Car rental functional tests - RentalScenarios', function() {
     test('carUnavailable', function(done) {
         try {
             var behavior = function() {
-                return q().all([q().then(function() {
-                    customer1.rent(car)
-                }), q().then(function() {
-                    customer2.rent(car)
-                })]).spread(function(rent, rent) {
-                    car = Examples.car();
-                    customer1 = Examples.customer();
-                    rent;
-                    assert.strictEqual(car['rented'], true);
-                    customer2 = Examples.customer();
-                    rent;
+                var car;
+                var customer1;
+                var customer2;
+                return q(/*sequential*/).then(function() {
+                    return q(/*sequential*/).then(function() {
+                        return q(/*leaf*/).then(function() {
+                            return Examples.newCar();
+                        }).then(function(/*singleChild*/call_newCar) {
+                            car = call_newCar;
+                        });
+                    }).then(function() {
+                        return q(/*leaf*/).then(function() {
+                            return Examples.newCustomer();
+                        }).then(function(/*singleChild*/call_newCustomer) {
+                            customer1 = call_newCustomer;
+                        });
+                    }).then(function() {
+                        return q(/*leaf*/).then(function() {
+                            customer1.rent(car);
+                        });
+                    });
+                }).then(function() {
+                    return q(/*sequential*/).then(function() {
+                        return q(/*leaf*/).then(function() {
+                            assert.strictEqual(car['rented'], true);
+                        });
+                    }).then(function() {
+                        return q(/*leaf*/).then(function() {
+                            return Examples.newCustomer();
+                        }).then(function(/*singleChild*/call_newCustomer) {
+                            customer2 = call_newCustomer;
+                        });
+                    }).then(function() {
+                        return q(/*leaf*/).then(function() {
+                            customer2.rent(car);
+                        });
+                    });
                 });
             };
             behavior().then(done, done);

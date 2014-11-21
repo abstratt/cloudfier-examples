@@ -6,21 +6,60 @@ var Invoice = require('../models/Invoice.js');
 
 var Examples = {
     clientWithName : function(name) {
-        client = new Client();
-        client['name'] = name;
-        return client.save();
+        var client;
+        return q(/*sequential*/).then(function() {
+            return q(/*leaf*/).then(function() {
+                client = new Client();
+            });
+        }).then(function() {
+            return q(/*leaf*/).then(function() {
+                client['name'] = name;
+            });
+        }).then(function() {
+            return q(/*leaf*/).then(function() {
+                client.save();
+                return q(client);
+            });
+        });
     },
     client : function() {
-        return Examples.clientWithName("New Client").save();
+        return q(/*leaf*/).then(function() {
+            return Examples.clientWithName("New Client");
+        }).then(function(/*singleChild*/call_clientWithName) {
+            call_clientWithName.save();
+            return q(call_clientWithName);
+        });
     },
     taskWithName : function(description, client) {
-        task = new Task();
-        task['description'] = description;
-        task['client'] = client;
-        return task.save();
+        var task;
+        return q(/*sequential*/).then(function() {
+            return q(/*leaf*/).then(function() {
+                task = new Task();
+            });
+        }).then(function() {
+            return q(/*leaf*/).then(function() {
+                task['description'] = description;
+            });
+        }).then(function() {
+            return q(/*leaf*/).then(function() {
+                task['client'] = client;
+            });
+        }).then(function() {
+            return q(/*leaf*/).then(function() {
+                task.save();
+                return q(task);
+            });
+        });
     },
     task : function() {
-        return Examples.taskWithName("New Task", Examples.client()).save();
+        return q(/*leaf*/).then(function() {
+            return Examples.client();
+        }).then(function(/*singleChild*/call_client) {
+            return Examples.taskWithName("New Task", call_client);
+        }).then(function(/*singleChild*/call_taskWithName) {
+            call_taskWithName.save();
+            return q(call_taskWithName);
+        });
     }
 };
 

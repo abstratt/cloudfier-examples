@@ -103,19 +103,49 @@ var issueSchema = new Schema({
  *  Report a new issue. 
  */
 issueSchema.statics.reportIssue = function (project, summary, description, severity) {
-    return q().all([q().then(function() {
-        return newIssue['issueKey'];
-    }), q().then(function() {
-        return User.find({ _id : newIssue.reporter }).exec();
-    })]).spread(function(issueKey, reporter) {
-        var newIssue;
-        newIssue = new Issue();
-        newIssue['summary'] = summary;
-        newIssue['description'] = description;
-        newIssue['severity'] = severity;
-        newIssue['reporter'] = User['current'];
-        newIssue['project'] = project;
-        newIssue['userNotifier'].issueReported(issueKey, summary, description, reporter['email']);
+    var newIssue;
+    return q(/*sequential*/).then(function() {
+        return q(/*leaf*/).then(function() {
+            newIssue = new Issue();
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            newIssue['summary'] = summary;
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            newIssue['description'] = description;
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            newIssue['severity'] = severity;
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            newIssue['reporter'] = User['current'];
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            newIssue['project'] = project;
+        });
+    }).then(function() {
+        return q(/*parallel*/).all([
+            q(/*leaf*/).then(function() {
+                return newIssue['issueKey'];
+            }), q(/*leaf*/).then(function() {
+                return summary;
+            }), q(/*leaf*/).then(function() {
+                return description;
+            }), q(/*leaf*/).then(function() {
+                return User.find({ _id : newIssue.reporter }).exec();
+            }).then(function(/*singleChild*/read_reporter) {
+                return read_reporter['email'];
+            }), q(/*leaf*/).then(function() {
+                return newIssue['userNotifier'];
+            })
+        ]).spread(function(read_issueKey, read_Summary, read_Description, read_email, read_userNotifier) {
+            read_userNotifier.issueReported(read_issueKey, read_Summary, read_Description, read_email);
+        });
     });
 };
 
@@ -123,7 +153,7 @@ issueSchema.statics.reportIssue = function (project, summary, description, sever
  *  Release the issue so another committer can work on it. 
  */
 issueSchema.methods.release = function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         this['assignee'] = null;
     });
 };
@@ -132,7 +162,7 @@ issueSchema.methods.release = function () {
  *  Assign an issue to a user. 
  */
 issueSchema.methods.assign = function (newAssignee) {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         this['assignee'] = newAssignee;
     });
 };
@@ -153,9 +183,14 @@ issueSchema.methods.start = function () {
  *  Resolve the issue. 
  */
 issueSchema.methods.resolve = function (resolution) {
-    return q().then(function() {
-        this['resolvedOn'] = new Date();
-        this['resolution'] = resolution;
+    return q(/*sequential*/).then(function() {
+        return q(/*leaf*/).then(function() {
+            this['resolvedOn'] = new Date();
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            this['resolution'] = resolution;
+        });
     });
 };
 
@@ -163,14 +198,24 @@ issueSchema.methods.resolve = function (resolution) {
  *  Reopen the issue. 
  */
 issueSchema.methods.reopen = function (reason) {
-    return q().then(function() {
-        this.comment(reason)
-    }).then(function(comment) {
-        this['resolvedOn'] = null;
-        this['resolution'] = null;
-        if (reason !== "") {
-            comment;
-        }
+    return q(/*sequential*/).then(function() {
+        return q(/*leaf*/).then(function() {
+            this['resolvedOn'] = null;
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            this['resolution'] = null;
+        });
+    }).then(function() {
+        return q(/*sequential*/).then(function() {
+            return q(/*leaf*/).then(function() {
+                return reason !== "";
+            });
+        }).then(function() {
+            return q(/*leaf*/).then(function() {
+                this.comment(reason);
+            });
+        });
     });
 };
 
@@ -178,15 +223,13 @@ issueSchema.methods.reopen = function (reason) {
  *  Add a comment to the issue 
  */
 issueSchema.methods.comment = function (text) {
-    return q().then(function() {
-        this.addComment(text, null)
-    }).then(function(addComment) {
-        addComment;
+    return q(/*leaf*/).then(function() {
+        this.addComment(text, null);
     });
 };
 
 issueSchema.methods.addWatcher = function (userToAdd) {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         // link issuesWatched and watchers
         userToAdd.issuesWatched.push(this);
         this.watchers.push(userToAdd);
@@ -194,7 +237,7 @@ issueSchema.methods.addWatcher = function (userToAdd) {
 };
 
 issueSchema.methods.vote = function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         // link voted and voters
         User['current'].voted.push(this);
         this.voters.push(User['current']);
@@ -202,7 +245,7 @@ issueSchema.methods.vote = function () {
 };
 
 issueSchema.methods.withdrawVote = function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         this.voters = null;
         this = null;
     });
@@ -212,7 +255,7 @@ issueSchema.methods.withdrawVote = function () {
  *  Take over an issue currently available. 
  */
 issueSchema.methods.assignToMe = function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         this['assignee'] = User['current'];
     });
 };
@@ -221,7 +264,7 @@ issueSchema.methods.assignToMe = function () {
  *  Take over an issue currently assigned to another user (not in progress). 
  */
 issueSchema.methods.steal = function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         this['assignee'] = User['current'];
     });
 };
@@ -230,39 +273,46 @@ issueSchema.methods.steal = function () {
  *  Close the issue marking it as verified. 
  */
 issueSchema.methods.verify = function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
+        ;
     });
 };
 /*************************** QUERIES ***************************/
 
 issueSchema.statics.bySeverity = function (toMatch) {
-    return this.model('Issue').find().where({ severity : toMatch }).exec();
+    return q(/*leaf*/).then(function() {
+        return this.model('Issue').find().where({ severity : toMatch }).exec();
+    });
 };
 
 issueSchema.statics.byStatus = function (toMatch) {
-    return Issue.filterByStatus(this.model('Issue').find(), toMatch).exec();
+    return q(/*leaf*/).then(function() {
+        return Issue.filterByStatus(this.model('Issue').find(), toMatch);
+    }).then(function(/*singleChild*/call_filterByStatus) {
+        return call_filterByStatus.exec();
+    });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 
 issueSchema.virtual('issueKey').get(function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return Project.find({ _id : this.project }).exec();
-    }).then(function(project) {
-        return project['token'] + "-" + this['issueId'];
+    }).then(function(/*singleChild*/read_project) {
+        return read_project['token'] + "-" + this['issueId'];
     });
 });
 
 issueSchema.virtual('votes').get(function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return User.find({ _id : this.voters }).exec();
-    }).then(function(readLinkAction) {
-        return count;
+    }).then(function(/*singleChild*/readLinkAction) {
+        return /*TBD*/count;
     });
 });
 
 issueSchema.virtual('commentCount').get(function () {
-    return count;
+    return /*TBD*/count;
 });
 
 issueSchema.virtual('waitingFor').get(function () {
@@ -270,18 +320,22 @@ issueSchema.virtual('waitingFor').get(function () {
 });
 
 issueSchema.virtual('mine').get(function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return User.find({ _id : this.assignee }).exec();
-    }).then(function(assignee) {
-        return User['current'] == assignee;
+    }).then(function(/*singleChild*/read_assignee) {
+        return User['current'] == read_assignee;
     });
 });
 
 issueSchema.virtual('free').get(function () {
-    return q().then(function() {
-        return User.find({ _id : this.assignee }).exec();
-    }).then(function(assignee) {
-        return assignee == null;
+    return q(/*parallel*/).all([
+        q(/*leaf*/).then(function() {
+            return User.find({ _id : this.assignee }).exec();
+        }), q(/*leaf*/).then(function() {
+            return null;
+        })
+    ]).spread(function(read_assignee, valueSpecificationAction) {
+        return read_assignee == valueSpecificationAction;
     });
 });
 /*************************** PRIVATE OPS ***********************/
@@ -295,27 +349,59 @@ issueSchema.methods.referenceDate = function () {
 };
 
 issueSchema.statics.filterByStatus = function (issues, toMatch) {
-    return issues.where({ status : toMatch }).exec();
+    return q(/*leaf*/).then(function() {
+        return issues.where({ status : toMatch }).exec();
+    });
 };
 
 issueSchema.methods.addComment = function (text, inReplyTo) {
-    return q().all([q().then(function() {
-        return this['issueKey'];
-    }), q().then(function() {
-        return User.findOne({ _id : comment.user }).exec();
-    }), q().then(function() {
-        return User.find({ _id : this.reporter }).exec();
-    })]).spread(function(issueKey, user, reporter) {
-        var comment;
-        comment = new Comment();
-        comment['user'] = User['current'];
-        comment['commentedOn'] = new Date();
-        comment['text'] = text;
-        comment['inReplyTo'] = inReplyTo;
-        // link issue and comments
-        comment.issue = this;
-        this.comments.push(comment);
-        this['userNotifier'].commentAdded(issueKey, user['email'], reporter['email'], text);
+    var comment;
+    return q(/*sequential*/).then(function() {
+        return q(/*leaf*/).then(function() {
+            comment = new Comment();
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            comment['user'] = User['current'];
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            comment['commentedOn'] = new Date();
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            comment['text'] = text;
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            comment['inReplyTo'] = inReplyTo;
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            // link issue and comments
+            comment.issue = this;
+            this.comments.push(comment);
+        });
+    }).then(function() {
+        return q(/*parallel*/).all([
+            q(/*leaf*/).then(function() {
+                return this['issueKey'];
+            }), q(/*leaf*/).then(function() {
+                return User.findOne({ _id : comment.user }).exec();
+            }).then(function(/*singleChild*/read_user) {
+                return read_user['email'];
+            }), q(/*leaf*/).then(function() {
+                return User.find({ _id : this.reporter }).exec();
+            }).then(function(/*singleChild*/read_reporter) {
+                return read_reporter['email'];
+            }), q(/*leaf*/).then(function() {
+                return text;
+            }), q(/*leaf*/).then(function() {
+                return this['userNotifier'];
+            })
+        ]).spread(function(read_issueKey, read_email, read_email, read_Text, read_userNotifier) {
+            read_userNotifier.commentAdded(read_issueKey, read_email, read_email, read_Text);
+        });
     });
 };
 /*************************** STATE MACHINE ********************/

@@ -33,7 +33,7 @@ var driverSchema = new Schema({
  *  Book a taxi that is currently available 
  */
 driverSchema.methods.book = function (toRent) {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         // link taxi and drivers
         this.taxi = toRent;
         toRent.drivers.push(this);
@@ -44,37 +44,45 @@ driverSchema.methods.book = function (toRent) {
  *  Release a taxi that is currently booked 
  */
 driverSchema.methods.release = function () {
-    return q().then(function() {
-        return Taxi.find({ _id : this.taxi }).exec();
-    }).then(function(taxi) {
-        taxi.drivers = null;
-        taxi = null;
+    return q(/*parallel*/).all([
+        q(/*leaf*/).then(function() {
+            return Taxi.find({ _id : this.taxi }).exec();
+        }), q(/*leaf*/).then(function() {
+            return this;
+        })
+    ]).spread(function(read_taxi, readSelfAction) {
+        read_taxi.drivers = null;
+        read_taxi = null;
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 driverSchema.virtual('hasBooking').get(function () {
-    return q().then(function() {
-        return Taxi.find({ _id : this.taxi }).exec();
-    }).then(function(taxi) {
-        return !taxi == null;
+    return q(/*parallel*/).all([
+        q(/*leaf*/).then(function() {
+            return Taxi.find({ _id : this.taxi }).exec();
+        }), q(/*leaf*/).then(function() {
+            return null;
+        })
+    ]).spread(function(read_taxi, valueSpecificationAction) {
+        return !read_taxi == valueSpecificationAction;
     });
 });
 
 driverSchema.virtual('paymentDue').get(function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return this.getPendingCharges();
-    }).then(function(pendingCharges) {
-        return !isEmpty;
+    }).then(function(/*singleChild*/read_pendingCharges) {
+        return !/*TBD*/isEmpty;
     });
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 driverSchema.methods.getPendingCharges = function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return Charge.findOne({ _id : this.charges }).exec();
-    }).then(function(charges) {
-        return charges.where({
+    }).then(function(/*singleChild*/read_charges) {
+        return read_charges.where({
             $ne : [ 
                 { 'paid' : true },
                 true

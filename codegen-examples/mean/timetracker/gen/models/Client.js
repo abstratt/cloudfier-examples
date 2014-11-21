@@ -26,25 +26,46 @@ var clientSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 clientSchema.methods.newTask = function (description) {
-    return q().then(function() {
-        var newTask;
-        newTask = new Task();
-        newTask['description'] = description;
-        // link client and tasks
-        newTask.client = this;
-        this.tasks.push(newTask);
-        return newTask.save();
+    var newTask;
+    return q(/*sequential*/).then(function() {
+        return q(/*leaf*/).then(function() {
+            newTask = new Task();
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            newTask['description'] = description;
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            // link client and tasks
+            newTask.client = this;
+            this.tasks.push(newTask);
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            newTask.save();
+            return q(newTask);
+        });
     });
 };
 
 clientSchema.methods.startInvoice = function () {
-    return q().then(function() {
-        var newInvoice;
-        newInvoice = new Invoice();
-        // link client and invoices
-        newInvoice.client = this;
-        this.invoices.push(newInvoice);
-        return newInvoice.save();
+    var newInvoice;
+    return q(/*sequential*/).then(function() {
+        return q(/*leaf*/).then(function() {
+            newInvoice = new Invoice();
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            // link client and invoices
+            newInvoice.client = this;
+            this.invoices.push(newInvoice);
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            newInvoice.save();
+            return q(newInvoice);
+        });
     });
 };
 

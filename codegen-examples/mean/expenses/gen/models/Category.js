@@ -21,20 +21,29 @@ var categorySchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 categorySchema.statics.newCategory = function (name) {
-    return q().then(function() {
-        var newCategory;
-        newCategory = new Category();
-        newCategory['name'] = name;
-        return newCategory.save();
+    var newCategory;
+    return q(/*sequential*/).then(function() {
+        return q(/*leaf*/).then(function() {
+            newCategory = new Category();
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            newCategory['name'] = name;
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            newCategory.save();
+            return q(newCategory);
+        });
     });
 };
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 categorySchema.methods.getExpensesInThisCategory = function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         return Expense.findExpensesByCategory(this);
-    }).then(function(findExpensesByCategory) {
-        return findExpensesByCategory;
+    }).then(function(/*singleChild*/call_findExpensesByCategory) {
+        return call_findExpensesByCategory;
     });
 };
 

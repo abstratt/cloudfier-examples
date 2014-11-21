@@ -44,14 +44,22 @@ var userSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 userSchema.methods.promoteToCommitter = function () {
-    return q().then(function() {
+    return q(/*leaf*/).then(function() {
         this['kind'] = "Committer";
     });
 };
 /*************************** QUERIES ***************************/
 
 userSchema.statics.current = function () {
-    return cls.getNamespace('currentUser').exec();
+    return q(/*sequential*/).then(function() {
+        return q(/*leaf*/).then(function() {
+            return cls.getNamespace('currentUser').exec();
+        });
+    }).then(function() {
+        return q(/*leaf*/).then(function() {
+            ;
+        });
+    });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
@@ -61,18 +69,30 @@ userSchema.virtual('committer').get(function () {
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 userSchema.methods.getIssuesCurrentlyInProgress = function () {
-    return q().then(function() {
-        return Issue.findOne({ _id : this.issuesAssignedToUser }).exec();
-    }).then(function(issuesAssignedToUser) {
-        return Issue.filterByStatus(issuesAssignedToUser, "InProgress");
+    return q(/*parallel*/).all([
+        q(/*leaf*/).then(function() {
+            return Issue.findOne({ _id : this.issuesAssignedToUser }).exec();
+        }), q(/*leaf*/).then(function() {
+            return "InProgress";
+        })
+    ]).spread(function(read_issuesAssignedToUser, valueSpecificationAction) {
+        return Issue.filterByStatus(read_issuesAssignedToUser, valueSpecificationAction);
+    }).then(function(/*singleChild*/call_filterByStatus) {
+        return call_filterByStatus;
     });
 };
 
 userSchema.methods.getIssuesCurrentlyAssigned = function () {
-    return q().then(function() {
-        return Issue.findOne({ _id : this.issuesAssignedToUser }).exec();
-    }).then(function(issuesAssignedToUser) {
-        return Issue.filterByStatus(issuesAssignedToUser, "Assigned");
+    return q(/*parallel*/).all([
+        q(/*leaf*/).then(function() {
+            return Issue.findOne({ _id : this.issuesAssignedToUser }).exec();
+        }), q(/*leaf*/).then(function() {
+            return "Assigned";
+        })
+    ]).spread(function(read_issuesAssignedToUser, valueSpecificationAction) {
+        return Issue.filterByStatus(read_issuesAssignedToUser, valueSpecificationAction);
+    }).then(function(/*singleChild*/call_filterByStatus) {
+        return call_filterByStatus;
     });
 };
 
