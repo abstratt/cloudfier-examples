@@ -47,7 +47,7 @@ var todoSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 todoSchema.methods.complete = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         this['status'] = "Done";
     });
 };

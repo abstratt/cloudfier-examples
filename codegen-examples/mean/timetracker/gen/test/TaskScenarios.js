@@ -15,26 +15,26 @@ suite('Time Tracker functional tests - TaskScenarios', function() {
     test('timeReported', function(done) {
         var behavior = function() {
             var task;
-            return q(/*sequential*/).then(function() {
-                return q(/*leaf*/).then(function() {
+            return q().then(function() {
+                return q().then(function() {
                     return Examples.task();
-                }).then(function(/*singleChild*/call_task) {
+                }).then(function(call_task) {
                     task = call_task;
                 });
             }).then(function() {
-                return q(/*leaf*/).then(function() {
+                return q().then(function() {
                     return task.addWork(4);
                 });
             }).then(function() {
-                return q(/*leaf*/).then(function() {
+                return q().then(function() {
                     return task.addWork(3);
                 });
             }).then(function() {
-                return q(/*leaf*/).then(function() {
+                return q().then(function() {
                     assert.equal(2, /*TBD*/count);
                 });
             }).then(function() {
-                return q(/*leaf*/).then(function() {
+                return q().then(function() {
                     assert.equal(7, task['unitsReported']);
                 });
             });
@@ -47,46 +47,46 @@ suite('Time Tracker functional tests - TaskScenarios', function() {
             var invoice;
             var work1;
             var work2;
-            return q(/*sequential*/).then(function() {
-                return q(/*leaf*/).then(function() {
+            return q().then(function() {
+                return q().then(function() {
                     return Examples.task();
-                }).then(function(/*singleChild*/call_task) {
+                }).then(function(call_task) {
                     task = call_task;
                 });
             }).then(function() {
-                return q(/*leaf*/).then(function() {
+                return q().then(function() {
                     return task.addWork(4);
-                }).then(function(/*singleChild*/call_addWork) {
+                }).then(function(call_addWork) {
                     work1 = call_addWork;
                 });
             }).then(function() {
-                return q(/*leaf*/).then(function() {
+                return q().then(function() {
                     return task.addWork(3);
-                }).then(function(/*singleChild*/call_addWork) {
+                }).then(function(call_addWork) {
                     work2 = call_addWork;
                 });
             }).then(function() {
-                return q(/*leaf*/).then(function() {
+                return q().then(function() {
                     return Client.find({ _id : task.client }).exec();
-                }).then(function(/*singleChild*/read_client) {
+                }).then(function(read_client) {
                     return read_client.startInvoice();
-                }).then(function(/*singleChild*/call_startInvoice) {
+                }).then(function(call_startInvoice) {
                     invoice = call_startInvoice;
                 });
             }).then(function() {
-                return q(/*leaf*/).then(function() {
+                return q().then(function() {
                     work1.submit(invoice);
                 });
             }).then(function() {
-                return q(/*leaf*/).then(function() {
+                return q().then(function() {
                     return task.getToInvoice();
-                }).then(function(/*singleChild*/read_toInvoice) {
+                }).then(function(read_toInvoice) {
                     assert.equal(1, /*TBD*/count);
                 });
             }).then(function() {
-                return q(/*leaf*/).then(function() {
+                return q().then(function() {
                     return task['unitsToInvoice'];
-                }).then(function(/*singleChild*/read_unitsToInvoice) {
+                }).then(function(read_unitsToInvoice) {
                     assert.equal(3, read_unitsToInvoice);
                 });
             });

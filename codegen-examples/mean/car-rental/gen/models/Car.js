@@ -77,24 +77,24 @@ carSchema.path('year').validate(
 /*************************** ACTIONS ***************************/
 
 carSchema.methods.startRepair = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         this.repairStarted();
     });
 };
 
 carSchema.methods.finishRepair = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         this.repairFinished();
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 carSchema.virtual('description').get(function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return Model.findOne({ _id : this.model }).exec();
-    }).then(function(/*singleChild*/read_model) {
+    }).then(function(read_model) {
         return read_model['description'];
-    }).then(function(/*singleChild*/read_description) {
+    }).then(function(read_description) {
         return read_description + " - " + this['plate'];
     });
 });
@@ -113,9 +113,9 @@ carSchema.virtual('rented').get(function () {
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 carSchema.methods.getCurrentRental = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return Rental.currentForCar(this);
-    }).then(function(/*singleChild*/call_currentForCar) {
+    }).then(function(call_currentForCar) {
         return call_currentForCar;
     });
 };

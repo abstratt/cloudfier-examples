@@ -18,43 +18,43 @@ suite('Car rental functional tests - CustomerScenarios', function() {
         var behavior = function() {
             var car;
             var customer;
-            return q(/*sequential*/).then(function() {
-                return q(/*sequential*/).then(function() {
-                    return q(/*leaf*/).then(function() {
+            return q().then(function() {
+                return q().then(function() {
+                    return q().then(function() {
                         return Examples.newCar();
-                    }).then(function(/*singleChild*/call_newCar) {
+                    }).then(function(call_newCar) {
                         car = call_newCar;
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         return Examples.newCustomer();
-                    }).then(function(/*singleChild*/call_newCustomer) {
+                    }).then(function(call_newCustomer) {
                         customer = call_newCustomer;
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         customer.rent(car);
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         return Rental.findOne({ _id : customer.rentals }).exec();
-                    }).then(function(/*singleChild*/read_rentals) {
+                    }).then(function(read_rentals) {
                         assert.equal(1, /*TBD*/count);
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         customer.finishRental();
                     });
                 });
             }).then(function() {
-                return q(/*sequential*/).then(function() {
-                    return q(/*leaf*/).then(function() {
+                return q().then(function() {
+                    return q().then(function() {
                         customer.rent(car);
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         return Rental.findOne({ _id : customer.rentals }).exec();
-                    }).then(function(/*singleChild*/read_rentals) {
+                    }).then(function(read_rentals) {
                         assert.equal(2, /*TBD*/count);
                     });
                 });

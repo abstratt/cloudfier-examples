@@ -29,9 +29,9 @@ var employeeSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 employeeSchema.methods.declareExpense = function (description, amount, date, category) {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return Expense.newExpense(description, amount, date, category, this);
-    }).then(function(/*singleChild*/call_newExpense) {
+    }).then(function(call_newExpense) {
         call_newExpense.save();
         return q(call_newExpense);
     });
@@ -39,10 +39,10 @@ employeeSchema.methods.declareExpense = function (description, amount, date, cat
 /*************************** DERIVED PROPERTIES ****************/
 
 employeeSchema.virtual('totalRecorded').get(function () {
-    return q(/*parallel*/).all([
-        q(/*leaf*/).then(function() {
+    return q().all([
+        q().then(function() {
             return this.getRecordedExpenses();
-        }), q(/*leaf*/).then(function() {
+        }), q().then(function() {
             return this;
         })
     ]).spread(function(read_recordedExpenses, readSelfAction) {
@@ -51,10 +51,10 @@ employeeSchema.virtual('totalRecorded').get(function () {
 });
 
 employeeSchema.virtual('totalSubmitted').get(function () {
-    return q(/*parallel*/).all([
-        q(/*leaf*/).then(function() {
+    return q().all([
+        q().then(function() {
             return this.getSubmittedExpenses();
-        }), q(/*leaf*/).then(function() {
+        }), q().then(function() {
             return this;
         })
     ]).spread(function(read_submittedExpenses, readSelfAction) {
@@ -63,10 +63,10 @@ employeeSchema.virtual('totalSubmitted').get(function () {
 });
 
 employeeSchema.virtual('totalApproved').get(function () {
-    return q(/*parallel*/).all([
-        q(/*leaf*/).then(function() {
+    return q().all([
+        q().then(function() {
             return this.getApprovedExpenses();
-        }), q(/*leaf*/).then(function() {
+        }), q().then(function() {
             return this;
         })
     ]).spread(function(read_approvedExpenses, readSelfAction) {
@@ -75,10 +75,10 @@ employeeSchema.virtual('totalApproved').get(function () {
 });
 
 employeeSchema.virtual('totalRejected').get(function () {
-    return q(/*parallel*/).all([
-        q(/*leaf*/).then(function() {
+    return q().all([
+        q().then(function() {
             return this.getRejectedExpenses();
-        }), q(/*leaf*/).then(function() {
+        }), q().then(function() {
             return this;
         })
     ]).spread(function(read_rejectedExpenses, readSelfAction) {
@@ -88,33 +88,33 @@ employeeSchema.virtual('totalRejected').get(function () {
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 employeeSchema.methods.getRecordedExpenses = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return this.expensesByStatus("Draft");
-    }).then(function(/*singleChild*/call_expensesByStatus) {
+    }).then(function(call_expensesByStatus) {
         return call_expensesByStatus;
     });
 };
 
 employeeSchema.methods.getSubmittedExpenses = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return this.expensesByStatus("Submitted");
-    }).then(function(/*singleChild*/call_expensesByStatus) {
+    }).then(function(call_expensesByStatus) {
         return call_expensesByStatus;
     });
 };
 
 employeeSchema.methods.getApprovedExpenses = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return this.expensesByStatus("Approved");
-    }).then(function(/*singleChild*/call_expensesByStatus) {
+    }).then(function(call_expensesByStatus) {
         return call_expensesByStatus;
     });
 };
 
 employeeSchema.methods.getRejectedExpenses = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return this.expensesByStatus("Rejected");
-    }).then(function(/*singleChild*/call_expensesByStatus) {
+    }).then(function(call_expensesByStatus) {
         return call_expensesByStatus;
     });
 };
@@ -125,9 +125,9 @@ employeeSchema.methods.totalExpenses = function (toSum) {
 };
 
 employeeSchema.methods.expensesByStatus = function (status) {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return Expense.findOne({ _id : this.expenses }).exec();
-    }).then(function(/*singleChild*/readLinkAction) {
+    }).then(function(readLinkAction) {
         return readLinkAction.where({ status : status }).exec();
     });
 };

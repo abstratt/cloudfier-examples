@@ -33,7 +33,7 @@ var invoiceSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 invoiceSchema.methods.issue = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         this['issueDate'] = new Date();
     });
 };
@@ -49,16 +49,16 @@ invoiceSchema.virtual('open').get(function () {
 });
 
 invoiceSchema.virtual('totalUnits').get(function () {
-    return q(/*sequential*/).then(function() {
-        return q(/*leaf*/).then(function() {
+    return q().then(function() {
+        return q().then(function() {
             return Work.findOne({ _id : this.reported }).exec();
-        }).then(function(/*singleChild*/read_reported) {
+        }).then(function(read_reported) {
             return Work.aggregate()
                           .group({ _id: null, result: { $sum: '$units' } })
                           .select('-id result');
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             ;
         });
     });

@@ -15,16 +15,16 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
     test('workDateDefaultsToToday', function(done) {
         var behavior = function() {
             var work;
-            return q(/*sequential*/).then(function() {
-                return q(/*leaf*/).then(function() {
+            return q().then(function() {
+                return q().then(function() {
                     return Examples.task();
-                }).then(function(/*singleChild*/call_task) {
+                }).then(function(call_task) {
                     return call_task.addWork(1);
-                }).then(function(/*singleChild*/call_addWork) {
+                }).then(function(call_addWork) {
                     work = call_addWork;
                 });
             }).then(function() {
-                return q(/*leaf*/).then(function() {
+                return q().then(function() {
                     assert.equal(new Date(), work['date']);
                 });
             });
@@ -37,31 +37,31 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
                 var client1;
                 var client2;
                 var work;
-                return q(/*sequential*/).then(function() {
-                    return q(/*leaf*/).then(function() {
+                return q().then(function() {
+                    return q().then(function() {
                         return Examples.client();
-                    }).then(function(/*singleChild*/call_client) {
+                    }).then(function(call_client) {
                         client1 = call_client;
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         return Examples.client();
-                    }).then(function(/*singleChild*/call_client) {
+                    }).then(function(call_client) {
                         client2 = call_client;
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         return client1.newTask("Some task");
-                    }).then(function(/*singleChild*/call_newTask) {
+                    }).then(function(call_newTask) {
                         return call_newTask.addWork(1);
-                    }).then(function(/*singleChild*/call_addWork) {
+                    }).then(function(call_addWork) {
                         work = call_addWork;
                     });
                 }).then(function() {
-                    return q(/*parallel*/).all([
-                        q(/*leaf*/).then(function() {
+                    return q().all([
+                        q().then(function() {
                             return client2.startInvoice();
-                        }), q(/*leaf*/).then(function() {
+                        }), q().then(function() {
                             return work;
                         })
                     ]).spread(function(call_startInvoice, read_Work) {
@@ -80,30 +80,30 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
             var behavior = function() {
                 var invoice;
                 var work;
-                return q(/*sequential*/).then(function() {
-                    return q(/*leaf*/).then(function() {
+                return q().then(function() {
+                    return q().then(function() {
                         return Examples.client();
-                    }).then(function(/*singleChild*/call_client) {
+                    }).then(function(call_client) {
                         return call_client.newTask("Some task");
-                    }).then(function(/*singleChild*/call_newTask) {
+                    }).then(function(call_newTask) {
                         return call_newTask.addWork(1);
-                    }).then(function(/*singleChild*/call_addWork) {
+                    }).then(function(call_addWork) {
                         work = call_addWork;
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         return work.getClient();
-                    }).then(function(/*singleChild*/read_client) {
+                    }).then(function(read_client) {
                         return read_client.startInvoice();
-                    }).then(function(/*singleChild*/call_startInvoice) {
+                    }).then(function(call_startInvoice) {
                         invoice = call_startInvoice;
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         work.submit(invoice);
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         work.submit(invoice);
                     });
                 });
@@ -117,9 +117,9 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
     test('unitsWorkedMustBePositive', function(done) {
         try {
             var behavior = function() {
-                return q(/*leaf*/).then(function() {
+                return q().then(function() {
                     return Examples.task();
-                }).then(function(/*singleChild*/call_task) {
+                }).then(function(call_task) {
                     return call_task.addWork(-1);
                 });
             };
@@ -132,9 +132,9 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
     test('unitsWorkedMayNotBeZero', function(done) {
         try {
             var behavior = function() {
-                return q(/*leaf*/).then(function() {
+                return q().then(function() {
                     return Examples.task();
-                }).then(function(/*singleChild*/call_task) {
+                }).then(function(call_task) {
                     return call_task.addWork(0);
                 });
             };

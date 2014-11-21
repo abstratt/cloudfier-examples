@@ -53,24 +53,24 @@ serviceSchema.path('estimatedReady').validate(
 
 serviceSchema.statics.newService = function (carToService, description, estimate) {
     var s;
-    return q(/*sequential*/).then(function() {
-        return q(/*leaf*/).then(function() {
+    return q().then(function() {
+        return q().then(function() {
             s = new Service();
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             s['estimatedReady'] = new Date(s['bookedOn'] + estimate);
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             s['description'] = description;
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             s['car'] = carToService;
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             s.save();
             return q(s);
         });
@@ -87,7 +87,7 @@ serviceSchema.methods.cancel = function () {
  *  Starts the service. It can no longer be canceled. 
  */
 serviceSchema.methods.start = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         ;
     });
 };
@@ -96,7 +96,7 @@ serviceSchema.methods.start = function () {
  *  Completes the service. 
  */
 serviceSchema.methods.complete = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         ;
     });
 };
@@ -105,7 +105,7 @@ serviceSchema.methods.complete = function () {
  *  Assigns a service that is available to a technician. 
  */
 serviceSchema.methods.assignTo = function (technician) {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         this['technician'] = technician;
     });
 };
@@ -114,14 +114,14 @@ serviceSchema.methods.assignTo = function (technician) {
  *  Assigns a service to a different technician other than the one currently assigned. 
  */
 serviceSchema.methods.transfer = function (mechanic) {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         this['technician'] = mechanic;
     });
 };
 /*************************** QUERIES ***************************/
 
 serviceSchema.statics.byStatus = function (services, toMatch) {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return services.where({ status : toMatch }).exec();
     });
 };
@@ -136,10 +136,10 @@ serviceSchema.virtual('estimatedDays').get(function () {
 });
 
 serviceSchema.virtual('assigned').get(function () {
-    return q(/*parallel*/).all([
-        q(/*leaf*/).then(function() {
+    return q().all([
+        q().then(function() {
             return AutoMechanic.find({ _id : this.technician }).exec();
-        }), q(/*leaf*/).then(function() {
+        }), q().then(function() {
             return null;
         })
     ]).spread(function(read_technician, valueSpecificationAction) {

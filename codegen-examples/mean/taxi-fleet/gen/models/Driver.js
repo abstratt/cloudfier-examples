@@ -33,7 +33,7 @@ var driverSchema = new Schema({
  *  Book a taxi that is currently available 
  */
 driverSchema.methods.book = function (toRent) {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         // link taxi and drivers
         this.taxi = toRent;
         toRent.drivers.push(this);
@@ -44,10 +44,10 @@ driverSchema.methods.book = function (toRent) {
  *  Release a taxi that is currently booked 
  */
 driverSchema.methods.release = function () {
-    return q(/*parallel*/).all([
-        q(/*leaf*/).then(function() {
+    return q().all([
+        q().then(function() {
             return Taxi.find({ _id : this.taxi }).exec();
-        }), q(/*leaf*/).then(function() {
+        }), q().then(function() {
             return this;
         })
     ]).spread(function(read_taxi, readSelfAction) {
@@ -58,10 +58,10 @@ driverSchema.methods.release = function () {
 /*************************** DERIVED PROPERTIES ****************/
 
 driverSchema.virtual('hasBooking').get(function () {
-    return q(/*parallel*/).all([
-        q(/*leaf*/).then(function() {
+    return q().all([
+        q().then(function() {
             return Taxi.find({ _id : this.taxi }).exec();
-        }), q(/*leaf*/).then(function() {
+        }), q().then(function() {
             return null;
         })
     ]).spread(function(read_taxi, valueSpecificationAction) {
@@ -70,18 +70,18 @@ driverSchema.virtual('hasBooking').get(function () {
 });
 
 driverSchema.virtual('paymentDue').get(function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return this.getPendingCharges();
-    }).then(function(/*singleChild*/read_pendingCharges) {
+    }).then(function(read_pendingCharges) {
         return !/*TBD*/isEmpty;
     });
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 driverSchema.methods.getPendingCharges = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return Charge.findOne({ _id : this.charges }).exec();
-    }).then(function(/*singleChild*/read_charges) {
+    }).then(function(read_charges) {
         return read_charges.where({
             $ne : [ 
                 { 'paid' : true },

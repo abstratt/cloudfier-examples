@@ -56,32 +56,32 @@ var expenseSchema = new Schema({
 
 expenseSchema.statics.newExpense = function (description, amount, date, category, employee) {
     var newExpense;
-    return q(/*sequential*/).then(function() {
-        return q(/*leaf*/).then(function() {
+    return q().then(function() {
+        return q().then(function() {
             newExpense = new Expense();
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             newExpense['description'] = description;
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             newExpense['amount'] = amount;
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             newExpense['date'] = date;
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             newExpense['category'] = category;
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             newExpense['employee'] = employee;
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             newExpense.save();
             return q(newExpense);
         });
@@ -89,7 +89,7 @@ expenseSchema.statics.newExpense = function (description, amount, date, category
 };
 
 expenseSchema.methods.approve = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         this['approver'] = cls.getNamespace('currentUser');
     });
 };
@@ -98,12 +98,12 @@ expenseSchema.methods.approve = function () {
  *  Reject this expense. Please provide a reason. 
  */
 expenseSchema.methods.reject = function (reason) {
-    return q(/*sequential*/).then(function() {
-        return q(/*leaf*/).then(function() {
+    return q().then(function() {
+        return q().then(function() {
             this['rejectionReason'] = reason;
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             this['approver'] = cls.getNamespace('currentUser');
         });
     });
@@ -129,13 +129,13 @@ expenseSchema.methods.submit = function () {
 /*************************** QUERIES ***************************/
 
 expenseSchema.statics.findExpensesByCategory = function (category) {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return this.model('Expense').find().where({ { 'category' : e  } : category }).exec();
     });
 };
 
 expenseSchema.statics.findExpensesInPeriod = function (start, end_) {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return this.model('Expense').find().where({
             $and : [ 
                 {
@@ -166,7 +166,7 @@ expenseSchema.statics.findExpensesInPeriod = function (start, end_) {
 };
 
 expenseSchema.statics.findByStatus = function (status) {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return this.model('Expense').find().where({ status : status }).exec();
     });
 };
@@ -194,22 +194,22 @@ expenseSchema.virtual('daysProcessed').get(function () {
 /*************************** PRIVATE OPS ***********************/
 
 expenseSchema.methods.reportApproved = function () {
-    return q(/*parallel*/).all([
-        q(/*leaf*/).then(function() {
+    return q().all([
+        q().then(function() {
             return Employee.find({ _id : this.employee }).exec();
-        }), q(/*leaf*/).then(function() {
+        }), q().then(function() {
             return this['amount'];
-        }), q(/*parallel*/).all([
-            q(/*leaf*/).then(function() {
+        }), q().all([
+            q().then(function() {
                 return Category.findOne({ _id : this.category }).exec();
-            }), q(/*leaf*/).then(function() {
+            }), q().then(function() {
                 return this['description'] + "(";
             })
         ]).spread(function(read_category, call_add) {
             return call_add + read_category['name'] + ")";
-        }), q(/*leaf*/).then(function() {
+        }), q().then(function() {
             return this['expenseId'];
-        }), q(/*leaf*/).then(function() {
+        }), q().then(function() {
             return this['expensePayer'];
         })
     ]).spread(function(read_employee, read_amount, call_add, read_expenseId, read_expensePayer) {
@@ -230,12 +230,12 @@ expenseSchema.methods.handleEvent = function (event) {
                     this.status = 'Approved';
                     // on entering Approved
                     (function() {
-                        return q(/*sequential*/).then(function() {
-                            return q(/*leaf*/).then(function() {
+                        return q().then(function() {
+                            return q().then(function() {
                                 this['processed'] = new Date();
                             });
                         }).then(function() {
-                            return q(/*leaf*/).then(function() {
+                            return q().then(function() {
                                 this.reportApproved();
                             });
                         });
@@ -260,12 +260,12 @@ expenseSchema.methods.handleEvent = function (event) {
                 this.status = 'Approved';
                 // on entering Approved
                 (function() {
-                    return q(/*sequential*/).then(function() {
-                        return q(/*leaf*/).then(function() {
+                    return q().then(function() {
+                        return q().then(function() {
                             this['processed'] = new Date();
                         });
                     }).then(function() {
-                        return q(/*leaf*/).then(function() {
+                        return q().then(function() {
                             this.reportApproved();
                         });
                     });

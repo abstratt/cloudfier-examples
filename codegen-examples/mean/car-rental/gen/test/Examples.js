@@ -9,16 +9,16 @@ var Customer = require('../models/Customer.js');
 var Examples = {
     newMake : function() {
         var make;
-        return q(/*sequential*/).then(function() {
-            return q(/*leaf*/).then(function() {
+        return q().then(function() {
+            return q().then(function() {
                 make = new Make();
             });
         }).then(function() {
-            return q(/*leaf*/).then(function() {
+            return q().then(function() {
                 make['name'] = "Fiat";
             });
         }).then(function() {
-            return q(/*leaf*/).then(function() {
+            return q().then(function() {
                 make.save();
                 return q(make);
             });
@@ -26,22 +26,22 @@ var Examples = {
     },
     newModel : function() {
         var carModel;
-        return q(/*sequential*/).then(function() {
-            return q(/*leaf*/).then(function() {
+        return q().then(function() {
+            return q().then(function() {
                 carModel = new Model();
             });
         }).then(function() {
-            return q(/*leaf*/).then(function() {
+            return q().then(function() {
                 carModel['name'] = "Mille";
             });
         }).then(function() {
-            return q(/*leaf*/).then(function() {
+            return q().then(function() {
                 return Examples.newMake();
-            }).then(function(/*singleChild*/call_newMake) {
+            }).then(function(call_newMake) {
                 carModel['make'] = call_newMake;
             });
         }).then(function() {
-            return q(/*leaf*/).then(function() {
+            return q().then(function() {
                 carModel.save();
                 return q(carModel);
             });
@@ -49,34 +49,34 @@ var Examples = {
     },
     newCar : function() {
         var car;
-        return q(/*sequential*/).then(function() {
-            return q(/*leaf*/).then(function() {
+        return q().then(function() {
+            return q().then(function() {
                 car = new Car();
             });
         }).then(function() {
-            return q(/*leaf*/).then(function() {
+            return q().then(function() {
                 car['year'] = (new Date().getYear() + 1900);
             });
         }).then(function() {
-            return q(/*leaf*/).then(function() {
+            return q().then(function() {
                 car['price'] = 100;
             });
         }).then(function() {
-            return q(/*leaf*/).then(function() {
+            return q().then(function() {
                 car['color'] = "black";
             });
         }).then(function() {
-            return q(/*leaf*/).then(function() {
+            return q().then(function() {
                 car['plate'] = "ABC-1234";
             });
         }).then(function() {
-            return q(/*leaf*/).then(function() {
+            return q().then(function() {
                 return Examples.newModel();
-            }).then(function(/*singleChild*/call_newModel) {
+            }).then(function(call_newModel) {
                 car['model'] = call_newModel;
             });
         }).then(function() {
-            return q(/*leaf*/).then(function() {
+            return q().then(function() {
                 car.save();
                 return q(car);
             });
@@ -84,16 +84,16 @@ var Examples = {
     },
     newCustomer : function() {
         var customer;
-        return q(/*sequential*/).then(function() {
-            return q(/*leaf*/).then(function() {
+        return q().then(function() {
+            return q().then(function() {
                 customer = new Customer();
             });
         }).then(function() {
-            return q(/*leaf*/).then(function() {
+            return q().then(function() {
                 customer['name'] = "Joana de Almeida";
             });
         }).then(function() {
-            return q(/*leaf*/).then(function() {
+            return q().then(function() {
                 customer.save();
                 return q(customer);
             });

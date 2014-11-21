@@ -44,19 +44,19 @@ var userSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 userSchema.methods.promoteToCommitter = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         this['kind'] = "Committer";
     });
 };
 /*************************** QUERIES ***************************/
 
 userSchema.statics.current = function () {
-    return q(/*sequential*/).then(function() {
-        return q(/*leaf*/).then(function() {
+    return q().then(function() {
+        return q().then(function() {
             return cls.getNamespace('currentUser').exec();
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             ;
         });
     });
@@ -69,29 +69,29 @@ userSchema.virtual('committer').get(function () {
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 userSchema.methods.getIssuesCurrentlyInProgress = function () {
-    return q(/*parallel*/).all([
-        q(/*leaf*/).then(function() {
+    return q().all([
+        q().then(function() {
             return Issue.findOne({ _id : this.issuesAssignedToUser }).exec();
-        }), q(/*leaf*/).then(function() {
+        }), q().then(function() {
             return "InProgress";
         })
     ]).spread(function(read_issuesAssignedToUser, valueSpecificationAction) {
         return Issue.filterByStatus(read_issuesAssignedToUser, valueSpecificationAction);
-    }).then(function(/*singleChild*/call_filterByStatus) {
+    }).then(function(call_filterByStatus) {
         return call_filterByStatus;
     });
 };
 
 userSchema.methods.getIssuesCurrentlyAssigned = function () {
-    return q(/*parallel*/).all([
-        q(/*leaf*/).then(function() {
+    return q().all([
+        q().then(function() {
             return Issue.findOne({ _id : this.issuesAssignedToUser }).exec();
-        }), q(/*leaf*/).then(function() {
+        }), q().then(function() {
             return "Assigned";
         })
     ]).spread(function(read_issuesAssignedToUser, valueSpecificationAction) {
         return Issue.filterByStatus(read_issuesAssignedToUser, valueSpecificationAction);
-    }).then(function(/*singleChild*/call_filterByStatus) {
+    }).then(function(call_filterByStatus) {
         return call_filterByStatus;
     });
 };

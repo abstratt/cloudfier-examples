@@ -43,7 +43,7 @@ var autoMechanicSchema = new Schema({
  *  Unassigns any work scheduled. Does not affect work in progress. 
  */
 autoMechanicSchema.methods.unassign = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         this.doUnassign();
     });
 };
@@ -52,7 +52,7 @@ autoMechanicSchema.methods.unassign = function () {
  *  Puts employee into vacation. Unassigns any work scheduled. 
  */
 autoMechanicSchema.methods.beginVacation = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         ;
     });
 };
@@ -64,7 +64,7 @@ autoMechanicSchema.methods.endVacation = function () {
 };
 
 autoMechanicSchema.methods.retire = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         ;
     });
 };
@@ -79,17 +79,17 @@ autoMechanicSchema.virtual('working').get(function () {
 });
 
 autoMechanicSchema.virtual('workInProgress').get(function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return this.getCurrentServices();
-    }).then(function(/*singleChild*/read_currentServices) {
+    }).then(function(read_currentServices) {
         return !/*TBD*/isEmpty;
     });
 });
 
 autoMechanicSchema.virtual('workScheduled').get(function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return this.getUpcomingServices();
-    }).then(function(/*singleChild*/read_upcomingServices) {
+    }).then(function(read_upcomingServices) {
         return !/*TBD*/isEmpty;
     });
 });
@@ -99,15 +99,15 @@ autoMechanicSchema.virtual('workScheduled').get(function () {
  *  Services currently in progress by this worker. 
  */
 autoMechanicSchema.methods.getCurrentServices = function () {
-    return q(/*parallel*/).all([
-        q(/*leaf*/).then(function() {
+    return q().all([
+        q().then(function() {
             return Service.findOne({ _id : this.services }).exec();
-        }), q(/*leaf*/).then(function() {
+        }), q().then(function() {
             return "InProgress";
         })
     ]).spread(function(read_services, valueSpecificationAction) {
         return Service.byStatus(read_services, valueSpecificationAction);
-    }).then(function(/*singleChild*/call_byStatus) {
+    }).then(function(call_byStatus) {
         return call_byStatus;
     });
 };
@@ -116,24 +116,24 @@ autoMechanicSchema.methods.getCurrentServices = function () {
  *  Services assigned to this worker but not yet started. 
  */
 autoMechanicSchema.methods.getUpcomingServices = function () {
-    return q(/*parallel*/).all([
-        q(/*leaf*/).then(function() {
+    return q().all([
+        q().then(function() {
             return Service.findOne({ _id : this.services }).exec();
-        }), q(/*leaf*/).then(function() {
+        }), q().then(function() {
             return "Booked";
         })
     ]).spread(function(read_services, valueSpecificationAction) {
         return Service.byStatus(read_services, valueSpecificationAction);
-    }).then(function(/*singleChild*/call_byStatus) {
+    }).then(function(call_byStatus) {
         return call_byStatus;
     });
 };
 /*************************** PRIVATE OPS ***********************/
 
 autoMechanicSchema.methods.doUnassign = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return this.getUpcomingServices();
-    }).then(function(/*singleChild*/read_upcomingServices) {
+    }).then(function(read_upcomingServices) {
         /*TBD*/forEach;
     });
 };

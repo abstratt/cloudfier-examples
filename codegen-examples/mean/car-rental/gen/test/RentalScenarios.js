@@ -18,41 +18,41 @@ suite('Car rental functional tests - RentalScenarios', function() {
         var behavior = function() {
             var car;
             var customer;
-            return q(/*sequential*/).then(function() {
-                return q(/*sequential*/).then(function() {
-                    return q(/*leaf*/).then(function() {
+            return q().then(function() {
+                return q().then(function() {
+                    return q().then(function() {
                         return Examples.newCar();
-                    }).then(function(/*singleChild*/call_newCar) {
+                    }).then(function(call_newCar) {
                         car = call_newCar;
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         return Examples.newCustomer();
-                    }).then(function(/*singleChild*/call_newCustomer) {
+                    }).then(function(call_newCustomer) {
                         customer = call_newCustomer;
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         return customer.getCurrentRental();
-                    }).then(function(/*singleChild*/read_currentRental) {
+                    }).then(function(read_currentRental) {
                         assert.ok(read_currentRental == null);
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         customer.rent(car);
                     });
                 });
             }).then(function() {
-                return q(/*sequential*/).then(function() {
-                    return q(/*leaf*/).then(function() {
+                return q().then(function() {
+                    return q().then(function() {
                         return customer.getCurrentRental();
-                    }).then(function(/*singleChild*/read_currentRental) {
+                    }).then(function(read_currentRental) {
                         assert.ok(read_currentRental != null);
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         return customer.getCurrentRental();
-                    }).then(function(/*singleChild*/read_currentRental) {
+                    }).then(function(read_currentRental) {
                         assert.strictEqual(read_currentRental['inProgress'], true);
                     });
                 });
@@ -65,42 +65,42 @@ suite('Car rental functional tests - RentalScenarios', function() {
             var car;
             var customer;
             var rental;
-            return q(/*sequential*/).then(function() {
-                return q(/*sequential*/).then(function() {
-                    return q(/*leaf*/).then(function() {
+            return q().then(function() {
+                return q().then(function() {
+                    return q().then(function() {
                         return Examples.newCar();
-                    }).then(function(/*singleChild*/call_newCar) {
+                    }).then(function(call_newCar) {
                         car = call_newCar;
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         return Examples.newCustomer();
-                    }).then(function(/*singleChild*/call_newCustomer) {
+                    }).then(function(call_newCustomer) {
                         customer = call_newCustomer;
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         customer.rent(car);
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         return customer.getCurrentRental();
-                    }).then(function(/*singleChild*/read_currentRental) {
+                    }).then(function(read_currentRental) {
                         rental = read_currentRental;
                     });
                 });
             }).then(function() {
-                return q(/*sequential*/).then(function() {
-                    return q(/*leaf*/).then(function() {
+                return q().then(function() {
+                    return q().then(function() {
                         assert.strictEqual(rental['inProgress'], true);
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         customer.finishRental();
                     });
                 });
             }).then(function() {
-                return q(/*leaf*/).then(function() {
+                return q().then(function() {
                     assert.strictEqual(!rental['inProgress'], true);
                 });
             });
@@ -113,33 +113,33 @@ suite('Car rental functional tests - RentalScenarios', function() {
                 var car1;
                 var car2;
                 var customer;
-                return q(/*sequential*/).then(function() {
-                    return q(/*sequential*/).then(function() {
-                        return q(/*leaf*/).then(function() {
+                return q().then(function() {
+                    return q().then(function() {
+                        return q().then(function() {
                             return Examples.newCar();
-                        }).then(function(/*singleChild*/call_newCar) {
+                        }).then(function(call_newCar) {
                             car1 = call_newCar;
                         });
                     }).then(function() {
-                        return q(/*leaf*/).then(function() {
+                        return q().then(function() {
                             return Examples.newCustomer();
-                        }).then(function(/*singleChild*/call_newCustomer) {
+                        }).then(function(call_newCustomer) {
                             customer = call_newCustomer;
                         });
                     }).then(function() {
-                        return q(/*leaf*/).then(function() {
+                        return q().then(function() {
                             customer.rent(car1);
                         });
                     });
                 }).then(function() {
-                    return q(/*sequential*/).then(function() {
-                        return q(/*leaf*/).then(function() {
+                    return q().then(function() {
+                        return q().then(function() {
                             return Examples.newCar();
-                        }).then(function(/*singleChild*/call_newCar) {
+                        }).then(function(call_newCar) {
                             car2 = call_newCar;
                         });
                     }).then(function() {
-                        return q(/*leaf*/).then(function() {
+                        return q().then(function() {
                             customer.rent(car2);
                         });
                     });
@@ -157,37 +157,37 @@ suite('Car rental functional tests - RentalScenarios', function() {
                 var car;
                 var customer1;
                 var customer2;
-                return q(/*sequential*/).then(function() {
-                    return q(/*sequential*/).then(function() {
-                        return q(/*leaf*/).then(function() {
+                return q().then(function() {
+                    return q().then(function() {
+                        return q().then(function() {
                             return Examples.newCar();
-                        }).then(function(/*singleChild*/call_newCar) {
+                        }).then(function(call_newCar) {
                             car = call_newCar;
                         });
                     }).then(function() {
-                        return q(/*leaf*/).then(function() {
+                        return q().then(function() {
                             return Examples.newCustomer();
-                        }).then(function(/*singleChild*/call_newCustomer) {
+                        }).then(function(call_newCustomer) {
                             customer1 = call_newCustomer;
                         });
                     }).then(function() {
-                        return q(/*leaf*/).then(function() {
+                        return q().then(function() {
                             customer1.rent(car);
                         });
                     });
                 }).then(function() {
-                    return q(/*sequential*/).then(function() {
-                        return q(/*leaf*/).then(function() {
+                    return q().then(function() {
+                        return q().then(function() {
                             assert.strictEqual(car['rented'], true);
                         });
                     }).then(function() {
-                        return q(/*leaf*/).then(function() {
+                        return q().then(function() {
                             return Examples.newCustomer();
-                        }).then(function(/*singleChild*/call_newCustomer) {
+                        }).then(function(call_newCustomer) {
                             customer2 = call_newCustomer;
                         });
                     }).then(function() {
-                        return q(/*leaf*/).then(function() {
+                        return q().then(function() {
                             customer2.rent(car);
                         });
                     });

@@ -23,9 +23,9 @@ var modelSchema = new Schema({
 /*************************** DERIVED PROPERTIES ****************/
 
 modelSchema.virtual('description').get(function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return Make.find({ _id : this.make }).exec();
-    }).then(function(/*singleChild*/read_make) {
+    }).then(function(read_make) {
         return read_make['name'] + " " + this['name'];
     });
 });

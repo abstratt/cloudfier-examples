@@ -30,31 +30,31 @@ var userSchema = new Schema({
  */
 userSchema.methods.startMeetingOnBehalf = function (title, description, date) {
     var newMeeting;
-    return q(/*sequential*/).then(function() {
-        return q(/*leaf*/).then(function() {
+    return q().then(function() {
+        return q().then(function() {
             newMeeting = new Meeting();
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             newMeeting['date'] = date;
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             newMeeting['title'] = title;
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             newMeeting['description'] = description;
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             newMeeting['organizer'] = this;
         });
     }).then(function() {
-        return q(/*parallel*/).all([
-            q(/*leaf*/).then(function() {
+        return q().all([
+            q().then(function() {
                 return User.findOne({ _id : newMeeting.organizer }).exec();
-            }), q(/*leaf*/).then(function() {
+            }), q().then(function() {
                 return newMeeting;
             })
         ]).spread(function(read_organizer, read_NewMeeting) {

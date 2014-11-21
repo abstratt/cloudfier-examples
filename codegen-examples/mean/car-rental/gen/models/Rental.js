@@ -33,7 +33,7 @@ var rentalSchema = new Schema({
 /*************************** QUERIES ***************************/
 
 rentalSchema.statics.currentForCar = function (c) {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return this.model('Rental').find().where({
             $and : [ 
                 { car : c },
@@ -44,7 +44,7 @@ rentalSchema.statics.currentForCar = function (c) {
 };
 
 rentalSchema.statics.currentForCustomer = function (c) {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return this.model('Rental').find().where({
             $and : [ 
                 { customer : c },
@@ -55,26 +55,26 @@ rentalSchema.statics.currentForCustomer = function (c) {
 };
 
 rentalSchema.statics.inProgress = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return this.model('Rental').find().where({ 'inProgress' : true }).exec();
     });
 };
 
 rentalSchema.statics.all = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return this.model('Rental').find().exec();
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 rentalSchema.virtual('description').get(function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return Car.find({ _id : this.car }).exec();
-    }).then(function(/*singleChild*/read_car) {
+    }).then(function(read_car) {
         return Model.findOne({ _id : read_car.model }).exec();
-    }).then(function(/*singleChild*/read_model) {
+    }).then(function(read_model) {
         return read_model['description'];
-    }).then(function(/*singleChild*/read_description) {
+    }).then(function(read_description) {
         return read_description + " on " + this['started'];
     });
 });

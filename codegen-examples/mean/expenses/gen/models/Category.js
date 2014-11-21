@@ -22,16 +22,16 @@ var categorySchema = new Schema({
 
 categorySchema.statics.newCategory = function (name) {
     var newCategory;
-    return q(/*sequential*/).then(function() {
-        return q(/*leaf*/).then(function() {
+    return q().then(function() {
+        return q().then(function() {
             newCategory = new Category();
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             newCategory['name'] = name;
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             newCategory.save();
             return q(newCategory);
         });
@@ -40,9 +40,9 @@ categorySchema.statics.newCategory = function (name) {
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 categorySchema.methods.getExpensesInThisCategory = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return Expense.findExpensesByCategory(this);
-    }).then(function(/*singleChild*/call_findExpensesByCategory) {
+    }).then(function(call_findExpensesByCategory) {
         return call_findExpensesByCategory;
     });
 };

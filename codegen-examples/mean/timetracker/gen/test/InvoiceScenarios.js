@@ -17,42 +17,42 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
             var invoice;
             var work;
             var client;
-            return q(/*sequential*/).then(function() {
-                return q(/*sequential*/).then(function() {
-                    return q(/*leaf*/).then(function() {
+            return q().then(function() {
+                return q().then(function() {
+                    return q().then(function() {
                         return Examples.client();
-                    }).then(function(/*singleChild*/call_client) {
+                    }).then(function(call_client) {
                         client = call_client;
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         return client.newTask("Some task");
-                    }).then(function(/*singleChild*/call_newTask) {
+                    }).then(function(call_newTask) {
                         return call_newTask.addWork(1);
-                    }).then(function(/*singleChild*/call_addWork) {
+                    }).then(function(call_addWork) {
                         work = call_addWork;
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         return client.startInvoice();
-                    }).then(function(/*singleChild*/call_startInvoice) {
+                    }).then(function(call_startInvoice) {
                         invoice = call_startInvoice;
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         work.submit(invoice);
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         assert.equal("Preparation", invoice['status']);
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         invoice.issue();
                     });
                 });
             }).then(function() {
-                return q(/*leaf*/).then(function() {
+                return q().then(function() {
                     assert.equal("Invoiced", invoice['status']);
                 });
             });
@@ -62,36 +62,36 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
     test('invoicePaid', function(done) {
         var behavior = function() {
             var invoice;
-            return q(/*sequential*/).then(function() {
-                return q(/*sequential*/).then(function() {
-                    return q(/*leaf*/).then(function() {
+            return q().then(function() {
+                return q().then(function() {
+                    return q().then(function() {
                         return Examples.client();
-                    }).then(function(/*singleChild*/call_client) {
+                    }).then(function(call_client) {
                         return call_client.startInvoice();
-                    }).then(function(/*singleChild*/call_startInvoice) {
+                    }).then(function(call_startInvoice) {
                         invoice = call_startInvoice;
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         return Client.find({ _id : invoice.client }).exec();
-                    }).then(function(/*singleChild*/read_client) {
+                    }).then(function(read_client) {
                         return read_client.newTask("Some task");
-                    }).then(function(/*singleChild*/call_newTask) {
+                    }).then(function(call_newTask) {
                         return call_newTask.addWork(1);
-                    }).then(function(/*singleChild*/call_addWork) {
+                    }).then(function(call_addWork) {
                         call_addWork.submit(invoice);
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         invoice.issue();
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         invoice.invoicePaid();
                     });
                 });
             }).then(function() {
-                return q(/*leaf*/).then(function() {
+                return q().then(function() {
                     assert.equal("Received", invoice['status']);
                 });
             });
@@ -104,36 +104,36 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                 var task;
                 var invoice;
                 var work;
-                return q(/*sequential*/).then(function() {
-                    return q(/*sequential*/).then(function() {
-                        return q(/*leaf*/).then(function() {
+                return q().then(function() {
+                    return q().then(function() {
+                        return q().then(function() {
                             return Examples.task();
-                        }).then(function(/*singleChild*/call_task) {
+                        }).then(function(call_task) {
                             task = call_task;
                         });
                     }).then(function() {
-                        return q(/*leaf*/).then(function() {
+                        return q().then(function() {
                             return Client.find({ _id : task.client }).exec();
-                        }).then(function(/*singleChild*/read_client) {
+                        }).then(function(read_client) {
                             return read_client.startInvoice();
-                        }).then(function(/*singleChild*/call_startInvoice) {
+                        }).then(function(call_startInvoice) {
                             invoice = call_startInvoice;
                         });
                     }).then(function() {
-                        return q(/*leaf*/).then(function() {
+                        return q().then(function() {
                             return task.addWork(1);
-                        }).then(function(/*singleChild*/call_addWork) {
+                        }).then(function(call_addWork) {
                             call_addWork.submit(invoice);
                         });
                     }).then(function() {
-                        return q(/*leaf*/).then(function() {
+                        return q().then(function() {
                             invoice.issue();
                         });
                     });
                 }).then(function() {
-                    return q(/*leaf*/).then(function() {
+                    return q().then(function() {
                         return task.addWork(2);
-                    }).then(function(/*singleChild*/call_addWork) {
+                    }).then(function(call_addWork) {
                         call_addWork.submit(invoice);
                     });
                 });
@@ -147,11 +147,11 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
     test('cannotIssueInvoiceWithoutAnyWork', function(done) {
         try {
             var behavior = function() {
-                return q(/*leaf*/).then(function() {
+                return q().then(function() {
                     return Examples.client();
-                }).then(function(/*singleChild*/call_client) {
+                }).then(function(call_client) {
                     return call_client.startInvoice();
-                }).then(function(/*singleChild*/call_startInvoice) {
+                }).then(function(call_startInvoice) {
                     call_startInvoice.issue();
                 });
             };

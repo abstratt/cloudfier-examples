@@ -61,7 +61,7 @@ var carSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 carSchema.statics.findByRegistrationNumber = function (regNumber) {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         this.model('Car').find().where({
             $eq : [ 
                 regNumber,
@@ -81,16 +81,16 @@ carSchema.statics.findByRegistrationNumber = function (regNumber) {
  *  Book a service on this car. 
  */
 carSchema.methods.bookService = function (description, estimateInDays) {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return Service.newService(this, description, estimateInDays);
     });
 };
 /*************************** QUERIES ***************************/
 
 carSchema.statics.findByOwner = function (owner) {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return Car.findOne({ _id : owner.cars }).exec();
-    }).then(function(/*singleChild*/read_cars) {
+    }).then(function(read_cars) {
         read_cars.save();
         return q(read_cars);
     });
@@ -98,11 +98,11 @@ carSchema.statics.findByOwner = function (owner) {
 /*************************** DERIVED PROPERTIES ****************/
 
 carSchema.virtual('modelName').get(function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return Model.findOne({ _id : this.model }).exec();
-    }).then(function(/*singleChild*/read_model) {
+    }).then(function(read_model) {
         return read_model.makeAndModel();
-    }).then(function(/*singleChild*/call_makeAndModel) {
+    }).then(function(call_makeAndModel) {
         return call_makeAndModel;
     });
 });

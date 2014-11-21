@@ -27,22 +27,22 @@ var clientSchema = new Schema({
 
 clientSchema.methods.newTask = function (description) {
     var newTask;
-    return q(/*sequential*/).then(function() {
-        return q(/*leaf*/).then(function() {
+    return q().then(function() {
+        return q().then(function() {
             newTask = new Task();
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             newTask['description'] = description;
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             // link client and tasks
             newTask.client = this;
             this.tasks.push(newTask);
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             newTask.save();
             return q(newTask);
         });
@@ -51,18 +51,18 @@ clientSchema.methods.newTask = function (description) {
 
 clientSchema.methods.startInvoice = function () {
     var newInvoice;
-    return q(/*sequential*/).then(function() {
-        return q(/*leaf*/).then(function() {
+    return q().then(function() {
+        return q().then(function() {
             newInvoice = new Invoice();
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             // link client and invoices
             newInvoice.client = this;
             this.invoices.push(newInvoice);
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             newInvoice.save();
             return q(newInvoice);
         });

@@ -53,36 +53,36 @@ chargeSchema.methods.cancelPayment = function () {
 
 chargeSchema.statics.newCharge = function (taxi, payer, date) {
     var charge;
-    return q(/*sequential*/).then(function() {
-        return q(/*leaf*/).then(function() {
+    return q().then(function() {
+        return q().then(function() {
             charge = new Charge();
         });
     }).then(function() {
-        return q(/*parallel*/).all([
-            q(/*leaf*/).then(function() {
+        return q().all([
+            q().then(function() {
                 return Shift.findOne({ _id : taxi.shift }).exec();
-            }), q(/*leaf*/).then(function() {
+            }), q().then(function() {
                 return taxi['name'] + " - ";
             })
         ]).spread(function(read_shift, call_add) {
             charge['description'] = call_add + read_shift['description'];
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             return Shift.findOne({ _id : taxi.shift }).exec();
-        }).then(function(/*singleChild*/read_shift) {
+        }).then(function(read_shift) {
             charge['amount'] = read_shift['price'];
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             charge['taxi'] = taxi;
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             charge['date'] = date;
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             // link driver and charges
             charge.driver = payer;
             payer.charges.push(charge);
@@ -92,7 +92,7 @@ chargeSchema.statics.newCharge = function (taxi, payer, date) {
 /*************************** QUERIES ***************************/
 
 chargeSchema.statics.pendingCharges = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return this.model('Charge').find().where({
             $ne : [ 
                 { 'paid' : true },
@@ -103,13 +103,13 @@ chargeSchema.statics.pendingCharges = function () {
 };
 
 chargeSchema.statics.byTaxi = function (taxi) {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return this.model('Charge').find().where({ taxi : taxi }).exec();
     });
 };
 
 chargeSchema.statics.paidCharges = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return this.model('Charge').find().where({ 'paid' : true }).exec();
     });
 };

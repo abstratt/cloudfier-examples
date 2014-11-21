@@ -41,7 +41,7 @@ var customerSchema = new Schema({
 /*************************** QUERIES ***************************/
 
 customerSchema.statics.findByName = function (firstName, lastName) {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         this.model('Customer').find().where({
             $or : [ 
                 {
@@ -78,7 +78,7 @@ customerSchema.statics.findByName = function (firstName, lastName) {
 };
 
 customerSchema.statics.vipCustomers = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         this.model('Customer').find().where({ 'vip' : true }).save();
         return q(this.model('Customer').find().where({ 'vip' : true }));
     });
@@ -93,26 +93,26 @@ personSchema.virtual('fullName').get(function () {
  *  A valuable customer is a customer that has two or more cars with us 
  */
 customerSchema.virtual('vip').get(function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return Car.findOne({ _id : this.cars }).exec();
-    }).then(function(/*singleChild*/read_cars) {
+    }).then(function(read_cars) {
         return /*TBD*/count >= 2;
     });
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 customerSchema.methods.getPendingServices = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return Car.findOne({ _id : this.cars }).exec();
-    }).then(function(/*singleChild*/read_cars) {
+    }).then(function(read_cars) {
         return /*TBD*/reduce;
     });
 };
 
 customerSchema.methods.getCompletedServices = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return Car.findOne({ _id : this.cars }).exec();
-    }).then(function(/*singleChild*/read_cars) {
+    }).then(function(read_cars) {
         return /*TBD*/reduce;
     });
 };

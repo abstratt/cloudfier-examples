@@ -40,7 +40,7 @@ var meetingSchema = new Schema({
  *  Makes the current user leave this meeting. Note that organizers cannot leave a meeting. 
  */
 meetingSchema.methods.leave = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         User['current'].meetings = null;
         User['current'] = null;
     });
@@ -50,7 +50,7 @@ meetingSchema.methods.leave = function () {
  *  Makes the current user join this meeting. 
  */
 meetingSchema.methods.join = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         // link participants and meetings
         this.participants.push(User['current']);
         User['current'].meetings.push(this);
@@ -61,7 +61,7 @@ meetingSchema.methods.join = function () {
  *  Adds a selected participant to this meeting. 
  */
 meetingSchema.methods.addParticipant = function (newParticipant) {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         // link participants and meetings
         this.participants.push(newParticipant);
         newParticipant.meetings.push(this);
@@ -72,25 +72,25 @@ meetingSchema.methods.addParticipant = function (newParticipant) {
  *  Starts a meeting having the current user as organizer. 
  */
 meetingSchema.statics.startMeeting = function (title, description, date) {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         User['current'].startMeetingOnBehalf(title, description, date);
     });
 };
 /*************************** PRIVATE OPS ***********************/
 
 meetingSchema.methods.isParticipating = function (candidate) {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return User.find({ _id : this.participants }).exec();
-    }).then(function(/*singleChild*/read_participants) {
+    }).then(function(read_participants) {
         return /*TBD*/includes.exec();
     });
 };
 
 meetingSchema.methods.isOrganizing = function (candidate) {
-    return q(/*parallel*/).all([
-        q(/*leaf*/).then(function() {
+    return q().all([
+        q().then(function() {
             return User.findOne({ _id : this.organizer }).exec();
-        }), q(/*leaf*/).then(function() {
+        }), q().then(function() {
             return candidate;
         })
     ]).spread(function(read_organizer, read_Candidate) {

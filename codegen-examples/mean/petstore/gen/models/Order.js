@@ -42,20 +42,20 @@ var orderSchema = new Schema({
 
 orderSchema.methods.addItem = function (product, quantity) {
     var i;
-    return q(/*sequential*/).then(function() {
-        return q(/*leaf*/).then(function() {
+    return q().then(function() {
+        return q().then(function() {
             i = new OrderDetail();
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             i['product'] = product;
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             i['quantity'] = quantity;
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             i['order'] = this;
         });
     });
@@ -69,30 +69,30 @@ orderSchema.methods.process = function () {
 /*************************** DERIVED PROPERTIES ****************/
 
 orderSchema.virtual('orderWeightTotal').get(function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return this.computeWeightTotal();
-    }).then(function(/*singleChild*/call_computeWeightTotal) {
+    }).then(function(call_computeWeightTotal) {
         return call_computeWeightTotal;
     });
 });
 
 orderSchema.virtual('orderTotal').get(function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return this.computeOrderTotal();
-    }).then(function(/*singleChild*/call_computeOrderTotal) {
+    }).then(function(call_computeOrderTotal) {
         return call_computeOrderTotal;
     });
 });
 /*************************** PRIVATE OPS ***********************/
 
 orderSchema.methods.computeOrderTotal = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return /*TBD*/reduce.exec();
     });
 };
 
 orderSchema.methods.computeWeightTotal = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return /*TBD*/reduce.exec();
     });
 };

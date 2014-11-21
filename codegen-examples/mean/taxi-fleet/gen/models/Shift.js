@@ -47,7 +47,7 @@ shiftSchema.path('shiftsPerDay').validate(
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 shiftSchema.methods.getTaxis = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return this.model('Taxi').find().where({ shift : this });
     });
 };

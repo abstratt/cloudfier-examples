@@ -25,42 +25,42 @@ var customerSchema = new Schema({
 
 customerSchema.methods.rent = function (car) {
     var rental;
-    return q(/*sequential*/).then(function() {
-        return q(/*leaf*/).then(function() {
+    return q().then(function() {
+        return q().then(function() {
             rental = new Rental();
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             // link customer and rentals
             rental.customer = this;
             this.rentals.push(rental);
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             // link car and rentals
             rental.car = car;
             car.rentals.push(rental);
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             car.carRented();
         });
     });
 };
 
 customerSchema.methods.finishRental = function () {
-    return q(/*sequential*/).then(function() {
-        return q(/*leaf*/).then(function() {
+    return q().then(function() {
+        return q().then(function() {
             return this.getCurrentRental();
-        }).then(function(/*singleChild*/read_currentRental) {
+        }).then(function(read_currentRental) {
             return Car.find({ _id : read_currentRental.car }).exec();
-        }).then(function(/*singleChild*/read_car) {
+        }).then(function(read_car) {
             read_car.carReturned();
         });
     }).then(function() {
-        return q(/*leaf*/).then(function() {
+        return q().then(function() {
             return this.getCurrentRental();
-        }).then(function(/*singleChild*/read_currentRental) {
+        }).then(function(read_currentRental) {
             read_currentRental.finish();
         });
     });
@@ -68,10 +68,10 @@ customerSchema.methods.finishRental = function () {
 /*************************** DERIVED PROPERTIES ****************/
 
 customerSchema.virtual('hasCurrentRental').get(function () {
-    return q(/*parallel*/).all([
-        q(/*leaf*/).then(function() {
+    return q().all([
+        q().then(function() {
             return this.getCurrentRental();
-        }), q(/*leaf*/).then(function() {
+        }), q().then(function() {
             return null;
         })
     ]).spread(function(read_currentRental, valueSpecificationAction) {
@@ -81,9 +81,9 @@ customerSchema.virtual('hasCurrentRental').get(function () {
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 customerSchema.methods.getCurrentRental = function () {
-    return q(/*leaf*/).then(function() {
+    return q().then(function() {
         return Rental.currentForCustomer(this);
-    }).then(function(/*singleChild*/call_currentForCustomer) {
+    }).then(function(call_currentForCustomer) {
         return call_currentForCustomer;
     });
 };
