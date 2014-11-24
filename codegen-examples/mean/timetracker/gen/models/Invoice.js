@@ -1,4 +1,4 @@
-var q = require("q");
+var Q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -33,8 +33,10 @@ var invoiceSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 invoiceSchema.methods.issue = function () {
-    return q().then(function() {
-        this['issueDate'] = new Date();
+    var me = this;
+    return Q.when(function() {
+        console.log("me['issueDate'] = new Date();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        me['issueDate'] = new Date();
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
@@ -49,16 +51,19 @@ invoiceSchema.virtual('open').get(function () {
 });
 
 invoiceSchema.virtual('totalUnits').get(function () {
-    return q().then(function() {
-        return q().then(function() {
-            return Work.findOne({ _id : this.reported }).exec();
+    var me = this;
+    return Q.when(null).then(function() {
+        return Q.when(function() {
+            console.log("return Work.find({ invoice : me._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Work.find({ invoice : me._id }).exec();
         }).then(function(read_reported) {
             return Work.aggregate()
                           .group({ _id: null, result: { $sum: '$units' } })
                           .select('-id result');
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log(";".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             ;
         });
     });
@@ -70,6 +75,7 @@ invoiceSchema.methods.sendInvoice = function () {
 };
 /*************************** STATE MACHINE ********************/
 invoiceSchema.methods.handleEvent = function (event) {
+    console.log("started handleEvent("+ event+"): "+ this);
     switch (event) {
         case 'issue' :
             if (this.status == 'Preparation') {
@@ -89,6 +95,8 @@ invoiceSchema.methods.handleEvent = function (event) {
             }
             break;
     }
+    console.log("completed handleEvent("+ event+"): "+ this);
+    
 };
 
 invoiceSchema.methods.issue = function () {

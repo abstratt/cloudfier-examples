@@ -1,4 +1,4 @@
-var q = require("q");
+var Q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -42,21 +42,26 @@ var orderSchema = new Schema({
 
 orderSchema.methods.addItem = function (product, quantity) {
     var i;
-    return q().then(function() {
-        return q().then(function() {
+    var me = this;
+    return Q.when(null).then(function() {
+        return Q.when(function() {
+            console.log("i = new OrderDetail();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             i = new OrderDetail();
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("i['product'] = product;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             i['product'] = product;
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("i['quantity'] = quantity;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             i['quantity'] = quantity;
         });
     }).then(function() {
-        return q().then(function() {
-            i['order'] = this;
+        return Q.when(function() {
+            console.log("i['order'] = me;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            i['order'] = me;
         });
     });
 };
@@ -69,16 +74,20 @@ orderSchema.methods.process = function () {
 /*************************** DERIVED PROPERTIES ****************/
 
 orderSchema.virtual('orderWeightTotal').get(function () {
-    return q().then(function() {
-        return this.computeWeightTotal();
+    var me = this;
+    return Q.when(function() {
+        console.log("return me.computeWeightTotal();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return me.computeWeightTotal();
     }).then(function(call_computeWeightTotal) {
         return call_computeWeightTotal;
     });
 });
 
 orderSchema.virtual('orderTotal').get(function () {
-    return q().then(function() {
-        return this.computeOrderTotal();
+    var me = this;
+    return Q.when(function() {
+        console.log("return me.computeOrderTotal();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return me.computeOrderTotal();
     }).then(function(call_computeOrderTotal) {
         return call_computeOrderTotal;
     });
@@ -86,18 +95,23 @@ orderSchema.virtual('orderTotal').get(function () {
 /*************************** PRIVATE OPS ***********************/
 
 orderSchema.methods.computeOrderTotal = function () {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log("return /*TBD*/reduce.exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         return /*TBD*/reduce.exec();
     });
 };
 
 orderSchema.methods.computeWeightTotal = function () {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log("return /*TBD*/reduce.exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         return /*TBD*/reduce.exec();
     });
 };
 /*************************** STATE MACHINE ********************/
 orderSchema.methods.handleEvent = function (event) {
+    console.log("started handleEvent("+ event+"): "+ this);
     switch (event) {
         case 'process' :
             if (this.orderStatus == 'New') {
@@ -117,6 +131,8 @@ orderSchema.methods.handleEvent = function (event) {
             }
             break;
     }
+    console.log("completed handleEvent("+ event+"): "+ this);
+    
 };
 
 orderSchema.methods.process = function () {

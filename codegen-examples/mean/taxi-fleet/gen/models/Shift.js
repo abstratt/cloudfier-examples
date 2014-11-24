@@ -1,4 +1,4 @@
-var q = require("q");
+var Q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -47,7 +47,9 @@ shiftSchema.path('shiftsPerDay').validate(
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 shiftSchema.methods.getTaxis = function () {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log("return this.model('Taxi').find().where({ shift : this });".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         return this.model('Taxi').find().where({ shift : this });
     });
 };

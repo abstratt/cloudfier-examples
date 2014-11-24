@@ -1,4 +1,4 @@
-var q = require("q");
+var Q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -29,8 +29,10 @@ var employeeSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 employeeSchema.methods.declareExpense = function (description, amount, date, category) {
-    return q().then(function() {
-        return Expense.newExpense(description, amount, date, category, this);
+    var me = this;
+    return Q.when(function() {
+        console.log("return Expense.newExpense(description, amount, date, category, me);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Expense.newExpense(description, amount, date, category, me);
     }).then(function(call_newExpense) {
         call_newExpense.save();
         return q(call_newExpense);
@@ -39,11 +41,15 @@ employeeSchema.methods.declareExpense = function (description, amount, date, cat
 /*************************** DERIVED PROPERTIES ****************/
 
 employeeSchema.virtual('totalRecorded').get(function () {
-    return q().all([
-        q().then(function() {
-            return this.getRecordedExpenses();
-        }), q().then(function() {
-            return this;
+    var me = this;
+    return Q.all([
+        Q.when(function() {
+            console.log("return me.getRecordedExpenses();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return me.getRecordedExpenses();
+        }),
+        Q.when(function() {
+            console.log("return me;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return me;
         })
     ]).spread(function(read_recordedExpenses, readSelfAction) {
         return readSelfAction.totalExpenses(read_recordedExpenses);
@@ -51,11 +57,15 @@ employeeSchema.virtual('totalRecorded').get(function () {
 });
 
 employeeSchema.virtual('totalSubmitted').get(function () {
-    return q().all([
-        q().then(function() {
-            return this.getSubmittedExpenses();
-        }), q().then(function() {
-            return this;
+    var me = this;
+    return Q.all([
+        Q.when(function() {
+            console.log("return me.getSubmittedExpenses();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return me.getSubmittedExpenses();
+        }),
+        Q.when(function() {
+            console.log("return me;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return me;
         })
     ]).spread(function(read_submittedExpenses, readSelfAction) {
         return readSelfAction.totalExpenses(read_submittedExpenses);
@@ -63,11 +73,15 @@ employeeSchema.virtual('totalSubmitted').get(function () {
 });
 
 employeeSchema.virtual('totalApproved').get(function () {
-    return q().all([
-        q().then(function() {
-            return this.getApprovedExpenses();
-        }), q().then(function() {
-            return this;
+    var me = this;
+    return Q.all([
+        Q.when(function() {
+            console.log("return me.getApprovedExpenses();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return me.getApprovedExpenses();
+        }),
+        Q.when(function() {
+            console.log("return me;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return me;
         })
     ]).spread(function(read_approvedExpenses, readSelfAction) {
         return readSelfAction.totalExpenses(read_approvedExpenses);
@@ -75,11 +89,15 @@ employeeSchema.virtual('totalApproved').get(function () {
 });
 
 employeeSchema.virtual('totalRejected').get(function () {
-    return q().all([
-        q().then(function() {
-            return this.getRejectedExpenses();
-        }), q().then(function() {
-            return this;
+    var me = this;
+    return Q.all([
+        Q.when(function() {
+            console.log("return me.getRejectedExpenses();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return me.getRejectedExpenses();
+        }),
+        Q.when(function() {
+            console.log("return me;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return me;
         })
     ]).spread(function(read_rejectedExpenses, readSelfAction) {
         return readSelfAction.totalExpenses(read_rejectedExpenses);
@@ -88,32 +106,40 @@ employeeSchema.virtual('totalRejected').get(function () {
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 employeeSchema.methods.getRecordedExpenses = function () {
-    return q().then(function() {
-        return this.expensesByStatus("Draft");
+    var me = this;
+    return Q.when(function() {
+        console.log("return me.expensesByStatus(<Q>Draft<Q>);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return me.expensesByStatus("Draft");
     }).then(function(call_expensesByStatus) {
         return call_expensesByStatus;
     });
 };
 
 employeeSchema.methods.getSubmittedExpenses = function () {
-    return q().then(function() {
-        return this.expensesByStatus("Submitted");
+    var me = this;
+    return Q.when(function() {
+        console.log("return me.expensesByStatus(<Q>Submitted<Q>);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return me.expensesByStatus("Submitted");
     }).then(function(call_expensesByStatus) {
         return call_expensesByStatus;
     });
 };
 
 employeeSchema.methods.getApprovedExpenses = function () {
-    return q().then(function() {
-        return this.expensesByStatus("Approved");
+    var me = this;
+    return Q.when(function() {
+        console.log("return me.expensesByStatus(<Q>Approved<Q>);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return me.expensesByStatus("Approved");
     }).then(function(call_expensesByStatus) {
         return call_expensesByStatus;
     });
 };
 
 employeeSchema.methods.getRejectedExpenses = function () {
-    return q().then(function() {
-        return this.expensesByStatus("Rejected");
+    var me = this;
+    return Q.when(function() {
+        console.log("return me.expensesByStatus(<Q>Rejected<Q>);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return me.expensesByStatus("Rejected");
     }).then(function(call_expensesByStatus) {
         return call_expensesByStatus;
     });
@@ -125,8 +151,10 @@ employeeSchema.methods.totalExpenses = function (toSum) {
 };
 
 employeeSchema.methods.expensesByStatus = function (status) {
-    return q().then(function() {
-        return Expense.findOne({ _id : this.expenses }).exec();
+    var me = this;
+    return Q.when(function() {
+        console.log("return Expense.find({ employee : me._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Expense.find({ employee : me._id }).exec();
     }).then(function(readLinkAction) {
         return readLinkAction.where({ status : status }).exec();
     });

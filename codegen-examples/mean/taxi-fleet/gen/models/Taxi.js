@@ -1,4 +1,4 @@
-var q = require("q");
+var Q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -34,8 +34,10 @@ var taxiSchema = new Schema({
  *  Create charges for every driver 
  */
 taxiSchema.methods.charge = function (date) {
-    return q().then(function() {
-        return Driver.findOne({ _id : this.drivers }).exec();
+    var me = this;
+    return Q.when(function() {
+        console.log("return Driver.find({ taxi : me._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Driver.find({ taxi : me._id }).exec();
     }).then(function(read_drivers) {
         /*TBD*/forEach;
     });
@@ -43,19 +45,25 @@ taxiSchema.methods.charge = function (date) {
 /*************************** DERIVED PROPERTIES ****************/
 
 taxiSchema.virtual('driverCount').get(function () {
-    return q().then(function() {
-        return Driver.findOne({ _id : this.drivers }).exec();
+    var me = this;
+    return Q.when(function() {
+        console.log("return Driver.find({ taxi : me._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Driver.find({ taxi : me._id }).exec();
     }).then(function(read_drivers) {
         return /*TBD*/count;
     });
 });
 
 taxiSchema.virtual('full').get(function () {
-    return q().all([
-        q().then(function() {
-            return Shift.findOne({ _id : this.shift }).exec();
-        }), q().then(function() {
-            return this['driverCount'];
+    var me = this;
+    return Q.all([
+        Q.when(function() {
+            console.log("return Shift.findOne({ _id : me.shift }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Shift.findOne({ _id : me.shift }).exec();
+        }),
+        Q.when(function() {
+            console.log("return me['driverCount'];".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return me['driverCount'];
         })
     ]).spread(function(read_shift, read_driverCount) {
         return read_driverCount >= read_shift['shiftsPerDay'];
@@ -63,8 +71,10 @@ taxiSchema.virtual('full').get(function () {
 });
 
 taxiSchema.virtual('booked').get(function () {
-    return q().then(function() {
-        return this['driverCount'];
+    var me = this;
+    return Q.when(function() {
+        console.log("return me['driverCount'];".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return me['driverCount'];
     }).then(function(read_driverCount) {
         return read_driverCount > 0;
     });
@@ -72,8 +82,10 @@ taxiSchema.virtual('booked').get(function () {
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 taxiSchema.methods.getPendingCharges = function () {
-    return q().then(function() {
-        return Charge.byTaxi(this);
+    var me = this;
+    return Q.when(function() {
+        console.log("return Charge.byTaxi(me);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Charge.byTaxi(me);
     }).then(function(call_byTaxi) {
         return call_byTaxi.where({
             $ne : [ 

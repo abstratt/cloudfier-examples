@@ -1,4 +1,4 @@
-var q = require("q");
+var Q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -33,10 +33,12 @@ var driverSchema = new Schema({
  *  Book a taxi that is currently available 
  */
 driverSchema.methods.book = function (toRent) {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log("// link taxi and drivers<NL>me.taxi = toRent;<NL>toRent.drivers.push(me);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         // link taxi and drivers
-        this.taxi = toRent;
-        toRent.drivers.push(this);
+        me.taxi = toRent;
+        toRent.drivers.push(me);
     });
 };
 
@@ -44,11 +46,15 @@ driverSchema.methods.book = function (toRent) {
  *  Release a taxi that is currently booked 
  */
 driverSchema.methods.release = function () {
-    return q().all([
-        q().then(function() {
-            return Taxi.find({ _id : this.taxi }).exec();
-        }), q().then(function() {
-            return this;
+    var me = this;
+    return Q.all([
+        Q.when(function() {
+            console.log("return Taxi.findOne({ _id : me.taxi }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Taxi.findOne({ _id : me.taxi }).exec();
+        }),
+        Q.when(function() {
+            console.log("return me;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return me;
         })
     ]).spread(function(read_taxi, readSelfAction) {
         read_taxi.drivers = null;
@@ -58,10 +64,14 @@ driverSchema.methods.release = function () {
 /*************************** DERIVED PROPERTIES ****************/
 
 driverSchema.virtual('hasBooking').get(function () {
-    return q().all([
-        q().then(function() {
-            return Taxi.find({ _id : this.taxi }).exec();
-        }), q().then(function() {
+    var me = this;
+    return Q.all([
+        Q.when(function() {
+            console.log("return Taxi.findOne({ _id : me.taxi }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Taxi.findOne({ _id : me.taxi }).exec();
+        }),
+        Q.when(function() {
+            console.log("return null;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             return null;
         })
     ]).spread(function(read_taxi, valueSpecificationAction) {
@@ -70,8 +80,10 @@ driverSchema.virtual('hasBooking').get(function () {
 });
 
 driverSchema.virtual('paymentDue').get(function () {
-    return q().then(function() {
-        return this.getPendingCharges();
+    var me = this;
+    return Q.when(function() {
+        console.log("return me.getPendingCharges();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return me.getPendingCharges();
     }).then(function(read_pendingCharges) {
         return !/*TBD*/isEmpty;
     });
@@ -79,8 +91,10 @@ driverSchema.virtual('paymentDue').get(function () {
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 driverSchema.methods.getPendingCharges = function () {
-    return q().then(function() {
-        return Charge.findOne({ _id : this.charges }).exec();
+    var me = this;
+    return Q.when(function() {
+        console.log("return Charge.find({ driver : me._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Charge.find({ driver : me._id }).exec();
     }).then(function(read_charges) {
         return read_charges.where({
             $ne : [ 

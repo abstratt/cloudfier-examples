@@ -1,4 +1,4 @@
-var q = require("q");
+var Q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -41,7 +41,9 @@ var customerSchema = new Schema({
 /*************************** QUERIES ***************************/
 
 customerSchema.statics.findByName = function (firstName, lastName) {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log("this.model('Customer').find().where({<NL>    $or : [ <NL>        {<NL>            $eq : [ <NL>                firstName,<NL>                firstName<NL>            ]<NL>        },<NL>        {<NL>            $eq : [ <NL>                lastName,<NL>                lastName<NL>            ]<NL>        }<NL>    ]<NL>}).save();<NL>return q(this.model('Customer').find().where({<NL>    $or : [ <NL>        {<NL>            $eq : [ <NL>                firstName,<NL>                firstName<NL>            ]<NL>        },<NL>        {<NL>            $eq : [ <NL>                lastName,<NL>                lastName<NL>            ]<NL>        }<NL>    ]<NL>}));<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         this.model('Customer').find().where({
             $or : [ 
                 {
@@ -78,7 +80,9 @@ customerSchema.statics.findByName = function (firstName, lastName) {
 };
 
 customerSchema.statics.vipCustomers = function () {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log("this.model('Customer').find().where({ 'vip' : true }).save();<NL>return q(this.model('Customer').find().where({ 'vip' : true }));<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         this.model('Customer').find().where({ 'vip' : true }).save();
         return q(this.model('Customer').find().where({ 'vip' : true }));
     });
@@ -93,8 +97,10 @@ personSchema.virtual('fullName').get(function () {
  *  A valuable customer is a customer that has two or more cars with us 
  */
 customerSchema.virtual('vip').get(function () {
-    return q().then(function() {
-        return Car.findOne({ _id : this.cars }).exec();
+    var me = this;
+    return Q.when(function() {
+        console.log("return Car.find({ owner : me._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Car.find({ owner : me._id }).exec();
     }).then(function(read_cars) {
         return /*TBD*/count >= 2;
     });
@@ -102,16 +108,20 @@ customerSchema.virtual('vip').get(function () {
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 customerSchema.methods.getPendingServices = function () {
-    return q().then(function() {
-        return Car.findOne({ _id : this.cars }).exec();
+    var me = this;
+    return Q.when(function() {
+        console.log("return Car.find({ owner : me._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Car.find({ owner : me._id }).exec();
     }).then(function(read_cars) {
         return /*TBD*/reduce;
     });
 };
 
 customerSchema.methods.getCompletedServices = function () {
-    return q().then(function() {
-        return Car.findOne({ _id : this.cars }).exec();
+    var me = this;
+    return Q.when(function() {
+        console.log("return Car.find({ owner : me._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Car.find({ owner : me._id }).exec();
     }).then(function(read_cars) {
         return /*TBD*/reduce;
     });

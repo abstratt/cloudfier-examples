@@ -1,4 +1,4 @@
-var q = require("q");
+var Q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -22,16 +22,20 @@ var categorySchema = new Schema({
 
 categorySchema.statics.newCategory = function (name) {
     var newCategory;
-    return q().then(function() {
-        return q().then(function() {
+    var me = this;
+    return Q.when(null).then(function() {
+        return Q.when(function() {
+            console.log("newCategory = new Category();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             newCategory = new Category();
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("newCategory['name'] = name;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             newCategory['name'] = name;
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("newCategory.save();<NL>return q(newCategory);<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             newCategory.save();
             return q(newCategory);
         });
@@ -40,8 +44,10 @@ categorySchema.statics.newCategory = function (name) {
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 categorySchema.methods.getExpensesInThisCategory = function () {
-    return q().then(function() {
-        return Expense.findExpensesByCategory(this);
+    var me = this;
+    return Q.when(function() {
+        console.log("return Expense.findExpensesByCategory(me);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Expense.findExpensesByCategory(me);
     }).then(function(call_findExpensesByCategory) {
         return call_findExpensesByCategory;
     });

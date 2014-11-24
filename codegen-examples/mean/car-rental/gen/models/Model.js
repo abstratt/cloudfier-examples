@@ -1,4 +1,4 @@
-var q = require("q");
+var Q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -23,10 +23,12 @@ var modelSchema = new Schema({
 /*************************** DERIVED PROPERTIES ****************/
 
 modelSchema.virtual('description').get(function () {
-    return q().then(function() {
-        return Make.find({ _id : this.make }).exec();
+    var me = this;
+    return Q.when(function() {
+        console.log("return Make.findOne({ _id : me.make }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Make.findOne({ _id : me.make }).exec();
     }).then(function(read_make) {
-        return read_make['name'] + " " + this['name'];
+        return read_make['name'] + " " + me['name'];
     });
 });
 

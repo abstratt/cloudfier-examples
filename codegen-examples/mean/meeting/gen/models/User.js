@@ -1,4 +1,4 @@
-var q = require("q");
+var Q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -30,31 +30,40 @@ var userSchema = new Schema({
  */
 userSchema.methods.startMeetingOnBehalf = function (title, description, date) {
     var newMeeting;
-    return q().then(function() {
-        return q().then(function() {
+    var me = this;
+    return Q.when(null).then(function() {
+        return Q.when(function() {
+            console.log("newMeeting = new Meeting();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             newMeeting = new Meeting();
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("newMeeting['date'] = date;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             newMeeting['date'] = date;
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("newMeeting['title'] = title;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             newMeeting['title'] = title;
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("newMeeting['description'] = description;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             newMeeting['description'] = description;
         });
     }).then(function() {
-        return q().then(function() {
-            newMeeting['organizer'] = this;
+        return Q.when(function() {
+            console.log("newMeeting['organizer'] = me;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            newMeeting['organizer'] = me;
         });
     }).then(function() {
-        return q().all([
-            q().then(function() {
+        return Q.all([
+            Q.when(function() {
+                console.log("return User.findOne({ _id : newMeeting.organizer }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                 return User.findOne({ _id : newMeeting.organizer }).exec();
-            }), q().then(function() {
+            }),
+            Q.when(function() {
+                console.log("return newMeeting;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                 return newMeeting;
             })
         ]).spread(function(read_organizer, read_NewMeeting) {

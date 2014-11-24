@@ -1,4 +1,4 @@
-var q = require("q");
+var Q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -77,25 +77,33 @@ carSchema.path('year').validate(
 /*************************** ACTIONS ***************************/
 
 carSchema.methods.startRepair = function () {
-    return q().then(function() {
-        this.repairStarted();
+    var me = this;
+    return Q.when(function() {
+        console.log("me.repairStarted()<NL>return Q.when(null);<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        me.repairStarted()
+        return Q.when(null);
     });
 };
 
 carSchema.methods.finishRepair = function () {
-    return q().then(function() {
-        this.repairFinished();
+    var me = this;
+    return Q.when(function() {
+        console.log("me.repairFinished()<NL>return Q.when(null);<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        me.repairFinished()
+        return Q.when(null);
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 carSchema.virtual('description').get(function () {
-    return q().then(function() {
-        return Model.findOne({ _id : this.model }).exec();
+    var me = this;
+    return Q.when(function() {
+        console.log("return Model.findOne({ _id : me.model }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Model.findOne({ _id : me.model }).exec();
     }).then(function(read_model) {
         return read_model['description'];
     }).then(function(read_description) {
-        return read_description + " - " + this['plate'];
+        return read_description + " - " + me['plate'];
     });
 });
 
@@ -113,14 +121,17 @@ carSchema.virtual('rented').get(function () {
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 carSchema.methods.getCurrentRental = function () {
-    return q().then(function() {
-        return Rental.currentForCar(this);
+    var me = this;
+    return Q.when(function() {
+        console.log("return Rental.currentForCar(me);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Rental.currentForCar(me);
     }).then(function(call_currentForCar) {
         return call_currentForCar;
     });
 };
 /*************************** STATE MACHINE ********************/
 carSchema.methods.handleEvent = function (event) {
+    console.log("started handleEvent("+ event+"): "+ this);
     switch (event) {
         case 'CarRented' :
             if (this.status == 'Available') {
@@ -150,6 +161,8 @@ carSchema.methods.handleEvent = function (event) {
             }
             break;
     }
+    console.log("completed handleEvent("+ event+"): "+ this);
+    
 };
 
 carSchema.methods.carRented = function () {

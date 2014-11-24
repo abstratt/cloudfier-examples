@@ -1,4 +1,4 @@
-var q = require("q");
+var Q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -40,7 +40,9 @@ var meetingSchema = new Schema({
  *  Makes the current user leave this meeting. Note that organizers cannot leave a meeting. 
  */
 meetingSchema.methods.leave = function () {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log("User['current'].meetings = null;<NL>User['current'] = null;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         User['current'].meetings = null;
         User['current'] = null;
     });
@@ -50,10 +52,12 @@ meetingSchema.methods.leave = function () {
  *  Makes the current user join this meeting. 
  */
 meetingSchema.methods.join = function () {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log("// link participants and meetings<NL>me.participants.push(User['current']);<NL>User['current'].meetings.push(me);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         // link participants and meetings
-        this.participants.push(User['current']);
-        User['current'].meetings.push(this);
+        me.participants.push(User['current']);
+        User['current'].meetings.push(me);
     });
 };
 
@@ -61,10 +65,12 @@ meetingSchema.methods.join = function () {
  *  Adds a selected participant to this meeting. 
  */
 meetingSchema.methods.addParticipant = function (newParticipant) {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log("// link participants and meetings<NL>me.participants.push(newParticipant);<NL>newParticipant.meetings.push(me);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         // link participants and meetings
-        this.participants.push(newParticipant);
-        newParticipant.meetings.push(this);
+        me.participants.push(newParticipant);
+        newParticipant.meetings.push(me);
     });
 };
 
@@ -72,25 +78,33 @@ meetingSchema.methods.addParticipant = function (newParticipant) {
  *  Starts a meeting having the current user as organizer. 
  */
 meetingSchema.statics.startMeeting = function (title, description, date) {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log("User['current'].startMeetingOnBehalf(title, description, date);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         User['current'].startMeetingOnBehalf(title, description, date);
     });
 };
 /*************************** PRIVATE OPS ***********************/
 
 meetingSchema.methods.isParticipating = function (candidate) {
-    return q().then(function() {
-        return User.find({ _id : this.participants }).exec();
+    var me = this;
+    return Q.when(function() {
+        console.log("return User.find({ meetings : me._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return User.find({ meetings : me._id }).exec();
     }).then(function(read_participants) {
         return /*TBD*/includes.exec();
     });
 };
 
 meetingSchema.methods.isOrganizing = function (candidate) {
-    return q().all([
-        q().then(function() {
-            return User.findOne({ _id : this.organizer }).exec();
-        }), q().then(function() {
+    var me = this;
+    return Q.all([
+        Q.when(function() {
+            console.log("return User.findOne({ _id : me.organizer }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return User.findOne({ _id : me.organizer }).exec();
+        }),
+        Q.when(function() {
+            console.log("return candidate;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             return candidate;
         })
     ]).spread(function(read_organizer, read_Candidate) {

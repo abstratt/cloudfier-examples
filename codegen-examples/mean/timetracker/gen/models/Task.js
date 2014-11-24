@@ -1,4 +1,4 @@
-var q = require("q");
+var Q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -45,22 +45,27 @@ var taskSchema = new Schema({
 
 taskSchema.methods.addWork = function (units) {
     var newWork;
-    return q().then(function() {
-        return q().then(function() {
+    var me = this;
+    return Q.when(null).then(function() {
+        return Q.when(function() {
+            console.log("newWork = new Work();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             newWork = new Work();
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("newWork['units'] = units;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             newWork['units'] = units;
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("// link reported and task<NL>me.reported.push(newWork);<NL>newWork.task = me;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             // link reported and task
-            this.reported.push(newWork);
-            newWork.task = this;
+            me.reported.push(newWork);
+            newWork.task = me;
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("newWork.save();<NL>return q(newWork);<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             newWork.save();
             return q(newWork);
         });
@@ -73,11 +78,15 @@ taskSchema.virtual('unitsReported').get(function () {
 });
 
 taskSchema.virtual('unitsToInvoice').get(function () {
-    return q().all([
-        q().then(function() {
-            return this.getToInvoice();
-        }), q().then(function() {
-            return this;
+    var me = this;
+    return Q.all([
+        Q.when(function() {
+            console.log("return me.getToInvoice();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return me.getToInvoice();
+        }),
+        Q.when(function() {
+            console.log("return me;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return me;
         })
     ]).spread(function(read_toInvoice, readSelfAction) {
         return readSelfAction.countUnits(read_toInvoice);
@@ -86,8 +95,10 @@ taskSchema.virtual('unitsToInvoice').get(function () {
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 taskSchema.methods.getToInvoice = function () {
-    return q().then(function() {
-        return this['reported'].where({
+    var me = this;
+    return Q.when(function() {
+        console.log("return me['reported'].where({<NL>    $ne : [ <NL>        { 'invoiced' : true },<NL>        true<NL>    ]<NL>});".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return me['reported'].where({
             $ne : [ 
                 { 'invoiced' : true },
                 true

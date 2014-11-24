@@ -1,7 +1,7 @@
 
 var mongoose = require('mongoose');
 var assert = require("assert");
-var q = require("q");
+var Q = require("q");
 var Client = require('../models/Client.js');
 var Task = require('../models/Task.js');
 var Invoice = require('../models/Invoice.js');
@@ -17,15 +17,18 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
             var invoice;
             var work;
             var client;
-            return q().then(function() {
-                return q().then(function() {
-                    return q().then(function() {
+            var me = this;
+            return Q.when(null).then(function() {
+                return Q.when(null).then(function() {
+                    return Q.when(function() {
+                        console.log("return Examples.client();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                         return Examples.client();
                     }).then(function(call_client) {
                         client = call_client;
                     });
                 }).then(function() {
-                    return q().then(function() {
+                    return Q.when(function() {
+                        console.log("return client.newTask(<Q>Some task<Q>);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                         return client.newTask("Some task");
                     }).then(function(call_newTask) {
                         return call_newTask.addWork(1);
@@ -33,26 +36,31 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                         work = call_addWork;
                     });
                 }).then(function() {
-                    return q().then(function() {
+                    return Q.when(function() {
+                        console.log("return client.startInvoice();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                         return client.startInvoice();
                     }).then(function(call_startInvoice) {
                         invoice = call_startInvoice;
                     });
                 }).then(function() {
-                    return q().then(function() {
+                    return Q.when(function() {
+                        console.log("work.submit(invoice);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                         work.submit(invoice);
                     });
                 }).then(function() {
-                    return q().then(function() {
+                    return Q.when(function() {
+                        console.log("assert.equal(<Q>Preparation<Q>, invoice['status']);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                         assert.equal("Preparation", invoice['status']);
                     });
                 }).then(function() {
-                    return q().then(function() {
+                    return Q.when(function() {
+                        console.log("invoice.issue();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                         invoice.issue();
                     });
                 });
             }).then(function() {
-                return q().then(function() {
+                return Q.when(function() {
+                    console.log("assert.equal(<Q>Invoiced<Q>, invoice['status']);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                     assert.equal("Invoiced", invoice['status']);
                 });
             });
@@ -62,9 +70,11 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
     test('invoicePaid', function(done) {
         var behavior = function() {
             var invoice;
-            return q().then(function() {
-                return q().then(function() {
-                    return q().then(function() {
+            var me = this;
+            return Q.when(null).then(function() {
+                return Q.when(null).then(function() {
+                    return Q.when(function() {
+                        console.log("return Examples.client();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                         return Examples.client();
                     }).then(function(call_client) {
                         return call_client.startInvoice();
@@ -72,8 +82,9 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                         invoice = call_startInvoice;
                     });
                 }).then(function() {
-                    return q().then(function() {
-                        return Client.find({ _id : invoice.client }).exec();
+                    return Q.when(function() {
+                        console.log("return Client.findOne({ _id : invoice.client }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                        return Client.findOne({ _id : invoice.client }).exec();
                     }).then(function(read_client) {
                         return read_client.newTask("Some task");
                     }).then(function(call_newTask) {
@@ -82,16 +93,20 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                         call_addWork.submit(invoice);
                     });
                 }).then(function() {
-                    return q().then(function() {
+                    return Q.when(function() {
+                        console.log("invoice.issue();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                         invoice.issue();
                     });
                 }).then(function() {
-                    return q().then(function() {
-                        invoice.invoicePaid();
+                    return Q.when(function() {
+                        console.log("invoice.invoicePaid()<NL>return Q.when(null);<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                        invoice.invoicePaid()
+                        return Q.when(null);
                     });
                 });
             }).then(function() {
-                return q().then(function() {
+                return Q.when(function() {
+                    console.log("assert.equal(<Q>Received<Q>, invoice['status']);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                     assert.equal("Received", invoice['status']);
                 });
             });
@@ -104,34 +119,40 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                 var task;
                 var invoice;
                 var work;
-                return q().then(function() {
-                    return q().then(function() {
-                        return q().then(function() {
+                var me = this;
+                return Q.when(null).then(function() {
+                    return Q.when(null).then(function() {
+                        return Q.when(function() {
+                            console.log("return Examples.task();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                             return Examples.task();
                         }).then(function(call_task) {
                             task = call_task;
                         });
                     }).then(function() {
-                        return q().then(function() {
-                            return Client.find({ _id : task.client }).exec();
+                        return Q.when(function() {
+                            console.log("return Client.findOne({ _id : task.client }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                            return Client.findOne({ _id : task.client }).exec();
                         }).then(function(read_client) {
                             return read_client.startInvoice();
                         }).then(function(call_startInvoice) {
                             invoice = call_startInvoice;
                         });
                     }).then(function() {
-                        return q().then(function() {
+                        return Q.when(function() {
+                            console.log("return task.addWork(1);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                             return task.addWork(1);
                         }).then(function(call_addWork) {
                             call_addWork.submit(invoice);
                         });
                     }).then(function() {
-                        return q().then(function() {
+                        return Q.when(function() {
+                            console.log("invoice.issue();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                             invoice.issue();
                         });
                     });
                 }).then(function() {
-                    return q().then(function() {
+                    return Q.when(function() {
+                        console.log("return task.addWork(2);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                         return task.addWork(2);
                     }).then(function(call_addWork) {
                         call_addWork.submit(invoice);
@@ -147,7 +168,9 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
     test('cannotIssueInvoiceWithoutAnyWork', function(done) {
         try {
             var behavior = function() {
-                return q().then(function() {
+                var me = this;
+                return Q.when(function() {
+                    console.log("return Examples.client();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                     return Examples.client();
                 }).then(function(call_client) {
                     return call_client.startInvoice();

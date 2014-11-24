@@ -1,4 +1,4 @@
-var q = require("q");
+var Q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -61,7 +61,9 @@ var carSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 carSchema.statics.findByRegistrationNumber = function (regNumber) {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log("this.model('Car').find().where({<NL>    $eq : [ <NL>        regNumber,<NL>        registrationNumber<NL>    ]<NL>}).findOne().save();<NL>return q(this.model('Car').find().where({<NL>    $eq : [ <NL>        regNumber,<NL>        registrationNumber<NL>    ]<NL>}).findOne());<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         this.model('Car').find().where({
             $eq : [ 
                 regNumber,
@@ -81,15 +83,19 @@ carSchema.statics.findByRegistrationNumber = function (regNumber) {
  *  Book a service on this car. 
  */
 carSchema.methods.bookService = function (description, estimateInDays) {
-    return q().then(function() {
-        return Service.newService(this, description, estimateInDays);
+    var me = this;
+    return Q.when(function() {
+        console.log("return Service.newService(me, description, estimateInDays);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Service.newService(me, description, estimateInDays);
     });
 };
 /*************************** QUERIES ***************************/
 
 carSchema.statics.findByOwner = function (owner) {
-    return q().then(function() {
-        return Car.findOne({ _id : owner.cars }).exec();
+    var me = this;
+    return Q.when(function() {
+        console.log("return Car.find({ owner : owner._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Car.find({ owner : owner._id }).exec();
     }).then(function(read_cars) {
         read_cars.save();
         return q(read_cars);
@@ -98,8 +104,10 @@ carSchema.statics.findByOwner = function (owner) {
 /*************************** DERIVED PROPERTIES ****************/
 
 carSchema.virtual('modelName').get(function () {
-    return q().then(function() {
-        return Model.findOne({ _id : this.model }).exec();
+    var me = this;
+    return Q.when(function() {
+        console.log("return Model.findOne({ _id : me.model }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Model.findOne({ _id : me.model }).exec();
     }).then(function(read_model) {
         return read_model.makeAndModel();
     }).then(function(call_makeAndModel) {

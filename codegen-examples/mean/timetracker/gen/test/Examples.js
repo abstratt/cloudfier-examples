@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var q = require("q");
+var Q = require("q");
 var Client = require('../models/Client.js');
 var Task = require('../models/Task.js');
 var Invoice = require('../models/Invoice.js');
@@ -7,23 +7,29 @@ var Invoice = require('../models/Invoice.js');
 var Examples = {
     clientWithName : function(name) {
         var client;
-        return q().then(function() {
-            return q().then(function() {
+        var me = this;
+        return Q.when(null).then(function() {
+            return Q.when(function() {
+                console.log("client = new Client();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                 client = new Client();
             });
         }).then(function() {
-            return q().then(function() {
+            return Q.when(function() {
+                console.log("client['name'] = name;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                 client['name'] = name;
             });
         }).then(function() {
-            return q().then(function() {
+            return Q.when(function() {
+                console.log("client.save();<NL>return q(client);<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                 client.save();
                 return q(client);
             });
         });
     },
     client : function() {
-        return q().then(function() {
+        var me = this;
+        return Q.when(function() {
+            console.log("return Examples.clientWithName(<Q>New Client<Q>);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             return Examples.clientWithName("New Client");
         }).then(function(call_clientWithName) {
             call_clientWithName.save();
@@ -32,27 +38,34 @@ var Examples = {
     },
     taskWithName : function(description, client) {
         var task;
-        return q().then(function() {
-            return q().then(function() {
+        var me = this;
+        return Q.when(null).then(function() {
+            return Q.when(function() {
+                console.log("task = new Task();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                 task = new Task();
             });
         }).then(function() {
-            return q().then(function() {
+            return Q.when(function() {
+                console.log("task['description'] = description;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                 task['description'] = description;
             });
         }).then(function() {
-            return q().then(function() {
+            return Q.when(function() {
+                console.log("task['client'] = client;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                 task['client'] = client;
             });
         }).then(function() {
-            return q().then(function() {
+            return Q.when(function() {
+                console.log("task.save();<NL>return q(task);<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                 task.save();
                 return q(task);
             });
         });
     },
     task : function() {
-        return q().then(function() {
+        var me = this;
+        return Q.when(function() {
+            console.log("return Examples.client();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             return Examples.client();
         }).then(function(call_client) {
             return Examples.taskWithName("New Task", call_client);

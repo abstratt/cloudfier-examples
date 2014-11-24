@@ -1,4 +1,4 @@
-var q = require("q");
+var Q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -47,8 +47,10 @@ var todoSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 todoSchema.methods.complete = function () {
-    return q().then(function() {
-        this['status'] = "Done";
+    var me = this;
+    return Q.when(function() {
+        console.log("me['status'] = <Q>Done<Q>;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        me['status'] = "Done";
     });
 };
 

@@ -1,4 +1,4 @@
-var q = require("q");
+var Q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -56,32 +56,40 @@ var expenseSchema = new Schema({
 
 expenseSchema.statics.newExpense = function (description, amount, date, category, employee) {
     var newExpense;
-    return q().then(function() {
-        return q().then(function() {
+    var me = this;
+    return Q.when(null).then(function() {
+        return Q.when(function() {
+            console.log("newExpense = new Expense();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             newExpense = new Expense();
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("newExpense['description'] = description;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             newExpense['description'] = description;
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("newExpense['amount'] = amount;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             newExpense['amount'] = amount;
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("newExpense['date'] = date;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             newExpense['date'] = date;
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("newExpense['category'] = category;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             newExpense['category'] = category;
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("newExpense['employee'] = employee;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             newExpense['employee'] = employee;
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("newExpense.save();<NL>return q(newExpense);<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             newExpense.save();
             return q(newExpense);
         });
@@ -89,8 +97,10 @@ expenseSchema.statics.newExpense = function (description, amount, date, category
 };
 
 expenseSchema.methods.approve = function () {
-    return q().then(function() {
-        this['approver'] = cls.getNamespace('currentUser');
+    var me = this;
+    return Q.when(function() {
+        console.log("me['approver'] = cls.getNamespace('currentUser');".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        me['approver'] = cls.getNamespace('currentUser');
     });
 };
 
@@ -98,13 +108,16 @@ expenseSchema.methods.approve = function () {
  *  Reject this expense. Please provide a reason. 
  */
 expenseSchema.methods.reject = function (reason) {
-    return q().then(function() {
-        return q().then(function() {
-            this['rejectionReason'] = reason;
+    var me = this;
+    return Q.when(null).then(function() {
+        return Q.when(function() {
+            console.log("me['rejectionReason'] = reason;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            me['rejectionReason'] = reason;
         });
     }).then(function() {
-        return q().then(function() {
-            this['approver'] = cls.getNamespace('currentUser');
+        return Q.when(function() {
+            console.log("me['approver'] = cls.getNamespace('currentUser');".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            me['approver'] = cls.getNamespace('currentUser');
         });
     });
 };
@@ -129,13 +142,17 @@ expenseSchema.methods.submit = function () {
 /*************************** QUERIES ***************************/
 
 expenseSchema.statics.findExpensesByCategory = function (category) {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log("return this.model('Expense').find().where({ { 'category' : e  } : category }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         return this.model('Expense').find().where({ { 'category' : e  } : category }).exec();
     });
 };
 
 expenseSchema.statics.findExpensesInPeriod = function (start, end_) {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log("return this.model('Expense').find().where({<NL>    $and : [ <NL>        {<NL>            $or : [ <NL>                { start : null },<NL>                {<NL>                    $gte : [ <NL>                        date,<NL>                        start<NL>                    ]<NL>                }<NL>            ]<NL>        },<NL>        {<NL>            $or : [ <NL>                { end_ : null },<NL>                {<NL>                    $lte : [ <NL>                        date,<NL>                        end_<NL>                    ]<NL>                }<NL>            ]<NL>        }<NL>    ]<NL>}).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         return this.model('Expense').find().where({
             $and : [ 
                 {
@@ -166,7 +183,9 @@ expenseSchema.statics.findExpensesInPeriod = function (start, end_) {
 };
 
 expenseSchema.statics.findByStatus = function (status) {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log("return this.model('Expense').find().where({ status : status }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         return this.model('Expense').find().where({ status : status }).exec();
     });
 };
@@ -194,30 +213,44 @@ expenseSchema.virtual('daysProcessed').get(function () {
 /*************************** PRIVATE OPS ***********************/
 
 expenseSchema.methods.reportApproved = function () {
-    return q().all([
-        q().then(function() {
-            return Employee.find({ _id : this.employee }).exec();
-        }), q().then(function() {
-            return this['amount'];
-        }), q().all([
-            q().then(function() {
-                return Category.findOne({ _id : this.category }).exec();
-            }), q().then(function() {
-                return this['description'] + "(";
+    var me = this;
+    return Q.all([
+        Q.when(function() {
+            console.log("return Employee.findOne({ _id : me.employee }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Employee.findOne({ _id : me.employee }).exec();
+        }),
+        Q.when(function() {
+            console.log("return me['amount'];".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return me['amount'];
+        }),
+        Q.all([
+            Q.when(function() {
+                console.log("return Category.findOne({ _id : me.category }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Category.findOne({ _id : me.category }).exec();
+            }),
+            Q.when(function() {
+                console.log("return me['description'] + <Q>(<Q>;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return me['description'] + "(";
             })
         ]).spread(function(read_category, call_add) {
             return call_add + read_category['name'] + ")";
-        }), q().then(function() {
-            return this['expenseId'];
-        }), q().then(function() {
-            return this['expensePayer'];
+        }),
+        Q.when(function() {
+            console.log("return me['expenseId'];".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return me['expenseId'];
+        }),
+        Q.when(function() {
+            console.log("return me['expensePayer'];".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return me['expensePayer'];
         })
     ]).spread(function(read_employee, read_amount, call_add, read_expenseId, read_expensePayer) {
-        read_expensePayer.expenseApproved(read_employee['name'], read_amount, call_add, read_expenseId);
+        read_expensePayer.expenseApproved(read_employee['name'], read_amount, call_add, read_expenseId)
+        return Q.when(null);
     });
 };
 /*************************** STATE MACHINE ********************/
 expenseSchema.methods.handleEvent = function (event) {
+    console.log("started handleEvent("+ event+"): "+ this);
     var guard;
     switch (event) {
         case 'submit' :
@@ -230,13 +263,16 @@ expenseSchema.methods.handleEvent = function (event) {
                     this.status = 'Approved';
                     // on entering Approved
                     (function() {
-                        return q().then(function() {
-                            return q().then(function() {
-                                this['processed'] = new Date();
+                        var me = this;
+                        return Q.when(null).then(function() {
+                            return Q.when(function() {
+                                console.log("me['processed'] = new Date();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                                me['processed'] = new Date();
                             });
                         }).then(function() {
-                            return q().then(function() {
-                                this.reportApproved();
+                            return Q.when(function() {
+                                console.log("me.reportApproved();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                                me.reportApproved();
                             });
                         });
                     })();
@@ -260,13 +296,16 @@ expenseSchema.methods.handleEvent = function (event) {
                 this.status = 'Approved';
                 // on entering Approved
                 (function() {
-                    return q().then(function() {
-                        return q().then(function() {
-                            this['processed'] = new Date();
+                    var me = this;
+                    return Q.when(null).then(function() {
+                        return Q.when(function() {
+                            console.log("me['processed'] = new Date();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                            me['processed'] = new Date();
                         });
                     }).then(function() {
-                        return q().then(function() {
-                            this.reportApproved();
+                        return Q.when(function() {
+                            console.log("me.reportApproved();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                            me.reportApproved();
                         });
                     });
                 })();
@@ -299,6 +338,8 @@ expenseSchema.methods.handleEvent = function (event) {
             }
             break;
     }
+    console.log("completed handleEvent("+ event+"): "+ this);
+    
 };
 
 expenseSchema.methods.submit = function () {

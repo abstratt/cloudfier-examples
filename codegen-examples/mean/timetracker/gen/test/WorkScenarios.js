@@ -1,7 +1,7 @@
 
 var mongoose = require('mongoose');
 var assert = require("assert");
-var q = require("q");
+var Q = require("q");
 var Client = require('../models/Client.js');
 var Task = require('../models/Task.js');
 var Invoice = require('../models/Invoice.js');
@@ -15,8 +15,10 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
     test('workDateDefaultsToToday', function(done) {
         var behavior = function() {
             var work;
-            return q().then(function() {
-                return q().then(function() {
+            var me = this;
+            return Q.when(null).then(function() {
+                return Q.when(function() {
+                    console.log("return Examples.task();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                     return Examples.task();
                 }).then(function(call_task) {
                     return call_task.addWork(1);
@@ -24,7 +26,8 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
                     work = call_addWork;
                 });
             }).then(function() {
-                return q().then(function() {
+                return Q.when(function() {
+                    console.log("assert.equal(new Date(), work['date']);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                     assert.equal(new Date(), work['date']);
                 });
             });
@@ -37,20 +40,24 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
                 var client1;
                 var client2;
                 var work;
-                return q().then(function() {
-                    return q().then(function() {
+                var me = this;
+                return Q.when(null).then(function() {
+                    return Q.when(function() {
+                        console.log("return Examples.client();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                         return Examples.client();
                     }).then(function(call_client) {
                         client1 = call_client;
                     });
                 }).then(function() {
-                    return q().then(function() {
+                    return Q.when(function() {
+                        console.log("return Examples.client();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                         return Examples.client();
                     }).then(function(call_client) {
                         client2 = call_client;
                     });
                 }).then(function() {
-                    return q().then(function() {
+                    return Q.when(function() {
+                        console.log("return client1.newTask(<Q>Some task<Q>);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                         return client1.newTask("Some task");
                     }).then(function(call_newTask) {
                         return call_newTask.addWork(1);
@@ -58,10 +65,13 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
                         work = call_addWork;
                     });
                 }).then(function() {
-                    return q().all([
-                        q().then(function() {
+                    return Q.all([
+                        Q.when(function() {
+                            console.log("return client2.startInvoice();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                             return client2.startInvoice();
-                        }), q().then(function() {
+                        }),
+                        Q.when(function() {
+                            console.log("return work;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                             return work;
                         })
                     ]).spread(function(call_startInvoice, read_Work) {
@@ -80,8 +90,10 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
             var behavior = function() {
                 var invoice;
                 var work;
-                return q().then(function() {
-                    return q().then(function() {
+                var me = this;
+                return Q.when(null).then(function() {
+                    return Q.when(function() {
+                        console.log("return Examples.client();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                         return Examples.client();
                     }).then(function(call_client) {
                         return call_client.newTask("Some task");
@@ -91,7 +103,8 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
                         work = call_addWork;
                     });
                 }).then(function() {
-                    return q().then(function() {
+                    return Q.when(function() {
+                        console.log("return work.getClient();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                         return work.getClient();
                     }).then(function(read_client) {
                         return read_client.startInvoice();
@@ -99,11 +112,13 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
                         invoice = call_startInvoice;
                     });
                 }).then(function() {
-                    return q().then(function() {
+                    return Q.when(function() {
+                        console.log("work.submit(invoice);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                         work.submit(invoice);
                     });
                 }).then(function() {
-                    return q().then(function() {
+                    return Q.when(function() {
+                        console.log("work.submit(invoice);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                         work.submit(invoice);
                     });
                 });
@@ -117,7 +132,9 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
     test('unitsWorkedMustBePositive', function(done) {
         try {
             var behavior = function() {
-                return q().then(function() {
+                var me = this;
+                return Q.when(function() {
+                    console.log("return Examples.task();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                     return Examples.task();
                 }).then(function(call_task) {
                     return call_task.addWork(-1);
@@ -132,7 +149,9 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
     test('unitsWorkedMayNotBeZero', function(done) {
         try {
             var behavior = function() {
-                return q().then(function() {
+                var me = this;
+                return Q.when(function() {
+                    console.log("return Examples.task();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                     return Examples.task();
                 }).then(function(call_task) {
                     return call_task.addWork(0);

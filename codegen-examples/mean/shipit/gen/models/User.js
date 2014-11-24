@@ -1,4 +1,4 @@
-var q = require("q");
+var Q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -44,19 +44,24 @@ var userSchema = new Schema({
 /*************************** ACTIONS ***************************/
 
 userSchema.methods.promoteToCommitter = function () {
-    return q().then(function() {
-        this['kind'] = "Committer";
+    var me = this;
+    return Q.when(function() {
+        console.log("me['kind'] = <Q>Committer<Q>;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        me['kind'] = "Committer";
     });
 };
 /*************************** QUERIES ***************************/
 
 userSchema.statics.current = function () {
-    return q().then(function() {
-        return q().then(function() {
+    var me = this;
+    return Q.when(null).then(function() {
+        return Q.when(function() {
+            console.log("return cls.getNamespace('currentUser').exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             return cls.getNamespace('currentUser').exec();
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log(";".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             ;
         });
     });
@@ -69,10 +74,14 @@ userSchema.virtual('committer').get(function () {
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 userSchema.methods.getIssuesCurrentlyInProgress = function () {
-    return q().all([
-        q().then(function() {
-            return Issue.findOne({ _id : this.issuesAssignedToUser }).exec();
-        }), q().then(function() {
+    var me = this;
+    return Q.all([
+        Q.when(function() {
+            console.log("return Issue.find({ assignee : me._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Issue.find({ assignee : me._id }).exec();
+        }),
+        Q.when(function() {
+            console.log("return <Q>InProgress<Q>;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             return "InProgress";
         })
     ]).spread(function(read_issuesAssignedToUser, valueSpecificationAction) {
@@ -83,10 +92,14 @@ userSchema.methods.getIssuesCurrentlyInProgress = function () {
 };
 
 userSchema.methods.getIssuesCurrentlyAssigned = function () {
-    return q().all([
-        q().then(function() {
-            return Issue.findOne({ _id : this.issuesAssignedToUser }).exec();
-        }), q().then(function() {
+    var me = this;
+    return Q.all([
+        Q.when(function() {
+            console.log("return Issue.find({ assignee : me._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Issue.find({ assignee : me._id }).exec();
+        }),
+        Q.when(function() {
+            console.log("return <Q>Assigned<Q>;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             return "Assigned";
         })
     ]).spread(function(read_issuesAssignedToUser, valueSpecificationAction) {

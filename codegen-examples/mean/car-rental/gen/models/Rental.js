@@ -1,4 +1,4 @@
-var q = require("q");
+var Q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -33,7 +33,9 @@ var rentalSchema = new Schema({
 /*************************** QUERIES ***************************/
 
 rentalSchema.statics.currentForCar = function (c) {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log("return this.model('Rental').find().where({<NL>    $and : [ <NL>        { car : c },<NL>        { 'inProgress' : true }<NL>    ]<NL>}).findOne().exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         return this.model('Rental').find().where({
             $and : [ 
                 { car : c },
@@ -44,7 +46,9 @@ rentalSchema.statics.currentForCar = function (c) {
 };
 
 rentalSchema.statics.currentForCustomer = function (c) {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log("return this.model('Rental').find().where({<NL>    $and : [ <NL>        { customer : c },<NL>        { 'inProgress' : true }<NL>    ]<NL>}).findOne().exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         return this.model('Rental').find().where({
             $and : [ 
                 { customer : c },
@@ -55,27 +59,33 @@ rentalSchema.statics.currentForCustomer = function (c) {
 };
 
 rentalSchema.statics.inProgress = function () {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log("return this.model('Rental').find().where({ 'inProgress' : true }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         return this.model('Rental').find().where({ 'inProgress' : true }).exec();
     });
 };
 
 rentalSchema.statics.all = function () {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log("return this.model('Rental').find().exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         return this.model('Rental').find().exec();
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 rentalSchema.virtual('description').get(function () {
-    return q().then(function() {
-        return Car.find({ _id : this.car }).exec();
+    var me = this;
+    return Q.when(function() {
+        console.log("return Car.findOne({ _id : me.car }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Car.findOne({ _id : me.car }).exec();
     }).then(function(read_car) {
         return Model.findOne({ _id : read_car.model }).exec();
     }).then(function(read_model) {
         return read_model['description'];
     }).then(function(read_description) {
-        return read_description + " on " + this['started'];
+        return read_description + " on " + me['started'];
     });
 });
 

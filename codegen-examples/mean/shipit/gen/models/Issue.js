@@ -1,4 +1,4 @@
-var q = require("q");
+var Q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -104,47 +104,64 @@ var issueSchema = new Schema({
  */
 issueSchema.statics.reportIssue = function (project, summary, description, severity) {
     var newIssue;
-    return q().then(function() {
-        return q().then(function() {
+    var me = this;
+    return Q.when(null).then(function() {
+        return Q.when(function() {
+            console.log("newIssue = new Issue();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             newIssue = new Issue();
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("newIssue['summary'] = summary;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             newIssue['summary'] = summary;
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("newIssue['description'] = description;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             newIssue['description'] = description;
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("newIssue['severity'] = severity;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             newIssue['severity'] = severity;
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("newIssue['reporter'] = User['current'];".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             newIssue['reporter'] = User['current'];
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("newIssue['project'] = project;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             newIssue['project'] = project;
         });
     }).then(function() {
-        return q().all([
-            q().then(function() {
+        return Q.all([
+            Q.when(function() {
+                console.log("return newIssue['issueKey'];".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                 return newIssue['issueKey'];
-            }), q().then(function() {
+            }),
+            Q.when(function() {
+                console.log("return summary;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                 return summary;
-            }), q().then(function() {
+            }),
+            Q.when(function() {
+                console.log("return description;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                 return description;
-            }), q().then(function() {
-                return User.find({ _id : newIssue.reporter }).exec();
+            }),
+            Q.when(function() {
+                console.log("return User.findOne({ _id : newIssue.reporter }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return User.findOne({ _id : newIssue.reporter }).exec();
             }).then(function(read_reporter) {
                 return read_reporter['email'];
-            }), q().then(function() {
+            }),
+            Q.when(function() {
+                console.log("return newIssue['userNotifier'];".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                 return newIssue['userNotifier'];
             })
         ]).spread(function(read_issueKey, read_Summary, read_Description, read_email, read_userNotifier) {
-            read_userNotifier.issueReported(read_issueKey, read_Summary, read_Description, read_email);
+            read_userNotifier.issueReported(read_issueKey, read_Summary, read_Description, read_email)
+            return Q.when(null);
         });
     });
 };
@@ -153,8 +170,10 @@ issueSchema.statics.reportIssue = function (project, summary, description, sever
  *  Release the issue so another committer can work on it. 
  */
 issueSchema.methods.release = function () {
-    return q().then(function() {
-        this['assignee'] = null;
+    var me = this;
+    return Q.when(function() {
+        console.log("me['assignee'] = null;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        me['assignee'] = null;
     });
 };
 
@@ -162,8 +181,10 @@ issueSchema.methods.release = function () {
  *  Assign an issue to a user. 
  */
 issueSchema.methods.assign = function (newAssignee) {
-    return q().then(function() {
-        this['assignee'] = newAssignee;
+    var me = this;
+    return Q.when(function() {
+        console.log("me['assignee'] = newAssignee;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        me['assignee'] = newAssignee;
     });
 };
 
@@ -183,13 +204,16 @@ issueSchema.methods.start = function () {
  *  Resolve the issue. 
  */
 issueSchema.methods.resolve = function (resolution) {
-    return q().then(function() {
-        return q().then(function() {
-            this['resolvedOn'] = new Date();
+    var me = this;
+    return Q.when(null).then(function() {
+        return Q.when(function() {
+            console.log("me['resolvedOn'] = new Date();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            me['resolvedOn'] = new Date();
         });
     }).then(function() {
-        return q().then(function() {
-            this['resolution'] = resolution;
+        return Q.when(function() {
+            console.log("me['resolution'] = resolution;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            me['resolution'] = resolution;
         });
     });
 };
@@ -198,22 +222,27 @@ issueSchema.methods.resolve = function (resolution) {
  *  Reopen the issue. 
  */
 issueSchema.methods.reopen = function (reason) {
-    return q().then(function() {
-        return q().then(function() {
-            this['resolvedOn'] = null;
+    var me = this;
+    return Q.when(null).then(function() {
+        return Q.when(function() {
+            console.log("me['resolvedOn'] = null;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            me['resolvedOn'] = null;
         });
     }).then(function() {
-        return q().then(function() {
-            this['resolution'] = null;
+        return Q.when(function() {
+            console.log("me['resolution'] = null;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            me['resolution'] = null;
         });
     }).then(function() {
-        return q().then(function() {
-            return q().then(function() {
+        return Q.when(null).then(function() {
+            return Q.when(function() {
+                console.log("return reason !== <Q><Q>;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                 return reason !== "";
             });
         }).then(function() {
-            return q().then(function() {
-                this.comment(reason);
+            return Q.when(function() {
+                console.log("me.comment(reason);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                me.comment(reason);
             });
         });
     });
@@ -223,31 +252,39 @@ issueSchema.methods.reopen = function (reason) {
  *  Add a comment to the issue 
  */
 issueSchema.methods.comment = function (text) {
-    return q().then(function() {
-        this.addComment(text, null);
+    var me = this;
+    return Q.when(function() {
+        console.log("me.addComment(text, null);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        me.addComment(text, null);
     });
 };
 
 issueSchema.methods.addWatcher = function (userToAdd) {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log("// link issuesWatched and watchers<NL>userToAdd.issuesWatched.push(me);<NL>me.watchers.push(userToAdd);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         // link issuesWatched and watchers
-        userToAdd.issuesWatched.push(this);
-        this.watchers.push(userToAdd);
+        userToAdd.issuesWatched.push(me);
+        me.watchers.push(userToAdd);
     });
 };
 
 issueSchema.methods.vote = function () {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log("// link voted and voters<NL>User['current'].voted.push(me);<NL>me.voters.push(User['current']);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         // link voted and voters
-        User['current'].voted.push(this);
-        this.voters.push(User['current']);
+        User['current'].voted.push(me);
+        me.voters.push(User['current']);
     });
 };
 
 issueSchema.methods.withdrawVote = function () {
-    return q().then(function() {
-        this.voters = null;
-        this = null;
+    var me = this;
+    return Q.when(function() {
+        console.log("me.voters = null;<NL>me = null;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        me.voters = null;
+        me = null;
     });
 };
 
@@ -255,8 +292,10 @@ issueSchema.methods.withdrawVote = function () {
  *  Take over an issue currently available. 
  */
 issueSchema.methods.assignToMe = function () {
-    return q().then(function() {
-        this['assignee'] = User['current'];
+    var me = this;
+    return Q.when(function() {
+        console.log("me['assignee'] = User['current'];".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        me['assignee'] = User['current'];
     });
 };
 
@@ -264,8 +303,10 @@ issueSchema.methods.assignToMe = function () {
  *  Take over an issue currently assigned to another user (not in progress). 
  */
 issueSchema.methods.steal = function () {
-    return q().then(function() {
-        this['assignee'] = User['current'];
+    var me = this;
+    return Q.when(function() {
+        console.log("me['assignee'] = User['current'];".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        me['assignee'] = User['current'];
     });
 };
 
@@ -273,20 +314,26 @@ issueSchema.methods.steal = function () {
  *  Close the issue marking it as verified. 
  */
 issueSchema.methods.verify = function () {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log(";".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         ;
     });
 };
 /*************************** QUERIES ***************************/
 
 issueSchema.statics.bySeverity = function (toMatch) {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log("return this.model('Issue').find().where({ severity : toMatch }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         return this.model('Issue').find().where({ severity : toMatch }).exec();
     });
 };
 
 issueSchema.statics.byStatus = function (toMatch) {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log("return Issue.filterByStatus(this.model('Issue').find(), toMatch);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         return Issue.filterByStatus(this.model('Issue').find(), toMatch);
     }).then(function(call_filterByStatus) {
         return call_filterByStatus.exec();
@@ -296,16 +343,20 @@ issueSchema.statics.byStatus = function (toMatch) {
 
 
 issueSchema.virtual('issueKey').get(function () {
-    return q().then(function() {
-        return Project.find({ _id : this.project }).exec();
+    var me = this;
+    return Q.when(function() {
+        console.log("return Project.findOne({ _id : me.project }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Project.findOne({ _id : me.project }).exec();
     }).then(function(read_project) {
-        return read_project['token'] + "-" + this['issueId'];
+        return read_project['token'] + "-" + me['issueId'];
     });
 });
 
 issueSchema.virtual('votes').get(function () {
-    return q().then(function() {
-        return User.find({ _id : this.voters }).exec();
+    var me = this;
+    return Q.when(function() {
+        console.log("return User.find({ voted : me._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return User.find({ voted : me._id }).exec();
     }).then(function(readLinkAction) {
         return /*TBD*/count;
     });
@@ -320,18 +371,24 @@ issueSchema.virtual('waitingFor').get(function () {
 });
 
 issueSchema.virtual('mine').get(function () {
-    return q().then(function() {
-        return User.find({ _id : this.assignee }).exec();
+    var me = this;
+    return Q.when(function() {
+        console.log("return User.findOne({ _id : me.assignee }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return User.findOne({ _id : me.assignee }).exec();
     }).then(function(read_assignee) {
         return User['current'] == read_assignee;
     });
 });
 
 issueSchema.virtual('free').get(function () {
-    return q().all([
-        q().then(function() {
-            return User.find({ _id : this.assignee }).exec();
-        }), q().then(function() {
+    var me = this;
+    return Q.all([
+        Q.when(function() {
+            console.log("return User.findOne({ _id : me.assignee }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return User.findOne({ _id : me.assignee }).exec();
+        }),
+        Q.when(function() {
+            console.log("return null;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             return null;
         })
     ]).spread(function(read_assignee, valueSpecificationAction) {
@@ -349,63 +406,83 @@ issueSchema.methods.referenceDate = function () {
 };
 
 issueSchema.statics.filterByStatus = function (issues, toMatch) {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log("return issues.where({ status : toMatch }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         return issues.where({ status : toMatch }).exec();
     });
 };
 
 issueSchema.methods.addComment = function (text, inReplyTo) {
     var comment;
-    return q().then(function() {
-        return q().then(function() {
+    var me = this;
+    return Q.when(null).then(function() {
+        return Q.when(function() {
+            console.log("comment = new Comment();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             comment = new Comment();
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("comment['user'] = User['current'];".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             comment['user'] = User['current'];
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("comment['commentedOn'] = new Date();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             comment['commentedOn'] = new Date();
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("comment['text'] = text;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             comment['text'] = text;
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("comment['inReplyTo'] = inReplyTo;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             comment['inReplyTo'] = inReplyTo;
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("// link issue and comments<NL>comment.issue = me;<NL>me.comments.push(comment);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             // link issue and comments
-            comment.issue = this;
-            this.comments.push(comment);
+            comment.issue = me;
+            me.comments.push(comment);
         });
     }).then(function() {
-        return q().all([
-            q().then(function() {
-                return this['issueKey'];
-            }), q().then(function() {
+        return Q.all([
+            Q.when(function() {
+                console.log("return me['issueKey'];".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return me['issueKey'];
+            }),
+            Q.when(function() {
+                console.log("return User.findOne({ _id : comment.user }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                 return User.findOne({ _id : comment.user }).exec();
             }).then(function(read_user) {
                 return read_user['email'];
-            }), q().then(function() {
-                return User.find({ _id : this.reporter }).exec();
+            }),
+            Q.when(function() {
+                console.log("return User.findOne({ _id : me.reporter }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return User.findOne({ _id : me.reporter }).exec();
             }).then(function(read_reporter) {
                 return read_reporter['email'];
-            }), q().then(function() {
+            }),
+            Q.when(function() {
+                console.log("return text;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
                 return text;
-            }), q().then(function() {
-                return this['userNotifier'];
+            }),
+            Q.when(function() {
+                console.log("return me['userNotifier'];".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return me['userNotifier'];
             })
         ]).spread(function(read_issueKey, read_email, read_email, read_Text, read_userNotifier) {
-            read_userNotifier.commentAdded(read_issueKey, read_email, read_email, read_Text);
+            read_userNotifier.commentAdded(read_issueKey, read_email, read_email, read_Text)
+            return Q.when(null);
         });
     });
 };
 /*************************** STATE MACHINE ********************/
 issueSchema.methods.handleEvent = function (event) {
+    console.log("started handleEvent("+ event+"): "+ this);
     switch (event) {
         case 'resolve' :
             if (this.status == 'Open') {
@@ -474,6 +551,8 @@ issueSchema.methods.handleEvent = function (event) {
             }
             break;
     }
+    console.log("completed handleEvent("+ event+"): "+ this);
+    
 };
 
 issueSchema.methods.resolve = function () {

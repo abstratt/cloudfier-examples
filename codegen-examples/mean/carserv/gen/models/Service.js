@@ -1,4 +1,4 @@
-var q = require("q");
+var Q = require("q");
 var mongoose = require('mongoose');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
@@ -53,24 +53,30 @@ serviceSchema.path('estimatedReady').validate(
 
 serviceSchema.statics.newService = function (carToService, description, estimate) {
     var s;
-    return q().then(function() {
-        return q().then(function() {
+    var me = this;
+    return Q.when(null).then(function() {
+        return Q.when(function() {
+            console.log("s = new Service();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             s = new Service();
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("s['estimatedReady'] = new Date(s['bookedOn'] + estimate);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             s['estimatedReady'] = new Date(s['bookedOn'] + estimate);
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("s['description'] = description;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             s['description'] = description;
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("s['car'] = carToService;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             s['car'] = carToService;
         });
     }).then(function() {
-        return q().then(function() {
+        return Q.when(function() {
+            console.log("s.save();<NL>return q(s);<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             s.save();
             return q(s);
         });
@@ -87,7 +93,9 @@ serviceSchema.methods.cancel = function () {
  *  Starts the service. It can no longer be canceled. 
  */
 serviceSchema.methods.start = function () {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log(";".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         ;
     });
 };
@@ -96,7 +104,9 @@ serviceSchema.methods.start = function () {
  *  Completes the service. 
  */
 serviceSchema.methods.complete = function () {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log(";".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         ;
     });
 };
@@ -105,8 +115,10 @@ serviceSchema.methods.complete = function () {
  *  Assigns a service that is available to a technician. 
  */
 serviceSchema.methods.assignTo = function (technician) {
-    return q().then(function() {
-        this['technician'] = technician;
+    var me = this;
+    return Q.when(function() {
+        console.log("me['technician'] = technician;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        me['technician'] = technician;
     });
 };
 
@@ -114,14 +126,18 @@ serviceSchema.methods.assignTo = function (technician) {
  *  Assigns a service to a different technician other than the one currently assigned. 
  */
 serviceSchema.methods.transfer = function (mechanic) {
-    return q().then(function() {
-        this['technician'] = mechanic;
+    var me = this;
+    return Q.when(function() {
+        console.log("me['technician'] = mechanic;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        me['technician'] = mechanic;
     });
 };
 /*************************** QUERIES ***************************/
 
 serviceSchema.statics.byStatus = function (services, toMatch) {
-    return q().then(function() {
+    var me = this;
+    return Q.when(function() {
+        console.log("return services.where({ status : toMatch }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
         return services.where({ status : toMatch }).exec();
     });
 };
@@ -136,10 +152,14 @@ serviceSchema.virtual('estimatedDays').get(function () {
 });
 
 serviceSchema.virtual('assigned').get(function () {
-    return q().all([
-        q().then(function() {
-            return AutoMechanic.find({ _id : this.technician }).exec();
-        }), q().then(function() {
+    var me = this;
+    return Q.all([
+        Q.when(function() {
+            console.log("return AutoMechanic.findOne({ _id : me.technician }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return AutoMechanic.findOne({ _id : me.technician }).exec();
+        }),
+        Q.when(function() {
+            console.log("return null;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
             return null;
         })
     ]).spread(function(read_technician, valueSpecificationAction) {
@@ -148,6 +168,7 @@ serviceSchema.virtual('assigned').get(function () {
 });
 /*************************** STATE MACHINE ********************/
 serviceSchema.methods.handleEvent = function (event) {
+    console.log("started handleEvent("+ event+"): "+ this);
     switch (event) {
         case 'cancel' :
             if (this.status == 'Booked') {
@@ -170,6 +191,8 @@ serviceSchema.methods.handleEvent = function (event) {
             }
             break;
     }
+    console.log("completed handleEvent("+ event+"): "+ this);
+    
 };
 
 serviceSchema.methods.cancel = function () {
