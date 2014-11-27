@@ -1,4 +1,5 @@
-var mongoose = require('mongoose');
+require('../models/index.js');
+
 var Q = require("q");
 var Car = require('../models/Car.js');
 var Rental = require('../models/Rental.js');
@@ -10,113 +11,135 @@ var Examples = {
     newMake : function() {
         var make;
         var me = this;
-        return Q.when(null).then(function() {
-            return Q.when(function() {
-                console.log("make = new Make();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Q().then(function() {
+            return Q().then(function() {
+                console.log("make = new Make();\n");
                 make = new Make();
             });
         }).then(function() {
-            return Q.when(function() {
-                console.log("make['name'] = <Q>Fiat<Q>;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Q().then(function() {
+                console.log("make['name'] = \"Fiat\";\n");
                 make['name'] = "Fiat";
             });
         }).then(function() {
-            return Q.when(function() {
-                console.log("make.save();<NL>return q(make);<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-                make.save();
-                return q(make);
+            return Q().then(function() {
+                console.log("return Q.npost(make, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
+                return Q.npost(make, 'save', [  ]).then(function(saveResult) {
+                    return saveResult[0];
+                });
             });
         });
     },
     newModel : function() {
         var carModel;
         var me = this;
-        return Q.when(null).then(function() {
-            return Q.when(function() {
-                console.log("carModel = new Model();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Q().then(function() {
+            return Q().then(function() {
+                console.log("carModel = new Model();\n");
                 carModel = new Model();
             });
         }).then(function() {
-            return Q.when(function() {
-                console.log("carModel['name'] = <Q>Mille<Q>;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Q().then(function() {
+                console.log("carModel['name'] = \"Mille\";\n");
                 carModel['name'] = "Mille";
             });
         }).then(function() {
-            return Q.when(function() {
-                console.log("return Examples.newMake();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Q().then(function() {
+                console.log("return Examples.newMake();");
                 return Examples.newMake();
-            }).then(function(call_newMake) {
-                carModel['make'] = call_newMake;
+            }).then(function(newMake) {
+                console.log(newMake);
+                console.log("console.log(\"This: \");\nconsole.log(newMake);\nconsole.log(\"That: \");\nconsole.log(carModel);\ncarModel.make = newMake._id;\nconsole.log(\"This: \");\nconsole.log(carModel);\nconsole.log(\"That: \");\nconsole.log(newMake);\nnewMake.models.push(carModel._id);\n");
+                console.log("This: ");
+                console.log(newMake);
+                console.log("That: ");
+                console.log(carModel);
+                carModel.make = newMake._id;
+                console.log("This: ");
+                console.log(carModel);
+                console.log("That: ");
+                console.log(newMake);
+                newMake.models.push(carModel._id);
             });
         }).then(function() {
-            return Q.when(function() {
-                console.log("carModel.save();<NL>return q(carModel);<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-                carModel.save();
-                return q(carModel);
+            return Q().then(function() {
+                console.log("return Q.npost(carModel, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
+                return Q.npost(carModel, 'save', [  ]).then(function(saveResult) {
+                    return saveResult[0];
+                });
             });
         });
     },
     newCar : function() {
         var car;
         var me = this;
-        return Q.when(null).then(function() {
-            return Q.when(function() {
-                console.log("car = new Car();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Q().then(function() {
+            return Q().then(function() {
+                console.log("car = new Car();\n");
                 car = new Car();
             });
         }).then(function() {
-            return Q.when(function() {
-                console.log("car['year'] = (new Date().getYear() + 1900);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Q().then(function() {
+                console.log("car['year'] = (new Date().getYear() + 1900);\n");
                 car['year'] = (new Date().getYear() + 1900);
             });
         }).then(function() {
-            return Q.when(function() {
-                console.log("car['price'] = 100;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Q().then(function() {
+                console.log("car['price'] = 100;\n");
                 car['price'] = 100;
             });
         }).then(function() {
-            return Q.when(function() {
-                console.log("car['color'] = <Q>black<Q>;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Q().then(function() {
+                console.log("car['color'] = \"black\";\n");
                 car['color'] = "black";
             });
         }).then(function() {
-            return Q.when(function() {
-                console.log("car['plate'] = <Q>ABC-1234<Q>;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Q().then(function() {
+                console.log("car['plate'] = \"ABC-1234\";\n");
                 car['plate'] = "ABC-1234";
             });
         }).then(function() {
-            return Q.when(function() {
-                console.log("return Examples.newModel();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Q().then(function() {
+                console.log("return Examples.newModel();");
                 return Examples.newModel();
-            }).then(function(call_newModel) {
-                car['model'] = call_newModel;
+            }).then(function(newModel) {
+                console.log(newModel);
+                console.log("console.log(\"This: \");\nconsole.log(newModel);\nconsole.log(\"That: \");\nconsole.log(car);\ncar.model = newModel._id\n;\n");
+                console.log("This: ");
+                console.log(newModel);
+                console.log("That: ");
+                console.log(car);
+                car.model = newModel._id
+                ;
             });
         }).then(function() {
-            return Q.when(function() {
-                console.log("car.save();<NL>return q(car);<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-                car.save();
-                return q(car);
+            return Q().then(function() {
+                console.log("return Q.npost(car, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
+                return Q.npost(car, 'save', [  ]).then(function(saveResult) {
+                    return saveResult[0];
+                });
             });
         });
     },
     newCustomer : function() {
         var customer;
         var me = this;
-        return Q.when(null).then(function() {
-            return Q.when(function() {
-                console.log("customer = new Customer();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Q().then(function() {
+            return Q().then(function() {
+                console.log("customer = new Customer();\n");
                 customer = new Customer();
             });
         }).then(function() {
-            return Q.when(function() {
-                console.log("customer['name'] = <Q>Joana de Almeida<Q>;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Q().then(function() {
+                console.log("customer['name'] = \"Joana de Almeida\";\n");
                 customer['name'] = "Joana de Almeida";
             });
         }).then(function() {
-            return Q.when(function() {
-                console.log("customer.save();<NL>return q(customer);<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-                customer.save();
-                return q(customer);
+            return Q().then(function() {
+                console.log("return Q.npost(customer, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
+                return Q.npost(customer, 'save', [  ]).then(function(saveResult) {
+                    return saveResult[0];
+                });
             });
         });
     }

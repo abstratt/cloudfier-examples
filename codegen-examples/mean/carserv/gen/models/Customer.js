@@ -14,27 +14,25 @@ var Person = require('./Person.js');
 var customerSchema = new Schema({
     firstName : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     lastName : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     username : {
         type : String,
-        default : null
+        "default" : null
     },
     title : {
         type : String,
-        required : true,
         enum : ["Mr", "Mrs", "Ms"],
-        default : "Mr"
+        "default" : "Mr"
     },
     cars : [{
         type : Schema.Types.ObjectId,
-        ref : "Car"
+        ref : "Car",
+        "default" : []
     }]
 });
 
@@ -42,9 +40,9 @@ var customerSchema = new Schema({
 
 customerSchema.statics.findByName = function (firstName, lastName) {
     var me = this;
-    return Q.when(function() {
-        console.log("this.model('Customer').find().where({<NL>    $or : [ <NL>        {<NL>            $eq : [ <NL>                firstName,<NL>                firstName<NL>            ]<NL>        },<NL>        {<NL>            $eq : [ <NL>                lastName,<NL>                lastName<NL>            ]<NL>        }<NL>    ]<NL>}).save();<NL>return q(this.model('Customer').find().where({<NL>    $or : [ <NL>        {<NL>            $eq : [ <NL>                firstName,<NL>                firstName<NL>            ]<NL>        },<NL>        {<NL>            $eq : [ <NL>                lastName,<NL>                lastName<NL>            ]<NL>        }<NL>    ]<NL>}));<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        this.model('Customer').find().where({
+    return Q().then(function() {
+        console.log("return Q.npost(this.model('Customer').find().where({\n    $or : [ \n        {\n            $eq : [ \n                firstName,\n                firstName\n            ]\n        },\n        {\n            $eq : [ \n                lastName,\n                lastName\n            ]\n        }\n    ]\n}), 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
+        return Q.npost(this.model('Customer').find().where({
             $or : [ 
                 {
                     $eq : [ 
@@ -59,32 +57,19 @@ customerSchema.statics.findByName = function (firstName, lastName) {
                     ]
                 }
             ]
-        }).save();
-        return q(this.model('Customer').find().where({
-            $or : [ 
-                {
-                    $eq : [ 
-                        firstName,
-                        firstName
-                    ]
-                },
-                {
-                    $eq : [ 
-                        lastName,
-                        lastName
-                    ]
-                }
-            ]
-        }));
+        }), 'save', [  ]).then(function(saveResult) {
+            return saveResult[0];
+        });
     });
 };
 
 customerSchema.statics.vipCustomers = function () {
     var me = this;
-    return Q.when(function() {
-        console.log("this.model('Customer').find().where({ 'vip' : true }).save();<NL>return q(this.model('Customer').find().where({ 'vip' : true }));<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        this.model('Customer').find().where({ 'vip' : true }).save();
-        return q(this.model('Customer').find().where({ 'vip' : true }));
+    return Q().then(function() {
+        console.log("return Q.npost(this.model('Customer').find().where({ 'vip' : true }), 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
+        return Q.npost(this.model('Customer').find().where({ 'vip' : true }), 'save', [  ]).then(function(saveResult) {
+            return saveResult[0];
+        });
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
@@ -98,10 +83,12 @@ personSchema.virtual('fullName').get(function () {
  */
 customerSchema.virtual('vip').get(function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return Car.find({ owner : me._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        return Car.find({ owner : me._id }).exec();
-    }).then(function(read_cars) {
+    return Q().then(function() {
+        console.log("return Q.npost(Car, 'find', [ ({ owner : me._id }) ]);");
+        return Q.npost(Car, 'find', [ ({ owner : me._id }) ]);
+    }).then(function(cars) {
+        console.log(cars);
+        console.log("return /*TBD*/count >= 2;\n");
         return /*TBD*/count >= 2;
     });
 });
@@ -109,20 +96,24 @@ customerSchema.virtual('vip').get(function () {
 
 customerSchema.methods.getPendingServices = function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return Car.find({ owner : me._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        return Car.find({ owner : me._id }).exec();
-    }).then(function(read_cars) {
+    return Q().then(function() {
+        console.log("return Q.npost(Car, 'find', [ ({ owner : me._id }) ]);");
+        return Q.npost(Car, 'find', [ ({ owner : me._id }) ]);
+    }).then(function(cars) {
+        console.log(cars);
+        console.log("return /*TBD*/reduce;\n");
         return /*TBD*/reduce;
     });
 };
 
 customerSchema.methods.getCompletedServices = function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return Car.find({ owner : me._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        return Car.find({ owner : me._id }).exec();
-    }).then(function(read_cars) {
+    return Q().then(function() {
+        console.log("return Q.npost(Car, 'find', [ ({ owner : me._id }) ]);");
+        return Q.npost(Car, 'find', [ ({ owner : me._id }) ]);
+    }).then(function(cars) {
+        console.log(cars);
+        console.log("return /*TBD*/reduce;\n");
         return /*TBD*/reduce;
     });
 };

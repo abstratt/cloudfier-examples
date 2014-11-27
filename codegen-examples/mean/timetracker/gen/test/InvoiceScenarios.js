@@ -1,7 +1,9 @@
 
-var mongoose = require('mongoose');
 var assert = require("assert");
 var Q = require("q");
+require('../models/index.js');        
+
+
 var Client = require('../models/Client.js');
 var Task = require('../models/Task.js');
 var Invoice = require('../models/Invoice.js');
@@ -10,7 +12,7 @@ var Examples = require('./Examples.js');
 
 
 suite('Time Tracker functional tests - InvoiceScenarios', function() {
-    this.timeout(10000);
+    this.timeout(1000);
 
     test('issueInvoice', function(done) {
         var behavior = function() {
@@ -18,49 +20,57 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
             var work;
             var client;
             var me = this;
-            return Q.when(null).then(function() {
-                return Q.when(null).then(function() {
-                    return Q.when(function() {
-                        console.log("return Examples.client();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Q().then(function() {
+                return Q().then(function() {
+                    return Q().then(function() {
+                        console.log("return Examples.client();");
                         return Examples.client();
-                    }).then(function(call_client) {
-                        client = call_client;
+                    }).then(function(client) {
+                        console.log(client);
+                        console.log("client = client;\n");
+                        client = client;
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("return client.newTask(<Q>Some task<Q>);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("return client.newTask(\"Some task\");");
                         return client.newTask("Some task");
-                    }).then(function(call_newTask) {
-                        return call_newTask.addWork(1);
-                    }).then(function(call_addWork) {
-                        work = call_addWork;
+                    }).then(function(newTask) {
+                        console.log(newTask);
+                        console.log("return newTask.addWork(1);");
+                        return newTask.addWork(1);
+                    }).then(function(addWork) {
+                        console.log(addWork);
+                        console.log("work = addWork;\n");
+                        work = addWork;
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("return client.startInvoice();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("return client.startInvoice();");
                         return client.startInvoice();
-                    }).then(function(call_startInvoice) {
-                        invoice = call_startInvoice;
+                    }).then(function(startInvoice) {
+                        console.log(startInvoice);
+                        console.log("invoice = startInvoice;\n");
+                        invoice = startInvoice;
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("work.submit(invoice);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("work.submit(invoice);\n");
                         work.submit(invoice);
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("assert.equal(<Q>Preparation<Q>, invoice['status']);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("assert.equal(\"Preparation\", invoice['status']);\n");
                         assert.equal("Preparation", invoice['status']);
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("invoice.issue();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("invoice.issue();\n");
                         invoice.issue();
                     });
                 });
             }).then(function() {
-                return Q.when(function() {
-                    console.log("assert.equal(<Q>Invoiced<Q>, invoice['status']);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    console.log("assert.equal(\"Invoiced\", invoice['status']);\n");
                     assert.equal("Invoiced", invoice['status']);
                 });
             });
@@ -71,42 +81,52 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
         var behavior = function() {
             var invoice;
             var me = this;
-            return Q.when(null).then(function() {
-                return Q.when(null).then(function() {
-                    return Q.when(function() {
-                        console.log("return Examples.client();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Q().then(function() {
+                return Q().then(function() {
+                    return Q().then(function() {
+                        console.log("return Examples.client();");
                         return Examples.client();
-                    }).then(function(call_client) {
-                        return call_client.startInvoice();
-                    }).then(function(call_startInvoice) {
-                        invoice = call_startInvoice;
+                    }).then(function(client) {
+                        console.log(client);
+                        console.log("return client.startInvoice();");
+                        return client.startInvoice();
+                    }).then(function(startInvoice) {
+                        console.log(startInvoice);
+                        console.log("invoice = startInvoice;\n");
+                        invoice = startInvoice;
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("return Client.findOne({ _id : invoice.client }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-                        return Client.findOne({ _id : invoice.client }).exec();
-                    }).then(function(read_client) {
-                        return read_client.newTask("Some task");
-                    }).then(function(call_newTask) {
-                        return call_newTask.addWork(1);
-                    }).then(function(call_addWork) {
-                        call_addWork.submit(invoice);
+                    return Q().then(function() {
+                        console.log("return Q.npost(Client, 'findOne', [ ({ _id : invoice.client }) ]);");
+                        return Q.npost(Client, 'findOne', [ ({ _id : invoice.client }) ]);
+                    }).then(function(client) {
+                        console.log(client);
+                        console.log("return client.newTask(\"Some task\");");
+                        return client.newTask("Some task");
+                    }).then(function(newTask) {
+                        console.log(newTask);
+                        console.log("return newTask.addWork(1);");
+                        return newTask.addWork(1);
+                    }).then(function(addWork) {
+                        console.log(addWork);
+                        console.log("addWork.submit(invoice);\n");
+                        addWork.submit(invoice);
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("invoice.issue();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("invoice.issue();\n");
                         invoice.issue();
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("invoice.invoicePaid()<NL>return Q.when(null);<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-                        invoice.invoicePaid()
-                        return Q.when(null);
+                    return Q().then(function() {
+                        console.log("invoice.invoicePaid();\nreturn Q();\n");
+                        invoice.invoicePaid();
+                        return Q();
                     });
                 });
             }).then(function() {
-                return Q.when(function() {
-                    console.log("assert.equal(<Q>Received<Q>, invoice['status']);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    console.log("assert.equal(\"Received\", invoice['status']);\n");
                     assert.equal("Received", invoice['status']);
                 });
             });
@@ -120,42 +140,52 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                 var invoice;
                 var work;
                 var me = this;
-                return Q.when(null).then(function() {
-                    return Q.when(null).then(function() {
-                        return Q.when(function() {
-                            console.log("return Examples.task();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    return Q().then(function() {
+                        return Q().then(function() {
+                            console.log("return Examples.task();");
                             return Examples.task();
-                        }).then(function(call_task) {
-                            task = call_task;
+                        }).then(function(task) {
+                            console.log(task);
+                            console.log("task = task;\n");
+                            task = task;
                         });
                     }).then(function() {
-                        return Q.when(function() {
-                            console.log("return Client.findOne({ _id : task.client }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-                            return Client.findOne({ _id : task.client }).exec();
-                        }).then(function(read_client) {
-                            return read_client.startInvoice();
-                        }).then(function(call_startInvoice) {
-                            invoice = call_startInvoice;
+                        return Q().then(function() {
+                            console.log("return Q.npost(Client, 'findOne', [ ({ _id : task.client }) ]);");
+                            return Q.npost(Client, 'findOne', [ ({ _id : task.client }) ]);
+                        }).then(function(client) {
+                            console.log(client);
+                            console.log("return client.startInvoice();");
+                            return client.startInvoice();
+                        }).then(function(startInvoice) {
+                            console.log(startInvoice);
+                            console.log("invoice = startInvoice;\n");
+                            invoice = startInvoice;
                         });
                     }).then(function() {
-                        return Q.when(function() {
-                            console.log("return task.addWork(1);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                        return Q().then(function() {
+                            console.log("return task.addWork(1);");
                             return task.addWork(1);
-                        }).then(function(call_addWork) {
-                            call_addWork.submit(invoice);
+                        }).then(function(addWork) {
+                            console.log(addWork);
+                            console.log("addWork.submit(invoice);\n");
+                            addWork.submit(invoice);
                         });
                     }).then(function() {
-                        return Q.when(function() {
-                            console.log("invoice.issue();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                        return Q().then(function() {
+                            console.log("invoice.issue();\n");
                             invoice.issue();
                         });
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("return task.addWork(2);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("return task.addWork(2);");
                         return task.addWork(2);
-                    }).then(function(call_addWork) {
-                        call_addWork.submit(invoice);
+                    }).then(function(addWork) {
+                        console.log(addWork);
+                        console.log("addWork.submit(invoice);\n");
+                        addWork.submit(invoice);
                     });
                 });
             };
@@ -169,13 +199,17 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
         try {
             var behavior = function() {
                 var me = this;
-                return Q.when(function() {
-                    console.log("return Examples.client();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    console.log("return Examples.client();");
                     return Examples.client();
-                }).then(function(call_client) {
-                    return call_client.startInvoice();
-                }).then(function(call_startInvoice) {
-                    call_startInvoice.issue();
+                }).then(function(client) {
+                    console.log(client);
+                    console.log("return client.startInvoice();");
+                    return client.startInvoice();
+                }).then(function(startInvoice) {
+                    console.log(startInvoice);
+                    console.log("startInvoice.issue();\n");
+                    startInvoice.issue();
                 });
             };
             behavior().then(done, done);

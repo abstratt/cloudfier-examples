@@ -10,18 +10,15 @@ var Presentation = require('./Presentation.js');
 var meetingSchema = new Schema({
     title : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     description : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     date : {
         type : Date,
-        required : true,
-        default : new Date()
+        "default" : new Date()
     },
     organizer : {
         type : Schema.Types.ObjectId,
@@ -30,7 +27,8 @@ var meetingSchema = new Schema({
     },
     participants : [{
         type : Schema.Types.ObjectId,
-        ref : "User"
+        ref : "User",
+        "default" : []
     }]
 });
 
@@ -41,10 +39,12 @@ var meetingSchema = new Schema({
  */
 meetingSchema.methods.leave = function () {
     var me = this;
-    return Q.when(function() {
-        console.log("User['current'].meetings = null;<NL>User['current'] = null;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        console.log("User['current'].meetings = null;\nUser['current'] = null;\n");
         User['current'].meetings = null;
         User['current'] = null;
+    }).then(function() {
+        return me.save();
     });
 };
 
@@ -53,11 +53,20 @@ meetingSchema.methods.leave = function () {
  */
 meetingSchema.methods.join = function () {
     var me = this;
-    return Q.when(function() {
-        console.log("// link participants and meetings<NL>me.participants.push(User['current']);<NL>User['current'].meetings.push(me);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        // link participants and meetings
-        me.participants.push(User['current']);
-        User['current'].meetings.push(me);
+    return Q().then(function() {
+        console.log("console.log(\"This: \");\nconsole.log(User['current']);\nconsole.log(\"That: \");\nconsole.log(me);\nme.participants.push(User['current']._id);\nconsole.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(User['current']);\nUser['current'].meetings.push(me._id);\n");
+        console.log("This: ");
+        console.log(User['current']);
+        console.log("That: ");
+        console.log(me);
+        me.participants.push(User['current']._id);
+        console.log("This: ");
+        console.log(me);
+        console.log("That: ");
+        console.log(User['current']);
+        User['current'].meetings.push(me._id);
+    }).then(function() {
+        return me.save();
     });
 };
 
@@ -66,11 +75,20 @@ meetingSchema.methods.join = function () {
  */
 meetingSchema.methods.addParticipant = function (newParticipant) {
     var me = this;
-    return Q.when(function() {
-        console.log("// link participants and meetings<NL>me.participants.push(newParticipant);<NL>newParticipant.meetings.push(me);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        // link participants and meetings
-        me.participants.push(newParticipant);
-        newParticipant.meetings.push(me);
+    return Q().then(function() {
+        console.log("console.log(\"This: \");\nconsole.log(newParticipant);\nconsole.log(\"That: \");\nconsole.log(me);\nme.participants.push(newParticipant._id);\nconsole.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(newParticipant);\nnewParticipant.meetings.push(me._id);\n");
+        console.log("This: ");
+        console.log(newParticipant);
+        console.log("That: ");
+        console.log(me);
+        me.participants.push(newParticipant._id);
+        console.log("This: ");
+        console.log(me);
+        console.log("That: ");
+        console.log(newParticipant);
+        newParticipant.meetings.push(me._id);
+    }).then(function() {
+        return me.save();
     });
 };
 
@@ -79,36 +97,41 @@ meetingSchema.methods.addParticipant = function (newParticipant) {
  */
 meetingSchema.statics.startMeeting = function (title, description, date) {
     var me = this;
-    return Q.when(function() {
-        console.log("User['current'].startMeetingOnBehalf(title, description, date);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        console.log("User['current'].startMeetingOnBehalf(title, description, date);\n");
         User['current'].startMeetingOnBehalf(title, description, date);
+    }).then(function() {
+        return me.save();
     });
 };
 /*************************** PRIVATE OPS ***********************/
 
 meetingSchema.methods.isParticipating = function (candidate) {
     var me = this;
-    return Q.when(function() {
-        console.log("return User.find({ meetings : me._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        return User.find({ meetings : me._id }).exec();
-    }).then(function(read_participants) {
-        return /*TBD*/includes.exec();
+    return Q().then(function() {
+        console.log("return Q.npost(User, 'find', [ ({ meetings : me._id }) ]);");
+        return Q.npost(User, 'find', [ ({ meetings : me._id }) ]);
+    }).then(function(participants) {
+        console.log(participants);
+        console.log("return Q.npost(/*TBD*/includes, 'exec', [  ])\n;\n");
+        return Q.npost(/*TBD*/includes, 'exec', [  ])
+        ;
     });
 };
 
 meetingSchema.methods.isOrganizing = function (candidate) {
     var me = this;
     return Q.all([
-        Q.when(function() {
-            console.log("return User.findOne({ _id : me.organizer }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            return User.findOne({ _id : me.organizer }).exec();
+        Q().then(function() {
+            console.log("return Q.npost(User, 'findOne', [ ({ _id : me.organizer }) ]);");
+            return Q.npost(User, 'findOne', [ ({ _id : me.organizer }) ]);
         }),
-        Q.when(function() {
-            console.log("return candidate;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        Q().then(function() {
+            console.log("return candidate;");
             return candidate;
         })
-    ]).spread(function(read_organizer, read_Candidate) {
-        return read_organizer == read_Candidate;
+    ]).spread(function(organizer, Candidate) {
+        return organizer == Candidate;
     });
 };
 

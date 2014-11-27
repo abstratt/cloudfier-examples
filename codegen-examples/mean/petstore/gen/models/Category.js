@@ -11,8 +11,7 @@ var Product = require('./Product.js');
 var categorySchema = new Schema({
     name : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     }
 });
 

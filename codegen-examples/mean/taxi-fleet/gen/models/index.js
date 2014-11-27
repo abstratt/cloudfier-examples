@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+require('./db.js');
 require('./Shift.js');
 require('./Taxi.js');
 require('./Driver.js');

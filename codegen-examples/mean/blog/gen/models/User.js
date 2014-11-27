@@ -10,12 +10,11 @@ var Article = require('./Article.js');
 var userSchema = new Schema({
     email : {
         type : String,
-        default : null
+        "default" : null
     },
     name : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     }
 });
 

@@ -14,17 +14,15 @@ var Service = require('./Service.js');
 var personSchema = new Schema({
     firstName : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     lastName : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     username : {
         type : String,
-        default : null
+        "default" : null
     }
 });
 

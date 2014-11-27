@@ -10,21 +10,19 @@ var Comment = require('./Comment.js');
 var articleSchema = new Schema({
     title : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     body : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     tags : {
         type : String,
-        default : null
+        "default" : null
     },
     createdAt : {
         type : Date,
-        default : (function() {
+        "default" : (function() {
             return new Date();
         })()
     },
@@ -35,12 +33,11 @@ var articleSchema = new Schema({
     comments : [{
         body : {
             type : String,
-            required : true,
-            default : null
+            "default" : null
         },
         createdAt : {
             type : Date,
-            default : (function() {
+            "default" : (function() {
                 return new Date();
             })()
         },

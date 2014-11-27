@@ -11,14 +11,14 @@ var Product = require('./Product.js');
 var orderSchema = new Schema({
     orderDate : {
         type : Date,
-        default : (function() {
+        "default" : (function() {
             return new Date();
         })()
     },
     orderStatus : {
         type : String,
         enum : ["New", "Processing", "Completed"],
-        default : "New"
+        "default" : "New"
     },
     customer : {
         type : Schema.Types.ObjectId,
@@ -28,8 +28,7 @@ var orderSchema = new Schema({
     items : [{
         quantity : {
             type : Number,
-            required : true,
-            default : 1
+            "default" : 1
         },
         product : {
             type : Schema.Types.ObjectId,
@@ -43,26 +42,42 @@ var orderSchema = new Schema({
 orderSchema.methods.addItem = function (product, quantity) {
     var i;
     var me = this;
-    return Q.when(null).then(function() {
-        return Q.when(function() {
-            console.log("i = new OrderDetail();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        return Q().then(function() {
+            console.log("i = new OrderDetail();\n");
             i = new OrderDetail();
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("i['product'] = product;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            i['product'] = product;
+        return Q().then(function() {
+            console.log("console.log(\"This: \");\nconsole.log(product);\nconsole.log(\"That: \");\nconsole.log(i);\ni.product = product._id\n;\n");
+            console.log("This: ");
+            console.log(product);
+            console.log("That: ");
+            console.log(i);
+            i.product = product._id
+            ;
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("i['quantity'] = quantity;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Q().then(function() {
+            console.log("i['quantity'] = quantity;\n");
             i['quantity'] = quantity;
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("i['order'] = me;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            i['order'] = me;
+        return Q().then(function() {
+            console.log("console.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(i);\ni.order = me._id;\nconsole.log(\"This: \");\nconsole.log(i);\nconsole.log(\"That: \");\nconsole.log(me);\nme.items.push(i._id);\n");
+            console.log("This: ");
+            console.log(me);
+            console.log("That: ");
+            console.log(i);
+            i.order = me._id;
+            console.log("This: ");
+            console.log(i);
+            console.log("That: ");
+            console.log(me);
+            me.items.push(i._id);
         });
+    }).then(function() {
+        return me.save();
     });
 };
 
@@ -75,38 +90,44 @@ orderSchema.methods.process = function () {
 
 orderSchema.virtual('orderWeightTotal').get(function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return me.computeWeightTotal();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        console.log("return me.computeWeightTotal();");
         return me.computeWeightTotal();
-    }).then(function(call_computeWeightTotal) {
-        return call_computeWeightTotal;
+    }).then(function(computeWeightTotal) {
+        console.log(computeWeightTotal);
+        console.log("return computeWeightTotal;\n");
+        return computeWeightTotal;
     });
 });
 
 orderSchema.virtual('orderTotal').get(function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return me.computeOrderTotal();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        console.log("return me.computeOrderTotal();");
         return me.computeOrderTotal();
-    }).then(function(call_computeOrderTotal) {
-        return call_computeOrderTotal;
+    }).then(function(computeOrderTotal) {
+        console.log(computeOrderTotal);
+        console.log("return computeOrderTotal;\n");
+        return computeOrderTotal;
     });
 });
 /*************************** PRIVATE OPS ***********************/
 
 orderSchema.methods.computeOrderTotal = function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return /*TBD*/reduce.exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        return /*TBD*/reduce.exec();
+    return Q().then(function() {
+        console.log("return Q.npost(/*TBD*/reduce, 'exec', [  ])\n;\n");
+        return Q.npost(/*TBD*/reduce, 'exec', [  ])
+        ;
     });
 };
 
 orderSchema.methods.computeWeightTotal = function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return /*TBD*/reduce.exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        return /*TBD*/reduce.exec();
+    return Q().then(function() {
+        console.log("return Q.npost(/*TBD*/reduce, 'exec', [  ])\n;\n");
+        return Q.npost(/*TBD*/reduce, 'exec', [  ])
+        ;
     });
 };
 /*************************** STATE MACHINE ********************/

@@ -13,8 +13,7 @@ var Expense = require('./Expense.js');
 var categorySchema = new Schema({
     name : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     }
 });
 
@@ -23,33 +22,38 @@ var categorySchema = new Schema({
 categorySchema.statics.newCategory = function (name) {
     var newCategory;
     var me = this;
-    return Q.when(null).then(function() {
-        return Q.when(function() {
-            console.log("newCategory = new Category();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        return Q().then(function() {
+            console.log("newCategory = new Category();\n");
             newCategory = new Category();
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("newCategory['name'] = name;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Q().then(function() {
+            console.log("newCategory['name'] = name;\n");
             newCategory['name'] = name;
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("newCategory.save();<NL>return q(newCategory);<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            newCategory.save();
-            return q(newCategory);
+        return Q().then(function() {
+            console.log("return Q.npost(newCategory, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
+            return Q.npost(newCategory, 'save', [  ]).then(function(saveResult) {
+                return saveResult[0];
+            });
         });
+    }).then(function() {
+        return me.save();
     });
 };
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 categorySchema.methods.getExpensesInThisCategory = function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return Expense.findExpensesByCategory(me);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        console.log("return Expense.findExpensesByCategory(me);");
         return Expense.findExpensesByCategory(me);
-    }).then(function(call_findExpensesByCategory) {
-        return call_findExpensesByCategory;
+    }).then(function(findExpensesByCategory) {
+        console.log(findExpensesByCategory);
+        console.log("return findExpensesByCategory;\n");
+        return findExpensesByCategory;
     });
 };
 

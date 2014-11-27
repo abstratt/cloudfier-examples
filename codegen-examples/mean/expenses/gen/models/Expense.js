@@ -13,30 +13,30 @@ var Category = require('./Category.js');
 var expenseSchema = new Schema({
     description : {
         type : String,
-        default : null
+        "default" : null
     },
     status : {
         type : String,
         enum : ["Draft", "Submitted", "Approved", "Rejected"],
-        default : "Draft"
+        "default" : "Draft"
     },
     amount : {
         type : Number,
-        default : 0
+        "default" : 0
     },
     date : {
         type : Date,
-        default : (function() {
+        "default" : (function() {
             return new Date();
         })()
     },
     processed : {
         type : Date,
-        default : new Date()
+        "default" : new Date()
     },
     rejectionReason : {
         type : String,
-        default : null
+        "default" : null
     },
     category : {
         type : Schema.Types.ObjectId,
@@ -57,50 +57,74 @@ var expenseSchema = new Schema({
 expenseSchema.statics.newExpense = function (description, amount, date, category, employee) {
     var newExpense;
     var me = this;
-    return Q.when(null).then(function() {
-        return Q.when(function() {
-            console.log("newExpense = new Expense();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        return Q().then(function() {
+            console.log("newExpense = new Expense();\n");
             newExpense = new Expense();
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("newExpense['description'] = description;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Q().then(function() {
+            console.log("newExpense['description'] = description;\n");
             newExpense['description'] = description;
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("newExpense['amount'] = amount;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Q().then(function() {
+            console.log("newExpense['amount'] = amount;\n");
             newExpense['amount'] = amount;
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("newExpense['date'] = date;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Q().then(function() {
+            console.log("newExpense['date'] = date;\n");
             newExpense['date'] = date;
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("newExpense['category'] = category;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            newExpense['category'] = category;
+        return Q().then(function() {
+            console.log("console.log(\"This: \");\nconsole.log(category);\nconsole.log(\"That: \");\nconsole.log(newExpense);\nnewExpense.category = category._id\n;\n");
+            console.log("This: ");
+            console.log(category);
+            console.log("That: ");
+            console.log(newExpense);
+            newExpense.category = category._id
+            ;
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("newExpense['employee'] = employee;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            newExpense['employee'] = employee;
+        return Q().then(function() {
+            console.log("console.log(\"This: \");\nconsole.log(employee);\nconsole.log(\"That: \");\nconsole.log(newExpense);\nnewExpense.employee = employee._id;\nconsole.log(\"This: \");\nconsole.log(newExpense);\nconsole.log(\"That: \");\nconsole.log(employee);\nemployee.expenses.push(newExpense._id);\n");
+            console.log("This: ");
+            console.log(employee);
+            console.log("That: ");
+            console.log(newExpense);
+            newExpense.employee = employee._id;
+            console.log("This: ");
+            console.log(newExpense);
+            console.log("That: ");
+            console.log(employee);
+            employee.expenses.push(newExpense._id);
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("newExpense.save();<NL>return q(newExpense);<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            newExpense.save();
-            return q(newExpense);
+        return Q().then(function() {
+            console.log("return Q.npost(newExpense, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
+            return Q.npost(newExpense, 'save', [  ]).then(function(saveResult) {
+                return saveResult[0];
+            });
         });
+    }).then(function() {
+        return me.save();
     });
 };
 
 expenseSchema.methods.approve = function () {
     var me = this;
-    return Q.when(function() {
-        console.log("me['approver'] = cls.getNamespace('currentUser');".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        me['approver'] = cls.getNamespace('currentUser');
+    return Q().then(function() {
+        console.log("console.log(\"This: \");\nconsole.log(cls.getNamespace('currentUser'));\nconsole.log(\"That: \");\nconsole.log(me);\nme.approver = cls.getNamespace('currentUser')._id\n;\n");
+        console.log("This: ");
+        console.log(cls.getNamespace('currentUser'));
+        console.log("That: ");
+        console.log(me);
+        me.approver = cls.getNamespace('currentUser')._id
+        ;
+    }).then(function() {
+        return me.save();
     });
 };
 
@@ -109,16 +133,23 @@ expenseSchema.methods.approve = function () {
  */
 expenseSchema.methods.reject = function (reason) {
     var me = this;
-    return Q.when(null).then(function() {
-        return Q.when(function() {
-            console.log("me['rejectionReason'] = reason;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        return Q().then(function() {
+            console.log("me['rejectionReason'] = reason;\n");
             me['rejectionReason'] = reason;
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("me['approver'] = cls.getNamespace('currentUser');".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            me['approver'] = cls.getNamespace('currentUser');
+        return Q().then(function() {
+            console.log("console.log(\"This: \");\nconsole.log(cls.getNamespace('currentUser'));\nconsole.log(\"That: \");\nconsole.log(me);\nme.approver = cls.getNamespace('currentUser')._id\n;\n");
+            console.log("This: ");
+            console.log(cls.getNamespace('currentUser'));
+            console.log("That: ");
+            console.log(me);
+            me.approver = cls.getNamespace('currentUser')._id
+            ;
         });
+    }).then(function() {
+        return me.save();
     });
 };
 
@@ -143,17 +174,18 @@ expenseSchema.methods.submit = function () {
 
 expenseSchema.statics.findExpensesByCategory = function (category) {
     var me = this;
-    return Q.when(function() {
-        console.log("return this.model('Expense').find().where({ { 'category' : e  } : category }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        return this.model('Expense').find().where({ { 'category' : e  } : category }).exec();
+    return Q().then(function() {
+        console.log("return Q.npost(this.model('Expense').find().where({ { 'category' : e  } : category }), 'exec', [  ])\n;\n");
+        return Q.npost(this.model('Expense').find().where({ { 'category' : e  } : category }), 'exec', [  ])
+        ;
     });
 };
 
 expenseSchema.statics.findExpensesInPeriod = function (start, end_) {
     var me = this;
-    return Q.when(function() {
-        console.log("return this.model('Expense').find().where({<NL>    $and : [ <NL>        {<NL>            $or : [ <NL>                { start : null },<NL>                {<NL>                    $gte : [ <NL>                        date,<NL>                        start<NL>                    ]<NL>                }<NL>            ]<NL>        },<NL>        {<NL>            $or : [ <NL>                { end_ : null },<NL>                {<NL>                    $lte : [ <NL>                        date,<NL>                        end_<NL>                    ]<NL>                }<NL>            ]<NL>        }<NL>    ]<NL>}).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        return this.model('Expense').find().where({
+    return Q().then(function() {
+        console.log("return Q.npost(this.model('Expense').find().where({\n    $and : [ \n        {\n            $or : [ \n                { start : null },\n                {\n                    $gte : [ \n                        date,\n                        start\n                    ]\n                }\n            ]\n        },\n        {\n            $or : [ \n                { end_ : null },\n                {\n                    $lte : [ \n                        date,\n                        end_\n                    ]\n                }\n            ]\n        }\n    ]\n}), 'exec', [  ])\n;\n");
+        return Q.npost(this.model('Expense').find().where({
             $and : [ 
                 {
                     $or : [ 
@@ -178,15 +210,17 @@ expenseSchema.statics.findExpensesInPeriod = function (start, end_) {
                     ]
                 }
             ]
-        }).exec();
+        }), 'exec', [  ])
+        ;
     });
 };
 
 expenseSchema.statics.findByStatus = function (status) {
     var me = this;
-    return Q.when(function() {
-        console.log("return this.model('Expense').find().where({ status : status }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        return this.model('Expense').find().where({ status : status }).exec();
+    return Q().then(function() {
+        console.log("return Q.npost(this.model('Expense').find().where({ status : status }), 'exec', [  ])\n;\n");
+        return Q.npost(this.model('Expense').find().where({ status : status }), 'exec', [  ])
+        ;
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
@@ -215,37 +249,37 @@ expenseSchema.virtual('daysProcessed').get(function () {
 expenseSchema.methods.reportApproved = function () {
     var me = this;
     return Q.all([
-        Q.when(function() {
-            console.log("return Employee.findOne({ _id : me.employee }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            return Employee.findOne({ _id : me.employee }).exec();
+        Q().then(function() {
+            console.log("return Q.npost(Employee, 'findOne', [ ({ _id : me.employee }) ]);");
+            return Q.npost(Employee, 'findOne', [ ({ _id : me.employee }) ]);
         }),
-        Q.when(function() {
-            console.log("return me['amount'];".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        Q().then(function() {
+            console.log("return me['amount'];");
             return me['amount'];
         }),
         Q.all([
-            Q.when(function() {
-                console.log("return Category.findOne({ _id : me.category }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-                return Category.findOne({ _id : me.category }).exec();
+            Q().then(function() {
+                console.log("return Q.npost(Category, 'findOne', [ ({ _id : me.category }) ]);");
+                return Q.npost(Category, 'findOne', [ ({ _id : me.category }) ]);
             }),
-            Q.when(function() {
-                console.log("return me['description'] + <Q>(<Q>;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            Q().then(function() {
+                console.log("return me['description'] + \"(\";");
                 return me['description'] + "(";
             })
-        ]).spread(function(read_category, call_add) {
-            return call_add + read_category['name'] + ")";
+        ]).spread(function(category, add) {
+            return add + category['name'] + ")";
         }),
-        Q.when(function() {
-            console.log("return me['expenseId'];".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        Q().then(function() {
+            console.log("return me['expenseId'];");
             return me['expenseId'];
         }),
-        Q.when(function() {
-            console.log("return me['expensePayer'];".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        Q().then(function() {
+            console.log("return me['expensePayer'];");
             return me['expensePayer'];
         })
-    ]).spread(function(read_employee, read_amount, call_add, read_expenseId, read_expensePayer) {
-        read_expensePayer.expenseApproved(read_employee['name'], read_amount, call_add, read_expenseId)
-        return Q.when(null);
+    ]).spread(function(employee, amount, add, expenseId, expensePayer) {
+        expensePayer.expenseApproved(employee['name'], amount, add, expenseId);
+        return Q();
     });
 };
 /*************************** STATE MACHINE ********************/
@@ -264,14 +298,14 @@ expenseSchema.methods.handleEvent = function (event) {
                     // on entering Approved
                     (function() {
                         var me = this;
-                        return Q.when(null).then(function() {
-                            return Q.when(function() {
-                                console.log("me['processed'] = new Date();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                        return Q().then(function() {
+                            return Q().then(function() {
+                                console.log("me['processed'] = new Date();\n");
                                 me['processed'] = new Date();
                             });
                         }).then(function() {
-                            return Q.when(function() {
-                                console.log("me.reportApproved();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                            return Q().then(function() {
+                                console.log("me.reportApproved();\n");
                                 me.reportApproved();
                             });
                         });
@@ -297,14 +331,14 @@ expenseSchema.methods.handleEvent = function (event) {
                 // on entering Approved
                 (function() {
                     var me = this;
-                    return Q.when(null).then(function() {
-                        return Q.when(function() {
-                            console.log("me['processed'] = new Date();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        return Q().then(function() {
+                            console.log("me['processed'] = new Date();\n");
                             me['processed'] = new Date();
                         });
                     }).then(function() {
-                        return Q.when(function() {
-                            console.log("me.reportApproved();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                        return Q().then(function() {
+                            console.log("me.reportApproved();\n");
                             me.reportApproved();
                         });
                     });

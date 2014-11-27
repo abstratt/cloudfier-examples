@@ -10,16 +10,17 @@ var Task = require('./Task.js');
 var clientSchema = new Schema({
     name : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     tasks : [{
         type : Schema.Types.ObjectId,
-        ref : "Task"
+        ref : "Task",
+        "default" : []
     }],
     invoices : [{
         type : Schema.Types.ObjectId,
-        ref : "Invoice"
+        ref : "Invoice",
+        "default" : []
     }]
 });
 
@@ -28,53 +29,73 @@ var clientSchema = new Schema({
 clientSchema.methods.newTask = function (description) {
     var newTask;
     var me = this;
-    return Q.when(null).then(function() {
-        return Q.when(function() {
-            console.log("newTask = new Task();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        return Q().then(function() {
+            console.log("newTask = new Task();\n");
             newTask = new Task();
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("newTask['description'] = description;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Q().then(function() {
+            console.log("newTask['description'] = description;\n");
             newTask['description'] = description;
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("// link client and tasks<NL>newTask.client = me;<NL>me.tasks.push(newTask);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            // link client and tasks
-            newTask.client = me;
-            me.tasks.push(newTask);
+        return Q().then(function() {
+            console.log("console.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(newTask);\nnewTask.client = me._id;\nconsole.log(\"This: \");\nconsole.log(newTask);\nconsole.log(\"That: \");\nconsole.log(me);\nme.tasks.push(newTask._id);\n");
+            console.log("This: ");
+            console.log(me);
+            console.log("That: ");
+            console.log(newTask);
+            newTask.client = me._id;
+            console.log("This: ");
+            console.log(newTask);
+            console.log("That: ");
+            console.log(me);
+            me.tasks.push(newTask._id);
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("newTask.save();<NL>return q(newTask);<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            newTask.save();
-            return q(newTask);
+        return Q().then(function() {
+            console.log("return Q.npost(newTask, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
+            return Q.npost(newTask, 'save', [  ]).then(function(saveResult) {
+                return saveResult[0];
+            });
         });
+    }).then(function() {
+        return me.save();
     });
 };
 
 clientSchema.methods.startInvoice = function () {
     var newInvoice;
     var me = this;
-    return Q.when(null).then(function() {
-        return Q.when(function() {
-            console.log("newInvoice = new Invoice();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        return Q().then(function() {
+            console.log("newInvoice = new Invoice();\n");
             newInvoice = new Invoice();
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("// link client and invoices<NL>newInvoice.client = me;<NL>me.invoices.push(newInvoice);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            // link client and invoices
-            newInvoice.client = me;
-            me.invoices.push(newInvoice);
+        return Q().then(function() {
+            console.log("console.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(newInvoice);\nnewInvoice.client = me._id;\nconsole.log(\"This: \");\nconsole.log(newInvoice);\nconsole.log(\"That: \");\nconsole.log(me);\nme.invoices.push(newInvoice._id);\n");
+            console.log("This: ");
+            console.log(me);
+            console.log("That: ");
+            console.log(newInvoice);
+            newInvoice.client = me._id;
+            console.log("This: ");
+            console.log(newInvoice);
+            console.log("That: ");
+            console.log(me);
+            me.invoices.push(newInvoice._id);
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("newInvoice.save();<NL>return q(newInvoice);<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            newInvoice.save();
-            return q(newInvoice);
+        return Q().then(function() {
+            console.log("return Q.npost(newInvoice, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
+            return Q.npost(newInvoice, 'save', [  ]).then(function(saveResult) {
+                return saveResult[0];
+            });
         });
+    }).then(function() {
+        return me.save();
     });
 };
 

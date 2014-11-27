@@ -12,7 +12,7 @@ var Rental = require('./Rental.js');
 var modelSchema = new Schema({
     name : {
         type : String,
-        default : null
+        "default" : null
     },
     make : {
         type : Schema.Types.ObjectId,
@@ -24,11 +24,13 @@ var modelSchema = new Schema({
 
 modelSchema.virtual('description').get(function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return Make.findOne({ _id : me.make }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        return Make.findOne({ _id : me.make }).exec();
-    }).then(function(read_make) {
-        return read_make['name'] + " " + me['name'];
+    return Q().then(function() {
+        console.log("return Q.npost(Make, 'findOne', [ ({ _id : me.make }) ]);");
+        return Q.npost(Make, 'findOne', [ ({ _id : me.make }) ]);
+    }).then(function(make) {
+        console.log(make);
+        console.log("return make['name'] + \" \" + me['name'];\n");
+        return make['name'] + " " + me['name'];
     });
 });
 

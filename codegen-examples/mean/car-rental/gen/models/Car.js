@@ -12,28 +12,24 @@ var Rental = require('./Rental.js');
 var carSchema = new Schema({
     plate : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     price : {
         type : Number,
-        required : true,
-        default : 0
+        "default" : 0
     },
     year : {
         type : Number,
-        required : true,
-        default : 0
+        "default" : 0
     },
     color : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     status : {
         type : String,
         enum : ["Available", "Rented", "UnderRepair"],
-        default : "Available"
+        "default" : "Available"
     },
     model : {
         type : Schema.Types.ObjectId,
@@ -41,69 +37,54 @@ var carSchema = new Schema({
     },
     rentals : [{
         type : Schema.Types.ObjectId,
-        ref : "Rental"
+        ref : "Rental",
+        "default" : []
     }]
 });
 /*************************** INVARIANTS ***************************/
 
-carSchema.path('price').validate(
-    function() {
-        return this['price'] >= 50.0;
-    },
-    'validation of `{PATH}` failed with value `{VALUE}`'
-);
 
-carSchema.path('price').validate(
-    function() {
-        return this['price'] <= 500.0;
-    },
-    'validation of `{PATH}` failed with value `{VALUE}`'
-);
 
-carSchema.path('year').validate(
-    function() {
-        return this['year'] > 1990;
-    },
-    'validation of `{PATH}` failed with value `{VALUE}`'
-);
 
-carSchema.path('year').validate(
-    function() {
-        return this['year'] <= (new Date().getYear() + 1900);
-    },
-    'validation of `{PATH}` failed with value `{VALUE}`'
-);
 
 /*************************** ACTIONS ***************************/
 
 carSchema.methods.startRepair = function () {
     var me = this;
-    return Q.when(function() {
-        console.log("me.repairStarted()<NL>return Q.when(null);<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        me.repairStarted()
-        return Q.when(null);
+    return Q().then(function() {
+        console.log("me.repairStarted();\nreturn Q();\n");
+        me.repairStarted();
+        return Q();
+    }).then(function() {
+        return me.save();
     });
 };
 
 carSchema.methods.finishRepair = function () {
     var me = this;
-    return Q.when(function() {
-        console.log("me.repairFinished()<NL>return Q.when(null);<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        me.repairFinished()
-        return Q.when(null);
+    return Q().then(function() {
+        console.log("me.repairFinished();\nreturn Q();\n");
+        me.repairFinished();
+        return Q();
+    }).then(function() {
+        return me.save();
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 carSchema.virtual('description').get(function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return Model.findOne({ _id : me.model }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        return Model.findOne({ _id : me.model }).exec();
-    }).then(function(read_model) {
-        return read_model['description'];
-    }).then(function(read_description) {
-        return read_description + " - " + me['plate'];
+    return Q().then(function() {
+        console.log("return Q.npost(Model, 'findOne', [ ({ _id : me.model }) ]);");
+        return Q.npost(Model, 'findOne', [ ({ _id : me.model }) ]);
+    }).then(function(model) {
+        console.log(model);
+        console.log("return model['description'];");
+        return model['description'];
+    }).then(function(description) {
+        console.log(description);
+        console.log("return description + \" - \" + me['plate'];\n");
+        return description + " - " + me['plate'];
     });
 });
 
@@ -122,11 +103,13 @@ carSchema.virtual('rented').get(function () {
 
 carSchema.methods.getCurrentRental = function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return Rental.currentForCar(me);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        console.log("return Rental.currentForCar(me);");
         return Rental.currentForCar(me);
-    }).then(function(call_currentForCar) {
-        return call_currentForCar;
+    }).then(function(currentForCar) {
+        console.log(currentForCar);
+        console.log("return currentForCar;\n");
+        return currentForCar;
     });
 };
 /*************************** STATE MACHINE ********************/

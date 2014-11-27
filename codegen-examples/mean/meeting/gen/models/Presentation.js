@@ -10,8 +10,7 @@ var Meeting = require('./Meeting.js');
 var presentationSchema = new Schema({
     title : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     author : {
         type : Schema.Types.ObjectId,

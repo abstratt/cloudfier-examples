@@ -10,16 +10,16 @@ var Presentation = require('./Presentation.js');
 var userSchema = new Schema({
     name : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     email : {
         type : String,
-        default : null
+        "default" : null
     },
     meetings : [{
         type : Schema.Types.ObjectId,
-        ref : "Meeting"
+        ref : "Meeting",
+        "default" : []
     }]
 });
 
@@ -31,44 +31,51 @@ var userSchema = new Schema({
 userSchema.methods.startMeetingOnBehalf = function (title, description, date) {
     var newMeeting;
     var me = this;
-    return Q.when(null).then(function() {
-        return Q.when(function() {
-            console.log("newMeeting = new Meeting();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        return Q().then(function() {
+            console.log("newMeeting = new Meeting();\n");
             newMeeting = new Meeting();
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("newMeeting['date'] = date;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Q().then(function() {
+            console.log("newMeeting['date'] = date;\n");
             newMeeting['date'] = date;
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("newMeeting['title'] = title;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Q().then(function() {
+            console.log("newMeeting['title'] = title;\n");
             newMeeting['title'] = title;
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("newMeeting['description'] = description;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Q().then(function() {
+            console.log("newMeeting['description'] = description;\n");
             newMeeting['description'] = description;
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("newMeeting['organizer'] = me;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            newMeeting['organizer'] = me;
+        return Q().then(function() {
+            console.log("console.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(newMeeting);\nnewMeeting.organizer = me._id\n;\n");
+            console.log("This: ");
+            console.log(me);
+            console.log("That: ");
+            console.log(newMeeting);
+            newMeeting.organizer = me._id
+            ;
         });
     }).then(function() {
         return Q.all([
-            Q.when(function() {
-                console.log("return User.findOne({ _id : newMeeting.organizer }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-                return User.findOne({ _id : newMeeting.organizer }).exec();
+            Q().then(function() {
+                console.log("return Q.npost(User, 'findOne', [ ({ _id : newMeeting.organizer }) ]);");
+                return Q.npost(User, 'findOne', [ ({ _id : newMeeting.organizer }) ]);
             }),
-            Q.when(function() {
-                console.log("return newMeeting;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            Q().then(function() {
+                console.log("return newMeeting;");
                 return newMeeting;
             })
-        ]).spread(function(read_organizer, read_NewMeeting) {
-            read_NewMeeting.addParticipant(read_organizer);
+        ]).spread(function(organizer, NewMeeting) {
+            NewMeeting.addParticipant(organizer);
         });
+    }).then(function() {
+        return me.save();
     });
 };
 /*************************** DERIVED RELATIONSHIPS ****************/

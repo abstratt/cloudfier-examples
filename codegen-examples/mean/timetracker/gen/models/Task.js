@@ -10,8 +10,7 @@ var Invoice = require('./Invoice.js');
 var taskSchema = new Schema({
     description : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     client : {
         type : Schema.Types.ObjectId,
@@ -20,19 +19,17 @@ var taskSchema = new Schema({
     reported : [{
         units : {
             type : Number,
-            required : true,
-            default : 0
+            "default" : 0
         },
         date : {
             type : Date,
-            required : true,
-            default : (function() {
+            "default" : (function() {
                 return new Date();
             })()
         },
         memo : {
             type : String,
-            default : null
+            "default" : null
         },
         invoice : {
             type : Schema.Types.ObjectId,
@@ -46,29 +43,39 @@ var taskSchema = new Schema({
 taskSchema.methods.addWork = function (units) {
     var newWork;
     var me = this;
-    return Q.when(null).then(function() {
-        return Q.when(function() {
-            console.log("newWork = new Work();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        return Q().then(function() {
+            console.log("newWork = new Work();\n");
             newWork = new Work();
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("newWork['units'] = units;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Q().then(function() {
+            console.log("newWork['units'] = units;\n");
             newWork['units'] = units;
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("// link reported and task<NL>me.reported.push(newWork);<NL>newWork.task = me;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            // link reported and task
-            me.reported.push(newWork);
-            newWork.task = me;
+        return Q().then(function() {
+            console.log("console.log(\"This: \");\nconsole.log(newWork);\nconsole.log(\"That: \");\nconsole.log(me);\nme.reported.push(newWork._id);\nconsole.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(newWork);\nnewWork.task = me._id;\n");
+            console.log("This: ");
+            console.log(newWork);
+            console.log("That: ");
+            console.log(me);
+            me.reported.push(newWork._id);
+            console.log("This: ");
+            console.log(me);
+            console.log("That: ");
+            console.log(newWork);
+            newWork.task = me._id;
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("newWork.save();<NL>return q(newWork);<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            newWork.save();
-            return q(newWork);
+        return Q().then(function() {
+            console.log("return Q.npost(newWork, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
+            return Q.npost(newWork, 'save', [  ]).then(function(saveResult) {
+                return saveResult[0];
+            });
         });
+    }).then(function() {
+        return me.save();
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
@@ -80,24 +87,24 @@ taskSchema.virtual('unitsReported').get(function () {
 taskSchema.virtual('unitsToInvoice').get(function () {
     var me = this;
     return Q.all([
-        Q.when(function() {
-            console.log("return me.getToInvoice();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        Q().then(function() {
+            console.log("return me.getToInvoice();");
             return me.getToInvoice();
         }),
-        Q.when(function() {
-            console.log("return me;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        Q().then(function() {
+            console.log("return me;");
             return me;
         })
-    ]).spread(function(read_toInvoice, readSelfAction) {
-        return readSelfAction.countUnits(read_toInvoice);
+    ]).spread(function(toInvoice, readSelfAction) {
+        return readSelfAction.countUnits(toInvoice);
     });
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 taskSchema.methods.getToInvoice = function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return me['reported'].where({<NL>    $ne : [ <NL>        { 'invoiced' : true },<NL>        true<NL>    ]<NL>});".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        console.log("return me['reported'].where({\n    $ne : [ \n        { 'invoiced' : true },\n        true\n    ]\n});\n");
         return me['reported'].where({
             $ne : [ 
                 { 'invoiced' : true },
@@ -109,9 +116,10 @@ taskSchema.methods.getToInvoice = function () {
 /*************************** PRIVATE OPS ***********************/
 
 taskSchema.methods.countUnits = function (work) {
-    return Work.aggregate()
+    return Q.npost(Work.aggregate()
                   .group({ _id: null, result: { $sum: '$units' } })
-                  .select('-id result').exec();
+                  .select('-id result'), 'exec', [  ])
+    ;
 };
 
 // declare model on the schema

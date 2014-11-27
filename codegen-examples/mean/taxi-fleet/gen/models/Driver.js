@@ -14,8 +14,7 @@ var Charge = require('./Charge.js');
 var driverSchema = new Schema({
     name : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     taxi : {
         type : Schema.Types.ObjectId,
@@ -23,7 +22,8 @@ var driverSchema = new Schema({
     },
     charges : [{
         type : Schema.Types.ObjectId,
-        ref : "Charge"
+        ref : "Charge",
+        "default" : []
     }]
 });
 
@@ -34,11 +34,20 @@ var driverSchema = new Schema({
  */
 driverSchema.methods.book = function (toRent) {
     var me = this;
-    return Q.when(function() {
-        console.log("// link taxi and drivers<NL>me.taxi = toRent;<NL>toRent.drivers.push(me);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        // link taxi and drivers
-        me.taxi = toRent;
-        toRent.drivers.push(me);
+    return Q().then(function() {
+        console.log("console.log(\"This: \");\nconsole.log(toRent);\nconsole.log(\"That: \");\nconsole.log(me);\nme.taxi = toRent._id;\nconsole.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(toRent);\ntoRent.drivers.push(me._id);\n");
+        console.log("This: ");
+        console.log(toRent);
+        console.log("That: ");
+        console.log(me);
+        me.taxi = toRent._id;
+        console.log("This: ");
+        console.log(me);
+        console.log("That: ");
+        console.log(toRent);
+        toRent.drivers.push(me._id);
+    }).then(function() {
+        return me.save();
     });
 };
 
@@ -48,17 +57,19 @@ driverSchema.methods.book = function (toRent) {
 driverSchema.methods.release = function () {
     var me = this;
     return Q.all([
-        Q.when(function() {
-            console.log("return Taxi.findOne({ _id : me.taxi }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            return Taxi.findOne({ _id : me.taxi }).exec();
+        Q().then(function() {
+            console.log("return Q.npost(Taxi, 'findOne', [ ({ _id : me.taxi }) ]);");
+            return Q.npost(Taxi, 'findOne', [ ({ _id : me.taxi }) ]);
         }),
-        Q.when(function() {
-            console.log("return me;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        Q().then(function() {
+            console.log("return me;");
             return me;
         })
-    ]).spread(function(read_taxi, readSelfAction) {
-        read_taxi.drivers = null;
-        read_taxi = null;
+    ]).spread(function(taxi, readSelfAction) {
+        taxi.drivers = null;
+        taxi = null;
+    }).then(function() {
+        return me.save();
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
@@ -66,25 +77,27 @@ driverSchema.methods.release = function () {
 driverSchema.virtual('hasBooking').get(function () {
     var me = this;
     return Q.all([
-        Q.when(function() {
-            console.log("return Taxi.findOne({ _id : me.taxi }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            return Taxi.findOne({ _id : me.taxi }).exec();
+        Q().then(function() {
+            console.log("return Q.npost(Taxi, 'findOne', [ ({ _id : me.taxi }) ]);");
+            return Q.npost(Taxi, 'findOne', [ ({ _id : me.taxi }) ]);
         }),
-        Q.when(function() {
-            console.log("return null;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        Q().then(function() {
+            console.log("return null;");
             return null;
         })
-    ]).spread(function(read_taxi, valueSpecificationAction) {
-        return !read_taxi == valueSpecificationAction;
+    ]).spread(function(taxi, valueSpecificationAction) {
+        return !taxi == valueSpecificationAction;
     });
 });
 
 driverSchema.virtual('paymentDue').get(function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return me.getPendingCharges();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        console.log("return me.getPendingCharges();");
         return me.getPendingCharges();
-    }).then(function(read_pendingCharges) {
+    }).then(function(pendingCharges) {
+        console.log(pendingCharges);
+        console.log("return !/*TBD*/isEmpty;\n");
         return !/*TBD*/isEmpty;
     });
 });
@@ -92,11 +105,13 @@ driverSchema.virtual('paymentDue').get(function () {
 
 driverSchema.methods.getPendingCharges = function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return Charge.find({ driver : me._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        return Charge.find({ driver : me._id }).exec();
-    }).then(function(read_charges) {
-        return read_charges.where({
+    return Q().then(function() {
+        console.log("return Q.npost(Charge, 'find', [ ({ driver : me._id }) ]);");
+        return Q.npost(Charge, 'find', [ ({ driver : me._id }) ]);
+    }).then(function(charges) {
+        console.log(charges);
+        console.log("return charges.where({\n    $ne : [ \n        { 'paid' : true },\n        true\n    ]\n});\n");
+        return charges.where({
             $ne : [ 
                 { 'paid' : true },
                 true

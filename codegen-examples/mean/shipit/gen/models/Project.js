@@ -14,17 +14,16 @@ var Issue = require('./Issue.js');
 var projectSchema = new Schema({
     description : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     token : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     issues : [{
         type : Schema.Types.ObjectId,
-        ref : "Issue"
+        ref : "Issue",
+        "default" : []
     }]
 });
 

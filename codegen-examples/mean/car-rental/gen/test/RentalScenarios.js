@@ -1,7 +1,9 @@
 
-var mongoose = require('mongoose');
 var assert = require("assert");
 var Q = require("q");
+require('../models/index.js');        
+
+
 var Car = require('../models/Car.js');
 var Rental = require('../models/Rental.js');
 var Model = require('../models/Model.js');
@@ -12,55 +14,65 @@ var Examples = require('./Examples.js');
 
 
 suite('Car rental functional tests - RentalScenarios', function() {
-    this.timeout(10000);
+    this.timeout(1000);
 
     test('startsAsInProgress', function(done) {
         var behavior = function() {
             var car;
             var customer;
             var me = this;
-            return Q.when(null).then(function() {
-                return Q.when(null).then(function() {
-                    return Q.when(function() {
-                        console.log("return Examples.newCar();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Q().then(function() {
+                return Q().then(function() {
+                    return Q().then(function() {
+                        console.log("return Examples.newCar();");
                         return Examples.newCar();
-                    }).then(function(call_newCar) {
-                        car = call_newCar;
+                    }).then(function(newCar) {
+                        console.log(newCar);
+                        console.log("car = newCar;\n");
+                        car = newCar;
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("return Examples.newCustomer();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("return Examples.newCustomer();");
                         return Examples.newCustomer();
-                    }).then(function(call_newCustomer) {
-                        customer = call_newCustomer;
+                    }).then(function(newCustomer) {
+                        console.log(newCustomer);
+                        console.log("customer = newCustomer;\n");
+                        customer = newCustomer;
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("return customer.getCurrentRental();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("return customer.getCurrentRental();");
                         return customer.getCurrentRental();
-                    }).then(function(read_currentRental) {
-                        assert.ok(read_currentRental == null);
+                    }).then(function(currentRental) {
+                        console.log(currentRental);
+                        console.log("assert.ok(currentRental == null);\n");
+                        assert.ok(currentRental == null);
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("customer.rent(car);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("customer.rent(car);\n");
                         customer.rent(car);
                     });
                 });
             }).then(function() {
-                return Q.when(null).then(function() {
-                    return Q.when(function() {
-                        console.log("return customer.getCurrentRental();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    return Q().then(function() {
+                        console.log("return customer.getCurrentRental();");
                         return customer.getCurrentRental();
-                    }).then(function(read_currentRental) {
-                        assert.ok(read_currentRental != null);
+                    }).then(function(currentRental) {
+                        console.log(currentRental);
+                        console.log("assert.ok(currentRental != null);\n");
+                        assert.ok(currentRental != null);
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("return customer.getCurrentRental();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("return customer.getCurrentRental();");
                         return customer.getCurrentRental();
-                    }).then(function(read_currentRental) {
-                        assert.strictEqual(read_currentRental['inProgress'], true);
+                    }).then(function(currentRental) {
+                        console.log(currentRental);
+                        console.log("assert.strictEqual(currentRental['inProgress'], true);\n");
+                        assert.strictEqual(currentRental['inProgress'], true);
                     });
                 });
             });
@@ -73,49 +85,55 @@ suite('Car rental functional tests - RentalScenarios', function() {
             var customer;
             var rental;
             var me = this;
-            return Q.when(null).then(function() {
-                return Q.when(null).then(function() {
-                    return Q.when(function() {
-                        console.log("return Examples.newCar();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Q().then(function() {
+                return Q().then(function() {
+                    return Q().then(function() {
+                        console.log("return Examples.newCar();");
                         return Examples.newCar();
-                    }).then(function(call_newCar) {
-                        car = call_newCar;
+                    }).then(function(newCar) {
+                        console.log(newCar);
+                        console.log("car = newCar;\n");
+                        car = newCar;
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("return Examples.newCustomer();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("return Examples.newCustomer();");
                         return Examples.newCustomer();
-                    }).then(function(call_newCustomer) {
-                        customer = call_newCustomer;
+                    }).then(function(newCustomer) {
+                        console.log(newCustomer);
+                        console.log("customer = newCustomer;\n");
+                        customer = newCustomer;
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("customer.rent(car);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("customer.rent(car);\n");
                         customer.rent(car);
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("return customer.getCurrentRental();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("return customer.getCurrentRental();");
                         return customer.getCurrentRental();
-                    }).then(function(read_currentRental) {
-                        rental = read_currentRental;
+                    }).then(function(currentRental) {
+                        console.log(currentRental);
+                        console.log("rental = currentRental;\n");
+                        rental = currentRental;
                     });
                 });
             }).then(function() {
-                return Q.when(null).then(function() {
-                    return Q.when(function() {
-                        console.log("assert.strictEqual(rental['inProgress'], true);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    return Q().then(function() {
+                        console.log("assert.strictEqual(rental['inProgress'], true);\n");
                         assert.strictEqual(rental['inProgress'], true);
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("customer.finishRental();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("customer.finishRental();\n");
                         customer.finishRental();
                     });
                 });
             }).then(function() {
-                return Q.when(function() {
-                    console.log("assert.strictEqual(!rental['inProgress'], true);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    console.log("assert.strictEqual(!rental['inProgress'], true);\n");
                     assert.strictEqual(!rental['inProgress'], true);
                 });
             });
@@ -129,38 +147,44 @@ suite('Car rental functional tests - RentalScenarios', function() {
                 var car2;
                 var customer;
                 var me = this;
-                return Q.when(null).then(function() {
-                    return Q.when(null).then(function() {
-                        return Q.when(function() {
-                            console.log("return Examples.newCar();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    return Q().then(function() {
+                        return Q().then(function() {
+                            console.log("return Examples.newCar();");
                             return Examples.newCar();
-                        }).then(function(call_newCar) {
-                            car1 = call_newCar;
+                        }).then(function(newCar) {
+                            console.log(newCar);
+                            console.log("car1 = newCar;\n");
+                            car1 = newCar;
                         });
                     }).then(function() {
-                        return Q.when(function() {
-                            console.log("return Examples.newCustomer();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                        return Q().then(function() {
+                            console.log("return Examples.newCustomer();");
                             return Examples.newCustomer();
-                        }).then(function(call_newCustomer) {
-                            customer = call_newCustomer;
+                        }).then(function(newCustomer) {
+                            console.log(newCustomer);
+                            console.log("customer = newCustomer;\n");
+                            customer = newCustomer;
                         });
                     }).then(function() {
-                        return Q.when(function() {
-                            console.log("customer.rent(car1);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                        return Q().then(function() {
+                            console.log("customer.rent(car1);\n");
                             customer.rent(car1);
                         });
                     });
                 }).then(function() {
-                    return Q.when(null).then(function() {
-                        return Q.when(function() {
-                            console.log("return Examples.newCar();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        return Q().then(function() {
+                            console.log("return Examples.newCar();");
                             return Examples.newCar();
-                        }).then(function(call_newCar) {
-                            car2 = call_newCar;
+                        }).then(function(newCar) {
+                            console.log(newCar);
+                            console.log("car2 = newCar;\n");
+                            car2 = newCar;
                         });
                     }).then(function() {
-                        return Q.when(function() {
-                            console.log("customer.rent(car2);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                        return Q().then(function() {
+                            console.log("customer.rent(car2);\n");
                             customer.rent(car2);
                         });
                     });
@@ -179,43 +203,49 @@ suite('Car rental functional tests - RentalScenarios', function() {
                 var customer1;
                 var customer2;
                 var me = this;
-                return Q.when(null).then(function() {
-                    return Q.when(null).then(function() {
-                        return Q.when(function() {
-                            console.log("return Examples.newCar();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    return Q().then(function() {
+                        return Q().then(function() {
+                            console.log("return Examples.newCar();");
                             return Examples.newCar();
-                        }).then(function(call_newCar) {
-                            car = call_newCar;
+                        }).then(function(newCar) {
+                            console.log(newCar);
+                            console.log("car = newCar;\n");
+                            car = newCar;
                         });
                     }).then(function() {
-                        return Q.when(function() {
-                            console.log("return Examples.newCustomer();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                        return Q().then(function() {
+                            console.log("return Examples.newCustomer();");
                             return Examples.newCustomer();
-                        }).then(function(call_newCustomer) {
-                            customer1 = call_newCustomer;
+                        }).then(function(newCustomer) {
+                            console.log(newCustomer);
+                            console.log("customer1 = newCustomer;\n");
+                            customer1 = newCustomer;
                         });
                     }).then(function() {
-                        return Q.when(function() {
-                            console.log("customer1.rent(car);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                        return Q().then(function() {
+                            console.log("customer1.rent(car);\n");
                             customer1.rent(car);
                         });
                     });
                 }).then(function() {
-                    return Q.when(null).then(function() {
-                        return Q.when(function() {
-                            console.log("assert.strictEqual(car['rented'], true);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        return Q().then(function() {
+                            console.log("assert.strictEqual(car['rented'], true);\n");
                             assert.strictEqual(car['rented'], true);
                         });
                     }).then(function() {
-                        return Q.when(function() {
-                            console.log("return Examples.newCustomer();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                        return Q().then(function() {
+                            console.log("return Examples.newCustomer();");
                             return Examples.newCustomer();
-                        }).then(function(call_newCustomer) {
-                            customer2 = call_newCustomer;
+                        }).then(function(newCustomer) {
+                            console.log(newCustomer);
+                            console.log("customer2 = newCustomer;\n");
+                            customer2 = newCustomer;
                         });
                     }).then(function() {
-                        return Q.when(function() {
-                            console.log("customer2.rent(car);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                        return Q().then(function() {
+                            console.log("customer2.rent(car);\n");
                             customer2.rent(car);
                         });
                     });

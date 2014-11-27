@@ -12,13 +12,13 @@ var Car = require('./Car.js');
 var rentalSchema = new Schema({
     started : {
         type : Date,
-        default : (function() {
+        "default" : (function() {
             return new Date();
         })()
     },
     returned : {
         type : Date,
-        default : new Date()
+        "default" : new Date()
     },
     car : {
         type : Schema.Types.ObjectId,
@@ -34,58 +34,68 @@ var rentalSchema = new Schema({
 
 rentalSchema.statics.currentForCar = function (c) {
     var me = this;
-    return Q.when(function() {
-        console.log("return this.model('Rental').find().where({<NL>    $and : [ <NL>        { car : c },<NL>        { 'inProgress' : true }<NL>    ]<NL>}).findOne().exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        return this.model('Rental').find().where({
+    return Q().then(function() {
+        console.log("return Q.npost(this.model('Rental').find().where({\n    $and : [ \n        { car : c },\n        { 'inProgress' : true }\n    ]\n}).findOne(), 'exec', [  ])\n;\n");
+        return Q.npost(this.model('Rental').find().where({
             $and : [ 
                 { car : c },
                 { 'inProgress' : true }
             ]
-        }).findOne().exec();
+        }).findOne(), 'exec', [  ])
+        ;
     });
 };
 
 rentalSchema.statics.currentForCustomer = function (c) {
     var me = this;
-    return Q.when(function() {
-        console.log("return this.model('Rental').find().where({<NL>    $and : [ <NL>        { customer : c },<NL>        { 'inProgress' : true }<NL>    ]<NL>}).findOne().exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        return this.model('Rental').find().where({
+    return Q().then(function() {
+        console.log("return Q.npost(this.model('Rental').find().where({\n    $and : [ \n        { customer : c },\n        { 'inProgress' : true }\n    ]\n}).findOne(), 'exec', [  ])\n;\n");
+        return Q.npost(this.model('Rental').find().where({
             $and : [ 
                 { customer : c },
                 { 'inProgress' : true }
             ]
-        }).findOne().exec();
+        }).findOne(), 'exec', [  ])
+        ;
     });
 };
 
 rentalSchema.statics.inProgress = function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return this.model('Rental').find().where({ 'inProgress' : true }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        return this.model('Rental').find().where({ 'inProgress' : true }).exec();
+    return Q().then(function() {
+        console.log("return Q.npost(this.model('Rental').find().where({ 'inProgress' : true }), 'exec', [  ])\n;\n");
+        return Q.npost(this.model('Rental').find().where({ 'inProgress' : true }), 'exec', [  ])
+        ;
     });
 };
 
 rentalSchema.statics.all = function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return this.model('Rental').find().exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        return this.model('Rental').find().exec();
+    return Q().then(function() {
+        console.log("return Q.npost(this.model('Rental').find(), 'exec', [  ])\n;\n");
+        return Q.npost(this.model('Rental').find(), 'exec', [  ])
+        ;
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 rentalSchema.virtual('description').get(function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return Car.findOne({ _id : me.car }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        return Car.findOne({ _id : me.car }).exec();
-    }).then(function(read_car) {
-        return Model.findOne({ _id : read_car.model }).exec();
-    }).then(function(read_model) {
-        return read_model['description'];
-    }).then(function(read_description) {
-        return read_description + " on " + me['started'];
+    return Q().then(function() {
+        console.log("return Q.npost(Car, 'findOne', [ ({ _id : me.car }) ]);");
+        return Q.npost(Car, 'findOne', [ ({ _id : me.car }) ]);
+    }).then(function(car) {
+        console.log(car);
+        console.log("return Q.npost(Model, 'findOne', [ ({ _id : car.model }) ]);");
+        return Q.npost(Model, 'findOne', [ ({ _id : car.model }) ]);
+    }).then(function(model) {
+        console.log(model);
+        console.log("return model['description'];");
+        return model['description'];
+    }).then(function(description) {
+        console.log(description);
+        console.log("return description + \" on \" + me['started'];\n");
+        return description + " on " + me['started'];
     });
 });
 

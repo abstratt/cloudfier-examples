@@ -1,4 +1,5 @@
-var mongoose = require('mongoose');
+require('../models/index.js');
+
 var Q = require("q");
 var Client = require('../models/Client.js');
 var Task = require('../models/Task.js');
@@ -8,70 +9,89 @@ var Examples = {
     clientWithName : function(name) {
         var client;
         var me = this;
-        return Q.when(null).then(function() {
-            return Q.when(function() {
-                console.log("client = new Client();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Q().then(function() {
+            return Q().then(function() {
+                console.log("client = new Client();\n");
                 client = new Client();
             });
         }).then(function() {
-            return Q.when(function() {
-                console.log("client['name'] = name;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Q().then(function() {
+                console.log("client['name'] = name;\n");
                 client['name'] = name;
             });
         }).then(function() {
-            return Q.when(function() {
-                console.log("client.save();<NL>return q(client);<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-                client.save();
-                return q(client);
+            return Q().then(function() {
+                console.log("return Q.npost(client, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
+                return Q.npost(client, 'save', [  ]).then(function(saveResult) {
+                    return saveResult[0];
+                });
             });
         });
     },
     client : function() {
         var me = this;
-        return Q.when(function() {
-            console.log("return Examples.clientWithName(<Q>New Client<Q>);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Q().then(function() {
+            console.log("return Examples.clientWithName(\"New Client\");");
             return Examples.clientWithName("New Client");
-        }).then(function(call_clientWithName) {
-            call_clientWithName.save();
-            return q(call_clientWithName);
+        }).then(function(clientWithName) {
+            console.log(clientWithName);
+            console.log("return Q.npost(clientWithName, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
+            return Q.npost(clientWithName, 'save', [  ]).then(function(saveResult) {
+                return saveResult[0];
+            });
         });
     },
     taskWithName : function(description, client) {
         var task;
         var me = this;
-        return Q.when(null).then(function() {
-            return Q.when(function() {
-                console.log("task = new Task();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Q().then(function() {
+            return Q().then(function() {
+                console.log("task = new Task();\n");
                 task = new Task();
             });
         }).then(function() {
-            return Q.when(function() {
-                console.log("task['description'] = description;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Q().then(function() {
+                console.log("task['description'] = description;\n");
                 task['description'] = description;
             });
         }).then(function() {
-            return Q.when(function() {
-                console.log("task['client'] = client;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-                task['client'] = client;
+            return Q().then(function() {
+                console.log("console.log(\"This: \");\nconsole.log(client);\nconsole.log(\"That: \");\nconsole.log(task);\ntask.client = client._id;\nconsole.log(\"This: \");\nconsole.log(task);\nconsole.log(\"That: \");\nconsole.log(client);\nclient.tasks.push(task._id);\n");
+                console.log("This: ");
+                console.log(client);
+                console.log("That: ");
+                console.log(task);
+                task.client = client._id;
+                console.log("This: ");
+                console.log(task);
+                console.log("That: ");
+                console.log(client);
+                client.tasks.push(task._id);
             });
         }).then(function() {
-            return Q.when(function() {
-                console.log("task.save();<NL>return q(task);<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-                task.save();
-                return q(task);
+            return Q().then(function() {
+                console.log("return Q.npost(task, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
+                return Q.npost(task, 'save', [  ]).then(function(saveResult) {
+                    return saveResult[0];
+                });
             });
         });
     },
     task : function() {
         var me = this;
-        return Q.when(function() {
-            console.log("return Examples.client();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Q().then(function() {
+            console.log("return Examples.client();");
             return Examples.client();
-        }).then(function(call_client) {
-            return Examples.taskWithName("New Task", call_client);
-        }).then(function(call_taskWithName) {
-            call_taskWithName.save();
-            return q(call_taskWithName);
+        }).then(function(client) {
+            console.log(client);
+            console.log("return Examples.taskWithName(\"New Task\", client);");
+            return Examples.taskWithName("New Task", client);
+        }).then(function(taskWithName) {
+            console.log(taskWithName);
+            console.log("return Q.npost(taskWithName, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
+            return Q.npost(taskWithName, 'save', [  ]).then(function(saveResult) {
+                return saveResult[0];
+            });
         });
     }
 };

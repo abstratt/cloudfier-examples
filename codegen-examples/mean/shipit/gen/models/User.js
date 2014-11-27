@@ -11,33 +11,36 @@ var Issue = require('./Issue.js');
 var userSchema = new Schema({
     email : {
         type : String,
-        default : null
+        "default" : null
     },
     fullName : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     kind : {
         type : String,
         enum : ["Reporter", "Committer"],
-        default : "Reporter"
+        "default" : "Reporter"
     },
     issuesReportedByUser : [{
         type : Schema.Types.ObjectId,
-        ref : "Issue"
+        ref : "Issue",
+        "default" : []
     }],
     voted : [{
         type : Schema.Types.ObjectId,
-        ref : "Issue"
+        ref : "Issue",
+        "default" : []
     }],
     issuesAssignedToUser : [{
         type : Schema.Types.ObjectId,
-        ref : "Issue"
+        ref : "Issue",
+        "default" : []
     }],
     issuesWatched : [{
         type : Schema.Types.ObjectId,
-        ref : "Issue"
+        ref : "Issue",
+        "default" : []
     }]
 });
 
@@ -45,23 +48,26 @@ var userSchema = new Schema({
 
 userSchema.methods.promoteToCommitter = function () {
     var me = this;
-    return Q.when(function() {
-        console.log("me['kind'] = <Q>Committer<Q>;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        console.log("me['kind'] = \"Committer\";\n");
         me['kind'] = "Committer";
+    }).then(function() {
+        return me.save();
     });
 };
 /*************************** QUERIES ***************************/
 
 userSchema.statics.current = function () {
     var me = this;
-    return Q.when(null).then(function() {
-        return Q.when(function() {
-            console.log("return cls.getNamespace('currentUser').exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            return cls.getNamespace('currentUser').exec();
+    return Q().then(function() {
+        return Q().then(function() {
+            console.log("return Q.npost(cls.getNamespace('currentUser'), 'exec', [  ])\n;\n");
+            return Q.npost(cls.getNamespace('currentUser'), 'exec', [  ])
+            ;
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log(";".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Q().then(function() {
+            console.log(";\n");
             ;
         });
     });
@@ -76,36 +82,40 @@ userSchema.virtual('committer').get(function () {
 userSchema.methods.getIssuesCurrentlyInProgress = function () {
     var me = this;
     return Q.all([
-        Q.when(function() {
-            console.log("return Issue.find({ assignee : me._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            return Issue.find({ assignee : me._id }).exec();
+        Q().then(function() {
+            console.log("return Q.npost(Issue, 'find', [ ({ assignee : me._id }) ]);");
+            return Q.npost(Issue, 'find', [ ({ assignee : me._id }) ]);
         }),
-        Q.when(function() {
-            console.log("return <Q>InProgress<Q>;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        Q().then(function() {
+            console.log("return \"InProgress\";");
             return "InProgress";
         })
-    ]).spread(function(read_issuesAssignedToUser, valueSpecificationAction) {
-        return Issue.filterByStatus(read_issuesAssignedToUser, valueSpecificationAction);
-    }).then(function(call_filterByStatus) {
-        return call_filterByStatus;
+    ]).spread(function(issuesAssignedToUser, valueSpecificationAction) {
+        return Issue.filterByStatus(issuesAssignedToUser, valueSpecificationAction);
+    }).then(function(filterByStatus) {
+        console.log(filterByStatus);
+        console.log("return filterByStatus;\n");
+        return filterByStatus;
     });
 };
 
 userSchema.methods.getIssuesCurrentlyAssigned = function () {
     var me = this;
     return Q.all([
-        Q.when(function() {
-            console.log("return Issue.find({ assignee : me._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            return Issue.find({ assignee : me._id }).exec();
+        Q().then(function() {
+            console.log("return Q.npost(Issue, 'find', [ ({ assignee : me._id }) ]);");
+            return Q.npost(Issue, 'find', [ ({ assignee : me._id }) ]);
         }),
-        Q.when(function() {
-            console.log("return <Q>Assigned<Q>;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        Q().then(function() {
+            console.log("return \"Assigned\";");
             return "Assigned";
         })
-    ]).spread(function(read_issuesAssignedToUser, valueSpecificationAction) {
-        return Issue.filterByStatus(read_issuesAssignedToUser, valueSpecificationAction);
-    }).then(function(call_filterByStatus) {
-        return call_filterByStatus;
+    ]).spread(function(issuesAssignedToUser, valueSpecificationAction) {
+        return Issue.filterByStatus(issuesAssignedToUser, valueSpecificationAction);
+    }).then(function(filterByStatus) {
+        console.log(filterByStatus);
+        console.log("return filterByStatus;\n");
+        return filterByStatus;
     });
 };
 

@@ -14,8 +14,7 @@ var Person = require('./Person.js');
 var carSchema = new Schema({
     registrationNumber : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     model : {
         type : Schema.Types.ObjectId,
@@ -30,26 +29,24 @@ var carSchema = new Schema({
     services : [{
         description : {
             type : String,
-            required : true,
-            default : null
+            "default" : null
         },
         bookedOn : {
             type : Date,
-            default : (function() {
+            "default" : (function() {
                 return new Date();
             })()
         },
         estimatedReady : {
             type : Date,
-            required : true,
-            default : (function() {
+            "default" : (function() {
                 return new Date(new Date() + 1);
             })()
         },
         status : {
             type : String,
             enum : ["Booked", "InProgress", "Completed", "Cancelled"],
-            default : "Booked"
+            "default" : "Booked"
         },
         technician : {
             type : Schema.Types.ObjectId,
@@ -62,20 +59,18 @@ var carSchema = new Schema({
 
 carSchema.statics.findByRegistrationNumber = function (regNumber) {
     var me = this;
-    return Q.when(function() {
-        console.log("this.model('Car').find().where({<NL>    $eq : [ <NL>        regNumber,<NL>        registrationNumber<NL>    ]<NL>}).findOne().save();<NL>return q(this.model('Car').find().where({<NL>    $eq : [ <NL>        regNumber,<NL>        registrationNumber<NL>    ]<NL>}).findOne());<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        this.model('Car').find().where({
+    return Q().then(function() {
+        console.log("return Q.npost(this.model('Car').find().where({\n    $eq : [ \n        regNumber,\n        registrationNumber\n    ]\n}).findOne(), 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
+        return Q.npost(this.model('Car').find().where({
             $eq : [ 
                 regNumber,
                 registrationNumber
             ]
-        }).findOne().save();
-        return q(this.model('Car').find().where({
-            $eq : [ 
-                regNumber,
-                registrationNumber
-            ]
-        }).findOne());
+        }).findOne(), 'save', [  ]).then(function(saveResult) {
+            return saveResult[0];
+        });
+    }).then(function() {
+        return me.save();
     });
 };
 
@@ -84,34 +79,43 @@ carSchema.statics.findByRegistrationNumber = function (regNumber) {
  */
 carSchema.methods.bookService = function (description, estimateInDays) {
     var me = this;
-    return Q.when(function() {
-        console.log("return Service.newService(me, description, estimateInDays);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        console.log("return Service.newService(me, description, estimateInDays);");
         return Service.newService(me, description, estimateInDays);
+    }).then(function() {
+        return me.save();
     });
 };
 /*************************** QUERIES ***************************/
 
 carSchema.statics.findByOwner = function (owner) {
     var me = this;
-    return Q.when(function() {
-        console.log("return Car.find({ owner : owner._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        return Car.find({ owner : owner._id }).exec();
-    }).then(function(read_cars) {
-        read_cars.save();
-        return q(read_cars);
+    return Q().then(function() {
+        console.log("return Q.npost(Car, 'find', [ ({ owner : owner._id }) ]);");
+        return Q.npost(Car, 'find', [ ({ owner : owner._id }) ]);
+    }).then(function(cars) {
+        console.log(cars);
+        console.log("return Q.npost(cars, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
+        return Q.npost(cars, 'save', [  ]).then(function(saveResult) {
+            return saveResult[0];
+        });
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 carSchema.virtual('modelName').get(function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return Model.findOne({ _id : me.model }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        return Model.findOne({ _id : me.model }).exec();
-    }).then(function(read_model) {
-        return read_model.makeAndModel();
-    }).then(function(call_makeAndModel) {
-        return call_makeAndModel;
+    return Q().then(function() {
+        console.log("return Q.npost(Model, 'findOne', [ ({ _id : me.model }) ]);");
+        return Q.npost(Model, 'findOne', [ ({ _id : me.model }) ]);
+    }).then(function(model) {
+        console.log(model);
+        console.log("return model.makeAndModel();");
+        return model.makeAndModel();
+    }).then(function(makeAndModel) {
+        console.log(makeAndModel);
+        console.log("return makeAndModel;\n");
+        return makeAndModel;
     });
 });
 

@@ -10,15 +10,14 @@ var Task = require('./Task.js');
 var invoiceSchema = new Schema({
     issueDate : {
         type : Date,
-        required : true,
-        default : (function() {
+        "default" : (function() {
             return new Date();
         })()
     },
     status : {
         type : String,
         enum : ["Preparation", "Invoiced", "Received"],
-        default : "Preparation"
+        "default" : "Preparation"
     },
     client : {
         type : Schema.Types.ObjectId,
@@ -26,7 +25,8 @@ var invoiceSchema = new Schema({
     },
     reported : [{
         type : Schema.Types.ObjectId,
-        ref : "Work"
+        ref : "Work",
+        "default" : []
     }]
 });
 
@@ -34,9 +34,11 @@ var invoiceSchema = new Schema({
 
 invoiceSchema.methods.issue = function () {
     var me = this;
-    return Q.when(function() {
-        console.log("me['issueDate'] = new Date();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        console.log("me['issueDate'] = new Date();\n");
         me['issueDate'] = new Date();
+    }).then(function() {
+        return me.save();
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
@@ -52,18 +54,20 @@ invoiceSchema.virtual('open').get(function () {
 
 invoiceSchema.virtual('totalUnits').get(function () {
     var me = this;
-    return Q.when(null).then(function() {
-        return Q.when(function() {
-            console.log("return Work.find({ invoice : me._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            return Work.find({ invoice : me._id }).exec();
-        }).then(function(read_reported) {
+    return Q().then(function() {
+        return Q().then(function() {
+            console.log("return Q.npost(Work, 'find', [ ({ invoice : me._id }) ]);");
+            return Q.npost(Work, 'find', [ ({ invoice : me._id }) ]);
+        }).then(function(reported) {
+            console.log(reported);
+            console.log("return Work.aggregate()\n              .group({ _id: null, result: { $sum: '$units' } })\n              .select('-id result');\n");
             return Work.aggregate()
                           .group({ _id: null, result: { $sum: '$units' } })
                           .select('-id result');
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log(";".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Q().then(function() {
+            console.log(";\n");
             ;
         });
     });
@@ -71,7 +75,7 @@ invoiceSchema.virtual('totalUnits').get(function () {
 /*************************** PRIVATE OPS ***********************/
 
 invoiceSchema.methods.sendInvoice = function () {
-    this['invoicer'].invoiceIssued();
+    this['invoicer'].invoiceIssued();;
 };
 /*************************** STATE MACHINE ********************/
 invoiceSchema.methods.handleEvent = function (event) {

@@ -14,12 +14,12 @@ var Person = require('./Person.js');
 var makeSchema = new Schema({
     name : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     models : [{
         type : Schema.Types.ObjectId,
-        ref : "Model"
+        ref : "Model",
+        "default" : []
     }]
 });
 

@@ -1,7 +1,9 @@
 
-var mongoose = require('mongoose');
 var assert = require("assert");
 var Q = require("q");
+require('../models/index.js');        
+
+
 var Client = require('../models/Client.js');
 var Task = require('../models/Task.js');
 var Invoice = require('../models/Invoice.js');
@@ -10,37 +12,39 @@ var Examples = require('./Examples.js');
 
 
 suite('Time Tracker functional tests - TaskScenarios', function() {
-    this.timeout(10000);
+    this.timeout(1000);
 
     test('timeReported', function(done) {
         var behavior = function() {
             var task;
             var me = this;
-            return Q.when(null).then(function() {
-                return Q.when(function() {
-                    console.log("return Examples.task();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Q().then(function() {
+                return Q().then(function() {
+                    console.log("return Examples.task();");
                     return Examples.task();
-                }).then(function(call_task) {
-                    task = call_task;
+                }).then(function(task) {
+                    console.log(task);
+                    console.log("task = task;\n");
+                    task = task;
                 });
             }).then(function() {
-                return Q.when(function() {
-                    console.log("return task.addWork(4);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    console.log("return task.addWork(4);");
                     return task.addWork(4);
                 });
             }).then(function() {
-                return Q.when(function() {
-                    console.log("return task.addWork(3);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    console.log("return task.addWork(3);");
                     return task.addWork(3);
                 });
             }).then(function() {
-                return Q.when(function() {
-                    console.log("assert.equal(2, /*TBD*/count);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    console.log("assert.equal(2, /*TBD*/count);\n");
                     assert.equal(2, /*TBD*/count);
                 });
             }).then(function() {
-                return Q.when(function() {
-                    console.log("assert.equal(7, task['unitsReported']);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    console.log("assert.equal(7, task['unitsReported']);\n");
                     assert.equal(7, task['unitsReported']);
                 });
             });
@@ -54,54 +58,68 @@ suite('Time Tracker functional tests - TaskScenarios', function() {
             var work1;
             var work2;
             var me = this;
-            return Q.when(null).then(function() {
-                return Q.when(function() {
-                    console.log("return Examples.task();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Q().then(function() {
+                return Q().then(function() {
+                    console.log("return Examples.task();");
                     return Examples.task();
-                }).then(function(call_task) {
-                    task = call_task;
+                }).then(function(task) {
+                    console.log(task);
+                    console.log("task = task;\n");
+                    task = task;
                 });
             }).then(function() {
-                return Q.when(function() {
-                    console.log("return task.addWork(4);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    console.log("return task.addWork(4);");
                     return task.addWork(4);
-                }).then(function(call_addWork) {
-                    work1 = call_addWork;
+                }).then(function(addWork) {
+                    console.log(addWork);
+                    console.log("work1 = addWork;\n");
+                    work1 = addWork;
                 });
             }).then(function() {
-                return Q.when(function() {
-                    console.log("return task.addWork(3);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    console.log("return task.addWork(3);");
                     return task.addWork(3);
-                }).then(function(call_addWork) {
-                    work2 = call_addWork;
+                }).then(function(addWork) {
+                    console.log(addWork);
+                    console.log("work2 = addWork;\n");
+                    work2 = addWork;
                 });
             }).then(function() {
-                return Q.when(function() {
-                    console.log("return Client.findOne({ _id : task.client }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-                    return Client.findOne({ _id : task.client }).exec();
-                }).then(function(read_client) {
-                    return read_client.startInvoice();
-                }).then(function(call_startInvoice) {
-                    invoice = call_startInvoice;
+                return Q().then(function() {
+                    console.log("return Q.npost(Client, 'findOne', [ ({ _id : task.client }) ]);");
+                    return Q.npost(Client, 'findOne', [ ({ _id : task.client }) ]);
+                }).then(function(client) {
+                    console.log(client);
+                    console.log("return client.startInvoice();");
+                    return client.startInvoice();
+                }).then(function(startInvoice) {
+                    console.log(startInvoice);
+                    console.log("invoice = startInvoice;\n");
+                    invoice = startInvoice;
                 });
             }).then(function() {
-                return Q.when(function() {
-                    console.log("work1.submit(invoice);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    console.log("work1.submit(invoice);\n");
                     work1.submit(invoice);
                 });
             }).then(function() {
-                return Q.when(function() {
-                    console.log("return task.getToInvoice();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    console.log("return task.getToInvoice();");
                     return task.getToInvoice();
-                }).then(function(read_toInvoice) {
+                }).then(function(toInvoice) {
+                    console.log(toInvoice);
+                    console.log("assert.equal(1, /*TBD*/count);\n");
                     assert.equal(1, /*TBD*/count);
                 });
             }).then(function() {
-                return Q.when(function() {
-                    console.log("return task['unitsToInvoice'];".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    console.log("return task['unitsToInvoice'];");
                     return task['unitsToInvoice'];
-                }).then(function(read_unitsToInvoice) {
-                    assert.equal(3, read_unitsToInvoice);
+                }).then(function(unitsToInvoice) {
+                    console.log(unitsToInvoice);
+                    console.log("assert.equal(3, unitsToInvoice);\n");
+                    assert.equal(3, unitsToInvoice);
                 });
             });
         };

@@ -14,8 +14,7 @@ var Charge = require('./Charge.js');
 var taxiSchema = new Schema({
     name : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     shift : {
         type : Schema.Types.ObjectId,
@@ -24,7 +23,8 @@ var taxiSchema = new Schema({
     },
     drivers : [{
         type : Schema.Types.ObjectId,
-        ref : "Driver"
+        ref : "Driver",
+        "default" : []
     }]
 });
 
@@ -35,21 +35,27 @@ var taxiSchema = new Schema({
  */
 taxiSchema.methods.charge = function (date) {
     var me = this;
-    return Q.when(function() {
-        console.log("return Driver.find({ taxi : me._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        return Driver.find({ taxi : me._id }).exec();
-    }).then(function(read_drivers) {
+    return Q().then(function() {
+        console.log("return Q.npost(Driver, 'find', [ ({ taxi : me._id }) ]);");
+        return Q.npost(Driver, 'find', [ ({ taxi : me._id }) ]);
+    }).then(function(drivers) {
+        console.log(drivers);
+        console.log("/*TBD*/forEach;\n");
         /*TBD*/forEach;
+    }).then(function() {
+        return me.save();
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 taxiSchema.virtual('driverCount').get(function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return Driver.find({ taxi : me._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-        return Driver.find({ taxi : me._id }).exec();
-    }).then(function(read_drivers) {
+    return Q().then(function() {
+        console.log("return Q.npost(Driver, 'find', [ ({ taxi : me._id }) ]);");
+        return Q.npost(Driver, 'find', [ ({ taxi : me._id }) ]);
+    }).then(function(drivers) {
+        console.log(drivers);
+        console.log("return /*TBD*/count;\n");
         return /*TBD*/count;
     });
 });
@@ -57,37 +63,41 @@ taxiSchema.virtual('driverCount').get(function () {
 taxiSchema.virtual('full').get(function () {
     var me = this;
     return Q.all([
-        Q.when(function() {
-            console.log("return Shift.findOne({ _id : me.shift }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            return Shift.findOne({ _id : me.shift }).exec();
+        Q().then(function() {
+            console.log("return Q.npost(Shift, 'findOne', [ ({ _id : me.shift }) ]);");
+            return Q.npost(Shift, 'findOne', [ ({ _id : me.shift }) ]);
         }),
-        Q.when(function() {
-            console.log("return me['driverCount'];".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        Q().then(function() {
+            console.log("return me['driverCount'];");
             return me['driverCount'];
         })
-    ]).spread(function(read_shift, read_driverCount) {
-        return read_driverCount >= read_shift['shiftsPerDay'];
+    ]).spread(function(shift, driverCount) {
+        return driverCount >= shift['shiftsPerDay'];
     });
 });
 
 taxiSchema.virtual('booked').get(function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return me['driverCount'];".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        console.log("return me['driverCount'];");
         return me['driverCount'];
-    }).then(function(read_driverCount) {
-        return read_driverCount > 0;
+    }).then(function(driverCount) {
+        console.log(driverCount);
+        console.log("return driverCount > 0;\n");
+        return driverCount > 0;
     });
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 taxiSchema.methods.getPendingCharges = function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return Charge.byTaxi(me);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        console.log("return Charge.byTaxi(me);");
         return Charge.byTaxi(me);
-    }).then(function(call_byTaxi) {
-        return call_byTaxi.where({
+    }).then(function(byTaxi) {
+        console.log(byTaxi);
+        console.log("return byTaxi.where({\n    $ne : [ \n        { 'paid' : true },\n        true\n    ]\n});\n");
+        return byTaxi.where({
             $ne : [ 
                 { 'paid' : true },
                 true

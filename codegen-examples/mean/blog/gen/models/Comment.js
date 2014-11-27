@@ -10,12 +10,11 @@ var Article = require('./Article.js');
 var commentSchema = new Schema({
     body : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     createdAt : {
         type : Date,
-        default : (function() {
+        "default" : (function() {
             return new Date();
         })()
     },

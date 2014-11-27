@@ -1,7 +1,9 @@
 
-var mongoose = require('mongoose');
 var assert = require("assert");
 var Q = require("q");
+require('../models/index.js');        
+
+
 var Car = require('../models/Car.js');
 var Rental = require('../models/Rental.js');
 var Model = require('../models/Model.js');
@@ -12,17 +14,19 @@ var Examples = require('./Examples.js');
 
 
 suite('Car rental functional tests - CarScenarios', function() {
-    this.timeout(10000);
+    this.timeout(1000);
 
     test('startsAsValid', function(done) {
         var behavior = function() {
             var car;
             var me = this;
-            return Q.when(function() {
-                console.log("return Examples.newCar();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Q().then(function() {
+                console.log("return Examples.newCar();");
                 return Examples.newCar();
-            }).then(function(call_newCar) {
-                car = call_newCar;
+            }).then(function(newCar) {
+                console.log(newCar);
+                console.log("car = newCar;\n");
+                car = newCar;
             });
         };
         behavior().then(done, done);
@@ -31,16 +35,18 @@ suite('Car rental functional tests - CarScenarios', function() {
         var behavior = function() {
             var car;
             var me = this;
-            return Q.when(null).then(function() {
-                return Q.when(function() {
-                    console.log("return Examples.newCar();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Q().then(function() {
+                return Q().then(function() {
+                    console.log("return Examples.newCar();");
                     return Examples.newCar();
-                }).then(function(call_newCar) {
-                    car = call_newCar;
+                }).then(function(newCar) {
+                    console.log(newCar);
+                    console.log("car = newCar;\n");
+                    car = newCar;
                 });
             }).then(function() {
-                return Q.when(function() {
-                    console.log("assert.strictEqual(car['available'], true);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    console.log("assert.strictEqual(car['available'], true);\n");
                     assert.strictEqual(car['available'], true);
                 });
             });
@@ -52,16 +58,18 @@ suite('Car rental functional tests - CarScenarios', function() {
             var behavior = function() {
                 var car;
                 var me = this;
-                return Q.when(null).then(function() {
-                    return Q.when(function() {
-                        console.log("return Examples.newCar();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    return Q().then(function() {
+                        console.log("return Examples.newCar();");
                         return Examples.newCar();
-                    }).then(function(call_newCar) {
-                        car = call_newCar;
+                    }).then(function(newCar) {
+                        console.log(newCar);
+                        console.log("car = newCar;\n");
+                        car = newCar;
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("car['year'] = 1900;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("car['year'] = 1900;\n");
                         car['year'] = 1900;
                     });
                 });
@@ -77,16 +85,18 @@ suite('Car rental functional tests - CarScenarios', function() {
             var behavior = function() {
                 var car;
                 var me = this;
-                return Q.when(null).then(function() {
-                    return Q.when(function() {
-                        console.log("return Examples.newCar();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    return Q().then(function() {
+                        console.log("return Examples.newCar();");
                         return Examples.newCar();
-                    }).then(function(call_newCar) {
-                        car = call_newCar;
+                    }).then(function(newCar) {
+                        console.log(newCar);
+                        console.log("car = newCar;\n");
+                        car = newCar;
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("car['year'] = 2500;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("car['year'] = 2500;\n");
                         car['year'] = 2500;
                     });
                 });
@@ -102,16 +112,18 @@ suite('Car rental functional tests - CarScenarios', function() {
             var behavior = function() {
                 var car;
                 var me = this;
-                return Q.when(null).then(function() {
-                    return Q.when(function() {
-                        console.log("return Examples.newCar();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    return Q().then(function() {
+                        console.log("return Examples.newCar();");
                         return Examples.newCar();
-                    }).then(function(call_newCar) {
-                        car = call_newCar;
+                    }).then(function(newCar) {
+                        console.log(newCar);
+                        console.log("car = newCar;\n");
+                        car = newCar;
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("car['price'] = 49;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("car['price'] = 49;\n");
                         car['price'] = 49;
                     });
                 });
@@ -127,16 +139,18 @@ suite('Car rental functional tests - CarScenarios', function() {
             var behavior = function() {
                 var car;
                 var me = this;
-                return Q.when(null).then(function() {
-                    return Q.when(function() {
-                        console.log("return Examples.newCar();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    return Q().then(function() {
+                        console.log("return Examples.newCar();");
                         return Examples.newCar();
-                    }).then(function(call_newCar) {
-                        car = call_newCar;
+                    }).then(function(newCar) {
+                        console.log(newCar);
+                        console.log("car = newCar;\n");
+                        car = newCar;
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("car['price'] = 2000;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("car['price'] = 2000;\n");
                         car['price'] = 2000;
                     });
                 });
@@ -152,41 +166,45 @@ suite('Car rental functional tests - CarScenarios', function() {
             var car;
             var customer;
             var me = this;
-            return Q.when(null).then(function() {
-                return Q.when(null).then(function() {
-                    return Q.when(function() {
-                        console.log("return Examples.newCar();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Q().then(function() {
+                return Q().then(function() {
+                    return Q().then(function() {
+                        console.log("return Examples.newCar();");
                         return Examples.newCar();
-                    }).then(function(call_newCar) {
-                        car = call_newCar;
+                    }).then(function(newCar) {
+                        console.log(newCar);
+                        console.log("car = newCar;\n");
+                        car = newCar;
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("return Examples.newCustomer();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("return Examples.newCustomer();");
                         return Examples.newCustomer();
-                    }).then(function(call_newCustomer) {
-                        customer = call_newCustomer;
+                    }).then(function(newCustomer) {
+                        console.log(newCustomer);
+                        console.log("customer = newCustomer;\n");
+                        customer = newCustomer;
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("assert.strictEqual(car['available'], true);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-                        assert.strictEqual(car['available'], true);
+                    return Q().then(function() {
+                        console.log("assert.equal(\"Available\", car['status']);\n");
+                        assert.equal("Available", car['status']);
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("customer.rent(car);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("customer.rent(car);\n");
                         customer.rent(car);
                     });
                 });
             }).then(function() {
-                return Q.when(null).then(function() {
-                    return Q.when(function() {
-                        console.log("assert.strictEqual(!car['available'], true);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-                        assert.strictEqual(!car['available'], true);
+                return Q().then(function() {
+                    return Q().then(function() {
+                        console.log("assert.equal(\"Rented\", car['status']);\n");
+                        assert.equal("Rented", car['status']);
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("customer.finishRental();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("customer.finishRental();\n");
                         customer.finishRental();
                     });
                 });
@@ -199,49 +217,53 @@ suite('Car rental functional tests - CarScenarios', function() {
             var car;
             var customer;
             var me = this;
-            return Q.when(null).then(function() {
-                return Q.when(null).then(function() {
-                    return Q.when(function() {
-                        console.log("return Examples.newCar();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Q().then(function() {
+                return Q().then(function() {
+                    return Q().then(function() {
+                        console.log("return Examples.newCar();");
                         return Examples.newCar();
-                    }).then(function(call_newCar) {
-                        car = call_newCar;
+                    }).then(function(newCar) {
+                        console.log(newCar);
+                        console.log("car = newCar;\n");
+                        car = newCar;
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("return Examples.newCustomer();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("return Examples.newCustomer();");
                         return Examples.newCustomer();
-                    }).then(function(call_newCustomer) {
-                        customer = call_newCustomer;
+                    }).then(function(newCustomer) {
+                        console.log(newCustomer);
+                        console.log("customer = newCustomer;\n");
+                        customer = newCustomer;
                     });
                 });
             }).then(function() {
-                return Q.when(null).then(function() {
-                    return Q.when(function() {
-                        console.log("assert.strictEqual(car['available'], true);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    return Q().then(function() {
+                        console.log("assert.strictEqual(car['available'], true);\n");
                         assert.strictEqual(car['available'], true);
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("customer.rent(car);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("customer.rent(car);\n");
                         customer.rent(car);
                     });
                 });
             }).then(function() {
-                return Q.when(null).then(function() {
-                    return Q.when(function() {
-                        console.log("assert.strictEqual(!car['available'], true);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    return Q().then(function() {
+                        console.log("assert.strictEqual(!car['available'], true);\n");
                         assert.strictEqual(!car['available'], true);
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("customer.finishRental();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("customer.finishRental();\n");
                         customer.finishRental();
                     });
                 });
             }).then(function() {
-                return Q.when(function() {
-                    console.log("assert.strictEqual(car['available'], true);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    console.log("assert.strictEqual(car['available'], true);\n");
                     assert.strictEqual(car['available'], true);
                 });
             });
@@ -252,29 +274,43 @@ suite('Car rental functional tests - CarScenarios', function() {
         var behavior = function() {
             var car;
             var me = this;
-            return Q.when(null).then(function() {
-                return Q.when(null).then(function() {
-                    return Q.when(function() {
-                        console.log("return Examples.newCar();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Q().then(function() {
+                return Q().then(function() {
+                    return Q().then(function() {
+                        console.log("return Examples.newCar();");
                         return Examples.newCar();
-                    }).then(function(call_newCar) {
-                        car = call_newCar;
+                    }).then(function(newCar) {
+                        console.log(newCar);
+                        console.log("car = newCar;\n");
+                        car = newCar;
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("assert.strictEqual(!car['underRepair'], true);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("assert.strictEqual(car['available'], true);\n");
+                        assert.strictEqual(car['available'], true);
+                    });
+                }).then(function() {
+                    return Q().then(function() {
+                        console.log("assert.strictEqual(!car['underRepair'], true);\n");
                         assert.strictEqual(!car['underRepair'], true);
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("car.startRepair();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("car.startRepair();\n");
                         car.startRepair();
                     });
                 });
             }).then(function() {
-                return Q.when(function() {
-                    console.log("assert.strictEqual(car['underRepair'], true);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-                    assert.strictEqual(car['underRepair'], true);
+                return Q().then(function() {
+                    return Q().then(function() {
+                        console.log("assert.strictEqual(!car['available'], true);\n");
+                        assert.strictEqual(!car['available'], true);
+                    });
+                }).then(function() {
+                    return Q().then(function() {
+                        console.log("assert.strictEqual(car['underRepair'], true);\n");
+                        assert.strictEqual(car['underRepair'], true);
+                    });
                 });
             });
         };

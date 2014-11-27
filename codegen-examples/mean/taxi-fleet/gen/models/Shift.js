@@ -14,42 +14,27 @@ var Charge = require('./Charge.js');
 var shiftSchema = new Schema({
     description : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     price : {
         type : Number,
-        required : true,
-        default : 0
+        "default" : 0
     },
     shiftsPerDay : {
         type : Number,
-        required : true,
-        default : 1
+        "default" : 1
     }
 });
 /*************************** INVARIANTS ***************************/
 
-shiftSchema.path('shiftsPerDay').validate(
-    function() {
-        return this['shiftsPerDay'] > 0;
-    },
-    'validation of `{PATH}` failed with value `{VALUE}`'
-);
 
-shiftSchema.path('shiftsPerDay').validate(
-    function() {
-        return this['shiftsPerDay'] <= 3;
-    },
-    'validation of `{PATH}` failed with value `{VALUE}`'
-);
 
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 shiftSchema.methods.getTaxis = function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return this.model('Taxi').find().where({ shift : this });".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        console.log("return this.model('Taxi').find().where({ shift : this });\n");
         return this.model('Taxi').find().where({ shift : this });
     });
 };

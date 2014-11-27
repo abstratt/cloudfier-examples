@@ -12,12 +12,12 @@ var Rental = require('./Rental.js');
 var customerSchema = new Schema({
     name : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     rentals : [{
         type : Schema.Types.ObjectId,
-        ref : "Rental"
+        ref : "Rental",
+        "default" : []
     }]
 });
 
@@ -26,53 +26,77 @@ var customerSchema = new Schema({
 customerSchema.methods.rent = function (car) {
     var rental;
     var me = this;
-    return Q.when(null).then(function() {
-        return Q.when(function() {
-            console.log("rental = new Rental();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        return Q().then(function() {
+            console.log("rental = new Rental();\n");
             rental = new Rental();
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("// link customer and rentals<NL>rental.customer = me;<NL>me.rentals.push(rental);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            // link customer and rentals
-            rental.customer = me;
-            me.rentals.push(rental);
+        return Q().then(function() {
+            console.log("console.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(rental);\nrental.customer = me._id;\nconsole.log(\"This: \");\nconsole.log(rental);\nconsole.log(\"That: \");\nconsole.log(me);\nme.rentals.push(rental._id);\n");
+            console.log("This: ");
+            console.log(me);
+            console.log("That: ");
+            console.log(rental);
+            rental.customer = me._id;
+            console.log("This: ");
+            console.log(rental);
+            console.log("That: ");
+            console.log(me);
+            me.rentals.push(rental._id);
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("// link car and rentals<NL>rental.car = car;<NL>car.rentals.push(rental);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            // link car and rentals
-            rental.car = car;
-            car.rentals.push(rental);
+        return Q().then(function() {
+            console.log("console.log(\"This: \");\nconsole.log(car);\nconsole.log(\"That: \");\nconsole.log(rental);\nrental.car = car._id;\nconsole.log(\"This: \");\nconsole.log(rental);\nconsole.log(\"That: \");\nconsole.log(car);\ncar.rentals.push(rental._id);\n");
+            console.log("This: ");
+            console.log(car);
+            console.log("That: ");
+            console.log(rental);
+            rental.car = car._id;
+            console.log("This: ");
+            console.log(rental);
+            console.log("That: ");
+            console.log(car);
+            car.rentals.push(rental._id);
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("car.carRented()<NL>return Q.when(null);<NL>".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            car.carRented()
-            return Q.when(null);
+        return Q().then(function() {
+            console.log("car.carRented();\nreturn Q();\n");
+            car.carRented();
+            return Q();
         });
+    }).then(function() {
+        return me.save();
     });
 };
 
 customerSchema.methods.finishRental = function () {
     var me = this;
-    return Q.when(null).then(function() {
-        return Q.when(function() {
-            console.log("return me.getCurrentRental();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        return Q().then(function() {
+            console.log("return me.getCurrentRental();");
             return me.getCurrentRental();
-        }).then(function(read_currentRental) {
-            return Car.findOne({ _id : read_currentRental.car }).exec();
-        }).then(function(read_car) {
-            read_car.carReturned()
-            return Q.when(null);
+        }).then(function(currentRental) {
+            console.log(currentRental);
+            console.log("return Q.npost(Car, 'findOne', [ ({ _id : currentRental.car }) ]);");
+            return Q.npost(Car, 'findOne', [ ({ _id : currentRental.car }) ]);
+        }).then(function(car) {
+            console.log(car);
+            console.log("car.carReturned();\nreturn Q();\n");
+            car.carReturned();
+            return Q();
         });
     }).then(function() {
-        return Q.when(function() {
-            console.log("return me.getCurrentRental();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        return Q().then(function() {
+            console.log("return me.getCurrentRental();");
             return me.getCurrentRental();
-        }).then(function(read_currentRental) {
-            read_currentRental.finish();
+        }).then(function(currentRental) {
+            console.log(currentRental);
+            console.log("currentRental.finish();\n");
+            currentRental.finish();
         });
+    }).then(function() {
+        return me.save();
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
@@ -80,27 +104,29 @@ customerSchema.methods.finishRental = function () {
 customerSchema.virtual('hasCurrentRental').get(function () {
     var me = this;
     return Q.all([
-        Q.when(function() {
-            console.log("return me.getCurrentRental();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        Q().then(function() {
+            console.log("return me.getCurrentRental();");
             return me.getCurrentRental();
         }),
-        Q.when(function() {
-            console.log("return null;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        Q().then(function() {
+            console.log("return null;");
             return null;
         })
-    ]).spread(function(read_currentRental, valueSpecificationAction) {
-        return !read_currentRental == valueSpecificationAction;
+    ]).spread(function(currentRental, valueSpecificationAction) {
+        return !currentRental == valueSpecificationAction;
     });
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 customerSchema.methods.getCurrentRental = function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return Rental.currentForCustomer(me);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        console.log("return Rental.currentForCustomer(me);");
         return Rental.currentForCustomer(me);
-    }).then(function(call_currentForCustomer) {
-        return call_currentForCustomer;
+    }).then(function(currentForCustomer) {
+        console.log(currentForCustomer);
+        console.log("return currentForCustomer;\n");
+        return currentForCustomer;
     });
 };
 

@@ -14,8 +14,7 @@ var Person = require('./Person.js');
 var modelSchema = new Schema({
     name : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     make : {
         type : Schema.Types.ObjectId,

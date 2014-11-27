@@ -9,19 +9,16 @@ var User = require('./User.js');
 var todoSchema = new Schema({
     description : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     details : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     status : {
         type : String,
-        required : true,
         enum : ["Open", "Done", "Cancelled"],
-        default : "Open"
+        "default" : "Open"
     },
     assignee : {
         type : Schema.Types.ObjectId,
@@ -34,8 +31,7 @@ var todoSchema = new Schema({
     comments : [{
         text : {
             type : String,
-            required : true,
-            default : null
+            "default" : null
         },
         commenter : {
             type : Schema.Types.ObjectId,
@@ -48,9 +44,11 @@ var todoSchema = new Schema({
 
 todoSchema.methods.complete = function () {
     var me = this;
-    return Q.when(function() {
-        console.log("me['status'] = <Q>Done<Q>;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        console.log("me['status'] = \"Done\";\n");
         me['status'] = "Done";
+    }).then(function() {
+        return me.save();
     });
 };
 

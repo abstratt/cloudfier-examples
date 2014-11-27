@@ -1,7 +1,9 @@
 
-var mongoose = require('mongoose');
 var assert = require("assert");
 var Q = require("q");
+require('../models/index.js');        
+
+
 var Client = require('../models/Client.js');
 var Task = require('../models/Task.js');
 var Invoice = require('../models/Invoice.js');
@@ -10,24 +12,28 @@ var Examples = require('./Examples.js');
 
 
 suite('Time Tracker functional tests - WorkScenarios', function() {
-    this.timeout(10000);
+    this.timeout(1000);
 
     test('workDateDefaultsToToday', function(done) {
         var behavior = function() {
             var work;
             var me = this;
-            return Q.when(null).then(function() {
-                return Q.when(function() {
-                    console.log("return Examples.task();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+            return Q().then(function() {
+                return Q().then(function() {
+                    console.log("return Examples.task();");
                     return Examples.task();
-                }).then(function(call_task) {
-                    return call_task.addWork(1);
-                }).then(function(call_addWork) {
-                    work = call_addWork;
+                }).then(function(task) {
+                    console.log(task);
+                    console.log("return task.addWork(1);");
+                    return task.addWork(1);
+                }).then(function(addWork) {
+                    console.log(addWork);
+                    console.log("work = addWork;\n");
+                    work = addWork;
                 });
             }).then(function() {
-                return Q.when(function() {
-                    console.log("assert.equal(new Date(), work['date']);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    console.log("assert.equal(new Date(), work['date']);\n");
                     assert.equal(new Date(), work['date']);
                 });
             });
@@ -41,41 +47,49 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
                 var client2;
                 var work;
                 var me = this;
-                return Q.when(null).then(function() {
-                    return Q.when(function() {
-                        console.log("return Examples.client();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    return Q().then(function() {
+                        console.log("return Examples.client();");
                         return Examples.client();
-                    }).then(function(call_client) {
-                        client1 = call_client;
+                    }).then(function(client) {
+                        console.log(client);
+                        console.log("client1 = client;\n");
+                        client1 = client;
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("return Examples.client();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("return Examples.client();");
                         return Examples.client();
-                    }).then(function(call_client) {
-                        client2 = call_client;
+                    }).then(function(client) {
+                        console.log(client);
+                        console.log("client2 = client;\n");
+                        client2 = client;
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("return client1.newTask(<Q>Some task<Q>);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("return client1.newTask(\"Some task\");");
                         return client1.newTask("Some task");
-                    }).then(function(call_newTask) {
-                        return call_newTask.addWork(1);
-                    }).then(function(call_addWork) {
-                        work = call_addWork;
+                    }).then(function(newTask) {
+                        console.log(newTask);
+                        console.log("return newTask.addWork(1);");
+                        return newTask.addWork(1);
+                    }).then(function(addWork) {
+                        console.log(addWork);
+                        console.log("work = addWork;\n");
+                        work = addWork;
                     });
                 }).then(function() {
                     return Q.all([
-                        Q.when(function() {
-                            console.log("return client2.startInvoice();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                        Q().then(function() {
+                            console.log("return client2.startInvoice();");
                             return client2.startInvoice();
                         }),
-                        Q.when(function() {
-                            console.log("return work;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                        Q().then(function() {
+                            console.log("return work;");
                             return work;
                         })
-                    ]).spread(function(call_startInvoice, read_Work) {
-                        read_Work.submit(call_startInvoice);
+                    ]).spread(function(startInvoice, Work) {
+                        Work.submit(startInvoice);
                     });
                 });
             };
@@ -91,34 +105,44 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
                 var invoice;
                 var work;
                 var me = this;
-                return Q.when(null).then(function() {
-                    return Q.when(function() {
-                        console.log("return Examples.client();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    return Q().then(function() {
+                        console.log("return Examples.client();");
                         return Examples.client();
-                    }).then(function(call_client) {
-                        return call_client.newTask("Some task");
-                    }).then(function(call_newTask) {
-                        return call_newTask.addWork(1);
-                    }).then(function(call_addWork) {
-                        work = call_addWork;
+                    }).then(function(client) {
+                        console.log(client);
+                        console.log("return client.newTask(\"Some task\");");
+                        return client.newTask("Some task");
+                    }).then(function(newTask) {
+                        console.log(newTask);
+                        console.log("return newTask.addWork(1);");
+                        return newTask.addWork(1);
+                    }).then(function(addWork) {
+                        console.log(addWork);
+                        console.log("work = addWork;\n");
+                        work = addWork;
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("return work.getClient();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("return work.getClient();");
                         return work.getClient();
-                    }).then(function(read_client) {
-                        return read_client.startInvoice();
-                    }).then(function(call_startInvoice) {
-                        invoice = call_startInvoice;
+                    }).then(function(client) {
+                        console.log(client);
+                        console.log("return client.startInvoice();");
+                        return client.startInvoice();
+                    }).then(function(startInvoice) {
+                        console.log(startInvoice);
+                        console.log("invoice = startInvoice;\n");
+                        invoice = startInvoice;
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("work.submit(invoice);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("work.submit(invoice);\n");
                         work.submit(invoice);
                     });
                 }).then(function() {
-                    return Q.when(function() {
-                        console.log("work.submit(invoice);".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                    return Q().then(function() {
+                        console.log("work.submit(invoice);\n");
                         work.submit(invoice);
                     });
                 });
@@ -133,11 +157,13 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
         try {
             var behavior = function() {
                 var me = this;
-                return Q.when(function() {
-                    console.log("return Examples.task();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    console.log("return Examples.task();");
                     return Examples.task();
-                }).then(function(call_task) {
-                    return call_task.addWork(-1);
+                }).then(function(task) {
+                    console.log(task);
+                    console.log("return task.addWork(-1);");
+                    return task.addWork(-1);
                 });
             };
             behavior().then(done, done);
@@ -150,11 +176,13 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
         try {
             var behavior = function() {
                 var me = this;
-                return Q.when(function() {
-                    console.log("return Examples.task();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+                return Q().then(function() {
+                    console.log("return Examples.task();");
                     return Examples.task();
-                }).then(function(call_task) {
-                    return call_task.addWork(0);
+                }).then(function(task) {
+                    console.log(task);
+                    console.log("return task.addWork(0);");
+                    return task.addWork(0);
                 });
             };
             behavior().then(done, done);

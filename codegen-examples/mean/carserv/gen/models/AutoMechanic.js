@@ -14,26 +14,25 @@ var Person = require('./Person.js');
 var autoMechanicSchema = new Schema({
     firstName : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     lastName : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     username : {
         type : String,
-        default : null
+        "default" : null
     },
     status : {
         type : String,
         enum : ["Working", "Vacation", "Retired"],
-        default : "Working"
+        "default" : "Working"
     },
     services : [{
         type : Schema.Types.ObjectId,
-        ref : "Service"
+        ref : "Service",
+        "default" : []
     }]
 });
 
@@ -44,9 +43,11 @@ var autoMechanicSchema = new Schema({
  */
 autoMechanicSchema.methods.unassign = function () {
     var me = this;
-    return Q.when(function() {
-        console.log("me.doUnassign();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        console.log("me.doUnassign();\n");
         me.doUnassign();
+    }).then(function() {
+        return me.save();
     });
 };
 
@@ -55,9 +56,11 @@ autoMechanicSchema.methods.unassign = function () {
  */
 autoMechanicSchema.methods.beginVacation = function () {
     var me = this;
-    return Q.when(function() {
-        console.log(";".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        console.log(";\n");
         ;
+    }).then(function() {
+        return me.save();
     });
 };
 
@@ -69,9 +72,11 @@ autoMechanicSchema.methods.endVacation = function () {
 
 autoMechanicSchema.methods.retire = function () {
     var me = this;
-    return Q.when(function() {
-        console.log(";".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        console.log(";\n");
         ;
+    }).then(function() {
+        return me.save();
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
@@ -86,20 +91,24 @@ autoMechanicSchema.virtual('working').get(function () {
 
 autoMechanicSchema.virtual('workInProgress').get(function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return me.getCurrentServices();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        console.log("return me.getCurrentServices();");
         return me.getCurrentServices();
-    }).then(function(read_currentServices) {
+    }).then(function(currentServices) {
+        console.log(currentServices);
+        console.log("return !/*TBD*/isEmpty;\n");
         return !/*TBD*/isEmpty;
     });
 });
 
 autoMechanicSchema.virtual('workScheduled').get(function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return me.getUpcomingServices();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        console.log("return me.getUpcomingServices();");
         return me.getUpcomingServices();
-    }).then(function(read_upcomingServices) {
+    }).then(function(upcomingServices) {
+        console.log(upcomingServices);
+        console.log("return !/*TBD*/isEmpty;\n");
         return !/*TBD*/isEmpty;
     });
 });
@@ -111,18 +120,20 @@ autoMechanicSchema.virtual('workScheduled').get(function () {
 autoMechanicSchema.methods.getCurrentServices = function () {
     var me = this;
     return Q.all([
-        Q.when(function() {
-            console.log("return Service.find({ technician : me._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            return Service.find({ technician : me._id }).exec();
+        Q().then(function() {
+            console.log("return Q.npost(Service, 'find', [ ({ technician : me._id }) ]);");
+            return Q.npost(Service, 'find', [ ({ technician : me._id }) ]);
         }),
-        Q.when(function() {
-            console.log("return <Q>InProgress<Q>;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        Q().then(function() {
+            console.log("return \"InProgress\";");
             return "InProgress";
         })
-    ]).spread(function(read_services, valueSpecificationAction) {
-        return Service.byStatus(read_services, valueSpecificationAction);
-    }).then(function(call_byStatus) {
-        return call_byStatus;
+    ]).spread(function(services, valueSpecificationAction) {
+        return Service.byStatus(services, valueSpecificationAction);
+    }).then(function(byStatus) {
+        console.log(byStatus);
+        console.log("return byStatus;\n");
+        return byStatus;
     });
 };
 
@@ -132,28 +143,32 @@ autoMechanicSchema.methods.getCurrentServices = function () {
 autoMechanicSchema.methods.getUpcomingServices = function () {
     var me = this;
     return Q.all([
-        Q.when(function() {
-            console.log("return Service.find({ technician : me._id }).exec();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
-            return Service.find({ technician : me._id }).exec();
+        Q().then(function() {
+            console.log("return Q.npost(Service, 'find', [ ({ technician : me._id }) ]);");
+            return Q.npost(Service, 'find', [ ({ technician : me._id }) ]);
         }),
-        Q.when(function() {
-            console.log("return <Q>Booked<Q>;".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+        Q().then(function() {
+            console.log("return \"Booked\";");
             return "Booked";
         })
-    ]).spread(function(read_services, valueSpecificationAction) {
-        return Service.byStatus(read_services, valueSpecificationAction);
-    }).then(function(call_byStatus) {
-        return call_byStatus;
+    ]).spread(function(services, valueSpecificationAction) {
+        return Service.byStatus(services, valueSpecificationAction);
+    }).then(function(byStatus) {
+        console.log(byStatus);
+        console.log("return byStatus;\n");
+        return byStatus;
     });
 };
 /*************************** PRIVATE OPS ***********************/
 
 autoMechanicSchema.methods.doUnassign = function () {
     var me = this;
-    return Q.when(function() {
-        console.log("return me.getUpcomingServices();".replace(/<Q>/g, '"').replace(/<NL>/g, '\n'))  ;
+    return Q().then(function() {
+        console.log("return me.getUpcomingServices();");
         return me.getUpcomingServices();
-    }).then(function(read_upcomingServices) {
+    }).then(function(upcomingServices) {
+        console.log(upcomingServices);
+        console.log("/*TBD*/forEach;\n");
         /*TBD*/forEach;
     });
 };

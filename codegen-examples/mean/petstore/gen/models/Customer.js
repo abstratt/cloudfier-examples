@@ -11,16 +11,16 @@ var Product = require('./Product.js');
 var customerSchema = new Schema({
     name : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     username : {
         type : String,
-        default : null
+        "default" : null
     },
     orders : [{
         type : Schema.Types.ObjectId,
-        ref : "Order"
+        ref : "Order",
+        "default" : []
     }]
 });
 

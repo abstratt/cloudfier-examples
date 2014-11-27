@@ -11,12 +11,12 @@ var Issue = require('./Issue.js');
 var labelSchema = new Schema({
     name : {
         type : String,
-        required : true,
-        default : null
+        "default" : null
     },
     labeled : [{
         type : Schema.Types.ObjectId,
-        ref : "Issue"
+        ref : "Issue",
+        "default" : []
     }]
 });
 
