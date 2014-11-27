@@ -17,13 +17,13 @@ var Tests = {
         var me = this;
         return Q().then(function() {
             return Q().then(function() {
-                console.log("emp = this.model('Employee').find();\n");
-                emp = this.model('Employee').find();
+                console.log("emp = me.model('Employee').find();\n");
+                emp = me.model('Employee').find();
             });
         }).then(function() {
             return Q().then(function() {
-                console.log("cat = this.model('Category').find();\n");
-                cat = this.model('Category').find();
+                console.log("cat = me.model('Category').find();\n");
+                cat = me.model('Category').find();
             });
         }).then(function() {
             return Q().then(function() {
@@ -41,7 +41,7 @@ var Tests = {
 };
 
 suite('Expenses Application functional tests - Tests', function() {
-    this.timeout(1000);
+    this.timeout(100000);
 
     test('declaredExpenseRemainsInDraft', function(done) {
         var behavior = function() {
@@ -178,8 +178,8 @@ suite('Expenses Application functional tests - Tests', function() {
                 });
             }).then(function() {
                 return Q().then(function() {
-                    console.log("expense.reject(\"Non-reimbursable\");\n");
-                    expense.reject("Non-reimbursable");
+                    console.log("return expense.reject(\"Non-reimbursable\");");
+                    return expense.reject("Non-reimbursable");
                 });
             }).then(function() {
                 return Q().then(function() {

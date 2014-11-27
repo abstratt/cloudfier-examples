@@ -1,5 +1,5 @@
 var Q = require("q");
-var mongoose = require('mongoose');    
+var mongoose = require('./db.js');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
@@ -55,16 +55,8 @@ taskSchema.methods.addWork = function (units) {
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("console.log(\"This: \");\nconsole.log(newWork);\nconsole.log(\"That: \");\nconsole.log(me);\nme.reported.push(newWork._id);\nconsole.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(newWork);\nnewWork.task = me._id;\n");
-            console.log("This: ");
-            console.log(newWork);
-            console.log("That: ");
-            console.log(me);
+            console.log("me.reported.push(newWork._id);\nnewWork.task = me._id;\n");
             me.reported.push(newWork._id);
-            console.log("This: ");
-            console.log(me);
-            console.log("That: ");
-            console.log(newWork);
             newWork.task = me._id;
         });
     }).then(function() {
@@ -74,8 +66,15 @@ taskSchema.methods.addWork = function (units) {
                 return saveResult[0];
             });
         });
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            }),
+            Q().then(function() {
+                return Q.npost(newWork, 'save', [  ]);
+            })
+        ]);
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
@@ -104,10 +103,15 @@ taskSchema.virtual('unitsToInvoice').get(function () {
 taskSchema.methods.getToInvoice = function () {
     var me = this;
     return Q().then(function() {
-        console.log("return me['reported'].where({\n    $ne : [ \n        { 'invoiced' : true },\n        true\n    ]\n});\n");
+        console.log("return me['reported'].where({\n    $ne : [ \n        {\n            $ne : [ \n                { invoice : null },\n                true\n            ]\n        },\n        true\n    ]\n});\n");
         return me['reported'].where({
             $ne : [ 
-                { 'invoiced' : true },
+                {
+                    $ne : [ 
+                        { invoice : null },
+                        true
+                    ]
+                },
                 true
             ]
         });

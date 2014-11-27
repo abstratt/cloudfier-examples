@@ -1,5 +1,5 @@
 var Q = require("q");
-var mongoose = require('mongoose');    
+var mongoose = require('./db.js');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
@@ -14,11 +14,11 @@ var Driver = require('./Driver.js');
 var chargeSchema = new Schema({
     date : {
         type : Date,
-        "default" : new Date()
+        "default" : null
     },
     receivedOn : {
         type : Date,
-        "default" : new Date()
+        "default" : null
     },
     description : {
         type : String,
@@ -26,7 +26,7 @@ var chargeSchema = new Schema({
     },
     amount : {
         type : Number,
-        "default" : 0
+        "default" : null
     },
     status : {
         type : String,
@@ -83,11 +83,7 @@ chargeSchema.statics.newCharge = function (taxi, payer, date) {
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("console.log(\"This: \");\nconsole.log(taxi);\nconsole.log(\"That: \");\nconsole.log(charge);\ncharge.taxi = taxi._id\n;\n");
-            console.log("This: ");
-            console.log(taxi);
-            console.log("That: ");
-            console.log(charge);
+            console.log("charge.taxi = taxi._id\n;\n");
             charge.taxi = taxi._id
             ;
         });
@@ -98,20 +94,19 @@ chargeSchema.statics.newCharge = function (taxi, payer, date) {
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("console.log(\"This: \");\nconsole.log(payer);\nconsole.log(\"That: \");\nconsole.log(charge);\ncharge.driver = payer._id;\nconsole.log(\"This: \");\nconsole.log(charge);\nconsole.log(\"That: \");\nconsole.log(payer);\npayer.charges.push(charge._id);\n");
-            console.log("This: ");
-            console.log(payer);
-            console.log("That: ");
-            console.log(charge);
+            console.log("charge.driver = payer._id;\npayer.charges.push(charge._id);\n");
             charge.driver = payer._id;
-            console.log("This: ");
-            console.log(charge);
-            console.log("That: ");
-            console.log(payer);
             payer.charges.push(charge._id);
         });
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            }),
+            Q().then(function() {
+                return Q.npost(charge, 'save', [  ]);
+            })
+        ]);
     });
 };
 /*************************** QUERIES ***************************/
@@ -119,10 +114,10 @@ chargeSchema.statics.newCharge = function (taxi, payer, date) {
 chargeSchema.statics.pendingCharges = function () {
     var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(this.model('Charge').find().where({\n    $ne : [ \n        { 'paid' : true },\n        true\n    ]\n}), 'exec', [  ])\n;\n");
-        return Q.npost(this.model('Charge').find().where({
+        console.log("return Q.npost(me.model('Charge').find().where({\n    $ne : [ \n        { status : null },\n        true\n    ]\n}), 'exec', [  ])\n;\n");
+        return Q.npost(me.model('Charge').find().where({
             $ne : [ 
-                { 'paid' : true },
+                { status : null },
                 true
             ]
         }), 'exec', [  ])
@@ -133,8 +128,8 @@ chargeSchema.statics.pendingCharges = function () {
 chargeSchema.statics.byTaxi = function (taxi) {
     var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(this.model('Charge').find().where({ taxi : taxi }), 'exec', [  ])\n;\n");
-        return Q.npost(this.model('Charge').find().where({ taxi : taxi }), 'exec', [  ])
+        console.log("return Q.npost(me.model('Charge').find().where({ taxi : taxi }), 'exec', [  ])\n;\n");
+        return Q.npost(me.model('Charge').find().where({ taxi : taxi }), 'exec', [  ])
         ;
     });
 };
@@ -142,8 +137,8 @@ chargeSchema.statics.byTaxi = function (taxi) {
 chargeSchema.statics.paidCharges = function () {
     var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(this.model('Charge').find().where({ 'paid' : true }), 'exec', [  ])\n;\n");
-        return Q.npost(this.model('Charge').find().where({ 'paid' : true }), 'exec', [  ])
+        console.log("return Q.npost(me.model('Charge').find().where({ status : null }), 'exec', [  ])\n;\n");
+        return Q.npost(me.model('Charge').find().where({ status : null }), 'exec', [  ])
         ;
     });
 };

@@ -56,16 +56,8 @@ var Examples = {
             });
         }).then(function() {
             return Q().then(function() {
-                console.log("console.log(\"This: \");\nconsole.log(client);\nconsole.log(\"That: \");\nconsole.log(task);\ntask.client = client._id;\nconsole.log(\"This: \");\nconsole.log(task);\nconsole.log(\"That: \");\nconsole.log(client);\nclient.tasks.push(task._id);\n");
-                console.log("This: ");
-                console.log(client);
-                console.log("That: ");
-                console.log(task);
+                console.log("task.client = client._id;\nclient.tasks.push(task._id);\n");
                 task.client = client._id;
-                console.log("This: ");
-                console.log(task);
-                console.log("That: ");
-                console.log(client);
                 client.tasks.push(task._id);
             });
         }).then(function() {

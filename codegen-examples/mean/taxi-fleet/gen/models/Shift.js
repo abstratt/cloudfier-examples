@@ -1,5 +1,5 @@
 var Q = require("q");
-var mongoose = require('mongoose');    
+var mongoose = require('./db.js');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
@@ -34,8 +34,8 @@ var shiftSchema = new Schema({
 shiftSchema.methods.getTaxis = function () {
     var me = this;
     return Q().then(function() {
-        console.log("return this.model('Taxi').find().where({ shift : this });\n");
-        return this.model('Taxi').find().where({ shift : this });
+        console.log("return me.model('Taxi').find().where({ shift : this });\n");
+        return me.model('Taxi').find().where({ shift : this });
     });
 };
 

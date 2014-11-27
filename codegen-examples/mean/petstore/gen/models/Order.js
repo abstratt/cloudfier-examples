@@ -1,5 +1,5 @@
 var Q = require("q");
-var mongoose = require('mongoose');    
+var mongoose = require('./db.js');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
@@ -49,11 +49,7 @@ orderSchema.methods.addItem = function (product, quantity) {
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("console.log(\"This: \");\nconsole.log(product);\nconsole.log(\"That: \");\nconsole.log(i);\ni.product = product._id\n;\n");
-            console.log("This: ");
-            console.log(product);
-            console.log("That: ");
-            console.log(i);
+            console.log("i.product = product._id\n;\n");
             i.product = product._id
             ;
         });
@@ -64,20 +60,19 @@ orderSchema.methods.addItem = function (product, quantity) {
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("console.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(i);\ni.order = me._id;\nconsole.log(\"This: \");\nconsole.log(i);\nconsole.log(\"That: \");\nconsole.log(me);\nme.items.push(i._id);\n");
-            console.log("This: ");
-            console.log(me);
-            console.log("That: ");
-            console.log(i);
+            console.log("i.order = me._id;\nme.items.push(i._id);\n");
             i.order = me._id;
-            console.log("This: ");
-            console.log(i);
-            console.log("That: ");
-            console.log(me);
             me.items.push(i._id);
         });
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            }),
+            Q().then(function() {
+                return Q.npost(i, 'save', [  ]);
+            })
+        ]);
     });
 };
 

@@ -1,5 +1,5 @@
 var Q = require("q");
-var mongoose = require('mongoose');    
+var mongoose = require('./db.js');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 

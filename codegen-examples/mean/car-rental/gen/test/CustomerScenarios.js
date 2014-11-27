@@ -14,7 +14,7 @@ var Examples = require('./Examples.js');
 
 
 suite('Car rental functional tests - CustomerScenarios', function() {
-    this.timeout(1000);
+    this.timeout(100000);
 
     test('rentalHistory', function(done) {
         var behavior = function() {
@@ -42,8 +42,8 @@ suite('Car rental functional tests - CustomerScenarios', function() {
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        console.log("customer.rent(car);\n");
-                        customer.rent(car);
+                        console.log("return customer.rent(car);");
+                        return customer.rent(car);
                     });
                 }).then(function() {
                     return Q().then(function() {
@@ -51,20 +51,20 @@ suite('Car rental functional tests - CustomerScenarios', function() {
                         return Q.npost(Rental, 'find', [ ({ customer : customer._id }) ]);
                     }).then(function(rentals) {
                         console.log(rentals);
-                        console.log("assert.equal(1, /*TBD*/count);\n");
-                        assert.equal(1, /*TBD*/count);
+                        console.log("assert.equal(1, rentals.length);\n");
+                        assert.equal(1, rentals.length);
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        console.log("customer.finishRental();\n");
-                        customer.finishRental();
+                        console.log("return customer.finishRental();");
+                        return customer.finishRental();
                     });
                 });
             }).then(function() {
                 return Q().then(function() {
                     return Q().then(function() {
-                        console.log("customer.rent(car);\n");
-                        customer.rent(car);
+                        console.log("return customer.rent(car);");
+                        return customer.rent(car);
                     });
                 }).then(function() {
                     return Q().then(function() {
@@ -72,8 +72,8 @@ suite('Car rental functional tests - CustomerScenarios', function() {
                         return Q.npost(Rental, 'find', [ ({ customer : customer._id }) ]);
                     }).then(function(rentals) {
                         console.log(rentals);
-                        console.log("assert.equal(2, /*TBD*/count);\n");
-                        assert.equal(2, /*TBD*/count);
+                        console.log("assert.equal(2, rentals.length);\n");
+                        assert.equal(2, rentals.length);
                     });
                 });
             });

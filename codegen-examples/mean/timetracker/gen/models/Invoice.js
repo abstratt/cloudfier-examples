@@ -1,5 +1,5 @@
 var Q = require("q");
-var mongoose = require('mongoose');    
+var mongoose = require('./db.js');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
@@ -37,8 +37,12 @@ invoiceSchema.methods.issue = function () {
     return Q().then(function() {
         console.log("me['issueDate'] = new Date();\n");
         me['issueDate'] = new Date();
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 /*************************** DERIVED PROPERTIES ****************/

@@ -1,5 +1,5 @@
 var Q = require("q");
-var mongoose = require('mongoose');    
+var mongoose = require('./db.js');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
@@ -51,8 +51,12 @@ userSchema.methods.promoteToCommitter = function () {
     return Q().then(function() {
         console.log("me['kind'] = \"Committer\";\n");
         me['kind'] = "Committer";
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 /*************************** QUERIES ***************************/

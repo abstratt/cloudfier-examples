@@ -1,5 +1,5 @@
 var Q = require("q");
-var mongoose = require('mongoose');    
+var mongoose = require('./db.js');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
@@ -41,7 +41,7 @@ var issueSchema = new Schema({
     },
     resolvedOn : {
         type : Date,
-        "default" : new Date()
+        "default" : null
     },
     description : {
         type : String,
@@ -127,30 +127,14 @@ issueSchema.statics.reportIssue = function (project, summary, description, sever
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("console.log(\"This: \");\nconsole.log(User['current']);\nconsole.log(\"That: \");\nconsole.log(newIssue);\nnewIssue.reporter = User['current']._id;\nconsole.log(\"This: \");\nconsole.log(newIssue);\nconsole.log(\"That: \");\nconsole.log(User['current']);\nUser['current'].issuesReportedByUser.push(newIssue._id);\n");
-            console.log("This: ");
-            console.log(User['current']);
-            console.log("That: ");
-            console.log(newIssue);
+            console.log("newIssue.reporter = User['current']._id;\nUser['current'].issuesReportedByUser.push(newIssue._id);\n");
             newIssue.reporter = User['current']._id;
-            console.log("This: ");
-            console.log(newIssue);
-            console.log("That: ");
-            console.log(User['current']);
             User['current'].issuesReportedByUser.push(newIssue._id);
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("console.log(\"This: \");\nconsole.log(project);\nconsole.log(\"That: \");\nconsole.log(newIssue);\nnewIssue.project = project._id;\nconsole.log(\"This: \");\nconsole.log(newIssue);\nconsole.log(\"That: \");\nconsole.log(project);\nproject.issues.push(newIssue._id);\n");
-            console.log("This: ");
-            console.log(project);
-            console.log("That: ");
-            console.log(newIssue);
+            console.log("newIssue.project = project._id;\nproject.issues.push(newIssue._id);\n");
             newIssue.project = project._id;
-            console.log("This: ");
-            console.log(newIssue);
-            console.log("That: ");
-            console.log(project);
             project.issues.push(newIssue._id);
         });
     }).then(function() {
@@ -181,10 +165,16 @@ issueSchema.statics.reportIssue = function (project, summary, description, sever
             })
         ]).spread(function(issueKey, Summary, Description, email, userNotifier) {
             userNotifier.issueReported(issueKey, Summary, Description, email);
-            return Q();
         });
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            }),
+            Q().then(function() {
+                return Q.npost(newIssue, 'save', [  ]);
+            })
+        ]);
     });
 };
 
@@ -194,19 +184,15 @@ issueSchema.statics.reportIssue = function (project, summary, description, sever
 issueSchema.methods.release = function () {
     var me = this;
     return Q().then(function() {
-        console.log("console.log(\"This: \");\nconsole.log(null);\nconsole.log(\"That: \");\nconsole.log(me);\nme.assignee = null._id;\nconsole.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(null);\nnull.issuesAssignedToUser.push(me._id);\n");
-        console.log("This: ");
-        console.log(null);
-        console.log("That: ");
-        console.log(me);
+        console.log("me.assignee = null._id;\nnull.issuesAssignedToUser.push(me._id);\n");
         me.assignee = null._id;
-        console.log("This: ");
-        console.log(me);
-        console.log("That: ");
-        console.log(null);
         null.issuesAssignedToUser.push(me._id);
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 
@@ -216,19 +202,15 @@ issueSchema.methods.release = function () {
 issueSchema.methods.assign = function (newAssignee) {
     var me = this;
     return Q().then(function() {
-        console.log("console.log(\"This: \");\nconsole.log(newAssignee);\nconsole.log(\"That: \");\nconsole.log(me);\nme.assignee = newAssignee._id;\nconsole.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(newAssignee);\nnewAssignee.issuesAssignedToUser.push(me._id);\n");
-        console.log("This: ");
-        console.log(newAssignee);
-        console.log("That: ");
-        console.log(me);
+        console.log("me.assignee = newAssignee._id;\nnewAssignee.issuesAssignedToUser.push(me._id);\n");
         me.assignee = newAssignee._id;
-        console.log("This: ");
-        console.log(me);
-        console.log("That: ");
-        console.log(newAssignee);
         newAssignee.issuesAssignedToUser.push(me._id);
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 
@@ -259,8 +241,12 @@ issueSchema.methods.resolve = function (resolution) {
             console.log("me['resolution'] = resolution;\n");
             me['resolution'] = resolution;
         });
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 
@@ -287,12 +273,16 @@ issueSchema.methods.reopen = function (reason) {
             });
         }).then(function() {
             return Q().then(function() {
-                console.log("me.comment(reason);\n");
-                me.comment(reason);
+                console.log("return me.comment(reason);");
+                return me.comment(reason);
             });
         });
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 
@@ -302,48 +292,44 @@ issueSchema.methods.reopen = function (reason) {
 issueSchema.methods.comment = function (text) {
     var me = this;
     return Q().then(function() {
-        console.log("me.addComment(text, null);\n");
-        me.addComment(text, null);
-    }).then(function() {
-        return me.save();
+        console.log("return me.addComment(text, null);");
+        return me.addComment(text, null);
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 
 issueSchema.methods.addWatcher = function (userToAdd) {
     var me = this;
     return Q().then(function() {
-        console.log("console.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(userToAdd);\nuserToAdd.issuesWatched.push(me._id);\nconsole.log(\"This: \");\nconsole.log(userToAdd);\nconsole.log(\"That: \");\nconsole.log(me);\nme.watchers.push(userToAdd._id);\n");
-        console.log("This: ");
-        console.log(me);
-        console.log("That: ");
-        console.log(userToAdd);
+        console.log("userToAdd.issuesWatched.push(me._id);\nme.watchers.push(userToAdd._id);\n");
         userToAdd.issuesWatched.push(me._id);
-        console.log("This: ");
-        console.log(userToAdd);
-        console.log("That: ");
-        console.log(me);
         me.watchers.push(userToAdd._id);
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 
 issueSchema.methods.vote = function () {
     var me = this;
     return Q().then(function() {
-        console.log("console.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(User['current']);\nUser['current'].voted.push(me._id);\nconsole.log(\"This: \");\nconsole.log(User['current']);\nconsole.log(\"That: \");\nconsole.log(me);\nme.voters.push(User['current']._id);\n");
-        console.log("This: ");
-        console.log(me);
-        console.log("That: ");
-        console.log(User['current']);
+        console.log("User['current'].voted.push(me._id);\nme.voters.push(User['current']._id);\n");
         User['current'].voted.push(me._id);
-        console.log("This: ");
-        console.log(User['current']);
-        console.log("That: ");
-        console.log(me);
         me.voters.push(User['current']._id);
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 
@@ -353,8 +339,12 @@ issueSchema.methods.withdrawVote = function () {
         console.log("me.voters = null;\nme = null;\n");
         me.voters = null;
         me = null;
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 
@@ -364,19 +354,15 @@ issueSchema.methods.withdrawVote = function () {
 issueSchema.methods.assignToMe = function () {
     var me = this;
     return Q().then(function() {
-        console.log("console.log(\"This: \");\nconsole.log(User['current']);\nconsole.log(\"That: \");\nconsole.log(me);\nme.assignee = User['current']._id;\nconsole.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(User['current']);\nUser['current'].issuesAssignedToUser.push(me._id);\n");
-        console.log("This: ");
-        console.log(User['current']);
-        console.log("That: ");
-        console.log(me);
+        console.log("me.assignee = User['current']._id;\nUser['current'].issuesAssignedToUser.push(me._id);\n");
         me.assignee = User['current']._id;
-        console.log("This: ");
-        console.log(me);
-        console.log("That: ");
-        console.log(User['current']);
         User['current'].issuesAssignedToUser.push(me._id);
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 
@@ -386,19 +372,15 @@ issueSchema.methods.assignToMe = function () {
 issueSchema.methods.steal = function () {
     var me = this;
     return Q().then(function() {
-        console.log("console.log(\"This: \");\nconsole.log(User['current']);\nconsole.log(\"That: \");\nconsole.log(me);\nme.assignee = User['current']._id;\nconsole.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(User['current']);\nUser['current'].issuesAssignedToUser.push(me._id);\n");
-        console.log("This: ");
-        console.log(User['current']);
-        console.log("That: ");
-        console.log(me);
+        console.log("me.assignee = User['current']._id;\nUser['current'].issuesAssignedToUser.push(me._id);\n");
         me.assignee = User['current']._id;
-        console.log("This: ");
-        console.log(me);
-        console.log("That: ");
-        console.log(User['current']);
         User['current'].issuesAssignedToUser.push(me._id);
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 
@@ -410,8 +392,12 @@ issueSchema.methods.verify = function () {
     return Q().then(function() {
         console.log(";\n");
         ;
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 /*************************** QUERIES ***************************/
@@ -419,8 +405,8 @@ issueSchema.methods.verify = function () {
 issueSchema.statics.bySeverity = function (toMatch) {
     var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(this.model('Issue').find().where({ severity : toMatch }), 'exec', [  ])\n;\n");
-        return Q.npost(this.model('Issue').find().where({ severity : toMatch }), 'exec', [  ])
+        console.log("return Q.npost(me.model('Issue').find().where({ severity : toMatch }), 'exec', [  ])\n;\n");
+        return Q.npost(me.model('Issue').find().where({ severity : toMatch }), 'exec', [  ])
         ;
     });
 };
@@ -428,8 +414,8 @@ issueSchema.statics.bySeverity = function (toMatch) {
 issueSchema.statics.byStatus = function (toMatch) {
     var me = this;
     return Q().then(function() {
-        console.log("return Issue.filterByStatus(this.model('Issue').find(), toMatch);");
-        return Issue.filterByStatus(this.model('Issue').find(), toMatch);
+        console.log("return Issue.filterByStatus(me.model('Issue').find(), toMatch);");
+        return Issue.filterByStatus(me.model('Issue').find(), toMatch);
     }).then(function(filterByStatus) {
         console.log(filterByStatus);
         console.log("return Q.npost(filterByStatus, 'exec', [  ])\n;\n");
@@ -459,13 +445,13 @@ issueSchema.virtual('votes').get(function () {
         return Q.npost(User, 'find', [ ({ voted : me._id }) ]);
     }).then(function(readLinkAction) {
         console.log(readLinkAction);
-        console.log("return /*TBD*/count;\n");
-        return /*TBD*/count;
+        console.log("return readLinkAction.length;\n");
+        return readLinkAction.length;
     });
 });
 
 issueSchema.virtual('commentCount').get(function () {
-    return /*TBD*/count;
+    return this['comments'].length;
 });
 
 issueSchema.virtual('waitingFor').get(function () {
@@ -530,11 +516,7 @@ issueSchema.methods.addComment = function (text, inReplyTo) {
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("console.log(\"This: \");\nconsole.log(User['current']);\nconsole.log(\"That: \");\nconsole.log(comment);\ncomment.user = User['current']._id\n;\n");
-            console.log("This: ");
-            console.log(User['current']);
-            console.log("That: ");
-            console.log(comment);
+            console.log("comment.user = User['current']._id\n;\n");
             comment.user = User['current']._id
             ;
         });
@@ -550,26 +532,14 @@ issueSchema.methods.addComment = function (text, inReplyTo) {
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("console.log(\"This: \");\nconsole.log(inReplyTo);\nconsole.log(\"That: \");\nconsole.log(comment);\ncomment.inReplyTo = inReplyTo._id\n;\n");
-            console.log("This: ");
-            console.log(inReplyTo);
-            console.log("That: ");
-            console.log(comment);
+            console.log("comment.inReplyTo = inReplyTo._id\n;\n");
             comment.inReplyTo = inReplyTo._id
             ;
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("console.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(comment);\ncomment.issue = me._id;\nconsole.log(\"This: \");\nconsole.log(comment);\nconsole.log(\"That: \");\nconsole.log(me);\nme.comments.push(comment._id);\n");
-            console.log("This: ");
-            console.log(me);
-            console.log("That: ");
-            console.log(comment);
+            console.log("comment.issue = me._id;\nme.comments.push(comment._id);\n");
             comment.issue = me._id;
-            console.log("This: ");
-            console.log(comment);
-            console.log("That: ");
-            console.log(me);
             me.comments.push(comment._id);
         });
     }).then(function() {
@@ -604,7 +574,6 @@ issueSchema.methods.addComment = function (text, inReplyTo) {
             })
         ]).spread(function(issueKey, email, email, Text, userNotifier) {
             userNotifier.commentAdded(issueKey, email, email, Text);
-            return Q();
         });
     });
 };

@@ -1,5 +1,5 @@
 var Q = require("q");
-var mongoose = require('mongoose');    
+var mongoose = require('./db.js');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
@@ -44,10 +44,14 @@ var autoMechanicSchema = new Schema({
 autoMechanicSchema.methods.unassign = function () {
     var me = this;
     return Q().then(function() {
-        console.log("me.doUnassign();\n");
-        me.doUnassign();
-    }).then(function() {
-        return me.save();
+        console.log("return me.doUnassign();");
+        return me.doUnassign();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 
@@ -59,8 +63,12 @@ autoMechanicSchema.methods.beginVacation = function () {
     return Q().then(function() {
         console.log(";\n");
         ;
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 
@@ -75,8 +83,12 @@ autoMechanicSchema.methods.retire = function () {
     return Q().then(function() {
         console.log(";\n");
         ;
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 /*************************** DERIVED PROPERTIES ****************/

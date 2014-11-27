@@ -1,5 +1,5 @@
 var Q = require("q");
-var mongoose = require('mongoose');    
+var mongoose = require('./db.js');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
@@ -18,7 +18,7 @@ var rentalSchema = new Schema({
     },
     returned : {
         type : Date,
-        "default" : new Date()
+        "default" : null
     },
     car : {
         type : Schema.Types.ObjectId,
@@ -35,11 +35,11 @@ var rentalSchema = new Schema({
 rentalSchema.statics.currentForCar = function (c) {
     var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(this.model('Rental').find().where({\n    $and : [ \n        { car : c },\n        { 'inProgress' : true }\n    ]\n}).findOne(), 'exec', [  ])\n;\n");
-        return Q.npost(this.model('Rental').find().where({
+        console.log("return Q.npost(me.model('Rental').find().where({\n    $and : [ \n        { car : c },\n        { returned : null }\n    ]\n}).findOne(), 'exec', [  ])\n;\n");
+        return Q.npost(me.model('Rental').find().where({
             $and : [ 
                 { car : c },
-                { 'inProgress' : true }
+                { returned : null }
             ]
         }).findOne(), 'exec', [  ])
         ;
@@ -49,11 +49,11 @@ rentalSchema.statics.currentForCar = function (c) {
 rentalSchema.statics.currentForCustomer = function (c) {
     var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(this.model('Rental').find().where({\n    $and : [ \n        { customer : c },\n        { 'inProgress' : true }\n    ]\n}).findOne(), 'exec', [  ])\n;\n");
-        return Q.npost(this.model('Rental').find().where({
+        console.log("return Q.npost(me.model('Rental').find().where({\n    $and : [ \n        { customer : c },\n        { returned : null }\n    ]\n}).findOne(), 'exec', [  ])\n;\n");
+        return Q.npost(me.model('Rental').find().where({
             $and : [ 
                 { customer : c },
-                { 'inProgress' : true }
+                { returned : null }
             ]
         }).findOne(), 'exec', [  ])
         ;
@@ -63,8 +63,8 @@ rentalSchema.statics.currentForCustomer = function (c) {
 rentalSchema.statics.inProgress = function () {
     var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(this.model('Rental').find().where({ 'inProgress' : true }), 'exec', [  ])\n;\n");
-        return Q.npost(this.model('Rental').find().where({ 'inProgress' : true }), 'exec', [  ])
+        console.log("return Q.npost(me.model('Rental').find().where({ returned : null }), 'exec', [  ])\n;\n");
+        return Q.npost(me.model('Rental').find().where({ returned : null }), 'exec', [  ])
         ;
     });
 };
@@ -72,8 +72,8 @@ rentalSchema.statics.inProgress = function () {
 rentalSchema.statics.all = function () {
     var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(this.model('Rental').find(), 'exec', [  ])\n;\n");
-        return Q.npost(this.model('Rental').find(), 'exec', [  ])
+        console.log("return Q.npost(me.model('Rental').find(), 'exec', [  ])\n;\n");
+        return Q.npost(me.model('Rental').find(), 'exec', [  ])
         ;
     });
 };

@@ -1,5 +1,5 @@
 var Q = require("q");
-var mongoose = require('mongoose');    
+var mongoose = require('./db.js');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
@@ -39,8 +39,12 @@ employeeSchema.methods.declareExpense = function (description, amount, date, cat
         return Q.npost(newExpense, 'save', [  ]).then(function(saveResult) {
             return saveResult[0];
         });
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 /*************************** DERIVED PROPERTIES ****************/

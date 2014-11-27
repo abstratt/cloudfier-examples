@@ -1,5 +1,5 @@
 var Q = require("q");
-var mongoose = require('mongoose');    
+var mongoose = require('./db.js');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
@@ -60,8 +60,8 @@ var carSchema = new Schema({
 carSchema.statics.findByRegistrationNumber = function (regNumber) {
     var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(this.model('Car').find().where({\n    $eq : [ \n        regNumber,\n        registrationNumber\n    ]\n}).findOne(), 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
-        return Q.npost(this.model('Car').find().where({
+        console.log("return Q.npost(me.model('Car').find().where({\n    $eq : [ \n        regNumber,\n        registrationNumber\n    ]\n}).findOne(), 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
+        return Q.npost(me.model('Car').find().where({
             $eq : [ 
                 regNumber,
                 registrationNumber
@@ -69,8 +69,12 @@ carSchema.statics.findByRegistrationNumber = function (regNumber) {
         }).findOne(), 'save', [  ]).then(function(saveResult) {
             return saveResult[0];
         });
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 
@@ -82,8 +86,12 @@ carSchema.methods.bookService = function (description, estimateInDays) {
     return Q().then(function() {
         console.log("return Service.newService(me, description, estimateInDays);");
         return Service.newService(me, description, estimateInDays);
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 /*************************** QUERIES ***************************/
@@ -120,18 +128,28 @@ carSchema.virtual('modelName').get(function () {
 });
 
 carSchema.virtual('pending').get(function () {
-    return /*TBD*/count;
+    return this.getPendingServices().length;
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 carSchema.methods.getPendingServices = function () {
-    return this['services'].where({ 'pending' : true });
+    return this['services'].where({
+        $or : [ 
+            { status : null },
+            { status : null }
+        ]
+    });
 };
 
 carSchema.methods.getCompletedServices = function () {
     return this['services'].where({
         $ne : [ 
-            { 'pending' : true },
+            {
+                $or : [ 
+                    { status : null },
+                    { status : null }
+                ]
+            },
             true
         ]
     });

@@ -1,5 +1,5 @@
 var Q = require("q");
-var mongoose = require('mongoose');    
+var mongoose = require('./db.js');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
@@ -42,8 +42,12 @@ taxiSchema.methods.charge = function (date) {
         console.log(drivers);
         console.log("/*TBD*/forEach;\n");
         /*TBD*/forEach;
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
@@ -55,8 +59,8 @@ taxiSchema.virtual('driverCount').get(function () {
         return Q.npost(Driver, 'find', [ ({ taxi : me._id }) ]);
     }).then(function(drivers) {
         console.log(drivers);
-        console.log("return /*TBD*/count;\n");
-        return /*TBD*/count;
+        console.log("return drivers.length;\n");
+        return drivers.length;
     });
 });
 
@@ -96,10 +100,10 @@ taxiSchema.methods.getPendingCharges = function () {
         return Charge.byTaxi(me);
     }).then(function(byTaxi) {
         console.log(byTaxi);
-        console.log("return byTaxi.where({\n    $ne : [ \n        { 'paid' : true },\n        true\n    ]\n});\n");
+        console.log("return byTaxi.where({\n    $ne : [ \n        { status : null },\n        true\n    ]\n});\n");
         return byTaxi.where({
             $ne : [ 
-                { 'paid' : true },
+                { status : null },
                 true
             ]
         });

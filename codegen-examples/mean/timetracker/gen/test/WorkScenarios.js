@@ -12,7 +12,7 @@ var Examples = require('./Examples.js');
 
 
 suite('Time Tracker functional tests - WorkScenarios', function() {
-    this.timeout(1000);
+    this.timeout(100000);
 
     test('workDateDefaultsToToday', function(done) {
         var behavior = function() {
@@ -89,7 +89,7 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
                             return work;
                         })
                     ]).spread(function(startInvoice, Work) {
-                        Work.submit(startInvoice);
+                        return Work.submit(startInvoice);
                     });
                 });
             };
@@ -137,13 +137,13 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        console.log("work.submit(invoice);\n");
-                        work.submit(invoice);
+                        console.log("return work.submit(invoice);");
+                        return work.submit(invoice);
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        console.log("work.submit(invoice);\n");
-                        work.submit(invoice);
+                        console.log("return work.submit(invoice);");
+                        return work.submit(invoice);
                     });
                 });
             };

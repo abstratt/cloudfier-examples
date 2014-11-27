@@ -1,5 +1,5 @@
 var Q = require("q");
-var mongoose = require('mongoose');    
+var mongoose = require('./db.js');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
@@ -33,40 +33,30 @@ customerSchema.methods.rent = function (car) {
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("console.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(rental);\nrental.customer = me._id;\nconsole.log(\"This: \");\nconsole.log(rental);\nconsole.log(\"That: \");\nconsole.log(me);\nme.rentals.push(rental._id);\n");
-            console.log("This: ");
-            console.log(me);
-            console.log("That: ");
-            console.log(rental);
+            console.log("rental.customer = me._id;\nme.rentals.push(rental._id);\n");
             rental.customer = me._id;
-            console.log("This: ");
-            console.log(rental);
-            console.log("That: ");
-            console.log(me);
             me.rentals.push(rental._id);
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("console.log(\"This: \");\nconsole.log(car);\nconsole.log(\"That: \");\nconsole.log(rental);\nrental.car = car._id;\nconsole.log(\"This: \");\nconsole.log(rental);\nconsole.log(\"That: \");\nconsole.log(car);\ncar.rentals.push(rental._id);\n");
-            console.log("This: ");
-            console.log(car);
-            console.log("That: ");
-            console.log(rental);
+            console.log("rental.car = car._id;\ncar.rentals.push(rental._id);\n");
             rental.car = car._id;
-            console.log("This: ");
-            console.log(rental);
-            console.log("That: ");
-            console.log(car);
             car.rentals.push(rental._id);
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("car.carRented();\nreturn Q();\n");
+            console.log("car.carRented();\n");
             car.carRented();
-            return Q();
         });
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            }),
+            Q().then(function() {
+                return Q.npost(rental, 'save', [  ]);
+            })
+        ]);
     });
 };
 
@@ -82,9 +72,8 @@ customerSchema.methods.finishRental = function () {
             return Q.npost(Car, 'findOne', [ ({ _id : currentRental.car }) ]);
         }).then(function(car) {
             console.log(car);
-            console.log("car.carReturned();\nreturn Q();\n");
+            console.log("car.carReturned();\n");
             car.carReturned();
-            return Q();
         });
     }).then(function() {
         return Q().then(function() {
@@ -95,8 +84,12 @@ customerSchema.methods.finishRental = function () {
             console.log("currentRental.finish();\n");
             currentRental.finish();
         });
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 /*************************** DERIVED PROPERTIES ****************/

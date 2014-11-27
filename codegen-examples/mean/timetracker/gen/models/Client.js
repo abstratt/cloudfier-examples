@@ -1,5 +1,5 @@
 var Q = require("q");
-var mongoose = require('mongoose');    
+var mongoose = require('./db.js');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
@@ -41,16 +41,8 @@ clientSchema.methods.newTask = function (description) {
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("console.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(newTask);\nnewTask.client = me._id;\nconsole.log(\"This: \");\nconsole.log(newTask);\nconsole.log(\"That: \");\nconsole.log(me);\nme.tasks.push(newTask._id);\n");
-            console.log("This: ");
-            console.log(me);
-            console.log("That: ");
-            console.log(newTask);
+            console.log("newTask.client = me._id;\nme.tasks.push(newTask._id);\n");
             newTask.client = me._id;
-            console.log("This: ");
-            console.log(newTask);
-            console.log("That: ");
-            console.log(me);
             me.tasks.push(newTask._id);
         });
     }).then(function() {
@@ -60,8 +52,15 @@ clientSchema.methods.newTask = function (description) {
                 return saveResult[0];
             });
         });
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            }),
+            Q().then(function() {
+                return Q.npost(newTask, 'save', [  ]);
+            })
+        ]);
     });
 };
 
@@ -75,16 +74,8 @@ clientSchema.methods.startInvoice = function () {
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("console.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(newInvoice);\nnewInvoice.client = me._id;\nconsole.log(\"This: \");\nconsole.log(newInvoice);\nconsole.log(\"That: \");\nconsole.log(me);\nme.invoices.push(newInvoice._id);\n");
-            console.log("This: ");
-            console.log(me);
-            console.log("That: ");
-            console.log(newInvoice);
+            console.log("newInvoice.client = me._id;\nme.invoices.push(newInvoice._id);\n");
             newInvoice.client = me._id;
-            console.log("This: ");
-            console.log(newInvoice);
-            console.log("That: ");
-            console.log(me);
             me.invoices.push(newInvoice._id);
         });
     }).then(function() {
@@ -94,8 +85,15 @@ clientSchema.methods.startInvoice = function () {
                 return saveResult[0];
             });
         });
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            }),
+            Q().then(function() {
+                return Q.npost(newInvoice, 'save', [  ]);
+            })
+        ]);
     });
 };
 

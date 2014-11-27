@@ -1,5 +1,5 @@
 var Q = require("q");
-var mongoose = require('mongoose');    
+var mongoose = require('./db.js');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
@@ -53,11 +53,7 @@ userSchema.methods.startMeetingOnBehalf = function (title, description, date) {
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("console.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(newMeeting);\nnewMeeting.organizer = me._id\n;\n");
-            console.log("This: ");
-            console.log(me);
-            console.log("That: ");
-            console.log(newMeeting);
+            console.log("newMeeting.organizer = me._id\n;\n");
             newMeeting.organizer = me._id
             ;
         });
@@ -72,10 +68,17 @@ userSchema.methods.startMeetingOnBehalf = function (title, description, date) {
                 return newMeeting;
             })
         ]).spread(function(organizer, NewMeeting) {
-            NewMeeting.addParticipant(organizer);
+            return NewMeeting.addParticipant(organizer);
         });
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            }),
+            Q().then(function() {
+                return Q.npost(newMeeting, 'save', [  ]);
+            })
+        ]);
     });
 };
 /*************************** DERIVED RELATIONSHIPS ****************/

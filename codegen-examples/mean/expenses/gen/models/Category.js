@@ -1,5 +1,5 @@
 var Q = require("q");
-var mongoose = require('mongoose');    
+var mongoose = require('./db.js');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
@@ -39,8 +39,15 @@ categorySchema.statics.newCategory = function (name) {
                 return saveResult[0];
             });
         });
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            }),
+            Q().then(function() {
+                return Q.npost(newCategory, 'save', [  ]);
+            })
+        ]);
     });
 };
 /*************************** DERIVED RELATIONSHIPS ****************/

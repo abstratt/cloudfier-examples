@@ -12,7 +12,7 @@ var Examples = require('./Examples.js');
 
 
 suite('Time Tracker functional tests - InvoiceScenarios', function() {
-    this.timeout(1000);
+    this.timeout(100000);
 
     test('issueInvoice', function(done) {
         var behavior = function() {
@@ -54,8 +54,8 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        console.log("work.submit(invoice);\n");
-                        work.submit(invoice);
+                        console.log("return work.submit(invoice);");
+                        return work.submit(invoice);
                     });
                 }).then(function() {
                     return Q().then(function() {
@@ -64,8 +64,8 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        console.log("invoice.issue();\n");
-                        invoice.issue();
+                        console.log("return invoice.issue();");
+                        return invoice.issue();
                     });
                 });
             }).then(function() {
@@ -109,19 +109,18 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                         return newTask.addWork(1);
                     }).then(function(addWork) {
                         console.log(addWork);
-                        console.log("addWork.submit(invoice);\n");
-                        addWork.submit(invoice);
+                        console.log("return addWork.submit(invoice);");
+                        return addWork.submit(invoice);
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        console.log("invoice.issue();\n");
-                        invoice.issue();
+                        console.log("return invoice.issue();");
+                        return invoice.issue();
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        console.log("invoice.invoicePaid();\nreturn Q();\n");
+                        console.log("invoice.invoicePaid();\n");
                         invoice.invoicePaid();
-                        return Q();
                     });
                 });
             }).then(function() {
@@ -169,13 +168,13 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                             return task.addWork(1);
                         }).then(function(addWork) {
                             console.log(addWork);
-                            console.log("addWork.submit(invoice);\n");
-                            addWork.submit(invoice);
+                            console.log("return addWork.submit(invoice);");
+                            return addWork.submit(invoice);
                         });
                     }).then(function() {
                         return Q().then(function() {
-                            console.log("invoice.issue();\n");
-                            invoice.issue();
+                            console.log("return invoice.issue();");
+                            return invoice.issue();
                         });
                     });
                 }).then(function() {
@@ -184,8 +183,8 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                         return task.addWork(2);
                     }).then(function(addWork) {
                         console.log(addWork);
-                        console.log("addWork.submit(invoice);\n");
-                        addWork.submit(invoice);
+                        console.log("return addWork.submit(invoice);");
+                        return addWork.submit(invoice);
                     });
                 });
             };
@@ -208,8 +207,8 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                     return client.startInvoice();
                 }).then(function(startInvoice) {
                     console.log(startInvoice);
-                    console.log("startInvoice.issue();\n");
-                    startInvoice.issue();
+                    console.log("return startInvoice.issue();");
+                    return startInvoice.issue();
                 });
             };
             behavior().then(done, done);

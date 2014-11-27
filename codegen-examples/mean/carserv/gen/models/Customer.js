@@ -1,5 +1,5 @@
 var Q = require("q");
-var mongoose = require('mongoose');    
+var mongoose = require('./db.js');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
@@ -41,8 +41,8 @@ var customerSchema = new Schema({
 customerSchema.statics.findByName = function (firstName, lastName) {
     var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(this.model('Customer').find().where({\n    $or : [ \n        {\n            $eq : [ \n                firstName,\n                firstName\n            ]\n        },\n        {\n            $eq : [ \n                lastName,\n                lastName\n            ]\n        }\n    ]\n}), 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
-        return Q.npost(this.model('Customer').find().where({
+        console.log("return Q.npost(me.model('Customer').find().where({\n    $or : [ \n        {\n            $eq : [ \n                firstName,\n                firstName\n            ]\n        },\n        {\n            $eq : [ \n                lastName,\n                lastName\n            ]\n        }\n    ]\n}), 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
+        return Q.npost(me.model('Customer').find().where({
             $or : [ 
                 {
                     $eq : [ 
@@ -66,8 +66,18 @@ customerSchema.statics.findByName = function (firstName, lastName) {
 customerSchema.statics.vipCustomers = function () {
     var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(this.model('Customer').find().where({ 'vip' : true }), 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
-        return Q.npost(this.model('Customer').find().where({ 'vip' : true }), 'save', [  ]).then(function(saveResult) {
+        console.log("return Q.npost(me.model('Customer').find().where({\n    $gte : [ \n        {\n            /*unknown:size*/size : [ \n                cars,\n                true\n            ]\n        },\n        2\n    ]\n}), 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
+        return Q.npost(me.model('Customer').find().where({
+            $gte : [ 
+                {
+                    /*unknown:size*/size : [ 
+                        cars,
+                        true
+                    ]
+                },
+                2
+            ]
+        }), 'save', [  ]).then(function(saveResult) {
             return saveResult[0];
         });
     });
@@ -88,8 +98,8 @@ customerSchema.virtual('vip').get(function () {
         return Q.npost(Car, 'find', [ ({ owner : me._id }) ]);
     }).then(function(cars) {
         console.log(cars);
-        console.log("return /*TBD*/count >= 2;\n");
-        return /*TBD*/count >= 2;
+        console.log("return cars.length >= 2;\n");
+        return cars.length >= 2;
     });
 });
 /*************************** DERIVED RELATIONSHIPS ****************/

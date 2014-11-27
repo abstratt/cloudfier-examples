@@ -1,5 +1,5 @@
 var Q = require("q");
-var mongoose = require('mongoose');    
+var mongoose = require('./db.js');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
@@ -52,22 +52,28 @@ var carSchema = new Schema({
 carSchema.methods.startRepair = function () {
     var me = this;
     return Q().then(function() {
-        console.log("me.repairStarted();\nreturn Q();\n");
+        console.log("me.repairStarted();\n");
         me.repairStarted();
-        return Q();
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 
 carSchema.methods.finishRepair = function () {
     var me = this;
     return Q().then(function() {
-        console.log("me.repairFinished();\nreturn Q();\n");
+        console.log("me.repairFinished();\n");
         me.repairFinished();
-        return Q();
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 /*************************** DERIVED PROPERTIES ****************/

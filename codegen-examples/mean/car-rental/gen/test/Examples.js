@@ -49,16 +49,8 @@ var Examples = {
                 return Examples.newMake();
             }).then(function(newMake) {
                 console.log(newMake);
-                console.log("console.log(\"This: \");\nconsole.log(newMake);\nconsole.log(\"That: \");\nconsole.log(carModel);\ncarModel.make = newMake._id;\nconsole.log(\"This: \");\nconsole.log(carModel);\nconsole.log(\"That: \");\nconsole.log(newMake);\nnewMake.models.push(carModel._id);\n");
-                console.log("This: ");
-                console.log(newMake);
-                console.log("That: ");
-                console.log(carModel);
+                console.log("carModel.make = newMake._id;\nnewMake.models.push(carModel._id);\n");
                 carModel.make = newMake._id;
-                console.log("This: ");
-                console.log(carModel);
-                console.log("That: ");
-                console.log(newMake);
                 newMake.models.push(carModel._id);
             });
         }).then(function() {
@@ -104,11 +96,7 @@ var Examples = {
                 return Examples.newModel();
             }).then(function(newModel) {
                 console.log(newModel);
-                console.log("console.log(\"This: \");\nconsole.log(newModel);\nconsole.log(\"That: \");\nconsole.log(car);\ncar.model = newModel._id\n;\n");
-                console.log("This: ");
-                console.log(newModel);
-                console.log("That: ");
-                console.log(car);
+                console.log("car.model = newModel._id\n;\n");
                 car.model = newModel._id
                 ;
             });

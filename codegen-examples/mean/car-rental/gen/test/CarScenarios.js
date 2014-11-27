@@ -14,7 +14,7 @@ var Examples = require('./Examples.js');
 
 
 suite('Car rental functional tests - CarScenarios', function() {
-    this.timeout(1000);
+    this.timeout(100000);
 
     test('startsAsValid', function(done) {
         var behavior = function() {
@@ -192,8 +192,8 @@ suite('Car rental functional tests - CarScenarios', function() {
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        console.log("customer.rent(car);\n");
-                        customer.rent(car);
+                        console.log("return customer.rent(car);");
+                        return customer.rent(car);
                     });
                 });
             }).then(function() {
@@ -204,8 +204,8 @@ suite('Car rental functional tests - CarScenarios', function() {
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        console.log("customer.finishRental();\n");
-                        customer.finishRental();
+                        console.log("return customer.finishRental();");
+                        return customer.finishRental();
                     });
                 });
             });
@@ -245,8 +245,8 @@ suite('Car rental functional tests - CarScenarios', function() {
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        console.log("customer.rent(car);\n");
-                        customer.rent(car);
+                        console.log("return customer.rent(car);");
+                        return customer.rent(car);
                     });
                 });
             }).then(function() {
@@ -257,8 +257,8 @@ suite('Car rental functional tests - CarScenarios', function() {
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        console.log("customer.finishRental();\n");
-                        customer.finishRental();
+                        console.log("return customer.finishRental();");
+                        return customer.finishRental();
                     });
                 });
             }).then(function() {
@@ -296,8 +296,8 @@ suite('Car rental functional tests - CarScenarios', function() {
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        console.log("car.startRepair();\n");
-                        car.startRepair();
+                        console.log("return car.startRepair();");
+                        return car.startRepair();
                     });
                 });
             }).then(function() {

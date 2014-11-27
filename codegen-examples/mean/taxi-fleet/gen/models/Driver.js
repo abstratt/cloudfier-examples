@@ -1,5 +1,5 @@
 var Q = require("q");
-var mongoose = require('mongoose');    
+var mongoose = require('./db.js');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
@@ -35,19 +35,15 @@ var driverSchema = new Schema({
 driverSchema.methods.book = function (toRent) {
     var me = this;
     return Q().then(function() {
-        console.log("console.log(\"This: \");\nconsole.log(toRent);\nconsole.log(\"That: \");\nconsole.log(me);\nme.taxi = toRent._id;\nconsole.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(toRent);\ntoRent.drivers.push(me._id);\n");
-        console.log("This: ");
-        console.log(toRent);
-        console.log("That: ");
-        console.log(me);
+        console.log("me.taxi = toRent._id;\ntoRent.drivers.push(me._id);\n");
         me.taxi = toRent._id;
-        console.log("This: ");
-        console.log(me);
-        console.log("That: ");
-        console.log(toRent);
         toRent.drivers.push(me._id);
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 
@@ -68,8 +64,12 @@ driverSchema.methods.release = function () {
     ]).spread(function(taxi, readSelfAction) {
         taxi.drivers = null;
         taxi = null;
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
@@ -110,10 +110,10 @@ driverSchema.methods.getPendingCharges = function () {
         return Q.npost(Charge, 'find', [ ({ driver : me._id }) ]);
     }).then(function(charges) {
         console.log(charges);
-        console.log("return charges.where({\n    $ne : [ \n        { 'paid' : true },\n        true\n    ]\n});\n");
+        console.log("return charges.where({\n    $ne : [ \n        { status : null },\n        true\n    ]\n});\n");
         return charges.where({
             $ne : [ 
-                { 'paid' : true },
+                { status : null },
                 true
             ]
         });

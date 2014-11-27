@@ -1,5 +1,5 @@
 var Q = require("q");
-var mongoose = require('mongoose');    
+var mongoose = require('./db.js');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
@@ -43,8 +43,12 @@ meetingSchema.methods.leave = function () {
         console.log("User['current'].meetings = null;\nUser['current'] = null;\n");
         User['current'].meetings = null;
         User['current'] = null;
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 
@@ -54,19 +58,15 @@ meetingSchema.methods.leave = function () {
 meetingSchema.methods.join = function () {
     var me = this;
     return Q().then(function() {
-        console.log("console.log(\"This: \");\nconsole.log(User['current']);\nconsole.log(\"That: \");\nconsole.log(me);\nme.participants.push(User['current']._id);\nconsole.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(User['current']);\nUser['current'].meetings.push(me._id);\n");
-        console.log("This: ");
-        console.log(User['current']);
-        console.log("That: ");
-        console.log(me);
+        console.log("me.participants.push(User['current']._id);\nUser['current'].meetings.push(me._id);\n");
         me.participants.push(User['current']._id);
-        console.log("This: ");
-        console.log(me);
-        console.log("That: ");
-        console.log(User['current']);
         User['current'].meetings.push(me._id);
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 
@@ -76,19 +76,15 @@ meetingSchema.methods.join = function () {
 meetingSchema.methods.addParticipant = function (newParticipant) {
     var me = this;
     return Q().then(function() {
-        console.log("console.log(\"This: \");\nconsole.log(newParticipant);\nconsole.log(\"That: \");\nconsole.log(me);\nme.participants.push(newParticipant._id);\nconsole.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(newParticipant);\nnewParticipant.meetings.push(me._id);\n");
-        console.log("This: ");
-        console.log(newParticipant);
-        console.log("That: ");
-        console.log(me);
+        console.log("me.participants.push(newParticipant._id);\nnewParticipant.meetings.push(me._id);\n");
         me.participants.push(newParticipant._id);
-        console.log("This: ");
-        console.log(me);
-        console.log("That: ");
-        console.log(newParticipant);
         newParticipant.meetings.push(me._id);
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 
@@ -98,10 +94,14 @@ meetingSchema.methods.addParticipant = function (newParticipant) {
 meetingSchema.statics.startMeeting = function (title, description, date) {
     var me = this;
     return Q().then(function() {
-        console.log("User['current'].startMeetingOnBehalf(title, description, date);\n");
-        User['current'].startMeetingOnBehalf(title, description, date);
-    }).then(function() {
-        return me.save();
+        console.log("return User['current'].startMeetingOnBehalf(title, description, date);");
+        return User['current'].startMeetingOnBehalf(title, description, date);
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 /*************************** PRIVATE OPS ***********************/

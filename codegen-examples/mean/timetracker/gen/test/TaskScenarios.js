@@ -12,7 +12,7 @@ var Examples = require('./Examples.js');
 
 
 suite('Time Tracker functional tests - TaskScenarios', function() {
-    this.timeout(1000);
+    this.timeout(100000);
 
     test('timeReported', function(done) {
         var behavior = function() {
@@ -39,8 +39,8 @@ suite('Time Tracker functional tests - TaskScenarios', function() {
                 });
             }).then(function() {
                 return Q().then(function() {
-                    console.log("assert.equal(2, /*TBD*/count);\n");
-                    assert.equal(2, /*TBD*/count);
+                    console.log("assert.equal(2, task['reported'].length);\n");
+                    assert.equal(2, task['reported'].length);
                 });
             }).then(function() {
                 return Q().then(function() {
@@ -100,8 +100,8 @@ suite('Time Tracker functional tests - TaskScenarios', function() {
                 });
             }).then(function() {
                 return Q().then(function() {
-                    console.log("work1.submit(invoice);\n");
-                    work1.submit(invoice);
+                    console.log("return work1.submit(invoice);");
+                    return work1.submit(invoice);
                 });
             }).then(function() {
                 return Q().then(function() {
@@ -109,8 +109,8 @@ suite('Time Tracker functional tests - TaskScenarios', function() {
                     return task.getToInvoice();
                 }).then(function(toInvoice) {
                     console.log(toInvoice);
-                    console.log("assert.equal(1, /*TBD*/count);\n");
-                    assert.equal(1, /*TBD*/count);
+                    console.log("assert.equal(1, toInvoice.length);\n");
+                    assert.equal(1, toInvoice.length);
                 });
             }).then(function() {
                 return Q().then(function() {

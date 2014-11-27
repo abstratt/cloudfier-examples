@@ -1,5 +1,5 @@
 var Q = require("q");
-var mongoose = require('mongoose');    
+var mongoose = require('./db.js');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
@@ -63,16 +63,8 @@ serviceSchema.statics.newService = function (carToService, description, estimate
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("console.log(\"This: \");\nconsole.log(carToService);\nconsole.log(\"That: \");\nconsole.log(s);\ns.car = carToService._id;\nconsole.log(\"This: \");\nconsole.log(s);\nconsole.log(\"That: \");\nconsole.log(carToService);\ncarToService.services.push(s._id);\n");
-            console.log("This: ");
-            console.log(carToService);
-            console.log("That: ");
-            console.log(s);
+            console.log("s.car = carToService._id;\ncarToService.services.push(s._id);\n");
             s.car = carToService._id;
-            console.log("This: ");
-            console.log(s);
-            console.log("That: ");
-            console.log(carToService);
             carToService.services.push(s._id);
         });
     }).then(function() {
@@ -82,8 +74,15 @@ serviceSchema.statics.newService = function (carToService, description, estimate
                 return saveResult[0];
             });
         });
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            }),
+            Q().then(function() {
+                return Q.npost(s, 'save', [  ]);
+            })
+        ]);
     });
 };
 
@@ -101,8 +100,12 @@ serviceSchema.methods.start = function () {
     return Q().then(function() {
         console.log(";\n");
         ;
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 
@@ -114,8 +117,12 @@ serviceSchema.methods.complete = function () {
     return Q().then(function() {
         console.log(";\n");
         ;
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 
@@ -125,19 +132,15 @@ serviceSchema.methods.complete = function () {
 serviceSchema.methods.assignTo = function (technician) {
     var me = this;
     return Q().then(function() {
-        console.log("console.log(\"This: \");\nconsole.log(technician);\nconsole.log(\"That: \");\nconsole.log(me);\nme.technician = technician._id;\nconsole.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(technician);\ntechnician.services.push(me._id);\n");
-        console.log("This: ");
-        console.log(technician);
-        console.log("That: ");
-        console.log(me);
+        console.log("me.technician = technician._id;\ntechnician.services.push(me._id);\n");
         me.technician = technician._id;
-        console.log("This: ");
-        console.log(me);
-        console.log("That: ");
-        console.log(technician);
         technician.services.push(me._id);
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 
@@ -147,19 +150,15 @@ serviceSchema.methods.assignTo = function (technician) {
 serviceSchema.methods.transfer = function (mechanic) {
     var me = this;
     return Q().then(function() {
-        console.log("console.log(\"This: \");\nconsole.log(mechanic);\nconsole.log(\"That: \");\nconsole.log(me);\nme.technician = mechanic._id;\nconsole.log(\"This: \");\nconsole.log(me);\nconsole.log(\"That: \");\nconsole.log(mechanic);\nmechanic.services.push(me._id);\n");
-        console.log("This: ");
-        console.log(mechanic);
-        console.log("That: ");
-        console.log(me);
+        console.log("me.technician = mechanic._id;\nmechanic.services.push(me._id);\n");
         me.technician = mechanic._id;
-        console.log("This: ");
-        console.log(me);
-        console.log("That: ");
-        console.log(mechanic);
         mechanic.services.push(me._id);
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 /*************************** QUERIES ***************************/

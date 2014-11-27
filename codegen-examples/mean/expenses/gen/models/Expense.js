@@ -1,5 +1,5 @@
 var Q = require("q");
-var mongoose = require('mongoose');    
+var mongoose = require('./db.js');    
 var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
@@ -22,7 +22,7 @@ var expenseSchema = new Schema({
     },
     amount : {
         type : Number,
-        "default" : 0
+        "default" : null
     },
     date : {
         type : Date,
@@ -32,7 +32,7 @@ var expenseSchema = new Schema({
     },
     processed : {
         type : Date,
-        "default" : new Date()
+        "default" : null
     },
     rejectionReason : {
         type : String,
@@ -79,26 +79,14 @@ expenseSchema.statics.newExpense = function (description, amount, date, category
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("console.log(\"This: \");\nconsole.log(category);\nconsole.log(\"That: \");\nconsole.log(newExpense);\nnewExpense.category = category._id\n;\n");
-            console.log("This: ");
-            console.log(category);
-            console.log("That: ");
-            console.log(newExpense);
+            console.log("newExpense.category = category._id\n;\n");
             newExpense.category = category._id
             ;
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("console.log(\"This: \");\nconsole.log(employee);\nconsole.log(\"That: \");\nconsole.log(newExpense);\nnewExpense.employee = employee._id;\nconsole.log(\"This: \");\nconsole.log(newExpense);\nconsole.log(\"That: \");\nconsole.log(employee);\nemployee.expenses.push(newExpense._id);\n");
-            console.log("This: ");
-            console.log(employee);
-            console.log("That: ");
-            console.log(newExpense);
+            console.log("newExpense.employee = employee._id;\nemployee.expenses.push(newExpense._id);\n");
             newExpense.employee = employee._id;
-            console.log("This: ");
-            console.log(newExpense);
-            console.log("That: ");
-            console.log(employee);
             employee.expenses.push(newExpense._id);
         });
     }).then(function() {
@@ -108,23 +96,30 @@ expenseSchema.statics.newExpense = function (description, amount, date, category
                 return saveResult[0];
             });
         });
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            }),
+            Q().then(function() {
+                return Q.npost(newExpense, 'save', [  ]);
+            })
+        ]);
     });
 };
 
 expenseSchema.methods.approve = function () {
     var me = this;
     return Q().then(function() {
-        console.log("console.log(\"This: \");\nconsole.log(cls.getNamespace('currentUser'));\nconsole.log(\"That: \");\nconsole.log(me);\nme.approver = cls.getNamespace('currentUser')._id\n;\n");
-        console.log("This: ");
-        console.log(cls.getNamespace('currentUser'));
-        console.log("That: ");
-        console.log(me);
+        console.log("me.approver = cls.getNamespace('currentUser')._id\n;\n");
         me.approver = cls.getNamespace('currentUser')._id
         ;
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 
@@ -140,16 +135,16 @@ expenseSchema.methods.reject = function (reason) {
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("console.log(\"This: \");\nconsole.log(cls.getNamespace('currentUser'));\nconsole.log(\"That: \");\nconsole.log(me);\nme.approver = cls.getNamespace('currentUser')._id\n;\n");
-            console.log("This: ");
-            console.log(cls.getNamespace('currentUser'));
-            console.log("That: ");
-            console.log(me);
+            console.log("me.approver = cls.getNamespace('currentUser')._id\n;\n");
             me.approver = cls.getNamespace('currentUser')._id
             ;
         });
-    }).then(function() {
-        return me.save();
+    }).then(function() { 
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]);
     });
 };
 
@@ -175,8 +170,8 @@ expenseSchema.methods.submit = function () {
 expenseSchema.statics.findExpensesByCategory = function (category) {
     var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(this.model('Expense').find().where({ { 'category' : e  } : category }), 'exec', [  ])\n;\n");
-        return Q.npost(this.model('Expense').find().where({ { 'category' : e  } : category }), 'exec', [  ])
+        console.log("return Q.npost(me.model('Expense').find().where({ { 'category' : e  } : category }), 'exec', [  ])\n;\n");
+        return Q.npost(me.model('Expense').find().where({ { 'category' : e  } : category }), 'exec', [  ])
         ;
     });
 };
@@ -184,8 +179,8 @@ expenseSchema.statics.findExpensesByCategory = function (category) {
 expenseSchema.statics.findExpensesInPeriod = function (start, end_) {
     var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(this.model('Expense').find().where({\n    $and : [ \n        {\n            $or : [ \n                { start : null },\n                {\n                    $gte : [ \n                        date,\n                        start\n                    ]\n                }\n            ]\n        },\n        {\n            $or : [ \n                { end_ : null },\n                {\n                    $lte : [ \n                        date,\n                        end_\n                    ]\n                }\n            ]\n        }\n    ]\n}), 'exec', [  ])\n;\n");
-        return Q.npost(this.model('Expense').find().where({
+        console.log("return Q.npost(me.model('Expense').find().where({\n    $and : [ \n        {\n            $or : [ \n                { start : null },\n                {\n                    $gte : [ \n                        date,\n                        start\n                    ]\n                }\n            ]\n        },\n        {\n            $or : [ \n                { end_ : null },\n                {\n                    $lte : [ \n                        date,\n                        end_\n                    ]\n                }\n            ]\n        }\n    ]\n}), 'exec', [  ])\n;\n");
+        return Q.npost(me.model('Expense').find().where({
             $and : [ 
                 {
                     $or : [ 
@@ -218,8 +213,8 @@ expenseSchema.statics.findExpensesInPeriod = function (start, end_) {
 expenseSchema.statics.findByStatus = function (status) {
     var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(this.model('Expense').find().where({ status : status }), 'exec', [  ])\n;\n");
-        return Q.npost(this.model('Expense').find().where({ status : status }), 'exec', [  ])
+        console.log("return Q.npost(me.model('Expense').find().where({ status : status }), 'exec', [  ])\n;\n");
+        return Q.npost(me.model('Expense').find().where({ status : status }), 'exec', [  ])
         ;
     });
 };
@@ -279,7 +274,6 @@ expenseSchema.methods.reportApproved = function () {
         })
     ]).spread(function(employee, amount, add, expenseId, expensePayer) {
         expensePayer.expenseApproved(employee['name'], amount, add, expenseId);
-        return Q();
     });
 };
 /*************************** STATE MACHINE ********************/
@@ -305,8 +299,8 @@ expenseSchema.methods.handleEvent = function (event) {
                             });
                         }).then(function() {
                             return Q().then(function() {
-                                console.log("me.reportApproved();\n");
-                                me.reportApproved();
+                                console.log("return me.reportApproved();");
+                                return me.reportApproved();
                             });
                         });
                     })();
@@ -338,8 +332,8 @@ expenseSchema.methods.handleEvent = function (event) {
                         });
                     }).then(function() {
                         return Q().then(function() {
-                            console.log("me.reportApproved();\n");
-                            me.reportApproved();
+                            console.log("return me.reportApproved();");
+                            return me.reportApproved();
                         });
                     });
                 })();
