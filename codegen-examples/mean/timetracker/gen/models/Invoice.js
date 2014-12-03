@@ -29,31 +29,44 @@ var invoiceSchema = new Schema({
         "default" : []
     }]
 });
+//            invoiceSchema.set('toObject', { getters: true });
+
 
 /*************************** ACTIONS ***************************/
 
 invoiceSchema.methods.issue = function () {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         console.log("me['issueDate'] = new Date();\n");
         me['issueDate'] = new Date();
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 invoiceSchema.virtual('number').get(function () {
-    return "" + (this['issueDate'].getYear() + 1900) + "." + this['invoiceId'];
+    return "" + (this.issueDate.getYear() + 1900) + "." + this.invoiceId;
 });
 
 
 invoiceSchema.virtual('open').get(function () {
-    return this['status'] == "Preparation";
+    return this.status == "Preparation";
 });
 
 invoiceSchema.virtual('totalUnits').get(function () {
@@ -63,7 +76,6 @@ invoiceSchema.virtual('totalUnits').get(function () {
             console.log("return Q.npost(Work, 'find', [ ({ invoice : me._id }) ]);");
             return Q.npost(Work, 'find', [ ({ invoice : me._id }) ]);
         }).then(function(reported) {
-            console.log(reported);
             console.log("return Work.aggregate()\n              .group({ _id: null, result: { $sum: '$units' } })\n              .select('-id result');\n");
             return Work.aggregate()
                           .group({ _id: null, result: { $sum: '$units' } })
@@ -79,18 +91,43 @@ invoiceSchema.virtual('totalUnits').get(function () {
 /*************************** PRIVATE OPS ***********************/
 
 invoiceSchema.methods.sendInvoice = function () {
-    this['invoicer'].invoiceIssued();;
+    var me = this;
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
+        console.log("me.invoicer.invoiceIssued();\n");
+        me.invoicer.invoiceIssued();
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 /*************************** STATE MACHINE ********************/
 invoiceSchema.methods.handleEvent = function (event) {
-    console.log("started handleEvent("+ event+"): "+ this);
+    console.log("started handleEvent("+ event+")");
     switch (event) {
         case 'issue' :
             if (this.status == 'Preparation') {
                 this.status = 'Invoiced';
                 // on entering Invoiced
                 (function() {
-                    this.sendInvoice();
+                    var me = this;
+                    return Q().then(function() {
+                        console.log("return me.sendInvoice();");
+                        return me.sendInvoice();
+                    });
                 })();
                 return;
             }

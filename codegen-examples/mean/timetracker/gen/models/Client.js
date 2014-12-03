@@ -23,13 +23,15 @@ var clientSchema = new Schema({
         "default" : []
     }]
 });
+//            clientSchema.set('toObject', { getters: true });
+
 
 /*************************** ACTIONS ***************************/
 
 clientSchema.methods.newTask = function (description) {
     var newTask;
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me, newTask] */Q().then(function() {
         return Q().then(function() {
             console.log("newTask = new Task();\n");
             newTask = new Task();
@@ -47,12 +49,10 @@ clientSchema.methods.newTask = function (description) {
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("return Q.npost(newTask, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
-            return Q.npost(newTask, 'save', [  ]).then(function(saveResult) {
-                return saveResult[0];
-            });
+            console.log("return newTask;\n");
+            return newTask;
         });
-    }).then(function() { 
+    }).then(function(__result__) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
@@ -60,14 +60,25 @@ clientSchema.methods.newTask = function (description) {
             Q().then(function() {
                 return Q.npost(newTask, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            return __result__;    
+        });
+    }).then(function(__result__) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            return __result__;    
+        });
+    })
+    ;
 };
 
 clientSchema.methods.startInvoice = function () {
     var newInvoice;
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me, newInvoice] */Q().then(function() {
         return Q().then(function() {
             console.log("newInvoice = new Invoice();\n");
             newInvoice = new Invoice();
@@ -80,12 +91,10 @@ clientSchema.methods.startInvoice = function () {
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("return Q.npost(newInvoice, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
-            return Q.npost(newInvoice, 'save', [  ]).then(function(saveResult) {
-                return saveResult[0];
-            });
+            console.log("return newInvoice;\n");
+            return newInvoice;
         });
-    }).then(function() { 
+    }).then(function(__result__) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
@@ -93,8 +102,19 @@ clientSchema.methods.startInvoice = function () {
             Q().then(function() {
                 return Q.npost(newInvoice, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            return __result__;    
+        });
+    }).then(function(__result__) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            return __result__;    
+        });
+    })
+    ;
 };
 
 // declare model on the schema

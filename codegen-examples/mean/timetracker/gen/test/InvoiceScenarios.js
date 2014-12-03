@@ -26,7 +26,6 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                         console.log("return Examples.client();");
                         return Examples.client();
                     }).then(function(client) {
-                        console.log(client);
                         console.log("client = client;\n");
                         client = client;
                     });
@@ -35,11 +34,9 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                         console.log("return client.newTask(\"Some task\");");
                         return client.newTask("Some task");
                     }).then(function(newTask) {
-                        console.log(newTask);
                         console.log("return newTask.addWork(1);");
                         return newTask.addWork(1);
                     }).then(function(addWork) {
-                        console.log(addWork);
                         console.log("work = addWork;\n");
                         work = addWork;
                     });
@@ -48,7 +45,6 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                         console.log("return client.startInvoice();");
                         return client.startInvoice();
                     }).then(function(startInvoice) {
-                        console.log(startInvoice);
                         console.log("invoice = startInvoice;\n");
                         invoice = startInvoice;
                     });
@@ -59,8 +55,8 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        console.log("assert.equal(\"Preparation\", invoice['status']);\n");
-                        assert.equal("Preparation", invoice['status']);
+                        console.log("assert.equal(\"Preparation\", invoice.status);\n");
+                        assert.equal("Preparation", invoice.status);
                     });
                 }).then(function() {
                     return Q().then(function() {
@@ -70,8 +66,8 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                 });
             }).then(function() {
                 return Q().then(function() {
-                    console.log("assert.equal(\"Invoiced\", invoice['status']);\n");
-                    assert.equal("Invoiced", invoice['status']);
+                    console.log("assert.equal(\"Invoiced\", invoice.status);\n");
+                    assert.equal("Invoiced", invoice.status);
                 });
             });
         };
@@ -87,11 +83,9 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                         console.log("return Examples.client();");
                         return Examples.client();
                     }).then(function(client) {
-                        console.log(client);
                         console.log("return client.startInvoice();");
                         return client.startInvoice();
                     }).then(function(startInvoice) {
-                        console.log(startInvoice);
                         console.log("invoice = startInvoice;\n");
                         invoice = startInvoice;
                     });
@@ -100,15 +94,12 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                         console.log("return Q.npost(Client, 'findOne', [ ({ _id : invoice.client }) ]);");
                         return Q.npost(Client, 'findOne', [ ({ _id : invoice.client }) ]);
                     }).then(function(client) {
-                        console.log(client);
                         console.log("return client.newTask(\"Some task\");");
                         return client.newTask("Some task");
                     }).then(function(newTask) {
-                        console.log(newTask);
                         console.log("return newTask.addWork(1);");
                         return newTask.addWork(1);
                     }).then(function(addWork) {
-                        console.log(addWork);
                         console.log("return addWork.submit(invoice);");
                         return addWork.submit(invoice);
                     });
@@ -125,8 +116,8 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                 });
             }).then(function() {
                 return Q().then(function() {
-                    console.log("assert.equal(\"Received\", invoice['status']);\n");
-                    assert.equal("Received", invoice['status']);
+                    console.log("assert.equal(\"Received\", invoice.status);\n");
+                    assert.equal("Received", invoice.status);
                 });
             });
         };
@@ -145,7 +136,6 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                             console.log("return Examples.task();");
                             return Examples.task();
                         }).then(function(task) {
-                            console.log(task);
                             console.log("task = task;\n");
                             task = task;
                         });
@@ -154,11 +144,9 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                             console.log("return Q.npost(Client, 'findOne', [ ({ _id : task.client }) ]);");
                             return Q.npost(Client, 'findOne', [ ({ _id : task.client }) ]);
                         }).then(function(client) {
-                            console.log(client);
                             console.log("return client.startInvoice();");
                             return client.startInvoice();
                         }).then(function(startInvoice) {
-                            console.log(startInvoice);
                             console.log("invoice = startInvoice;\n");
                             invoice = startInvoice;
                         });
@@ -167,7 +155,6 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                             console.log("return task.addWork(1);");
                             return task.addWork(1);
                         }).then(function(addWork) {
-                            console.log(addWork);
                             console.log("return addWork.submit(invoice);");
                             return addWork.submit(invoice);
                         });
@@ -182,7 +169,6 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                         console.log("return task.addWork(2);");
                         return task.addWork(2);
                     }).then(function(addWork) {
-                        console.log(addWork);
                         console.log("return addWork.submit(invoice);");
                         return addWork.submit(invoice);
                     });
@@ -202,11 +188,9 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                     console.log("return Examples.client();");
                     return Examples.client();
                 }).then(function(client) {
-                    console.log(client);
                     console.log("return client.startInvoice();");
                     return client.startInvoice();
                 }).then(function(startInvoice) {
-                    console.log(startInvoice);
                     console.log("return startInvoice.issue();");
                     return startInvoice.issue();
                 });

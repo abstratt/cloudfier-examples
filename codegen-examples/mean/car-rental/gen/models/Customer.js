@@ -20,13 +20,15 @@ var customerSchema = new Schema({
         "default" : []
     }]
 });
+//            customerSchema.set('toObject', { getters: true });
+
 
 /*************************** ACTIONS ***************************/
 
 customerSchema.methods.rent = function (car) {
     var rental;
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me, rental] */Q().then(function() {
         return Q().then(function() {
             console.log("rental = new Rental();\n");
             rental = new Rental();
@@ -48,7 +50,7 @@ customerSchema.methods.rent = function (car) {
             console.log("car.carRented();\n");
             car.carRented();
         });
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
@@ -56,22 +58,31 @@ customerSchema.methods.rent = function (car) {
             Q().then(function() {
                 return Q.npost(rental, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 
 customerSchema.methods.finishRental = function () {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         return Q().then(function() {
             console.log("return me.getCurrentRental();");
             return me.getCurrentRental();
         }).then(function(currentRental) {
-            console.log(currentRental);
             console.log("return Q.npost(Car, 'findOne', [ ({ _id : currentRental.car }) ]);");
             return Q.npost(Car, 'findOne', [ ({ _id : currentRental.car }) ]);
         }).then(function(car) {
-            console.log(car);
             console.log("car.carReturned();\n");
             car.carReturned();
         });
@@ -80,17 +91,27 @@ customerSchema.methods.finishRental = function () {
             console.log("return me.getCurrentRental();");
             return me.getCurrentRental();
         }).then(function(currentRental) {
-            console.log(currentRental);
-            console.log("currentRental.finish();\n");
-            currentRental.finish();
+            console.log("return currentRental.finish();");
+            return currentRental.finish();
         });
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 /*************************** DERIVED PROPERTIES ****************/
 
@@ -117,7 +138,6 @@ customerSchema.methods.getCurrentRental = function () {
         console.log("return Rental.currentForCustomer(me);");
         return Rental.currentForCustomer(me);
     }).then(function(currentForCustomer) {
-        console.log(currentForCustomer);
         console.log("return currentForCustomer;\n");
         return currentForCustomer;
     });

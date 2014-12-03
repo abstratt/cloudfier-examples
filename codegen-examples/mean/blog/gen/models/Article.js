@@ -47,6 +47,8 @@ var articleSchema = new Schema({
         }
     }]
 });
+//            articleSchema.set('toObject', { getters: true });
+
 
 
 // declare model on the schema

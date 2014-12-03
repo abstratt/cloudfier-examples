@@ -38,6 +38,8 @@ var serviceSchema = new Schema({
         ref : "AutoMechanic"
     }
 });
+//            serviceSchema.set('toObject', { getters: true });
+
 /*************************** INVARIANTS ***************************/
 
 
@@ -45,16 +47,15 @@ var serviceSchema = new Schema({
 
 serviceSchema.statics.newService = function (carToService, description, estimate) {
     var s;
-    var me = this;
-    return Q().then(function() {
+    return /* Working set: [s] */Q().then(function() {
         return Q().then(function() {
             console.log("s = new Service();\n");
             s = new Service();
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("s['estimatedReady'] = new Date(s['bookedOn'] + estimate);\n");
-            s['estimatedReady'] = new Date(s['bookedOn'] + estimate);
+            console.log("s['estimatedReady'] = new Date(s.bookedOn + estimate);\n");
+            s['estimatedReady'] = new Date(s.bookedOn + estimate);
         });
     }).then(function() {
         return Q().then(function() {
@@ -69,20 +70,17 @@ serviceSchema.statics.newService = function (carToService, description, estimate
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("return Q.npost(s, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
-            return Q.npost(s, 'save', [  ]).then(function(saveResult) {
-                return saveResult[0];
-            });
+            console.log("return s;\n");
+            return s;
         });
-    }).then(function() { 
+    }).then(function(__result__) {
         return Q.all([
-            Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
-            }),
             Q().then(function() {
                 return Q.npost(s, 'save', [  ]);
             })
-        ]);
+        ]).spread(function() {
+            return __result__;    
+        });
     });
 };
 
@@ -97,16 +95,27 @@ serviceSchema.methods.cancel = function () {
  */
 serviceSchema.methods.start = function () {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         console.log(";\n");
         ;
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 
 /**
@@ -114,16 +123,27 @@ serviceSchema.methods.start = function () {
  */
 serviceSchema.methods.complete = function () {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         console.log(";\n");
         ;
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 
 /**
@@ -131,17 +151,28 @@ serviceSchema.methods.complete = function () {
  */
 serviceSchema.methods.assignTo = function (technician) {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         console.log("me.technician = technician._id;\ntechnician.services.push(me._id);\n");
         me.technician = technician._id;
         technician.services.push(me._id);
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 
 /**
@@ -149,22 +180,32 @@ serviceSchema.methods.assignTo = function (technician) {
  */
 serviceSchema.methods.transfer = function (mechanic) {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         console.log("me.technician = mechanic._id;\nmechanic.services.push(me._id);\n");
         me.technician = mechanic._id;
         mechanic.services.push(me._id);
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 /*************************** QUERIES ***************************/
 
 serviceSchema.statics.byStatus = function (services, toMatch) {
-    var me = this;
     return Q().then(function() {
         console.log("return Q.npost(services.where({ status : toMatch }), 'exec', [  ])\n;\n");
         return Q.npost(services.where({ status : toMatch }), 'exec', [  ])
@@ -174,11 +215,11 @@ serviceSchema.statics.byStatus = function (services, toMatch) {
 /*************************** DERIVED PROPERTIES ****************/
 
 serviceSchema.virtual('pending').get(function () {
-    return this['status'] == "Booked" || this['status'] == "InProgress";
+    return this.status == "Booked" || this.status == "InProgress";
 });
 
 serviceSchema.virtual('estimatedDays').get(function () {
-    return (this['estimatedReady'] - this['bookedOn']) / (1000*60*60*24);
+    return (this.estimatedReady - this.bookedOn) / (1000*60*60*24);
 });
 
 serviceSchema.virtual('assigned').get(function () {
@@ -198,7 +239,7 @@ serviceSchema.virtual('assigned').get(function () {
 });
 /*************************** STATE MACHINE ********************/
 serviceSchema.methods.handleEvent = function (event) {
-    console.log("started handleEvent("+ event+"): "+ this);
+    console.log("started handleEvent("+ event+")");
     switch (event) {
         case 'cancel' :
             if (this.status == 'Booked') {

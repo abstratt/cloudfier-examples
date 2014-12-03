@@ -26,6 +26,8 @@ var projectSchema = new Schema({
         "default" : []
     }]
 });
+//            projectSchema.set('toObject', { getters: true });
+
 
 
 // declare model on the schema

@@ -39,21 +39,34 @@ var todoSchema = new Schema({
         }
     }]
 });
+//            todoSchema.set('toObject', { getters: true });
+
 
 /*************************** ACTIONS ***************************/
 
 todoSchema.methods.complete = function () {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         console.log("me['status'] = \"Done\";\n");
         me['status'] = "Done";
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 
 // declare model on the schema

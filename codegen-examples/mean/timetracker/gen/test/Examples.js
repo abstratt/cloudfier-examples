@@ -8,8 +8,7 @@ var Invoice = require('../models/Invoice.js');
 var Examples = {
     clientWithName : function(name) {
         var client;
-        var me = this;
-        return Q().then(function() {
+        return /* Working set: [client] */Q().then(function() {
             return Q().then(function() {
                 console.log("client = new Client();\n");
                 client = new Client();
@@ -21,30 +20,31 @@ var Examples = {
             });
         }).then(function() {
             return Q().then(function() {
-                console.log("return Q.npost(client, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
-                return Q.npost(client, 'save', [  ]).then(function(saveResult) {
-                    return saveResult[0];
-                });
+                console.log("return client;\n");
+                return client;
+            });
+        }).then(function(__result__) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(client, 'save', [  ]);
+                })
+            ]).spread(function() {
+                return __result__;    
             });
         });
     },
     client : function() {
-        var me = this;
         return Q().then(function() {
             console.log("return Examples.clientWithName(\"New Client\");");
             return Examples.clientWithName("New Client");
         }).then(function(clientWithName) {
-            console.log(clientWithName);
-            console.log("return Q.npost(clientWithName, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
-            return Q.npost(clientWithName, 'save', [  ]).then(function(saveResult) {
-                return saveResult[0];
-            });
+            console.log("return clientWithName;\n");
+            return clientWithName;
         });
     },
     taskWithName : function(description, client) {
         var task;
-        var me = this;
-        return Q().then(function() {
+        return /* Working set: [task] */Q().then(function() {
             return Q().then(function() {
                 console.log("task = new Task();\n");
                 task = new Task();
@@ -62,28 +62,29 @@ var Examples = {
             });
         }).then(function() {
             return Q().then(function() {
-                console.log("return Q.npost(task, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
-                return Q.npost(task, 'save', [  ]).then(function(saveResult) {
-                    return saveResult[0];
-                });
+                console.log("return task;\n");
+                return task;
+            });
+        }).then(function(__result__) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(task, 'save', [  ]);
+                })
+            ]).spread(function() {
+                return __result__;    
             });
         });
     },
     task : function() {
-        var me = this;
         return Q().then(function() {
             console.log("return Examples.client();");
             return Examples.client();
         }).then(function(client) {
-            console.log(client);
             console.log("return Examples.taskWithName(\"New Task\", client);");
             return Examples.taskWithName("New Task", client);
         }).then(function(taskWithName) {
-            console.log(taskWithName);
-            console.log("return Q.npost(taskWithName, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
-            return Q.npost(taskWithName, 'save', [  ]).then(function(saveResult) {
-                return saveResult[0];
-            });
+            console.log("return taskWithName;\n");
+            return taskWithName;
         });
     }
 };

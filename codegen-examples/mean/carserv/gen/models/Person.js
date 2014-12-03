@@ -25,11 +25,13 @@ var personSchema = new Schema({
         "default" : null
     }
 });
+//            personSchema.set('toObject', { getters: true });
+
 
 /*************************** DERIVED PROPERTIES ****************/
 
 personSchema.virtual('fullName').get(function () {
-    return this['firstName'] + " " + this['lastName'];
+    return this.firstName + " " + this.lastName;
 });
 
 // declare model on the schema

@@ -36,13 +36,15 @@ var orderSchema = new Schema({
         }
     }]
 });
+//            orderSchema.set('toObject', { getters: true });
+
 
 /*************************** ACTIONS ***************************/
 
 orderSchema.methods.addItem = function (product, quantity) {
     var i;
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me, i] */Q().then(function() {
         return Q().then(function() {
             console.log("i = new OrderDetail();\n");
             i = new OrderDetail();
@@ -64,7 +66,7 @@ orderSchema.methods.addItem = function (product, quantity) {
             i.order = me._id;
             me.items.push(i._id);
         });
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
@@ -72,8 +74,19 @@ orderSchema.methods.addItem = function (product, quantity) {
             Q().then(function() {
                 return Q.npost(i, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 
 orderSchema.methods.complete = function () {
@@ -89,7 +102,6 @@ orderSchema.virtual('orderWeightTotal').get(function () {
         console.log("return me.computeWeightTotal();");
         return me.computeWeightTotal();
     }).then(function(computeWeightTotal) {
-        console.log(computeWeightTotal);
         console.log("return computeWeightTotal;\n");
         return computeWeightTotal;
     });
@@ -101,7 +113,6 @@ orderSchema.virtual('orderTotal').get(function () {
         console.log("return me.computeOrderTotal();");
         return me.computeOrderTotal();
     }).then(function(computeOrderTotal) {
-        console.log(computeOrderTotal);
         console.log("return computeOrderTotal;\n");
         return computeOrderTotal;
     });
@@ -127,7 +138,7 @@ orderSchema.methods.computeWeightTotal = function () {
 };
 /*************************** STATE MACHINE ********************/
 orderSchema.methods.handleEvent = function (event) {
-    console.log("started handleEvent("+ event+"): "+ this);
+    console.log("started handleEvent("+ event+")");
     switch (event) {
         case 'process' :
             if (this.orderStatus == 'New') {

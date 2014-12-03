@@ -35,14 +35,15 @@ var customerSchema = new Schema({
         "default" : []
     }]
 });
+//            customerSchema.set('toObject', { getters: true });
+
 
 /*************************** QUERIES ***************************/
 
 customerSchema.statics.findByName = function (firstName, lastName) {
-    var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(me.model('Customer').find().where({\n    $or : [ \n        {\n            $eq : [ \n                firstName,\n                firstName\n            ]\n        },\n        {\n            $eq : [ \n                lastName,\n                lastName\n            ]\n        }\n    ]\n}), 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
-        return Q.npost(me.model('Customer').find().where({
+        console.log("return mongoose.model('Customer').find().where({\n    $or : [ \n        {\n            $eq : [ \n                firstName,\n                firstName\n            ]\n        },\n        {\n            $eq : [ \n                lastName,\n                lastName\n            ]\n        }\n    ]\n});\n");
+        return mongoose.model('Customer').find().where({
             $or : [ 
                 {
                     $eq : [ 
@@ -57,17 +58,14 @@ customerSchema.statics.findByName = function (firstName, lastName) {
                     ]
                 }
             ]
-        }), 'save', [  ]).then(function(saveResult) {
-            return saveResult[0];
         });
     });
 };
 
 customerSchema.statics.vipCustomers = function () {
-    var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(me.model('Customer').find().where({\n    $gte : [ \n        {\n            /*unknown:size*/size : [ \n                cars,\n                true\n            ]\n        },\n        2\n    ]\n}), 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
-        return Q.npost(me.model('Customer').find().where({
+        console.log("return mongoose.model('Customer').find().where({\n    $gte : [ \n        {\n            /*unknown:size*/size : [ \n                cars,\n                true\n            ]\n        },\n        2\n    ]\n});\n");
+        return mongoose.model('Customer').find().where({
             $gte : [ 
                 {
                     /*unknown:size*/size : [ 
@@ -77,15 +75,13 @@ customerSchema.statics.vipCustomers = function () {
                 },
                 2
             ]
-        }), 'save', [  ]).then(function(saveResult) {
-            return saveResult[0];
         });
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 personSchema.virtual('fullName').get(function () {
-    return this['firstName'] + " " + this['lastName'];
+    return this.firstName + " " + this.lastName;
 });
 
 /**
@@ -97,7 +93,6 @@ customerSchema.virtual('vip').get(function () {
         console.log("return Q.npost(Car, 'find', [ ({ owner : me._id }) ]);");
         return Q.npost(Car, 'find', [ ({ owner : me._id }) ]);
     }).then(function(cars) {
-        console.log(cars);
         console.log("return cars.length >= 2;\n");
         return cars.length >= 2;
     });
@@ -110,7 +105,6 @@ customerSchema.methods.getPendingServices = function () {
         console.log("return Q.npost(Car, 'find', [ ({ owner : me._id }) ]);");
         return Q.npost(Car, 'find', [ ({ owner : me._id }) ]);
     }).then(function(cars) {
-        console.log(cars);
         console.log("return /*TBD*/reduce;\n");
         return /*TBD*/reduce;
     });
@@ -122,7 +116,6 @@ customerSchema.methods.getCompletedServices = function () {
         console.log("return Q.npost(Car, 'find', [ ({ owner : me._id }) ]);");
         return Q.npost(Car, 'find', [ ({ owner : me._id }) ]);
     }).then(function(cars) {
-        console.log(cars);
         console.log("return /*TBD*/reduce;\n");
         return /*TBD*/reduce;
     });

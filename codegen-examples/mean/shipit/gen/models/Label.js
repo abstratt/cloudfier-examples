@@ -19,6 +19,8 @@ var labelSchema = new Schema({
         "default" : []
     }]
 });
+//            labelSchema.set('toObject', { getters: true });
+
 
 
 // declare model on the schema

@@ -10,8 +10,7 @@ var Customer = require('../models/Customer.js');
 var Examples = {
     newMake : function() {
         var make;
-        var me = this;
-        return Q().then(function() {
+        return /* Working set: [make] */Q().then(function() {
             return Q().then(function() {
                 console.log("make = new Make();\n");
                 make = new Make();
@@ -23,17 +22,22 @@ var Examples = {
             });
         }).then(function() {
             return Q().then(function() {
-                console.log("return Q.npost(make, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
-                return Q.npost(make, 'save', [  ]).then(function(saveResult) {
-                    return saveResult[0];
-                });
+                console.log("return make;\n");
+                return make;
+            });
+        }).then(function(__result__) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(make, 'save', [  ]);
+                })
+            ]).spread(function() {
+                return __result__;    
             });
         });
     },
     newModel : function() {
         var carModel;
-        var me = this;
-        return Q().then(function() {
+        return /* Working set: [carModel] */Q().then(function() {
             return Q().then(function() {
                 console.log("carModel = new Model();\n");
                 carModel = new Model();
@@ -48,24 +52,28 @@ var Examples = {
                 console.log("return Examples.newMake();");
                 return Examples.newMake();
             }).then(function(newMake) {
-                console.log(newMake);
                 console.log("carModel.make = newMake._id;\nnewMake.models.push(carModel._id);\n");
                 carModel.make = newMake._id;
                 newMake.models.push(carModel._id);
             });
         }).then(function() {
             return Q().then(function() {
-                console.log("return Q.npost(carModel, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
-                return Q.npost(carModel, 'save', [  ]).then(function(saveResult) {
-                    return saveResult[0];
-                });
+                console.log("return carModel;\n");
+                return carModel;
+            });
+        }).then(function(__result__) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(carModel, 'save', [  ]);
+                })
+            ]).spread(function() {
+                return __result__;    
             });
         });
     },
     newCar : function() {
         var car;
-        var me = this;
-        return Q().then(function() {
+        return /* Working set: [car] */Q().then(function() {
             return Q().then(function() {
                 console.log("car = new Car();\n");
                 car = new Car();
@@ -95,24 +103,28 @@ var Examples = {
                 console.log("return Examples.newModel();");
                 return Examples.newModel();
             }).then(function(newModel) {
-                console.log(newModel);
                 console.log("car.model = newModel._id\n;\n");
                 car.model = newModel._id
                 ;
             });
         }).then(function() {
             return Q().then(function() {
-                console.log("return Q.npost(car, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
-                return Q.npost(car, 'save', [  ]).then(function(saveResult) {
-                    return saveResult[0];
-                });
+                console.log("return car;\n");
+                return car;
+            });
+        }).then(function(__result__) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(car, 'save', [  ]);
+                })
+            ]).spread(function() {
+                return __result__;    
             });
         });
     },
     newCustomer : function() {
         var customer;
-        var me = this;
-        return Q().then(function() {
+        return /* Working set: [customer] */Q().then(function() {
             return Q().then(function() {
                 console.log("customer = new Customer();\n");
                 customer = new Customer();
@@ -124,10 +136,16 @@ var Examples = {
             });
         }).then(function() {
             return Q().then(function() {
-                console.log("return Q.npost(customer, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
-                return Q.npost(customer, 'save', [  ]).then(function(saveResult) {
-                    return saveResult[0];
-                });
+                console.log("return customer;\n");
+                return customer;
+            });
+        }).then(function(__result__) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(customer, 'save', [  ]);
+                })
+            ]).spread(function() {
+                return __result__;    
             });
         });
     }

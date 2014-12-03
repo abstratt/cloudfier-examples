@@ -41,6 +41,8 @@ var carSchema = new Schema({
         "default" : []
     }]
 });
+//            carSchema.set('toObject', { getters: true });
+
 /*************************** INVARIANTS ***************************/
 
 
@@ -51,30 +53,52 @@ var carSchema = new Schema({
 
 carSchema.methods.startRepair = function () {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         console.log("me.repairStarted();\n");
         me.repairStarted();
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 
 carSchema.methods.finishRepair = function () {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         console.log("me.repairFinished();\n");
         me.repairFinished();
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 /*************************** DERIVED PROPERTIES ****************/
 
@@ -84,26 +108,24 @@ carSchema.virtual('description').get(function () {
         console.log("return Q.npost(Model, 'findOne', [ ({ _id : me.model }) ]);");
         return Q.npost(Model, 'findOne', [ ({ _id : me.model }) ]);
     }).then(function(model) {
-        console.log(model);
-        console.log("return model['description'];");
-        return model['description'];
+        console.log("return model.description;");
+        return model.description;
     }).then(function(description) {
-        console.log(description);
-        console.log("return description + \" - \" + me['plate'];\n");
-        return description + " - " + me['plate'];
+        console.log("return description + \" - \" + me.plate;\n");
+        return description + " - " + me.plate;
     });
 });
 
 carSchema.virtual('available').get(function () {
-    return this['status'] == "Available";
+    return this.status == "Available";
 });
 
 carSchema.virtual('underRepair').get(function () {
-    return this['status'] == "UnderRepair";
+    return this.status == "UnderRepair";
 });
 
 carSchema.virtual('rented').get(function () {
-    return this['status'] == "Rented";
+    return this.status == "Rented";
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
@@ -113,14 +135,13 @@ carSchema.methods.getCurrentRental = function () {
         console.log("return Rental.currentForCar(me);");
         return Rental.currentForCar(me);
     }).then(function(currentForCar) {
-        console.log(currentForCar);
         console.log("return currentForCar;\n");
         return currentForCar;
     });
 };
 /*************************** STATE MACHINE ********************/
 carSchema.methods.handleEvent = function (event) {
-    console.log("started handleEvent("+ event+"): "+ this);
+    console.log("started handleEvent("+ event+")");
     switch (event) {
         case 'CarRented' :
             if (this.status == 'Available') {

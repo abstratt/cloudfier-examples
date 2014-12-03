@@ -27,6 +27,8 @@ var taxiSchema = new Schema({
         "default" : []
     }]
 });
+//            taxiSchema.set('toObject', { getters: true });
+
 
 /*************************** ACTIONS ***************************/
 
@@ -35,20 +37,30 @@ var taxiSchema = new Schema({
  */
 taxiSchema.methods.charge = function (date) {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         console.log("return Q.npost(Driver, 'find', [ ({ taxi : me._id }) ]);");
         return Q.npost(Driver, 'find', [ ({ taxi : me._id }) ]);
     }).then(function(drivers) {
-        console.log(drivers);
         console.log("/*TBD*/forEach;\n");
         /*TBD*/forEach;
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 /*************************** DERIVED PROPERTIES ****************/
 
@@ -58,7 +70,6 @@ taxiSchema.virtual('driverCount').get(function () {
         console.log("return Q.npost(Driver, 'find', [ ({ taxi : me._id }) ]);");
         return Q.npost(Driver, 'find', [ ({ taxi : me._id }) ]);
     }).then(function(drivers) {
-        console.log(drivers);
         console.log("return drivers.length;\n");
         return drivers.length;
     });
@@ -72,21 +83,20 @@ taxiSchema.virtual('full').get(function () {
             return Q.npost(Shift, 'findOne', [ ({ _id : me.shift }) ]);
         }),
         Q().then(function() {
-            console.log("return me['driverCount'];");
-            return me['driverCount'];
+            console.log("return me.driverCount;");
+            return me.driverCount;
         })
     ]).spread(function(shift, driverCount) {
-        return driverCount >= shift['shiftsPerDay'];
+        return driverCount >= shift.shiftsPerDay;
     });
 });
 
 taxiSchema.virtual('booked').get(function () {
     var me = this;
     return Q().then(function() {
-        console.log("return me['driverCount'];");
-        return me['driverCount'];
+        console.log("return me.driverCount;");
+        return me.driverCount;
     }).then(function(driverCount) {
-        console.log(driverCount);
         console.log("return driverCount > 0;\n");
         return driverCount > 0;
     });
@@ -99,7 +109,6 @@ taxiSchema.methods.getPendingCharges = function () {
         console.log("return Charge.byTaxi(me);");
         return Charge.byTaxi(me);
     }).then(function(byTaxi) {
-        console.log(byTaxi);
         console.log("return byTaxi.where({\n    $ne : [ \n        { status : null },\n        true\n    ]\n});\n");
         return byTaxi.where({
             $ne : [ 

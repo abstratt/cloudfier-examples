@@ -16,13 +16,14 @@ var categorySchema = new Schema({
         "default" : null
     }
 });
+//            categorySchema.set('toObject', { getters: true });
+
 
 /*************************** ACTIONS ***************************/
 
 categorySchema.statics.newCategory = function (name) {
     var newCategory;
-    var me = this;
-    return Q().then(function() {
+    return /* Working set: [newCategory] */Q().then(function() {
         return Q().then(function() {
             console.log("newCategory = new Category();\n");
             newCategory = new Category();
@@ -34,20 +35,17 @@ categorySchema.statics.newCategory = function (name) {
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("return Q.npost(newCategory, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
-            return Q.npost(newCategory, 'save', [  ]).then(function(saveResult) {
-                return saveResult[0];
-            });
+            console.log("return newCategory;\n");
+            return newCategory;
         });
-    }).then(function() { 
+    }).then(function(__result__) {
         return Q.all([
-            Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
-            }),
             Q().then(function() {
                 return Q.npost(newCategory, 'save', [  ]);
             })
-        ]);
+        ]).spread(function() {
+            return __result__;    
+        });
     });
 };
 /*************************** DERIVED RELATIONSHIPS ****************/
@@ -58,7 +56,6 @@ categorySchema.methods.getExpensesInThisCategory = function () {
         console.log("return Expense.findExpensesByCategory(me);");
         return Expense.findExpensesByCategory(me);
     }).then(function(findExpensesByCategory) {
-        console.log(findExpensesByCategory);
         console.log("return findExpensesByCategory;\n");
         return findExpensesByCategory;
     });

@@ -29,14 +29,15 @@ var rentalSchema = new Schema({
         ref : "Customer"
     }
 });
+//            rentalSchema.set('toObject', { getters: true });
+
 
 /*************************** QUERIES ***************************/
 
 rentalSchema.statics.currentForCar = function (c) {
-    var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(me.model('Rental').find().where({\n    $and : [ \n        { car : c },\n        { returned : null }\n    ]\n}).findOne(), 'exec', [  ])\n;\n");
-        return Q.npost(me.model('Rental').find().where({
+        console.log("return Q.npost(mongoose.model('Rental').find().where({\n    $and : [ \n        { car : c },\n        { returned : null }\n    ]\n}).findOne(), 'exec', [  ])\n;\n");
+        return Q.npost(mongoose.model('Rental').find().where({
             $and : [ 
                 { car : c },
                 { returned : null }
@@ -47,10 +48,9 @@ rentalSchema.statics.currentForCar = function (c) {
 };
 
 rentalSchema.statics.currentForCustomer = function (c) {
-    var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(me.model('Rental').find().where({\n    $and : [ \n        { customer : c },\n        { returned : null }\n    ]\n}).findOne(), 'exec', [  ])\n;\n");
-        return Q.npost(me.model('Rental').find().where({
+        console.log("return Q.npost(mongoose.model('Rental').find().where({\n    $and : [ \n        { customer : c },\n        { returned : null }\n    ]\n}).findOne(), 'exec', [  ])\n;\n");
+        return Q.npost(mongoose.model('Rental').find().where({
             $and : [ 
                 { customer : c },
                 { returned : null }
@@ -61,19 +61,17 @@ rentalSchema.statics.currentForCustomer = function (c) {
 };
 
 rentalSchema.statics.inProgress = function () {
-    var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(me.model('Rental').find().where({ returned : null }), 'exec', [  ])\n;\n");
-        return Q.npost(me.model('Rental').find().where({ returned : null }), 'exec', [  ])
+        console.log("return Q.npost(mongoose.model('Rental').find().where({ returned : null }), 'exec', [  ])\n;\n");
+        return Q.npost(mongoose.model('Rental').find().where({ returned : null }), 'exec', [  ])
         ;
     });
 };
 
 rentalSchema.statics.all = function () {
-    var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(me.model('Rental').find(), 'exec', [  ])\n;\n");
-        return Q.npost(me.model('Rental').find(), 'exec', [  ])
+        console.log("return Q.npost(mongoose.model('Rental').find(), 'exec', [  ])\n;\n");
+        return Q.npost(mongoose.model('Rental').find(), 'exec', [  ])
         ;
     });
 };
@@ -85,27 +83,45 @@ rentalSchema.virtual('description').get(function () {
         console.log("return Q.npost(Car, 'findOne', [ ({ _id : me.car }) ]);");
         return Q.npost(Car, 'findOne', [ ({ _id : me.car }) ]);
     }).then(function(car) {
-        console.log(car);
         console.log("return Q.npost(Model, 'findOne', [ ({ _id : car.model }) ]);");
         return Q.npost(Model, 'findOne', [ ({ _id : car.model }) ]);
     }).then(function(model) {
-        console.log(model);
-        console.log("return model['description'];");
-        return model['description'];
+        console.log("return model.description;");
+        return model.description;
     }).then(function(description) {
-        console.log(description);
-        console.log("return description + \" on \" + me['started'];\n");
-        return description + " on " + me['started'];
+        console.log("return description + \" on \" + me.started;\n");
+        return description + " on " + me.started;
     });
 });
 
 rentalSchema.virtual('inProgress').get(function () {
-    return this['returned'] == null;
+    return this.returned == null;
 });
 /*************************** PRIVATE OPS ***********************/
 
 rentalSchema.methods.finish = function () {
-    this['returned'] = new Date();
+    var me = this;
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
+        console.log("me['returned'] = new Date();\n");
+        me['returned'] = new Date();
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 
 // declare model on the schema

@@ -35,6 +35,8 @@ var autoMechanicSchema = new Schema({
         "default" : []
     }]
 });
+//            autoMechanicSchema.set('toObject', { getters: true });
+
 
 /*************************** ACTIONS ***************************/
 
@@ -43,16 +45,27 @@ var autoMechanicSchema = new Schema({
  */
 autoMechanicSchema.methods.unassign = function () {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         console.log("return me.doUnassign();");
         return me.doUnassign();
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 
 /**
@@ -60,16 +73,27 @@ autoMechanicSchema.methods.unassign = function () {
  */
 autoMechanicSchema.methods.beginVacation = function () {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         console.log(";\n");
         ;
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 
 /**
@@ -80,25 +104,36 @@ autoMechanicSchema.methods.endVacation = function () {
 
 autoMechanicSchema.methods.retire = function () {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         console.log(";\n");
         ;
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 personSchema.virtual('fullName').get(function () {
-    return this['firstName'] + " " + this['lastName'];
+    return this.firstName + " " + this.lastName;
 });
 
 autoMechanicSchema.virtual('working').get(function () {
-    return this['status'] == "Working";
+    return this.status == "Working";
 });
 
 autoMechanicSchema.virtual('workInProgress').get(function () {
@@ -107,7 +142,6 @@ autoMechanicSchema.virtual('workInProgress').get(function () {
         console.log("return me.getCurrentServices();");
         return me.getCurrentServices();
     }).then(function(currentServices) {
-        console.log(currentServices);
         console.log("return !/*TBD*/isEmpty;\n");
         return !/*TBD*/isEmpty;
     });
@@ -119,7 +153,6 @@ autoMechanicSchema.virtual('workScheduled').get(function () {
         console.log("return me.getUpcomingServices();");
         return me.getUpcomingServices();
     }).then(function(upcomingServices) {
-        console.log(upcomingServices);
         console.log("return !/*TBD*/isEmpty;\n");
         return !/*TBD*/isEmpty;
     });
@@ -143,7 +176,6 @@ autoMechanicSchema.methods.getCurrentServices = function () {
     ]).spread(function(services, valueSpecificationAction) {
         return Service.byStatus(services, valueSpecificationAction);
     }).then(function(byStatus) {
-        console.log(byStatus);
         console.log("return byStatus;\n");
         return byStatus;
     });
@@ -166,7 +198,6 @@ autoMechanicSchema.methods.getUpcomingServices = function () {
     ]).spread(function(services, valueSpecificationAction) {
         return Service.byStatus(services, valueSpecificationAction);
     }).then(function(byStatus) {
-        console.log(byStatus);
         console.log("return byStatus;\n");
         return byStatus;
     });
@@ -175,18 +206,34 @@ autoMechanicSchema.methods.getUpcomingServices = function () {
 
 autoMechanicSchema.methods.doUnassign = function () {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         console.log("return me.getUpcomingServices();");
         return me.getUpcomingServices();
     }).then(function(upcomingServices) {
-        console.log(upcomingServices);
         console.log("/*TBD*/forEach;\n");
         /*TBD*/forEach;
-    });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 /*************************** STATE MACHINE ********************/
 autoMechanicSchema.methods.handleEvent = function (event) {
-    console.log("started handleEvent("+ event+"): "+ this);
+    console.log("started handleEvent("+ event+")");
     switch (event) {
         case 'beginVacation' :
             if (this.status == 'Working') {

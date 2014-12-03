@@ -22,6 +22,8 @@ var modelSchema = new Schema({
         required : true
     }
 });
+//            modelSchema.set('toObject', { getters: true });
+
 
 
 // declare model on the schema

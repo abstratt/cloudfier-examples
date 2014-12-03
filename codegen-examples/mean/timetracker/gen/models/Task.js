@@ -37,13 +37,15 @@ var taskSchema = new Schema({
         }
     }]
 });
+//            taskSchema.set('toObject', { getters: true });
+
 
 /*************************** ACTIONS ***************************/
 
 taskSchema.methods.addWork = function (units) {
     var newWork;
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me, newWork] */Q().then(function() {
         return Q().then(function() {
             console.log("newWork = new Work();\n");
             newWork = new Work();
@@ -61,12 +63,10 @@ taskSchema.methods.addWork = function (units) {
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("return Q.npost(newWork, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
-            return Q.npost(newWork, 'save', [  ]).then(function(saveResult) {
-                return saveResult[0];
-            });
+            console.log("return newWork;\n");
+            return newWork;
         });
-    }).then(function() { 
+    }).then(function(__result__) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
@@ -74,13 +74,24 @@ taskSchema.methods.addWork = function (units) {
             Q().then(function() {
                 return Q.npost(newWork, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            return __result__;    
+        });
+    }).then(function(__result__) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            return __result__;    
+        });
+    })
+    ;
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 taskSchema.virtual('unitsReported').get(function () {
-    return this.countUnits(this['reported']);
+    return this.countUnits(this.reported);
 });
 
 taskSchema.virtual('unitsToInvoice').get(function () {
@@ -103,8 +114,8 @@ taskSchema.virtual('unitsToInvoice').get(function () {
 taskSchema.methods.getToInvoice = function () {
     var me = this;
     return Q().then(function() {
-        console.log("return me['reported'].where({\n    $ne : [ \n        {\n            $ne : [ \n                { invoice : null },\n                true\n            ]\n        },\n        true\n    ]\n});\n");
-        return me['reported'].where({
+        console.log("return me.reported.where({\n    $ne : [ \n        {\n            $ne : [ \n                { invoice : null },\n                true\n            ]\n        },\n        true\n    ]\n});\n");
+        return me.reported.where({
             $ne : [ 
                 {
                     $ne : [ 

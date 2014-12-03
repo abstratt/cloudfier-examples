@@ -96,6 +96,8 @@ var issueSchema = new Schema({
         }
     }]
 });
+//            issueSchema.set('toObject', { getters: true });
+
 
 /*************************** ACTIONS ***************************/
 
@@ -104,8 +106,7 @@ var issueSchema = new Schema({
  */
 issueSchema.statics.reportIssue = function (project, summary, description, severity) {
     var newIssue;
-    var me = this;
-    return Q().then(function() {
+    return /* Working set: [newIssue] */Q().then(function() {
         return Q().then(function() {
             console.log("newIssue = new Issue();\n");
             newIssue = new Issue();
@@ -127,9 +128,9 @@ issueSchema.statics.reportIssue = function (project, summary, description, sever
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("newIssue.reporter = User['current']._id;\nUser['current'].issuesReportedByUser.push(newIssue._id);\n");
-            newIssue.reporter = User['current']._id;
-            User['current'].issuesReportedByUser.push(newIssue._id);
+            console.log("newIssue.reporter = User.current._id;\nUser.current.issuesReportedByUser.push(newIssue._id);\n");
+            newIssue.reporter = User.current._id;
+            User.current.issuesReportedByUser.push(newIssue._id);
         });
     }).then(function() {
         return Q().then(function() {
@@ -140,8 +141,8 @@ issueSchema.statics.reportIssue = function (project, summary, description, sever
     }).then(function() {
         return Q.all([
             Q().then(function() {
-                console.log("return newIssue['issueKey'];");
-                return newIssue['issueKey'];
+                console.log("return newIssue.issueKey;");
+                return newIssue.issueKey;
             }),
             Q().then(function() {
                 console.log("return summary;");
@@ -155,26 +156,24 @@ issueSchema.statics.reportIssue = function (project, summary, description, sever
                 console.log("return Q.npost(User, 'findOne', [ ({ _id : newIssue.reporter }) ]);");
                 return Q.npost(User, 'findOne', [ ({ _id : newIssue.reporter }) ]);
             }).then(function(reporter) {
-                console.log(reporter);
-                console.log("return reporter['email'];");
-                return reporter['email'];
+                console.log("return reporter.email;");
+                return reporter.email;
             }),
             Q().then(function() {
-                console.log("return newIssue['userNotifier'];");
-                return newIssue['userNotifier'];
+                console.log("return newIssue.userNotifier;");
+                return newIssue.userNotifier;
             })
         ]).spread(function(issueKey, Summary, Description, email, userNotifier) {
             userNotifier.issueReported(issueKey, Summary, Description, email);
         });
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
-            Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
-            }),
             Q().then(function() {
                 return Q.npost(newIssue, 'save', [  ]);
             })
-        ]);
+        ]).spread(function() {
+            /* no-result */    
+        });
     });
 };
 
@@ -183,17 +182,28 @@ issueSchema.statics.reportIssue = function (project, summary, description, sever
  */
 issueSchema.methods.release = function () {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         console.log("me.assignee = null._id;\nnull.issuesAssignedToUser.push(me._id);\n");
         me.assignee = null._id;
         null.issuesAssignedToUser.push(me._id);
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 
 /**
@@ -201,17 +211,28 @@ issueSchema.methods.release = function () {
  */
 issueSchema.methods.assign = function (newAssignee) {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         console.log("me.assignee = newAssignee._id;\nnewAssignee.issuesAssignedToUser.push(me._id);\n");
         me.assignee = newAssignee._id;
         newAssignee.issuesAssignedToUser.push(me._id);
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 
 /**
@@ -231,7 +252,7 @@ issueSchema.methods.start = function () {
  */
 issueSchema.methods.resolve = function (resolution) {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         return Q().then(function() {
             console.log("me['resolvedOn'] = new Date();\n");
             me['resolvedOn'] = new Date();
@@ -241,13 +262,24 @@ issueSchema.methods.resolve = function (resolution) {
             console.log("me['resolution'] = resolution;\n");
             me['resolution'] = resolution;
         });
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 
 /**
@@ -255,7 +287,7 @@ issueSchema.methods.resolve = function (resolution) {
  */
 issueSchema.methods.reopen = function (reason) {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         return Q().then(function() {
             console.log("me['resolvedOn'] = null;\n");
             me['resolvedOn'] = null;
@@ -266,24 +298,62 @@ issueSchema.methods.reopen = function (reason) {
             me['resolution'] = null;
         });
     }).then(function() {
-        return Q().then(function() {
-            return Q().then(function() {
+        return /* Working set: [me] */Q().then(function() {
+            return /* Working set: [me] */Q().then(function() {
                 console.log("return reason !== \"\";");
                 return reason !== "";
-            });
+            }).then(function(/*no-arg*/) {
+                return Q.all([
+                    Q().then(function() {
+                        return Q.npost(me, 'save', [  ]);
+                    })
+                ]).spread(function() {
+                    /* no-result */    
+                });
+            })
+            ;
         }).then(function() {
-            return Q().then(function() {
+            return /* Working set: [me] */Q().then(function() {
                 console.log("return me.comment(reason);");
                 return me.comment(reason);
+            }).then(function(/*no-arg*/) {
+                return Q.all([
+                    Q().then(function() {
+                        return Q.npost(me, 'save', [  ]);
+                    })
+                ]).spread(function() {
+                    /* no-result */    
+                });
+            })
+            ;
+        }).then(function(/*no-arg*/) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(me, 'save', [  ]);
+                })
+            ]).spread(function() {
+                /* no-result */    
             });
-        });
-    }).then(function() { 
+        })
+        ;
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 
 /**
@@ -291,61 +361,105 @@ issueSchema.methods.reopen = function (reason) {
  */
 issueSchema.methods.comment = function (text) {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         console.log("return me.addComment(text, null);");
         return me.addComment(text, null);
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 
 issueSchema.methods.addWatcher = function (userToAdd) {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         console.log("userToAdd.issuesWatched.push(me._id);\nme.watchers.push(userToAdd._id);\n");
         userToAdd.issuesWatched.push(me._id);
         me.watchers.push(userToAdd._id);
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 
 issueSchema.methods.vote = function () {
     var me = this;
-    return Q().then(function() {
-        console.log("User['current'].voted.push(me._id);\nme.voters.push(User['current']._id);\n");
-        User['current'].voted.push(me._id);
-        me.voters.push(User['current']._id);
-    }).then(function() { 
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
+        console.log("User.current.voted.push(me._id);\nme.voters.push(User.current._id);\n");
+        User.current.voted.push(me._id);
+        me.voters.push(User.current._id);
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 
 issueSchema.methods.withdrawVote = function () {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         console.log("me.voters = null;\nme = null;\n");
         me.voters = null;
         me = null;
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 
 /**
@@ -353,17 +467,28 @@ issueSchema.methods.withdrawVote = function () {
  */
 issueSchema.methods.assignToMe = function () {
     var me = this;
-    return Q().then(function() {
-        console.log("me.assignee = User['current']._id;\nUser['current'].issuesAssignedToUser.push(me._id);\n");
-        me.assignee = User['current']._id;
-        User['current'].issuesAssignedToUser.push(me._id);
-    }).then(function() { 
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
+        console.log("me.assignee = User.current._id;\nUser.current.issuesAssignedToUser.push(me._id);\n");
+        me.assignee = User.current._id;
+        User.current.issuesAssignedToUser.push(me._id);
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 
 /**
@@ -371,17 +496,28 @@ issueSchema.methods.assignToMe = function () {
  */
 issueSchema.methods.steal = function () {
     var me = this;
-    return Q().then(function() {
-        console.log("me.assignee = User['current']._id;\nUser['current'].issuesAssignedToUser.push(me._id);\n");
-        me.assignee = User['current']._id;
-        User['current'].issuesAssignedToUser.push(me._id);
-    }).then(function() { 
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
+        console.log("me.assignee = User.current._id;\nUser.current.issuesAssignedToUser.push(me._id);\n");
+        me.assignee = User.current._id;
+        User.current.issuesAssignedToUser.push(me._id);
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 
 /**
@@ -389,35 +525,43 @@ issueSchema.methods.steal = function () {
  */
 issueSchema.methods.verify = function () {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         console.log(";\n");
         ;
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 /*************************** QUERIES ***************************/
 
 issueSchema.statics.bySeverity = function (toMatch) {
-    var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(me.model('Issue').find().where({ severity : toMatch }), 'exec', [  ])\n;\n");
-        return Q.npost(me.model('Issue').find().where({ severity : toMatch }), 'exec', [  ])
+        console.log("return Q.npost(mongoose.model('Issue').find().where({ severity : toMatch }), 'exec', [  ])\n;\n");
+        return Q.npost(mongoose.model('Issue').find().where({ severity : toMatch }), 'exec', [  ])
         ;
     });
 };
 
 issueSchema.statics.byStatus = function (toMatch) {
-    var me = this;
     return Q().then(function() {
-        console.log("return Issue.filterByStatus(me.model('Issue').find(), toMatch);");
-        return Issue.filterByStatus(me.model('Issue').find(), toMatch);
+        console.log("return Issue.filterByStatus(mongoose.model('Issue').find(), toMatch);");
+        return Issue.filterByStatus(mongoose.model('Issue').find(), toMatch);
     }).then(function(filterByStatus) {
-        console.log(filterByStatus);
         console.log("return Q.npost(filterByStatus, 'exec', [  ])\n;\n");
         return Q.npost(filterByStatus, 'exec', [  ])
         ;
@@ -432,9 +576,8 @@ issueSchema.virtual('issueKey').get(function () {
         console.log("return Q.npost(Project, 'findOne', [ ({ _id : me.project }) ]);");
         return Q.npost(Project, 'findOne', [ ({ _id : me.project }) ]);
     }).then(function(project) {
-        console.log(project);
-        console.log("return project['token'] + \"-\" + me['issueId'];\n");
-        return project['token'] + "-" + me['issueId'];
+        console.log("return project.token + \"-\" + me.issueId;\n");
+        return project.token + "-" + me.issueId;
     });
 });
 
@@ -444,18 +587,17 @@ issueSchema.virtual('votes').get(function () {
         console.log("return Q.npost(User, 'find', [ ({ voted : me._id }) ]);");
         return Q.npost(User, 'find', [ ({ voted : me._id }) ]);
     }).then(function(readLinkAction) {
-        console.log(readLinkAction);
         console.log("return readLinkAction.length;\n");
         return readLinkAction.length;
     });
 });
 
 issueSchema.virtual('commentCount').get(function () {
-    return this['comments'].length;
+    return this.comments.length;
 });
 
 issueSchema.virtual('waitingFor').get(function () {
-    return "" + (this.referenceDate() - this['reportedOn']) / (1000*60*60*24) + " day(s)";
+    return "" + (this.referenceDate() - this.reportedOn) / (1000*60*60*24) + " day(s)";
 });
 
 issueSchema.virtual('mine').get(function () {
@@ -464,9 +606,8 @@ issueSchema.virtual('mine').get(function () {
         console.log("return Q.npost(User, 'findOne', [ ({ _id : me.assignee }) ]);");
         return Q.npost(User, 'findOne', [ ({ _id : me.assignee }) ]);
     }).then(function(assignee) {
-        console.log(assignee);
-        console.log("return User['current'] == assignee;\n");
-        return User['current'] == assignee;
+        console.log("return User.current == assignee;\n");
+        return User.current == assignee;
     });
 });
 
@@ -488,17 +629,16 @@ issueSchema.virtual('free').get(function () {
 /*************************** PRIVATE OPS ***********************/
 
 issueSchema.methods.referenceDate = function () {
-    if (this['resolvedOn'] == null) {
+    if (this.resolvedOn == null) {
         return Q.npost(new Date(), 'exec', [  ])
         ;
     } else  {
-        return Q.npost(this['resolvedOn'], 'exec', [  ])
+        return Q.npost(this.resolvedOn, 'exec', [  ])
         ;
     }
 };
 
 issueSchema.statics.filterByStatus = function (issues, toMatch) {
-    var me = this;
     return Q().then(function() {
         console.log("return Q.npost(issues.where({ status : toMatch }), 'exec', [  ])\n;\n");
         return Q.npost(issues.where({ status : toMatch }), 'exec', [  ])
@@ -509,15 +649,15 @@ issueSchema.statics.filterByStatus = function (issues, toMatch) {
 issueSchema.methods.addComment = function (text, inReplyTo) {
     var comment;
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me, comment] */Q().then(function() {
         return Q().then(function() {
             console.log("comment = new Comment();\n");
             comment = new Comment();
         });
     }).then(function() {
         return Q().then(function() {
-            console.log("comment.user = User['current']._id\n;\n");
-            comment.user = User['current']._id
+            console.log("comment.user = User.current._id\n;\n");
+            comment.user = User.current._id
             ;
         });
     }).then(function() {
@@ -545,41 +685,59 @@ issueSchema.methods.addComment = function (text, inReplyTo) {
     }).then(function() {
         return Q.all([
             Q().then(function() {
-                console.log("return me['issueKey'];");
-                return me['issueKey'];
+                console.log("return me.issueKey;");
+                return me.issueKey;
             }),
             Q().then(function() {
                 console.log("return Q.npost(User, 'findOne', [ ({ _id : comment.user }) ]);");
                 return Q.npost(User, 'findOne', [ ({ _id : comment.user }) ]);
             }).then(function(user) {
-                console.log(user);
-                console.log("return user['email'];");
-                return user['email'];
+                console.log("return user.email;");
+                return user.email;
             }),
             Q().then(function() {
                 console.log("return Q.npost(User, 'findOne', [ ({ _id : me.reporter }) ]);");
                 return Q.npost(User, 'findOne', [ ({ _id : me.reporter }) ]);
             }).then(function(reporter) {
-                console.log(reporter);
-                console.log("return reporter['email'];");
-                return reporter['email'];
+                console.log("return reporter.email;");
+                return reporter.email;
             }),
             Q().then(function() {
                 console.log("return text;");
                 return text;
             }),
             Q().then(function() {
-                console.log("return me['userNotifier'];");
-                return me['userNotifier'];
+                console.log("return me.userNotifier;");
+                return me.userNotifier;
             })
         ]).spread(function(issueKey, email, email, Text, userNotifier) {
             userNotifier.commentAdded(issueKey, email, email, Text);
         });
-    });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            }),
+            Q().then(function() {
+                return Q.npost(comment, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 /*************************** STATE MACHINE ********************/
 issueSchema.methods.handleEvent = function (event) {
-    console.log("started handleEvent("+ event+"): "+ this);
+    console.log("started handleEvent("+ event+")");
     switch (event) {
         case 'resolve' :
             if (this.status == 'Open') {

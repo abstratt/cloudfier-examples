@@ -22,6 +22,8 @@ var userSchema = new Schema({
         "default" : []
     }]
 });
+//            userSchema.set('toObject', { getters: true });
+
 
 /*************************** ACTIONS ***************************/
 
@@ -31,7 +33,7 @@ var userSchema = new Schema({
 userSchema.methods.startMeetingOnBehalf = function (title, description, date) {
     var newMeeting;
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me, newMeeting] */Q().then(function() {
         return Q().then(function() {
             console.log("newMeeting = new Meeting();\n");
             newMeeting = new Meeting();
@@ -70,7 +72,7 @@ userSchema.methods.startMeetingOnBehalf = function (title, description, date) {
         ]).spread(function(organizer, NewMeeting) {
             return NewMeeting.addParticipant(organizer);
         });
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
@@ -78,8 +80,19 @@ userSchema.methods.startMeetingOnBehalf = function (title, description, date) {
             Q().then(function() {
                 return Q.npost(newMeeting, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 /*************************** DERIVED RELATIONSHIPS ****************/
 

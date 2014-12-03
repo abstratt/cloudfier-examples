@@ -43,26 +43,38 @@ var userSchema = new Schema({
         "default" : []
     }]
 });
+//            userSchema.set('toObject', { getters: true });
+
 
 /*************************** ACTIONS ***************************/
 
 userSchema.methods.promoteToCommitter = function () {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         console.log("me['kind'] = \"Committer\";\n");
         me['kind'] = "Committer";
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 /*************************** QUERIES ***************************/
 
 userSchema.statics.current = function () {
-    var me = this;
     return Q().then(function() {
         return Q().then(function() {
             console.log("return Q.npost(cls.getNamespace('currentUser'), 'exec', [  ])\n;\n");
@@ -79,7 +91,7 @@ userSchema.statics.current = function () {
 /*************************** DERIVED PROPERTIES ****************/
 
 userSchema.virtual('committer').get(function () {
-    return this['kind'] == "Committer";
+    return this.kind == "Committer";
 });
 /*************************** DERIVED RELATIONSHIPS ****************/
 
@@ -97,7 +109,6 @@ userSchema.methods.getIssuesCurrentlyInProgress = function () {
     ]).spread(function(issuesAssignedToUser, valueSpecificationAction) {
         return Issue.filterByStatus(issuesAssignedToUser, valueSpecificationAction);
     }).then(function(filterByStatus) {
-        console.log(filterByStatus);
         console.log("return filterByStatus;\n");
         return filterByStatus;
     });
@@ -117,7 +128,6 @@ userSchema.methods.getIssuesCurrentlyAssigned = function () {
     ]).spread(function(issuesAssignedToUser, valueSpecificationAction) {
         return Issue.filterByStatus(issuesAssignedToUser, valueSpecificationAction);
     }).then(function(filterByStatus) {
-        console.log(filterByStatus);
         console.log("return filterByStatus;\n");
         return filterByStatus;
     });

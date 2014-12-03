@@ -42,6 +42,8 @@ var chargeSchema = new Schema({
         ref : "Taxi"
     }
 });
+//            chargeSchema.set('toObject', { getters: true });
+
 
 /*************************** ACTIONS ***************************/
 
@@ -53,8 +55,7 @@ chargeSchema.methods.cancelPayment = function () {
 
 chargeSchema.statics.newCharge = function (taxi, payer, date) {
     var charge;
-    var me = this;
-    return Q().then(function() {
+    return /* Working set: [charge] */Q().then(function() {
         return Q().then(function() {
             console.log("charge = new Charge();\n");
             charge = new Charge();
@@ -66,20 +67,19 @@ chargeSchema.statics.newCharge = function (taxi, payer, date) {
                 return Q.npost(Shift, 'findOne', [ ({ _id : taxi.shift }) ]);
             }),
             Q().then(function() {
-                console.log("return taxi['name'] + \" - \";");
-                return taxi['name'] + " - ";
+                console.log("return taxi.name + \" - \";");
+                return taxi.name + " - ";
             })
         ]).spread(function(shift, add) {
-            charge['description'] = add + shift['description'];
+            charge['description'] = add + shift.description;
         });
     }).then(function() {
         return Q().then(function() {
             console.log("return Q.npost(Shift, 'findOne', [ ({ _id : taxi.shift }) ]);");
             return Q.npost(Shift, 'findOne', [ ({ _id : taxi.shift }) ]);
         }).then(function(shift) {
-            console.log(shift);
-            console.log("charge['amount'] = shift['price'];\n");
-            charge['amount'] = shift['price'];
+            console.log("charge['amount'] = shift.price;\n");
+            charge['amount'] = shift.price;
         });
     }).then(function() {
         return Q().then(function() {
@@ -98,24 +98,22 @@ chargeSchema.statics.newCharge = function (taxi, payer, date) {
             charge.driver = payer._id;
             payer.charges.push(charge._id);
         });
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
-            Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
-            }),
             Q().then(function() {
                 return Q.npost(charge, 'save', [  ]);
             })
-        ]);
+        ]).spread(function() {
+            /* no-result */    
+        });
     });
 };
 /*************************** QUERIES ***************************/
 
 chargeSchema.statics.pendingCharges = function () {
-    var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(me.model('Charge').find().where({\n    $ne : [ \n        { status : null },\n        true\n    ]\n}), 'exec', [  ])\n;\n");
-        return Q.npost(me.model('Charge').find().where({
+        console.log("return Q.npost(mongoose.model('Charge').find().where({\n    $ne : [ \n        { status : null },\n        true\n    ]\n}), 'exec', [  ])\n;\n");
+        return Q.npost(mongoose.model('Charge').find().where({
             $ne : [ 
                 { status : null },
                 true
@@ -126,30 +124,28 @@ chargeSchema.statics.pendingCharges = function () {
 };
 
 chargeSchema.statics.byTaxi = function (taxi) {
-    var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(me.model('Charge').find().where({ taxi : taxi }), 'exec', [  ])\n;\n");
-        return Q.npost(me.model('Charge').find().where({ taxi : taxi }), 'exec', [  ])
+        console.log("return Q.npost(mongoose.model('Charge').find().where({ taxi : taxi }), 'exec', [  ])\n;\n");
+        return Q.npost(mongoose.model('Charge').find().where({ taxi : taxi }), 'exec', [  ])
         ;
     });
 };
 
 chargeSchema.statics.paidCharges = function () {
-    var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(me.model('Charge').find().where({ status : null }), 'exec', [  ])\n;\n");
-        return Q.npost(me.model('Charge').find().where({ status : null }), 'exec', [  ])
+        console.log("return Q.npost(mongoose.model('Charge').find().where({ status : null }), 'exec', [  ])\n;\n");
+        return Q.npost(mongoose.model('Charge').find().where({ status : null }), 'exec', [  ])
         ;
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 chargeSchema.virtual('paid').get(function () {
-    return this['status'] == "Paid";
+    return this.status == "Paid";
 });
 /*************************** STATE MACHINE ********************/
 chargeSchema.methods.handleEvent = function (event) {
-    console.log("started handleEvent("+ event+"): "+ this);
+    console.log("started handleEvent("+ event+")");
     switch (event) {
         case 'pay' :
             if (this.status == 'Pending') {

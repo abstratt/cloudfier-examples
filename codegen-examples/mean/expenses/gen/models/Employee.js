@@ -25,27 +25,37 @@ var employeeSchema = new Schema({
         "default" : []
     }]
 });
+//            employeeSchema.set('toObject', { getters: true });
+
 
 /*************************** ACTIONS ***************************/
 
 employeeSchema.methods.declareExpense = function (description, amount, date, category) {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         console.log("return Expense.newExpense(description, amount, date, category, me);");
         return Expense.newExpense(description, amount, date, category, me);
     }).then(function(newExpense) {
-        console.log(newExpense);
-        console.log("return Q.npost(newExpense, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
-        return Q.npost(newExpense, 'save', [  ]).then(function(saveResult) {
-            return saveResult[0];
-        });
-    }).then(function() { 
+        console.log("return newExpense;\n");
+        return newExpense;
+    }).then(function(__result__) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            return __result__;    
+        });
+    }).then(function(__result__) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            return __result__;    
+        });
+    })
+    ;
 };
 /*************************** DERIVED PROPERTIES ****************/
 
@@ -120,7 +130,6 @@ employeeSchema.methods.getRecordedExpenses = function () {
         console.log("return me.expensesByStatus(\"Draft\");");
         return me.expensesByStatus("Draft");
     }).then(function(expensesByStatus) {
-        console.log(expensesByStatus);
         console.log("return expensesByStatus;\n");
         return expensesByStatus;
     });
@@ -132,7 +141,6 @@ employeeSchema.methods.getSubmittedExpenses = function () {
         console.log("return me.expensesByStatus(\"Submitted\");");
         return me.expensesByStatus("Submitted");
     }).then(function(expensesByStatus) {
-        console.log(expensesByStatus);
         console.log("return expensesByStatus;\n");
         return expensesByStatus;
     });
@@ -144,7 +152,6 @@ employeeSchema.methods.getApprovedExpenses = function () {
         console.log("return me.expensesByStatus(\"Approved\");");
         return me.expensesByStatus("Approved");
     }).then(function(expensesByStatus) {
-        console.log(expensesByStatus);
         console.log("return expensesByStatus;\n");
         return expensesByStatus;
     });
@@ -156,7 +163,6 @@ employeeSchema.methods.getRejectedExpenses = function () {
         console.log("return me.expensesByStatus(\"Rejected\");");
         return me.expensesByStatus("Rejected");
     }).then(function(expensesByStatus) {
-        console.log(expensesByStatus);
         console.log("return expensesByStatus;\n");
         return expensesByStatus;
     });
@@ -174,7 +180,6 @@ employeeSchema.methods.expensesByStatus = function (status) {
         console.log("return Q.npost(Expense, 'find', [ ({ employee : me._id }) ]);");
         return Q.npost(Expense, 'find', [ ({ employee : me._id }) ]);
     }).then(function(readLinkAction) {
-        console.log(readLinkAction);
         console.log("return Q.npost(readLinkAction.where({ status : status }), 'exec', [  ])\n;\n");
         return Q.npost(readLinkAction.where({ status : status }), 'exec', [  ])
         ;

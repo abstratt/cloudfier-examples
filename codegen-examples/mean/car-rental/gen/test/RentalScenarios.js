@@ -27,7 +27,6 @@ suite('Car rental functional tests - RentalScenarios', function() {
                         console.log("return Examples.newCar();");
                         return Examples.newCar();
                     }).then(function(newCar) {
-                        console.log(newCar);
                         console.log("car = newCar;\n");
                         car = newCar;
                     });
@@ -36,7 +35,6 @@ suite('Car rental functional tests - RentalScenarios', function() {
                         console.log("return Examples.newCustomer();");
                         return Examples.newCustomer();
                     }).then(function(newCustomer) {
-                        console.log(newCustomer);
                         console.log("customer = newCustomer;\n");
                         customer = newCustomer;
                     });
@@ -45,7 +43,6 @@ suite('Car rental functional tests - RentalScenarios', function() {
                         console.log("return customer.getCurrentRental();");
                         return customer.getCurrentRental();
                     }).then(function(currentRental) {
-                        console.log(currentRental);
                         console.log("assert.ok(currentRental == null);\n");
                         assert.ok(currentRental == null);
                     });
@@ -61,7 +58,6 @@ suite('Car rental functional tests - RentalScenarios', function() {
                         console.log("return customer.getCurrentRental();");
                         return customer.getCurrentRental();
                     }).then(function(currentRental) {
-                        console.log(currentRental);
                         console.log("assert.ok(currentRental != null);\n");
                         assert.ok(currentRental != null);
                     });
@@ -70,9 +66,8 @@ suite('Car rental functional tests - RentalScenarios', function() {
                         console.log("return customer.getCurrentRental();");
                         return customer.getCurrentRental();
                     }).then(function(currentRental) {
-                        console.log(currentRental);
-                        console.log("assert.strictEqual(currentRental['inProgress'], true);\n");
-                        assert.strictEqual(currentRental['inProgress'], true);
+                        console.log("assert.strictEqual(currentRental.inProgress, true);\n");
+                        assert.strictEqual(currentRental.inProgress, true);
                     });
                 });
             });
@@ -91,7 +86,6 @@ suite('Car rental functional tests - RentalScenarios', function() {
                         console.log("return Examples.newCar();");
                         return Examples.newCar();
                     }).then(function(newCar) {
-                        console.log(newCar);
                         console.log("car = newCar;\n");
                         car = newCar;
                     });
@@ -100,7 +94,6 @@ suite('Car rental functional tests - RentalScenarios', function() {
                         console.log("return Examples.newCustomer();");
                         return Examples.newCustomer();
                     }).then(function(newCustomer) {
-                        console.log(newCustomer);
                         console.log("customer = newCustomer;\n");
                         customer = newCustomer;
                     });
@@ -114,7 +107,6 @@ suite('Car rental functional tests - RentalScenarios', function() {
                         console.log("return customer.getCurrentRental();");
                         return customer.getCurrentRental();
                     }).then(function(currentRental) {
-                        console.log(currentRental);
                         console.log("rental = currentRental;\n");
                         rental = currentRental;
                     });
@@ -122,8 +114,8 @@ suite('Car rental functional tests - RentalScenarios', function() {
             }).then(function() {
                 return Q().then(function() {
                     return Q().then(function() {
-                        console.log("assert.strictEqual(rental['inProgress'], true);\n");
-                        assert.strictEqual(rental['inProgress'], true);
+                        console.log("assert.strictEqual(rental.inProgress, true);\n");
+                        assert.strictEqual(rental.inProgress, true);
                     });
                 }).then(function() {
                     return Q().then(function() {
@@ -133,8 +125,8 @@ suite('Car rental functional tests - RentalScenarios', function() {
                 });
             }).then(function() {
                 return Q().then(function() {
-                    console.log("assert.strictEqual(!rental['inProgress'], true);\n");
-                    assert.strictEqual(!rental['inProgress'], true);
+                    console.log("assert.strictEqual(!rental.inProgress, true);\n");
+                    assert.strictEqual(!rental.inProgress, true);
                 });
             });
         };
@@ -153,7 +145,6 @@ suite('Car rental functional tests - RentalScenarios', function() {
                             console.log("return Examples.newCar();");
                             return Examples.newCar();
                         }).then(function(newCar) {
-                            console.log(newCar);
                             console.log("car1 = newCar;\n");
                             car1 = newCar;
                         });
@@ -162,7 +153,6 @@ suite('Car rental functional tests - RentalScenarios', function() {
                             console.log("return Examples.newCustomer();");
                             return Examples.newCustomer();
                         }).then(function(newCustomer) {
-                            console.log(newCustomer);
                             console.log("customer = newCustomer;\n");
                             customer = newCustomer;
                         });
@@ -178,7 +168,6 @@ suite('Car rental functional tests - RentalScenarios', function() {
                             console.log("return Examples.newCar();");
                             return Examples.newCar();
                         }).then(function(newCar) {
-                            console.log(newCar);
                             console.log("car2 = newCar;\n");
                             car2 = newCar;
                         });
@@ -209,7 +198,6 @@ suite('Car rental functional tests - RentalScenarios', function() {
                             console.log("return Examples.newCar();");
                             return Examples.newCar();
                         }).then(function(newCar) {
-                            console.log(newCar);
                             console.log("car = newCar;\n");
                             car = newCar;
                         });
@@ -218,7 +206,6 @@ suite('Car rental functional tests - RentalScenarios', function() {
                             console.log("return Examples.newCustomer();");
                             return Examples.newCustomer();
                         }).then(function(newCustomer) {
-                            console.log(newCustomer);
                             console.log("customer1 = newCustomer;\n");
                             customer1 = newCustomer;
                         });
@@ -231,15 +218,14 @@ suite('Car rental functional tests - RentalScenarios', function() {
                 }).then(function() {
                     return Q().then(function() {
                         return Q().then(function() {
-                            console.log("assert.strictEqual(car['rented'], true);\n");
-                            assert.strictEqual(car['rented'], true);
+                            console.log("assert.strictEqual(car.rented, true);\n");
+                            assert.strictEqual(car.rented, true);
                         });
                     }).then(function() {
                         return Q().then(function() {
                             console.log("return Examples.newCustomer();");
                             return Examples.newCustomer();
                         }).then(function(newCustomer) {
-                            console.log(newCustomer);
                             console.log("customer2 = newCustomer;\n");
                             customer2 = newCustomer;
                         });

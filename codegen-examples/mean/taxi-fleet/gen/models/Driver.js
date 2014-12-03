@@ -26,6 +26,8 @@ var driverSchema = new Schema({
         "default" : []
     }]
 });
+//            driverSchema.set('toObject', { getters: true });
+
 
 /*************************** ACTIONS ***************************/
 
@@ -34,17 +36,28 @@ var driverSchema = new Schema({
  */
 driverSchema.methods.book = function (toRent) {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         console.log("me.taxi = toRent._id;\ntoRent.drivers.push(me._id);\n");
         me.taxi = toRent._id;
         toRent.drivers.push(me._id);
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 
 /**
@@ -52,7 +65,7 @@ driverSchema.methods.book = function (toRent) {
  */
 driverSchema.methods.release = function () {
     var me = this;
-    return Q.all([
+    return /* Working set: [me] *//* Working set: [me] */Q.all([
         Q().then(function() {
             console.log("return Q.npost(Taxi, 'findOne', [ ({ _id : me.taxi }) ]);");
             return Q.npost(Taxi, 'findOne', [ ({ _id : me.taxi }) ]);
@@ -64,13 +77,24 @@ driverSchema.methods.release = function () {
     ]).spread(function(taxi, readSelfAction) {
         taxi.drivers = null;
         taxi = null;
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 /*************************** DERIVED PROPERTIES ****************/
 
@@ -96,7 +120,6 @@ driverSchema.virtual('paymentDue').get(function () {
         console.log("return me.getPendingCharges();");
         return me.getPendingCharges();
     }).then(function(pendingCharges) {
-        console.log(pendingCharges);
         console.log("return !/*TBD*/isEmpty;\n");
         return !/*TBD*/isEmpty;
     });
@@ -109,7 +132,6 @@ driverSchema.methods.getPendingCharges = function () {
         console.log("return Q.npost(Charge, 'find', [ ({ driver : me._id }) ]);");
         return Q.npost(Charge, 'find', [ ({ driver : me._id }) ]);
     }).then(function(charges) {
-        console.log(charges);
         console.log("return charges.where({\n    $ne : [ \n        { status : null },\n        true\n    ]\n});\n");
         return charges.where({
             $ne : [ 

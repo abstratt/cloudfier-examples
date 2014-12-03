@@ -35,6 +35,8 @@ var productSchema = new Schema({
         required : true
     }
 });
+//            productSchema.set('toObject', { getters: true });
+
 /*************************** INVARIANTS ***************************/
 
 

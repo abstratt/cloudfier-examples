@@ -31,6 +31,8 @@ var meetingSchema = new Schema({
         "default" : []
     }]
 });
+//            meetingSchema.set('toObject', { getters: true });
+
 
 /*************************** ACTIONS ***************************/
 
@@ -39,17 +41,28 @@ var meetingSchema = new Schema({
  */
 meetingSchema.methods.leave = function () {
     var me = this;
-    return Q().then(function() {
-        console.log("User['current'].meetings = null;\nUser['current'] = null;\n");
-        User['current'].meetings = null;
-        User['current'] = null;
-    }).then(function() { 
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
+        console.log("User.current.meetings = null;\nUser.current = null;\n");
+        User.current.meetings = null;
+        User.current = null;
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 
 /**
@@ -57,17 +70,28 @@ meetingSchema.methods.leave = function () {
  */
 meetingSchema.methods.join = function () {
     var me = this;
-    return Q().then(function() {
-        console.log("me.participants.push(User['current']._id);\nUser['current'].meetings.push(me._id);\n");
-        me.participants.push(User['current']._id);
-        User['current'].meetings.push(me._id);
-    }).then(function() { 
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
+        console.log("me.participants.push(User.current._id);\nUser.current.meetings.push(me._id);\n");
+        me.participants.push(User.current._id);
+        User.current.meetings.push(me._id);
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 
 /**
@@ -75,33 +99,37 @@ meetingSchema.methods.join = function () {
  */
 meetingSchema.methods.addParticipant = function (newParticipant) {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         console.log("me.participants.push(newParticipant._id);\nnewParticipant.meetings.push(me._id);\n");
         me.participants.push(newParticipant._id);
         newParticipant.meetings.push(me._id);
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 
 /**
  *  Starts a meeting having the current user as organizer. 
  */
 meetingSchema.statics.startMeeting = function (title, description, date) {
-    var me = this;
     return Q().then(function() {
-        console.log("return User['current'].startMeetingOnBehalf(title, description, date);");
-        return User['current'].startMeetingOnBehalf(title, description, date);
-    }).then(function() { 
-        return Q.all([
-            Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
-            })
-        ]);
+        console.log("return User.current.startMeetingOnBehalf(title, description, date);");
+        return User.current.startMeetingOnBehalf(title, description, date);
     });
 };
 /*************************** PRIVATE OPS ***********************/
@@ -112,7 +140,6 @@ meetingSchema.methods.isParticipating = function (candidate) {
         console.log("return Q.npost(User, 'find', [ ({ meetings : me._id }) ]);");
         return Q.npost(User, 'find', [ ({ meetings : me._id }) ]);
     }).then(function(participants) {
-        console.log(participants);
         console.log("return Q.npost(/*TBD*/includes, 'exec', [  ])\n;\n");
         return Q.npost(/*TBD*/includes, 'exec', [  ])
         ;
@@ -121,7 +148,7 @@ meetingSchema.methods.isParticipating = function (candidate) {
 
 meetingSchema.methods.isOrganizing = function (candidate) {
     var me = this;
-    return Q.all([
+    return /* Working set: [me] *//* Working set: [me] */Q.all([
         Q().then(function() {
             console.log("return Q.npost(User, 'findOne', [ ({ _id : me.organizer }) ]);");
             return Q.npost(User, 'findOne', [ ({ _id : me.organizer }) ]);
@@ -132,7 +159,24 @@ meetingSchema.methods.isOrganizing = function (candidate) {
         })
     ]).spread(function(organizer, Candidate) {
         return organizer == Candidate;
-    });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 
 // declare model on the schema

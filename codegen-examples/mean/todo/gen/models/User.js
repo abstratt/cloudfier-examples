@@ -16,6 +16,8 @@ var userSchema = new Schema({
         "default" : null
     }
 });
+//            userSchema.set('toObject', { getters: true });
+
 
 
 // declare model on the schema

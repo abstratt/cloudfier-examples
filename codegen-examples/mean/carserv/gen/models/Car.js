@@ -54,27 +54,20 @@ var carSchema = new Schema({
         }
     }]
 });
+//            carSchema.set('toObject', { getters: true });
+
 
 /*************************** ACTIONS ***************************/
 
 carSchema.statics.findByRegistrationNumber = function (regNumber) {
-    var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(me.model('Car').find().where({\n    $eq : [ \n        regNumber,\n        registrationNumber\n    ]\n}).findOne(), 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
-        return Q.npost(me.model('Car').find().where({
+        console.log("return mongoose.model('Car').find().where({\n    $eq : [ \n        regNumber,\n        registrationNumber\n    ]\n}).findOne();\n");
+        return mongoose.model('Car').find().where({
             $eq : [ 
                 regNumber,
                 registrationNumber
             ]
-        }).findOne(), 'save', [  ]).then(function(saveResult) {
-            return saveResult[0];
-        });
-    }).then(function() { 
-        return Q.all([
-            Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
-            })
-        ]);
+        }).findOne();
     });
 };
 
@@ -83,30 +76,37 @@ carSchema.statics.findByRegistrationNumber = function (regNumber) {
  */
 carSchema.methods.bookService = function (description, estimateInDays) {
     var me = this;
-    return Q().then(function() {
+    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
         console.log("return Service.newService(me, description, estimateInDays);");
         return Service.newService(me, description, estimateInDays);
-    }).then(function() { 
+    }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(me, 'save', [  ]);
             })
-        ]);
-    });
+        ]).spread(function() {
+            /* no-result */    
+        });
+    }).then(function(/*no-arg*/) {
+        return Q.all([
+            Q().then(function() {
+                return Q.npost(me, 'save', [  ]);
+            })
+        ]).spread(function() {
+            /* no-result */    
+        });
+    })
+    ;
 };
 /*************************** QUERIES ***************************/
 
 carSchema.statics.findByOwner = function (owner) {
-    var me = this;
     return Q().then(function() {
         console.log("return Q.npost(Car, 'find', [ ({ owner : owner._id }) ]);");
         return Q.npost(Car, 'find', [ ({ owner : owner._id }) ]);
     }).then(function(cars) {
-        console.log(cars);
-        console.log("return Q.npost(cars, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
-        return Q.npost(cars, 'save', [  ]).then(function(saveResult) {
-            return saveResult[0];
-        });
+        console.log("return cars;\n");
+        return cars;
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
@@ -117,11 +117,9 @@ carSchema.virtual('modelName').get(function () {
         console.log("return Q.npost(Model, 'findOne', [ ({ _id : me.model }) ]);");
         return Q.npost(Model, 'findOne', [ ({ _id : me.model }) ]);
     }).then(function(model) {
-        console.log(model);
         console.log("return model.makeAndModel();");
         return model.makeAndModel();
     }).then(function(makeAndModel) {
-        console.log(makeAndModel);
         console.log("return makeAndModel;\n");
         return makeAndModel;
     });
@@ -133,7 +131,7 @@ carSchema.virtual('pending').get(function () {
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 carSchema.methods.getPendingServices = function () {
-    return this['services'].where({
+    return this.services.where({
         $or : [ 
             { status : null },
             { status : null }
@@ -142,7 +140,7 @@ carSchema.methods.getPendingServices = function () {
 };
 
 carSchema.methods.getCompletedServices = function () {
-    return this['services'].where({
+    return this.services.where({
         $ne : [ 
             {
                 $or : [ 

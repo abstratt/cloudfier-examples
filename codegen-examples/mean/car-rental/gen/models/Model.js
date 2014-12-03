@@ -19,6 +19,8 @@ var modelSchema = new Schema({
         ref : "Make"
     }
 });
+//            modelSchema.set('toObject', { getters: true });
+
 
 /*************************** DERIVED PROPERTIES ****************/
 
@@ -28,9 +30,8 @@ modelSchema.virtual('description').get(function () {
         console.log("return Q.npost(Make, 'findOne', [ ({ _id : me.make }) ]);");
         return Q.npost(Make, 'findOne', [ ({ _id : me.make }) ]);
     }).then(function(make) {
-        console.log(make);
-        console.log("return make['name'] + \" \" + me['name'];\n");
-        return make['name'] + " " + me['name'];
+        console.log("return make.name + \" \" + me.name;\n");
+        return make.name + " " + me.name;
     });
 });
 

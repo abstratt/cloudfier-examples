@@ -25,6 +25,8 @@ var shiftSchema = new Schema({
         "default" : 1
     }
 });
+//            shiftSchema.set('toObject', { getters: true });
+
 /*************************** INVARIANTS ***************************/
 
 
@@ -34,8 +36,8 @@ var shiftSchema = new Schema({
 shiftSchema.methods.getTaxis = function () {
     var me = this;
     return Q().then(function() {
-        console.log("return me.model('Taxi').find().where({ shift : this });\n");
-        return me.model('Taxi').find().where({ shift : this });
+        console.log("return mongoose.model('Taxi').find().where({ shift : this });\n");
+        return mongoose.model('Taxi').find().where({ shift : this });
     });
 };
 

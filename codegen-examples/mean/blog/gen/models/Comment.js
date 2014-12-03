@@ -23,6 +23,8 @@ var commentSchema = new Schema({
         ref : "User"
     }
 });
+//            commentSchema.set('toObject', { getters: true });
+
 
 
 // declare model on the schema

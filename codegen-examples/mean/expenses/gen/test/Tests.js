@@ -14,27 +14,23 @@ var Tests = {
         var emp;
         var cat;
         var expense;
-        var me = this;
         return Q().then(function() {
             return Q().then(function() {
-                console.log("emp = me.model('Employee').find();\n");
-                emp = me.model('Employee').find();
+                console.log("emp = mongoose.model('Employee').find();\n");
+                emp = mongoose.model('Employee').find();
             });
         }).then(function() {
             return Q().then(function() {
-                console.log("cat = me.model('Category').find();\n");
-                cat = me.model('Category').find();
+                console.log("cat = mongoose.model('Category').find();\n");
+                cat = mongoose.model('Category').find();
             });
         }).then(function() {
             return Q().then(function() {
                 console.log("return emp.declareExpense(\"just a test expense\", amount, new Date(), cat);");
                 return emp.declareExpense("just a test expense", amount, new Date(), cat);
             }).then(function(declareExpense) {
-                console.log(declareExpense);
-                console.log("return Q.npost(declareExpense, 'save', [  ]).then(function(saveResult) {\n    return saveResult[0];\n});\n");
-                return Q.npost(declareExpense, 'save', [  ]).then(function(saveResult) {
-                    return saveResult[0];
-                });
+                console.log("return declareExpense;\n");
+                return declareExpense;
             });
         });
     }
@@ -52,14 +48,13 @@ suite('Expenses Application functional tests - Tests', function() {
                     console.log("return Tests.declare(10.0);");
                     return Tests.declare(10.0);
                 }).then(function(declare) {
-                    console.log(declare);
                     console.log("expense = declare;\n");
                     expense = declare;
                 });
             }).then(function() {
                 return Q().then(function() {
-                    console.log("assert.equal(\"Draft\", expense['status']);\n");
-                    assert.equal("Draft", expense['status']);
+                    console.log("assert.equal(\"Draft\", expense.status);\n");
+                    assert.equal("Draft", expense.status);
                 });
             });
         };
@@ -73,18 +68,16 @@ suite('Expenses Application functional tests - Tests', function() {
                     console.log("return Tests.declare(49.9);");
                     return Tests.declare(49.9);
                 }).then(function(declare) {
-                    console.log(declare);
-                    console.log("assert.strictEqual(declare['automaticApproval'], true);\n");
-                    assert.strictEqual(declare['automaticApproval'], true);
+                    console.log("assert.strictEqual(declare.automaticApproval, true);\n");
+                    assert.strictEqual(declare.automaticApproval, true);
                 });
             }).then(function() {
                 return Q().then(function() {
                     console.log("return Tests.declare(50.0);");
                     return Tests.declare(50.0);
                 }).then(function(declare) {
-                    console.log(declare);
-                    console.log("assert.strictEqual(!declare['automaticApproval'], true);\n");
-                    assert.strictEqual(!declare['automaticApproval'], true);
+                    console.log("assert.strictEqual(!declare.automaticApproval, true);\n");
+                    assert.strictEqual(!declare.automaticApproval, true);
                 });
             });
         };
@@ -100,14 +93,13 @@ suite('Expenses Application functional tests - Tests', function() {
                         console.log("return Tests.declare(10.0);");
                         return Tests.declare(10.0);
                     }).then(function(declare) {
-                        console.log(declare);
                         console.log("expense = declare;\n");
                         expense = declare;
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        console.log("assert.strictEqual(expense['automaticApproval'], true);\n");
-                        assert.strictEqual(expense['automaticApproval'], true);
+                        console.log("assert.strictEqual(expense.automaticApproval, true);\n");
+                        assert.strictEqual(expense.automaticApproval, true);
                     });
                 });
             }).then(function() {
@@ -117,8 +109,8 @@ suite('Expenses Application functional tests - Tests', function() {
                 });
             }).then(function() {
                 return Q().then(function() {
-                    console.log("assert.equal(\"Approved\", expense['status']);\n");
-                    assert.equal("Approved", expense['status']);
+                    console.log("assert.equal(\"Approved\", expense.status);\n");
+                    assert.equal("Approved", expense.status);
                 });
             });
         };
@@ -134,14 +126,13 @@ suite('Expenses Application functional tests - Tests', function() {
                         console.log("return Tests.declare(100.0);");
                         return Tests.declare(100.0);
                     }).then(function(declare) {
-                        console.log(declare);
                         console.log("expense = declare;\n");
                         expense = declare;
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        console.log("assert.strictEqual(!expense['automaticApproval'], true);\n");
-                        assert.strictEqual(!expense['automaticApproval'], true);
+                        console.log("assert.strictEqual(!expense.automaticApproval, true);\n");
+                        assert.strictEqual(!expense.automaticApproval, true);
                     });
                 });
             }).then(function() {
@@ -151,8 +142,8 @@ suite('Expenses Application functional tests - Tests', function() {
                 });
             }).then(function() {
                 return Q().then(function() {
-                    console.log("assert.equal(\"Submitted\", expense['status']);\n");
-                    assert.equal("Submitted", expense['status']);
+                    console.log("assert.equal(\"Submitted\", expense.status);\n");
+                    assert.equal("Submitted", expense.status);
                 });
             });
         };
@@ -167,7 +158,6 @@ suite('Expenses Application functional tests - Tests', function() {
                     console.log("return Tests.declare(100.0);");
                     return Tests.declare(100.0);
                 }).then(function(declare) {
-                    console.log(declare);
                     console.log("expense = declare;\n");
                     expense = declare;
                 });
@@ -183,8 +173,8 @@ suite('Expenses Application functional tests - Tests', function() {
                 });
             }).then(function() {
                 return Q().then(function() {
-                    console.log("assert.equal(\"Rejected\", expense['status']);\n");
-                    assert.equal("Rejected", expense['status']);
+                    console.log("assert.equal(\"Rejected\", expense.status);\n");
+                    assert.equal("Rejected", expense.status);
                 });
             });
         };
