@@ -23,6 +23,7 @@ var articleSchema = new Schema({
     createdAt : {
         type : Date,
         "default" : (function() {
+            /*sync*/console.log("return new Date();");
             return new Date();
         })()
     },
@@ -38,6 +39,7 @@ var articleSchema = new Schema({
         createdAt : {
             type : Date,
             "default" : (function() {
+                /*sync*/console.log("return new Date();");
                 return new Date();
             })()
         },

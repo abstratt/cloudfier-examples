@@ -46,7 +46,7 @@ var todoSchema = new Schema({
 
 todoSchema.methods.complete = function () {
     var me = this;
-    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
+    return Q().then(function() {
         console.log("me['status'] = \"Done\";\n");
         me['status'] = "Done";
     }).then(function(/*no-arg*/) {

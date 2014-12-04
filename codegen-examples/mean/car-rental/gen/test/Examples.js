@@ -10,7 +10,8 @@ var Customer = require('../models/Customer.js');
 var Examples = {
     newMake : function() {
         var make;
-        return /* Working set: [make] */Q().then(function() {
+        var me = this;
+        return Q().then(function() {
             return Q().then(function() {
                 console.log("make = new Make();\n");
                 make = new Make();
@@ -37,7 +38,8 @@ var Examples = {
     },
     newModel : function() {
         var carModel;
-        return /* Working set: [carModel] */Q().then(function() {
+        var me = this;
+        return Q().then(function() {
             return Q().then(function() {
                 console.log("carModel = new Model();\n");
                 carModel = new Model();
@@ -73,7 +75,8 @@ var Examples = {
     },
     newCar : function() {
         var car;
-        return /* Working set: [car] */Q().then(function() {
+        var me = this;
+        return Q().then(function() {
             return Q().then(function() {
                 console.log("car = new Car();\n");
                 car = new Car();
@@ -124,7 +127,8 @@ var Examples = {
     },
     newCustomer : function() {
         var customer;
-        return /* Working set: [customer] */Q().then(function() {
+        var me = this;
+        return Q().then(function() {
             return Q().then(function() {
                 console.log("customer = new Customer();\n");
                 customer = new Customer();

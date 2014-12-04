@@ -29,7 +29,21 @@ var shiftSchema = new Schema({
 
 /*************************** INVARIANTS ***************************/
 
+shiftSchema.path('shiftsPerDay').validate(
+    function() {
+        /*sync*/console.log("return  this.shiftsPerDay > 0;");
+        return  this.shiftsPerDay > 0;
+    },
+    'validation of `{PATH}` failed with value `{VALUE}`'
+);
 
+shiftSchema.path('shiftsPerDay').validate(
+    function() {
+        /*sync*/console.log("return  this.shiftsPerDay <= 3;");
+        return  this.shiftsPerDay <= 3;
+    },
+    'validation of `{PATH}` failed with value `{VALUE}`'
+);
 
 /*************************** DERIVED RELATIONSHIPS ****************/
 

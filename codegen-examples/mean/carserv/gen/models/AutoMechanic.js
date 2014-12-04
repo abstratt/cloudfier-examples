@@ -45,27 +45,44 @@ var autoMechanicSchema = new Schema({
  */
 autoMechanicSchema.methods.unassign = function () {
     var me = this;
-    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
-        console.log("return me.doUnassign();");
-        return me.doUnassign();
-    }).then(function(/*no-arg*/) {
-        return Q.all([
-            Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
-            })
-        ]).spread(function() {
-            /* no-result */    
+    return Q().then(function() {
+        return Q().then(function() {
+            console.log("return me.isWorkScheduled();");
+            return me.isWorkScheduled();
+        }).then(function(workScheduled) {
+            console.log("return workScheduled;\n");
+            return workScheduled;
         });
-    }).then(function(/*no-arg*/) {
-        return Q.all([
-            Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
-            })
-        ]).spread(function() {
-            /* no-result */    
-        });
-    })
-    ;
+    }).then(function(pass) {
+        if (!pass) {
+            var error = new Error("Precondition violated: NoWorkScheduled (on 'carserv::AutoMechanic::unassign')");
+            error.context = 'carserv::AutoMechanic::unassign';
+            error.constraint = 'NoWorkScheduled';
+            throw error;
+        }    
+    }).then(function() {
+        return Q().then(function() {
+            console.log("return me.doUnassign();");
+            return me.doUnassign();
+        }).then(function(/*no-arg*/) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(me, 'save', [  ]);
+                })
+            ]).spread(function() {
+                /* no-result */    
+            });
+        }).then(function(/*no-arg*/) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(me, 'save', [  ]);
+                })
+            ]).spread(function() {
+                /* no-result */    
+            });
+        })
+        ;
+    });
 };
 
 /**
@@ -73,27 +90,44 @@ autoMechanicSchema.methods.unassign = function () {
  */
 autoMechanicSchema.methods.beginVacation = function () {
     var me = this;
-    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
-        console.log(";\n");
+    return Q().then(function() {
+        return Q().then(function() {
+            console.log("return me.isWorkInProgress();");
+            return me.isWorkInProgress();
+        }).then(function(workInProgress) {
+            console.log("return !(workInProgress);\n");
+            return !(workInProgress);
+        });
+    }).then(function(pass) {
+        if (!pass) {
+            var error = new Error("Precondition violated: NoWorkInProgress (on 'carserv::AutoMechanic::beginVacation')");
+            error.context = 'carserv::AutoMechanic::beginVacation';
+            error.constraint = 'NoWorkInProgress';
+            throw error;
+        }    
+    }).then(function() {
+        return Q().then(function() {
+            console.log(";\n");
+            ;
+        }).then(function(/*no-arg*/) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(me, 'save', [  ]);
+                })
+            ]).spread(function() {
+                /* no-result */    
+            });
+        }).then(function(/*no-arg*/) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(me, 'save', [  ]);
+                })
+            ]).spread(function() {
+                /* no-result */    
+            });
+        })
         ;
-    }).then(function(/*no-arg*/) {
-        return Q.all([
-            Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
-            })
-        ]).spread(function() {
-            /* no-result */    
-        });
-    }).then(function(/*no-arg*/) {
-        return Q.all([
-            Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
-            })
-        ]).spread(function() {
-            /* no-result */    
-        });
-    })
-    ;
+    });
 };
 
 /**
@@ -104,59 +138,82 @@ autoMechanicSchema.methods.endVacation = function () {
 
 autoMechanicSchema.methods.retire = function () {
     var me = this;
-    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
-        console.log(";\n");
+    return Q().then(function() {
+        return Q().then(function() {
+            console.log("return me.isWorkInProgress();");
+            return me.isWorkInProgress();
+        }).then(function(workInProgress) {
+            console.log("return !(workInProgress);\n");
+            return !(workInProgress);
+        });
+    }).then(function(pass) {
+        if (!pass) {
+            var error = new Error("Precondition violated: NoWorkInProgress (on 'carserv::AutoMechanic::retire')");
+            error.context = 'carserv::AutoMechanic::retire';
+            error.constraint = 'NoWorkInProgress';
+            throw error;
+        }    
+    }).then(function() {
+        return Q().then(function() {
+            console.log(";\n");
+            ;
+        }).then(function(/*no-arg*/) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(me, 'save', [  ]);
+                })
+            ]).spread(function() {
+                /* no-result */    
+            });
+        }).then(function(/*no-arg*/) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(me, 'save', [  ]);
+                })
+            ]).spread(function() {
+                /* no-result */    
+            });
+        })
         ;
-    }).then(function(/*no-arg*/) {
-        return Q.all([
-            Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
-            })
-        ]).spread(function() {
-            /* no-result */    
-        });
-    }).then(function(/*no-arg*/) {
-        return Q.all([
-            Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
-            })
-        ]).spread(function() {
-            /* no-result */    
-        });
-    })
-    ;
+    });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
-personSchema.virtual('fullName').get(function () {
-    return this.firstName + " " + this.lastName;
-});
+personSchema.methods.getFullName = function () {
+    console.log("this.fullName: " + JSON.stringify(this));
+    /*sync*/console.log("return  this.firstName + \" \" +  this.lastName;");
+    return  this.firstName + " " +  this.lastName;
+};
 
-autoMechanicSchema.virtual('working').get(function () {
-    return this.status == "Working";
-});
+autoMechanicSchema.methods.isWorking = function () {
+    console.log("this.working: " + JSON.stringify(this));
+    /*sync*/console.log("return  this.status == \"Working\";");
+    return  this.status == "Working";
+};
 
-autoMechanicSchema.virtual('workInProgress').get(function () {
+autoMechanicSchema.methods.isWorkInProgress = function () {
+    console.log("this.workInProgress: " + JSON.stringify(this));
     var me = this;
     return Q().then(function() {
         console.log("return me.getCurrentServices();");
         return me.getCurrentServices();
     }).then(function(currentServices) {
-        console.log("return !/*TBD*/isEmpty;\n");
-        return !/*TBD*/isEmpty;
+        console.log("return !(/*TBD*/isEmpty);\n");
+        return !(/*TBD*/isEmpty);
     });
-});
+};
 
-autoMechanicSchema.virtual('workScheduled').get(function () {
+autoMechanicSchema.methods.isWorkScheduled = function () {
+    console.log("this.workScheduled: " + JSON.stringify(this));
     var me = this;
     return Q().then(function() {
         console.log("return me.getUpcomingServices();");
         return me.getUpcomingServices();
     }).then(function(upcomingServices) {
-        console.log("return !/*TBD*/isEmpty;\n");
-        return !/*TBD*/isEmpty;
+        console.log("return !(/*TBD*/isEmpty);\n");
+        return !(/*TBD*/isEmpty);
     });
-});
+};
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 /**
@@ -174,6 +231,7 @@ autoMechanicSchema.methods.getCurrentServices = function () {
             return "InProgress";
         })
     ]).spread(function(services, valueSpecificationAction) {
+        console.log("services:" + services);console.log("valueSpecificationAction:" + valueSpecificationAction);
         return Service.byStatus(services, valueSpecificationAction);
     }).then(function(byStatus) {
         console.log("return byStatus;\n");
@@ -196,6 +254,7 @@ autoMechanicSchema.methods.getUpcomingServices = function () {
             return "Booked";
         })
     ]).spread(function(services, valueSpecificationAction) {
+        console.log("services:" + services);console.log("valueSpecificationAction:" + valueSpecificationAction);
         return Service.byStatus(services, valueSpecificationAction);
     }).then(function(byStatus) {
         console.log("return byStatus;\n");
@@ -206,7 +265,7 @@ autoMechanicSchema.methods.getUpcomingServices = function () {
 
 autoMechanicSchema.methods.doUnassign = function () {
     var me = this;
-    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
+    return Q().then(function() {
         console.log("return me.getUpcomingServices();");
         return me.getUpcomingServices();
     }).then(function(upcomingServices) {
@@ -238,36 +297,36 @@ autoMechanicSchema.methods.handleEvent = function (event) {
         case 'beginVacation' :
             if (this.status == 'Working') {
                 this.status = 'Vacation';
-                return;
+                break;
             }
             break;
         
         case 'retire' :
             if (this.status == 'Working') {
                 this.status = 'Retired';
-                return;
+                break;
             }
             break;
         
         case 'endVacation' :
             if (this.status == 'Vacation') {
                 this.status = 'Working';
-                return;
+                break;
             }
             break;
     }
-    console.log("completed handleEvent("+ event+"): "+ this);
-    
+    console.log("completed handleEvent("+ event+")");
+    return Q.npost( this, 'save', [  ]);
 };
 
 autoMechanicSchema.methods.beginVacation = function () {
-    this.handleEvent('beginVacation');
+    return this.handleEvent('beginVacation');
 };
 autoMechanicSchema.methods.retire = function () {
-    this.handleEvent('retire');
+    return this.handleEvent('retire');
 };
 autoMechanicSchema.methods.endVacation = function () {
-    this.handleEvent('endVacation');
+    return this.handleEvent('endVacation');
 };
 
 

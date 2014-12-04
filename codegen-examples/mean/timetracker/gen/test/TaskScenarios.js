@@ -43,8 +43,11 @@ suite('Time Tracker functional tests - TaskScenarios', function() {
                 });
             }).then(function() {
                 return Q().then(function() {
-                    console.log("assert.equal(7, task.unitsReported);\n");
-                    assert.equal(7, task.unitsReported);
+                    console.log("return task.getUnitsReported();");
+                    return task.getUnitsReported();
+                }).then(function(unitsReported) {
+                    console.log("assert.equal(7, unitsReported);\n");
+                    assert.equal(7, unitsReported);
                 });
             });
         };
@@ -107,8 +110,8 @@ suite('Time Tracker functional tests - TaskScenarios', function() {
                 });
             }).then(function() {
                 return Q().then(function() {
-                    console.log("return task.unitsToInvoice;");
-                    return task.unitsToInvoice;
+                    console.log("return task.getUnitsToInvoice();");
+                    return task.getUnitsToInvoice();
                 }).then(function(unitsToInvoice) {
                     console.log("assert.equal(3, unitsToInvoice);\n");
                     assert.equal(3, unitsToInvoice);

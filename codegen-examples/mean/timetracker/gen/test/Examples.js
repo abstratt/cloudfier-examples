@@ -8,13 +8,17 @@ var Invoice = require('../models/Invoice.js');
 var Examples = {
     clientWithName : function(name) {
         var client;
-        return /* Working set: [client] */Q().then(function() {
+        var me = this;
+        return Q().then(function() {
             return Q().then(function() {
                 console.log("client = new Client();\n");
                 client = new Client();
             });
         }).then(function() {
             return Q().then(function() {
+                console.log("return Q.npost(String, 'findOne', [ ({ _id : name._id }) ]);");
+                return Q.npost(String, 'findOne', [ ({ _id : name._id }) ]);
+            }).then(function(name) {
                 console.log("client['name'] = name;\n");
                 client['name'] = name;
             });
@@ -34,6 +38,7 @@ var Examples = {
         });
     },
     client : function() {
+        var me = this;
         return Q().then(function() {
             console.log("return Examples.clientWithName(\"New Client\");");
             return Examples.clientWithName("New Client");
@@ -44,18 +49,25 @@ var Examples = {
     },
     taskWithName : function(description, client) {
         var task;
-        return /* Working set: [task] */Q().then(function() {
+        var me = this;
+        return Q().then(function() {
             return Q().then(function() {
                 console.log("task = new Task();\n");
                 task = new Task();
             });
         }).then(function() {
             return Q().then(function() {
+                console.log("return Q.npost(String, 'findOne', [ ({ _id : description._id }) ]);");
+                return Q.npost(String, 'findOne', [ ({ _id : description._id }) ]);
+            }).then(function(description) {
                 console.log("task['description'] = description;\n");
                 task['description'] = description;
             });
         }).then(function() {
             return Q().then(function() {
+                console.log("return Q.npost(Client, 'findOne', [ ({ _id : client._id }) ]);");
+                return Q.npost(Client, 'findOne', [ ({ _id : client._id }) ]);
+            }).then(function(client) {
                 console.log("task.client = client._id;\nclient.tasks.push(task._id);\n");
                 task.client = client._id;
                 client.tasks.push(task._id);
@@ -76,6 +88,7 @@ var Examples = {
         });
     },
     task : function() {
+        var me = this;
         return Q().then(function() {
             console.log("return Examples.client();");
             return Examples.client();

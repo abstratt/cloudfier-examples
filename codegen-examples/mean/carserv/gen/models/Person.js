@@ -30,9 +30,11 @@ var personSchema = new Schema({
 
 /*************************** DERIVED PROPERTIES ****************/
 
-personSchema.virtual('fullName').get(function () {
-    return this.firstName + " " + this.lastName;
-});
+personSchema.methods.getFullName = function () {
+    console.log("this.fullName: " + JSON.stringify(this));
+    /*sync*/console.log("return  this.firstName + \" \" +  this.lastName;");
+    return  this.firstName + " " +  this.lastName;
+};
 
 // declare model on the schema
 var exports = module.exports = mongoose.model('Person', personSchema);

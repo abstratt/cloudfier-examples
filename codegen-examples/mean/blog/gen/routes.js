@@ -195,9 +195,11 @@ var exports = module.exports = {
         app.get("/entities/blog.Article/template", function(req, res) {
             var template = new Article().toObject();
             template.user = (function() {
+                /*sync*/console.log("return cls.getNamespace('currentUser');");
                 return cls.getNamespace('currentUser');
             })();
             template.createdAt = (function() {
+                /*sync*/console.log("return new Date();");
                 return new Date();
             })();
             res.json(renderInstance('blog.Article', template));
@@ -283,9 +285,11 @@ var exports = module.exports = {
         app.get("/entities/blog.Comment/template", function(req, res) {
             var template = new Comment().toObject();
             template.user = (function() {
+                /*sync*/console.log("return cls.getNamespace('currentUser');");
                 return cls.getNamespace('currentUser');
             })();
             template.createdAt = (function() {
+                /*sync*/console.log("return new Date();");
                 return new Date();
             })();
             res.json(renderInstance('blog.Comment', template));

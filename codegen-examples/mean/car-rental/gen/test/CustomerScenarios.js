@@ -31,16 +31,25 @@ suite('Car rental functional tests - CustomerScenarios', function() {
             }).then(function() {
                 return Q().then(function() {
                     return Q().then(function() {
+                        console.log("return Q.npost(Customer, 'findOne', [ ({ _id : customer._id }) ]);");
+                        return Q.npost(Customer, 'findOne', [ ({ _id : customer._id }) ]);
+                    }).then(function(customer) {
                         console.log("assert.ok(customer != null);\n");
                         assert.ok(customer != null);
                     });
                 }).then(function() {
                     return Q().then(function() {
+                        console.log("return Q.npost(Customer, 'findOne', [ ({ _id : customer._id }) ]);");
+                        return Q.npost(Customer, 'findOne', [ ({ _id : customer._id }) ]);
+                    }).then(function(customer) {
                         console.log("assert.ok(customer.name != null);\n");
                         assert.ok(customer.name != null);
                     });
                 }).then(function() {
                     return Q().then(function() {
+                        console.log("return Q.npost(Customer, 'findOne', [ ({ _id : customer._id }) ]);");
+                        return Q.npost(Customer, 'findOne', [ ({ _id : customer._id }) ]);
+                    }).then(function(customer) {
                         console.log("assert.equal(\"Joana de Almeida\", customer.name);\n");
                         assert.equal("Joana de Almeida", customer.name);
                     });
@@ -92,12 +101,24 @@ suite('Car rental functional tests - CustomerScenarios', function() {
                 });
             }).then(function() {
                 return Q().then(function() {
-                    return Q().then(function() {
-                        console.log("return customer.rent(car);");
+                    return Q.all([
+                        Q().then(function() {
+                            console.log("return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);");
+                            return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);
+                        }),
+                        Q().then(function() {
+                            console.log("return Q.npost(Customer, 'findOne', [ ({ _id : customer._id }) ]);");
+                            return Q.npost(Customer, 'findOne', [ ({ _id : customer._id }) ]);
+                        })
+                    ]).spread(function(car, customer) {
+                        console.log("car:" + car);console.log("customer:" + customer);
                         return customer.rent(car);
                     });
                 }).then(function() {
                     return Q().then(function() {
+                        console.log("return Q.npost(Customer, 'findOne', [ ({ _id : customer._id }) ]);");
+                        return Q.npost(Customer, 'findOne', [ ({ _id : customer._id }) ]);
+                    }).then(function(customer) {
                         console.log("return Q.npost(Rental, 'find', [ ({ customer : customer._id }) ]);");
                         return Q.npost(Rental, 'find', [ ({ customer : customer._id }) ]);
                     }).then(function(rentals) {

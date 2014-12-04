@@ -23,13 +23,17 @@ var categorySchema = new Schema({
 
 categorySchema.statics.newCategory = function (name) {
     var newCategory;
-    return /* Working set: [newCategory] */Q().then(function() {
+    var me = this;
+    return Q().then(function() {
         return Q().then(function() {
             console.log("newCategory = new Category();\n");
             newCategory = new Category();
         });
     }).then(function() {
         return Q().then(function() {
+            console.log("return Q.npost(String, 'findOne', [ ({ _id : name._id }) ]);");
+            return Q.npost(String, 'findOne', [ ({ _id : name._id }) ]);
+        }).then(function(name) {
             console.log("newCategory['name'] = name;\n");
             newCategory['name'] = name;
         });

@@ -33,23 +33,32 @@ var userSchema = new Schema({
 userSchema.methods.startMeetingOnBehalf = function (title, description, date) {
     var newMeeting;
     var me = this;
-    return /* Working set: [me] *//* Working set: [me, newMeeting] */Q().then(function() {
+    return Q().then(function() {
         return Q().then(function() {
             console.log("newMeeting = new Meeting();\n");
             newMeeting = new Meeting();
         });
     }).then(function() {
         return Q().then(function() {
+            console.log("return Q.npost(Date, 'findOne', [ ({ _id : date._id }) ]);");
+            return Q.npost(Date, 'findOne', [ ({ _id : date._id }) ]);
+        }).then(function(date) {
             console.log("newMeeting['date'] = date;\n");
             newMeeting['date'] = date;
         });
     }).then(function() {
         return Q().then(function() {
+            console.log("return Q.npost(String, 'findOne', [ ({ _id : title._id }) ]);");
+            return Q.npost(String, 'findOne', [ ({ _id : title._id }) ]);
+        }).then(function(title) {
             console.log("newMeeting['title'] = title;\n");
             newMeeting['title'] = title;
         });
     }).then(function() {
         return Q().then(function() {
+            console.log("return Q.npost(Memo, 'findOne', [ ({ _id : description._id }) ]);");
+            return Q.npost(Memo, 'findOne', [ ({ _id : description._id }) ]);
+        }).then(function(description) {
             console.log("newMeeting['description'] = description;\n");
             newMeeting['description'] = description;
         });
@@ -69,8 +78,9 @@ userSchema.methods.startMeetingOnBehalf = function (title, description, date) {
                 console.log("return newMeeting;");
                 return newMeeting;
             })
-        ]).spread(function(organizer, NewMeeting) {
-            return NewMeeting.addParticipant(organizer);
+        ]).spread(function(organizer, newMeeting) {
+            console.log("organizer:" + organizer);console.log("newMeeting:" + newMeeting);
+            return newMeeting.addParticipant(organizer);
         });
     }).then(function(/*no-arg*/) {
         return Q.all([
@@ -97,6 +107,7 @@ userSchema.methods.startMeetingOnBehalf = function (title, description, date) {
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 userSchema.statics.getCurrent = function () {
+    /*sync*/console.log("return cls.getNamespace('currentUser');");
     return cls.getNamespace('currentUser');
 };
 

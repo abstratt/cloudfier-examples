@@ -39,8 +39,29 @@ var productSchema = new Schema({
 
 /*************************** INVARIANTS ***************************/
 
+productSchema.path('productPrice').validate(
+    function() {
+        /*sync*/console.log("return  this.productPrice > 0;");
+        return  this.productPrice > 0;
+    },
+    'validation of `{PATH}` failed with value `{VALUE}`'
+);
 
+productSchema.path('unitCost').validate(
+    function() {
+        /*sync*/console.log("return  this.unitCost > 0;");
+        return  this.unitCost > 0;
+    },
+    'validation of `{PATH}` failed with value `{VALUE}`'
+);
 
+productSchema.path('productWeight').validate(
+    function() {
+        /*sync*/console.log("return  this.productWeight >= 0;");
+        return  this.productWeight >= 0;
+    },
+    'validation of `{PATH}` failed with value `{VALUE}`'
+);
 
 
 // declare model on the schema

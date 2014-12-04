@@ -12,6 +12,7 @@ var orderSchema = new Schema({
     orderDate : {
         type : Date,
         "default" : (function() {
+            /*sync*/console.log("return new Date();");
             return new Date();
         })()
     },
@@ -44,49 +45,67 @@ var orderSchema = new Schema({
 orderSchema.methods.addItem = function (product, quantity) {
     var i;
     var me = this;
-    return /* Working set: [me] *//* Working set: [me, i] */Q().then(function() {
-        return Q().then(function() {
-            console.log("i = new OrderDetail();\n");
-            i = new OrderDetail();
-        });
+    return Q().then(function() {
+        /*sync*/console.log("return me.orderStatus == \"New\";");
+        return me.orderStatus == "New";
+    }).then(function(pass) {
+        if (!pass) {
+            var error = new Error("Precondition violated:  (on 'petstore::Order::addItem')");
+            error.context = 'petstore::Order::addItem';
+            error.constraint = '';
+            throw error;
+        }    
     }).then(function() {
         return Q().then(function() {
-            console.log("i.product = product._id\n;\n");
-            i.product = product._id
-            ;
-        });
-    }).then(function() {
-        return Q().then(function() {
-            console.log("i['quantity'] = quantity;\n");
-            i['quantity'] = quantity;
-        });
-    }).then(function() {
-        return Q().then(function() {
-            console.log("i.order = me._id;\nme.items.push(i._id);\n");
-            i.order = me._id;
-            me.items.push(i._id);
-        });
-    }).then(function(/*no-arg*/) {
-        return Q.all([
-            Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
-            }),
-            Q().then(function() {
-                return Q.npost(i, 'save', [  ]);
-            })
-        ]).spread(function() {
-            /* no-result */    
-        });
-    }).then(function(/*no-arg*/) {
-        return Q.all([
-            Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
-            })
-        ]).spread(function() {
-            /* no-result */    
-        });
-    })
-    ;
+            return Q().then(function() {
+                console.log("i = new OrderDetail();\n");
+                i = new OrderDetail();
+            });
+        }).then(function() {
+            return Q().then(function() {
+                console.log("return Q.npost(Product, 'findOne', [ ({ _id : product._id }) ]);");
+                return Q.npost(Product, 'findOne', [ ({ _id : product._id }) ]);
+            }).then(function(product) {
+                console.log("i.product = product._id\n;\n");
+                i.product = product._id
+                ;
+            });
+        }).then(function() {
+            return Q().then(function() {
+                console.log("return Q.npost(Integer, 'findOne', [ ({ _id : quantity._id }) ]);");
+                return Q.npost(Integer, 'findOne', [ ({ _id : quantity._id }) ]);
+            }).then(function(quantity) {
+                console.log("i['quantity'] = quantity;\n");
+                i['quantity'] = quantity;
+            });
+        }).then(function() {
+            return Q().then(function() {
+                console.log("i.order = me._id;\nme.items.push(i._id);\n");
+                i.order = me._id;
+                me.items.push(i._id);
+            });
+        }).then(function(/*no-arg*/) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(me, 'save', [  ]);
+                }),
+                Q().then(function() {
+                    return Q.npost(i, 'save', [  ]);
+                })
+            ]).spread(function() {
+                /* no-result */    
+            });
+        }).then(function(/*no-arg*/) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(me, 'save', [  ]);
+                })
+            ]).spread(function() {
+                /* no-result */    
+            });
+        })
+        ;
+    });
 };
 
 orderSchema.methods.complete = function () {
@@ -96,7 +115,8 @@ orderSchema.methods.process = function () {
 };
 /*************************** DERIVED PROPERTIES ****************/
 
-orderSchema.virtual('orderWeightTotal').get(function () {
+orderSchema.methods.getOrderWeightTotal = function () {
+    console.log("this.orderWeightTotal: " + JSON.stringify(this));
     var me = this;
     return Q().then(function() {
         console.log("return me.computeWeightTotal();");
@@ -105,9 +125,10 @@ orderSchema.virtual('orderWeightTotal').get(function () {
         console.log("return computeWeightTotal;\n");
         return computeWeightTotal;
     });
-});
+};
 
-orderSchema.virtual('orderTotal').get(function () {
+orderSchema.methods.getOrderTotal = function () {
+    console.log("this.orderTotal: " + JSON.stringify(this));
     var me = this;
     return Q().then(function() {
         console.log("return me.computeOrderTotal();");
@@ -116,7 +137,7 @@ orderSchema.virtual('orderTotal').get(function () {
         console.log("return computeOrderTotal;\n");
         return computeOrderTotal;
     });
-});
+};
 /*************************** PRIVATE OPS ***********************/
 
 orderSchema.methods.computeOrderTotal = function () {
@@ -143,30 +164,30 @@ orderSchema.methods.handleEvent = function (event) {
         case 'process' :
             if (this.orderStatus == 'New') {
                 this.orderStatus = 'Processing';
-                return;
+                break;
             }
             if (this.orderStatus == 'New') {
                 this.orderStatus = 'New';
-                return;
+                break;
             }
             break;
         
         case 'complete' :
             if (this.orderStatus == 'Processing') {
                 this.orderStatus = 'Completed';
-                return;
+                break;
             }
             break;
     }
-    console.log("completed handleEvent("+ event+"): "+ this);
-    
+    console.log("completed handleEvent("+ event+")");
+    return Q.npost( this, 'save', [  ]);
 };
 
 orderSchema.methods.process = function () {
-    this.handleEvent('process');
+    return this.handleEvent('process');
 };
 orderSchema.methods.complete = function () {
-    this.handleEvent('complete');
+    return this.handleEvent('complete');
 };
 
 

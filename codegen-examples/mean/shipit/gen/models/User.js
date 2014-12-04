@@ -50,31 +50,58 @@ var userSchema = new Schema({
 
 userSchema.methods.promoteToCommitter = function () {
     var me = this;
-    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
-        console.log("me['kind'] = \"Committer\";\n");
-        me['kind'] = "Committer";
-    }).then(function(/*no-arg*/) {
+    return Q().then(function() {
         return Q.all([
             Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
-            })
-        ]).spread(function() {
-            /* no-result */    
-        });
-    }).then(function(/*no-arg*/) {
-        return Q.all([
+                console.log("return User.current();");
+                return User.current();
+            }),
             Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
+                console.log("return User.current();");
+                return User.current();
+            }).then(function(current) {
+                console.log("return Unsupported classifier Basic for operation notNull;");
+                return Unsupported classifier Basic for operation notNull;
             })
-        ]).spread(function() {
-            /* no-result */    
+        ]).spread(function(current, notNull) {
+            console.log("current:" + current);console.log("notNull:" + notNull);
+            return notNull && current.isCommitter();
         });
-    })
-    ;
+    }).then(function(pass) {
+        if (!pass) {
+            var error = new Error("Precondition violated:  (on 'shipit::User::promoteToCommitter')");
+            error.context = 'shipit::User::promoteToCommitter';
+            error.constraint = '';
+            throw error;
+        }    
+    }).then(function() {
+        return Q().then(function() {
+            console.log("me['kind'] = \"Committer\";\n");
+            me['kind'] = "Committer";
+        }).then(function(/*no-arg*/) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(me, 'save', [  ]);
+                })
+            ]).spread(function() {
+                /* no-result */    
+            });
+        }).then(function(/*no-arg*/) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(me, 'save', [  ]);
+                })
+            ]).spread(function() {
+                /* no-result */    
+            });
+        })
+        ;
+    });
 };
 /*************************** QUERIES ***************************/
 
 userSchema.statics.current = function () {
+    var me = this;
     return Q().then(function() {
         return Q().then(function() {
             console.log("return Q.npost(cls.getNamespace('currentUser'), 'exec', [  ])\n;\n");
@@ -90,9 +117,11 @@ userSchema.statics.current = function () {
 };
 /*************************** DERIVED PROPERTIES ****************/
 
-userSchema.virtual('committer').get(function () {
-    return this.kind == "Committer";
-});
+userSchema.methods.isCommitter = function () {
+    console.log("this.committer: " + JSON.stringify(this));
+    /*sync*/console.log("return  this.kind == \"Committer\";");
+    return  this.kind == "Committer";
+};
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 userSchema.methods.getIssuesCurrentlyInProgress = function () {
@@ -107,6 +136,7 @@ userSchema.methods.getIssuesCurrentlyInProgress = function () {
             return "InProgress";
         })
     ]).spread(function(issuesAssignedToUser, valueSpecificationAction) {
+        console.log("issuesAssignedToUser:" + issuesAssignedToUser);console.log("valueSpecificationAction:" + valueSpecificationAction);
         return Issue.filterByStatus(issuesAssignedToUser, valueSpecificationAction);
     }).then(function(filterByStatus) {
         console.log("return filterByStatus;\n");
@@ -126,6 +156,7 @@ userSchema.methods.getIssuesCurrentlyAssigned = function () {
             return "Assigned";
         })
     ]).spread(function(issuesAssignedToUser, valueSpecificationAction) {
+        console.log("issuesAssignedToUser:" + issuesAssignedToUser);console.log("valueSpecificationAction:" + valueSpecificationAction);
         return Issue.filterByStatus(issuesAssignedToUser, valueSpecificationAction);
     }).then(function(filterByStatus) {
         console.log("return filterByStatus;\n");
@@ -134,6 +165,7 @@ userSchema.methods.getIssuesCurrentlyAssigned = function () {
 };
 
 userSchema.statics.getCurrent = function () {
+    /*sync*/console.log("return cls.getNamespace('currentUser');");
     return cls.getNamespace('currentUser');
 };
 

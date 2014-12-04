@@ -27,6 +27,7 @@ var expenseSchema = new Schema({
     date : {
         type : Date,
         "default" : (function() {
+            /*sync*/console.log("return new Date();");
             return new Date();
         })()
     },
@@ -58,34 +59,50 @@ var expenseSchema = new Schema({
 
 expenseSchema.statics.newExpense = function (description, amount, date, category, employee) {
     var newExpense;
-    return /* Working set: [newExpense] */Q().then(function() {
+    var me = this;
+    return Q().then(function() {
         return Q().then(function() {
             console.log("newExpense = new Expense();\n");
             newExpense = new Expense();
         });
     }).then(function() {
         return Q().then(function() {
+            console.log("return Q.npost(String, 'findOne', [ ({ _id : description._id }) ]);");
+            return Q.npost(String, 'findOne', [ ({ _id : description._id }) ]);
+        }).then(function(description) {
             console.log("newExpense['description'] = description;\n");
             newExpense['description'] = description;
         });
     }).then(function() {
         return Q().then(function() {
+            console.log("return Q.npost(Double, 'findOne', [ ({ _id : amount._id }) ]);");
+            return Q.npost(Double, 'findOne', [ ({ _id : amount._id }) ]);
+        }).then(function(amount) {
             console.log("newExpense['amount'] = amount;\n");
             newExpense['amount'] = amount;
         });
     }).then(function() {
         return Q().then(function() {
+            console.log("return Q.npost(Date, 'findOne', [ ({ _id : date._id }) ]);");
+            return Q.npost(Date, 'findOne', [ ({ _id : date._id }) ]);
+        }).then(function(date) {
             console.log("newExpense['date'] = date;\n");
             newExpense['date'] = date;
         });
     }).then(function() {
         return Q().then(function() {
+            console.log("return Q.npost(Category, 'findOne', [ ({ _id : category._id }) ]);");
+            return Q.npost(Category, 'findOne', [ ({ _id : category._id }) ]);
+        }).then(function(category) {
             console.log("newExpense.category = category._id\n;\n");
             newExpense.category = category._id
             ;
         });
     }).then(function() {
         return Q().then(function() {
+            console.log("return Q.npost(Employee, 'findOne', [ ({ _id : employee._id }) ]);");
+            return Q.npost(Employee, 'findOne', [ ({ _id : employee._id }) ]);
+        }).then(function(employee) {
             console.log("newExpense.employee = employee._id;\nemployee.expenses.push(newExpense._id);\n");
             newExpense.employee = employee._id;
             employee.expenses.push(newExpense._id);
@@ -108,28 +125,46 @@ expenseSchema.statics.newExpense = function (description, amount, date, category
 
 expenseSchema.methods.approve = function () {
     var me = this;
-    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
-        console.log("me.approver = cls.getNamespace('currentUser')._id\n;\n");
-        me.approver = cls.getNamespace('currentUser')._id
+    return Q().then(function() {
+        return Q().then(function() {
+            console.log("return Q.npost(Employee, 'findOne', [ ({ _id : me.employee }) ]);");
+            return Q.npost(Employee, 'findOne', [ ({ _id : me.employee }) ]);
+        }).then(function(employee) {
+            console.log("return !(cls.getNamespace('currentUser') == employee);\n");
+            return !(cls.getNamespace('currentUser') == employee);
+        });
+    }).then(function(pass) {
+        if (!pass) {
+            var error = new Error("Precondition violated: Cannot approve own expenses. (on 'expenses::Expense::approve')");
+            error.context = 'expenses::Expense::approve';
+            error.constraint = '';
+            error.description = 'Cannot approve own expenses.';
+            throw error;
+        }    
+    }).then(function() {
+        return Q().then(function() {
+            console.log("me.approver = cls.getNamespace('currentUser')._id\n;\n");
+            me.approver = cls.getNamespace('currentUser')._id
+            ;
+        }).then(function(/*no-arg*/) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(me, 'save', [  ]);
+                })
+            ]).spread(function() {
+                /* no-result */    
+            });
+        }).then(function(/*no-arg*/) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(me, 'save', [  ]);
+                })
+            ]).spread(function() {
+                /* no-result */    
+            });
+        })
         ;
-    }).then(function(/*no-arg*/) {
-        return Q.all([
-            Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
-            })
-        ]).spread(function() {
-            /* no-result */    
-        });
-    }).then(function(/*no-arg*/) {
-        return Q.all([
-            Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
-            })
-        ]).spread(function() {
-            /* no-result */    
-        });
-    })
-    ;
+    });
 };
 
 /**
@@ -137,35 +172,51 @@ expenseSchema.methods.approve = function () {
  */
 expenseSchema.methods.reject = function (reason) {
     var me = this;
-    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
-        return Q().then(function() {
-            console.log("me['rejectionReason'] = reason;\n");
-            me['rejectionReason'] = reason;
-        });
+    return Q().then(function() {
+        /*sync*/console.log("return !(me.isAutomaticApproval());");
+        return !(me.isAutomaticApproval());
+    }).then(function(pass) {
+        if (!pass) {
+            var error = new Error("Precondition violated: Cannot reject an expense under the auto-approval limit. (on 'expenses::Expense::reject')");
+            error.context = 'expenses::Expense::reject';
+            error.constraint = '';
+            error.description = 'Cannot reject an expense under the auto-approval limit.';
+            throw error;
+        }    
     }).then(function() {
         return Q().then(function() {
-            console.log("me.approver = cls.getNamespace('currentUser')._id\n;\n");
-            me.approver = cls.getNamespace('currentUser')._id
-            ;
-        });
-    }).then(function(/*no-arg*/) {
-        return Q.all([
-            Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
-            })
-        ]).spread(function() {
-            /* no-result */    
-        });
-    }).then(function(/*no-arg*/) {
-        return Q.all([
-            Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
-            })
-        ]).spread(function() {
-            /* no-result */    
-        });
-    })
-    ;
+            return Q().then(function() {
+                console.log("return Q.npost(Memo, 'findOne', [ ({ _id : reason._id }) ]);");
+                return Q.npost(Memo, 'findOne', [ ({ _id : reason._id }) ]);
+            }).then(function(reason) {
+                console.log("me['rejectionReason'] = reason;\n");
+                me['rejectionReason'] = reason;
+            });
+        }).then(function() {
+            return Q().then(function() {
+                console.log("me.approver = cls.getNamespace('currentUser')._id\n;\n");
+                me.approver = cls.getNamespace('currentUser')._id
+                ;
+            });
+        }).then(function(/*no-arg*/) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(me, 'save', [  ]);
+                })
+            ]).spread(function() {
+                /* no-result */    
+            });
+        }).then(function(/*no-arg*/) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(me, 'save', [  ]);
+                })
+            ]).spread(function() {
+                /* no-result */    
+            });
+        })
+        ;
+    });
 };
 
 /**
@@ -188,14 +239,16 @@ expenseSchema.methods.submit = function () {
 /*************************** QUERIES ***************************/
 
 expenseSchema.statics.findExpensesByCategory = function (category) {
+    var me = this;
     return Q().then(function() {
-        console.log("return Q.npost(mongoose.model('Expense').find().where({ { 'category' : e  } : category }), 'exec', [  ])\n;\n");
-        return Q.npost(mongoose.model('Expense').find().where({ { 'category' : e  } : category }), 'exec', [  ])
+        console.log("return Q.npost(mongoose.model('Expense').find().where({ /*read-link*/{ 'category' : e  } : category }), 'exec', [  ])\n;\n");
+        return Q.npost(mongoose.model('Expense').find().where({ /*read-link*/{ 'category' : e  } : category }), 'exec', [  ])
         ;
     });
 };
 
 expenseSchema.statics.findExpensesInPeriod = function (start, end_) {
+    var me = this;
     return Q().then(function() {
         console.log("return Q.npost(mongoose.model('Expense').find().where({\n    $and : [ \n        {\n            $or : [ \n                { start : null },\n                {\n                    $gte : [ \n                        date,\n                        start\n                    ]\n                }\n            ]\n        },\n        {\n            $or : [ \n                { end_ : null },\n                {\n                    $lte : [ \n                        date,\n                        end_\n                    ]\n                }\n            ]\n        }\n    ]\n}), 'exec', [  ])\n;\n");
         return Q.npost(mongoose.model('Expense').find().where({
@@ -229,6 +282,7 @@ expenseSchema.statics.findExpensesInPeriod = function (start, end_) {
 };
 
 expenseSchema.statics.findByStatus = function (status) {
+    var me = this;
     return Q().then(function() {
         console.log("return Q.npost(mongoose.model('Expense').find().where({ status : status }), 'exec', [  ])\n;\n");
         return Q.npost(mongoose.model('Expense').find().where({ status : status }), 'exec', [  ])
@@ -237,30 +291,36 @@ expenseSchema.statics.findByStatus = function (status) {
 };
 /*************************** DERIVED PROPERTIES ****************/
 
-expenseSchema.virtual('moniker').get(function () {
-    return this.description + " on " + this.date;
-});
+expenseSchema.methods.getMoniker = function () {
+    console.log("this.moniker: " + JSON.stringify(this));
+    /*sync*/console.log("return  this.description + \" on \" +  this.date;");
+    return  this.description + " on " +  this.date;
+};
 
 
 /**
  *  Whether this expense qualifies for automatic approval. 
  */
-expenseSchema.virtual('automaticApproval').get(function () {
-    return this.amount < 50;
-});
+expenseSchema.methods.isAutomaticApproval = function () {
+    console.log("this.automaticApproval: " + JSON.stringify(this));
+    /*sync*/console.log("return  this.amount < 50;");
+    return  this.amount < 50;
+};
 
-expenseSchema.virtual('daysProcessed').get(function () {
-    if (this.processed == null) {
+expenseSchema.methods.getDaysProcessed = function () {
+    console.log("this.daysProcessed: " + JSON.stringify(this));
+    /*sync*/console.log("if ( this.processed == null) {\n    return 0;\n} else  {\n    return ( this.processed - new Date()) / (1000*60*60*24);\n}");
+    if ( this.processed == null) {
         return 0;
     } else  {
-        return (this.processed - new Date()) / (1000*60*60*24);
+        return ( this.processed - new Date()) / (1000*60*60*24);
     }
-});
+};
 /*************************** PRIVATE OPS ***********************/
 
 expenseSchema.methods.reportApproved = function () {
     var me = this;
-    return /* Working set: [me] *//* Working set: [me] */Q.all([
+    return Q.all([
         Q().then(function() {
             console.log("return Q.npost(Employee, 'findOne', [ ({ _id : me.employee }) ]);");
             return Q.npost(Employee, 'findOne', [ ({ _id : me.employee }) ]);
@@ -279,18 +339,20 @@ expenseSchema.methods.reportApproved = function () {
                 return me.description + "(";
             })
         ]).spread(function(category, add) {
+            console.log("category:" + category);console.log("add:" + add);
             return add + category.name + ")";
         }),
         Q().then(function() {
-            console.log("return me.expenseId;");
-            return me.expenseId;
+            console.log("return me.getExpenseId();");
+            return me.getExpenseId();
         }),
         Q().then(function() {
             console.log("return me.expensePayer;");
             return me.expensePayer;
         })
     ]).spread(function(employee, amount, add, expenseId, expensePayer) {
-        expensePayer.expenseApproved(employee.name, amount, add, expenseId);
+        console.log("employee:" + employee);console.log("amount:" + amount);console.log("add:" + add);console.log("expenseId:" + expenseId);console.log("expensePayer:" + expensePayer);
+        return expensePayer.expenseApproved(employee.name, amount, add, expenseId);;
     }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
@@ -318,7 +380,8 @@ expenseSchema.methods.handleEvent = function (event) {
         case 'submit' :
             if (this.status == 'Draft') {
                 guard = function() {
-                    return this.automaticApproval;
+                    /*sync*/console.log("return  this.isAutomaticApproval();");
+                    return  this.isAutomaticApproval();
                 }
                 ;
                 if (guard.call(this)) {
@@ -338,17 +401,18 @@ expenseSchema.methods.handleEvent = function (event) {
                             });
                         });
                     })();
-                    return;
+                    break;
                 }
             }
             if (this.status == 'Draft') {
                 guard = function() {
-                    return !this.automaticApproval;
+                    /*sync*/console.log("return !( this.isAutomaticApproval());");
+                    return !( this.isAutomaticApproval());
                 }
                 ;
                 if (guard.call(this)) {
                     this.status = 'Submitted';
-                    return;
+                    break;
                 }
             }
             break;
@@ -371,14 +435,14 @@ expenseSchema.methods.handleEvent = function (event) {
                         });
                     });
                 })();
-                return;
+                break;
             }
             break;
         
         case 'review' :
             if (this.status == 'Submitted') {
                 this.status = 'Draft';
-                return;
+                break;
             }
             break;
         
@@ -387,37 +451,38 @@ expenseSchema.methods.handleEvent = function (event) {
                 this.status = 'Rejected';
                 // on entering Rejected
                 (function() {
-                    this['processed'] = new Date();
+                    /*sync*/console.log(" this['processed'] = new Date();");
+                     this['processed'] = new Date();
                 })();
-                return;
+                break;
             }
             break;
         
         case 'reconsider' :
             if (this.status == 'Rejected') {
                 this.status = 'Submitted';
-                return;
+                break;
             }
             break;
     }
-    console.log("completed handleEvent("+ event+"): "+ this);
-    
+    console.log("completed handleEvent("+ event+")");
+    return Q.npost( this, 'save', [  ]);
 };
 
 expenseSchema.methods.submit = function () {
-    this.handleEvent('submit');
+    return this.handleEvent('submit');
 };
 expenseSchema.methods.approve = function () {
-    this.handleEvent('approve');
+    return this.handleEvent('approve');
 };
 expenseSchema.methods.review = function () {
-    this.handleEvent('review');
+    return this.handleEvent('review');
 };
 expenseSchema.methods.reject = function () {
-    this.handleEvent('reject');
+    return this.handleEvent('reject');
 };
 expenseSchema.methods.reconsider = function () {
-    this.handleEvent('reconsider');
+    return this.handleEvent('reconsider');
 };
 
 

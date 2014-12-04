@@ -1,2 +1,2 @@
-find . -name gen |cut -d '/' -f 3 | xargs -t -I prj ./gen.sh $1 prj
+ls $1 |xargs -t -I prj ./gen.sh $1 prj
 

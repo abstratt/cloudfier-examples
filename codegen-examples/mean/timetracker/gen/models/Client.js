@@ -31,13 +31,16 @@ var clientSchema = new Schema({
 clientSchema.methods.newTask = function (description) {
     var newTask;
     var me = this;
-    return /* Working set: [me] *//* Working set: [me, newTask] */Q().then(function() {
+    return Q().then(function() {
         return Q().then(function() {
             console.log("newTask = new Task();\n");
             newTask = new Task();
         });
     }).then(function() {
         return Q().then(function() {
+            console.log("return Q.npost(String, 'findOne', [ ({ _id : description._id }) ]);");
+            return Q.npost(String, 'findOne', [ ({ _id : description._id }) ]);
+        }).then(function(description) {
             console.log("newTask['description'] = description;\n");
             newTask['description'] = description;
         });
@@ -78,7 +81,7 @@ clientSchema.methods.newTask = function (description) {
 clientSchema.methods.startInvoice = function () {
     var newInvoice;
     var me = this;
-    return /* Working set: [me] *//* Working set: [me, newInvoice] */Q().then(function() {
+    return Q().then(function() {
         return Q().then(function() {
             console.log("newInvoice = new Invoice();\n");
             newInvoice = new Invoice();

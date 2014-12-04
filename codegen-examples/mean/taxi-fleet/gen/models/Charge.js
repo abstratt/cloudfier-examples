@@ -55,7 +55,8 @@ chargeSchema.methods.cancelPayment = function () {
 
 chargeSchema.statics.newCharge = function (taxi, payer, date) {
     var charge;
-    return /* Working set: [charge] */Q().then(function() {
+    var me = this;
+    return Q().then(function() {
         return Q().then(function() {
             console.log("charge = new Charge();\n");
             charge = new Charge();
@@ -63,18 +64,28 @@ chargeSchema.statics.newCharge = function (taxi, payer, date) {
     }).then(function() {
         return Q.all([
             Q().then(function() {
+                console.log("return Q.npost(Taxi, 'findOne', [ ({ _id : taxi._id }) ]);");
+                return Q.npost(Taxi, 'findOne', [ ({ _id : taxi._id }) ]);
+            }).then(function(taxi) {
                 console.log("return Q.npost(Shift, 'findOne', [ ({ _id : taxi.shift }) ]);");
                 return Q.npost(Shift, 'findOne', [ ({ _id : taxi.shift }) ]);
             }),
             Q().then(function() {
+                console.log("return Q.npost(Taxi, 'findOne', [ ({ _id : taxi._id }) ]);");
+                return Q.npost(Taxi, 'findOne', [ ({ _id : taxi._id }) ]);
+            }).then(function(taxi) {
                 console.log("return taxi.name + \" - \";");
                 return taxi.name + " - ";
             })
         ]).spread(function(shift, add) {
+            console.log("shift:" + shift);console.log("add:" + add);
             charge['description'] = add + shift.description;
         });
     }).then(function() {
         return Q().then(function() {
+            console.log("return Q.npost(Taxi, 'findOne', [ ({ _id : taxi._id }) ]);");
+            return Q.npost(Taxi, 'findOne', [ ({ _id : taxi._id }) ]);
+        }).then(function(taxi) {
             console.log("return Q.npost(Shift, 'findOne', [ ({ _id : taxi.shift }) ]);");
             return Q.npost(Shift, 'findOne', [ ({ _id : taxi.shift }) ]);
         }).then(function(shift) {
@@ -83,18 +94,33 @@ chargeSchema.statics.newCharge = function (taxi, payer, date) {
         });
     }).then(function() {
         return Q().then(function() {
+            console.log("return Q.npost(Taxi, 'findOne', [ ({ _id : taxi._id }) ]);");
+            return Q.npost(Taxi, 'findOne', [ ({ _id : taxi._id }) ]);
+        }).then(function(taxi) {
             console.log("charge.taxi = taxi._id\n;\n");
             charge.taxi = taxi._id
             ;
         });
     }).then(function() {
         return Q().then(function() {
+            console.log("return Q.npost(Date, 'findOne', [ ({ _id : date._id }) ]);");
+            return Q.npost(Date, 'findOne', [ ({ _id : date._id }) ]);
+        }).then(function(date) {
             console.log("charge['date'] = date;\n");
             charge['date'] = date;
         });
     }).then(function() {
-        return Q().then(function() {
-            console.log("charge.driver = payer._id;\npayer.charges.push(charge._id);\n");
+        return Q.all([
+            Q().then(function() {
+                console.log("return Q.npost(Driver, 'findOne', [ ({ _id : payer._id }) ]);");
+                return Q.npost(Driver, 'findOne', [ ({ _id : payer._id }) ]);
+            }),
+            Q().then(function() {
+                console.log("return charge;");
+                return charge;
+            })
+        ]).spread(function(payer, charge) {
+            console.log("payer:" + payer);console.log("charge:" + charge);
             charge.driver = payer._id;
             payer.charges.push(charge._id);
         });
@@ -111,6 +137,7 @@ chargeSchema.statics.newCharge = function (taxi, payer, date) {
 /*************************** QUERIES ***************************/
 
 chargeSchema.statics.pendingCharges = function () {
+    var me = this;
     return Q().then(function() {
         console.log("return Q.npost(mongoose.model('Charge').find().where({\n    $ne : [ \n        { status : null },\n        true\n    ]\n}), 'exec', [  ])\n;\n");
         return Q.npost(mongoose.model('Charge').find().where({
@@ -124,6 +151,7 @@ chargeSchema.statics.pendingCharges = function () {
 };
 
 chargeSchema.statics.byTaxi = function (taxi) {
+    var me = this;
     return Q().then(function() {
         console.log("return Q.npost(mongoose.model('Charge').find().where({ taxi : taxi }), 'exec', [  ])\n;\n");
         return Q.npost(mongoose.model('Charge').find().where({ taxi : taxi }), 'exec', [  ])
@@ -132,6 +160,7 @@ chargeSchema.statics.byTaxi = function (taxi) {
 };
 
 chargeSchema.statics.paidCharges = function () {
+    var me = this;
     return Q().then(function() {
         console.log("return Q.npost(mongoose.model('Charge').find().where({ status : null }), 'exec', [  ])\n;\n");
         return Q.npost(mongoose.model('Charge').find().where({ status : null }), 'exec', [  ])
@@ -140,9 +169,11 @@ chargeSchema.statics.paidCharges = function () {
 };
 /*************************** DERIVED PROPERTIES ****************/
 
-chargeSchema.virtual('paid').get(function () {
-    return this.status == "Paid";
-});
+chargeSchema.methods.isPaid = function () {
+    console.log("this.paid: " + JSON.stringify(this));
+    /*sync*/console.log("return  this.status == \"Paid\";");
+    return  this.status == "Paid";
+};
 /*************************** STATE MACHINE ********************/
 chargeSchema.methods.handleEvent = function (event) {
     console.log("started handleEvent("+ event+")");
@@ -152,28 +183,29 @@ chargeSchema.methods.handleEvent = function (event) {
                 this.status = 'Paid';
                 // on entering Paid
                 (function() {
-                    this['receivedOn'] = new Date();
+                    /*sync*/console.log(" this['receivedOn'] = new Date();");
+                     this['receivedOn'] = new Date();
                 })();
-                return;
+                break;
             }
             break;
         
         case 'cancelPayment' :
             if (this.status == 'Paid') {
                 this.status = 'Pending';
-                return;
+                break;
             }
             break;
     }
-    console.log("completed handleEvent("+ event+"): "+ this);
-    
+    console.log("completed handleEvent("+ event+")");
+    return Q.npost( this, 'save', [  ]);
 };
 
 chargeSchema.methods.pay = function () {
-    this.handleEvent('pay');
+    return this.handleEvent('pay');
 };
 chargeSchema.methods.cancelPayment = function () {
-    this.handleEvent('cancelPayment');
+    return this.handleEvent('cancelPayment');
 };
 
 

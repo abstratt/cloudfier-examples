@@ -39,144 +39,169 @@ suite('Time Tracker functional tests - WorkScenarios', function() {
         behavior().then(done, done);
     });
     test('cannotAssignWorkToInvoiceFromAnotherClient', function(done) {
-        try {
-            var behavior = function() {
-                var client1;
-                var client2;
-                var work;
-                var me = this;
+        var behavior = function() {
+            var client1;
+            var client2;
+            var work;
+            var me = this;
+            return Q().then(function() {
                 return Q().then(function() {
-                    return Q().then(function() {
-                        console.log("return Examples.client();");
-                        return Examples.client();
-                    }).then(function(client) {
-                        console.log("client1 = client;\n");
-                        client1 = client;
-                    });
-                }).then(function() {
-                    return Q().then(function() {
-                        console.log("return Examples.client();");
-                        return Examples.client();
-                    }).then(function(client) {
-                        console.log("client2 = client;\n");
-                        client2 = client;
-                    });
-                }).then(function() {
-                    return Q().then(function() {
-                        console.log("return client1.newTask(\"Some task\");");
-                        return client1.newTask("Some task");
-                    }).then(function(newTask) {
-                        console.log("return newTask.addWork(1);");
-                        return newTask.addWork(1);
-                    }).then(function(addWork) {
-                        console.log("work = addWork;\n");
-                        work = addWork;
-                    });
-                }).then(function() {
-                    return Q.all([
-                        Q().then(function() {
-                            console.log("return client2.startInvoice();");
-                            return client2.startInvoice();
-                        }),
-                        Q().then(function() {
-                            console.log("return work;");
-                            return work;
-                        })
-                    ]).spread(function(startInvoice, Work) {
-                        return Work.submit(startInvoice);
-                    });
+                    console.log("return Examples.client();");
+                    return Examples.client();
+                }).then(function(client) {
+                    console.log("client1 = client;\n");
+                    client1 = client;
                 });
-            };
-            behavior().then(done, done);
-        } catch (e) {
-            return;
-        }
-        throw "Failure expected, but no failure occurred"
+            }).then(function() {
+                return Q().then(function() {
+                    console.log("return Examples.client();");
+                    return Examples.client();
+                }).then(function(client) {
+                    console.log("client2 = client;\n");
+                    client2 = client;
+                });
+            }).then(function() {
+                return Q().then(function() {
+                    console.log("return client1.newTask(\"Some task\");");
+                    return client1.newTask("Some task");
+                }).then(function(newTask) {
+                    console.log("return newTask.addWork(1);");
+                    return newTask.addWork(1);
+                }).then(function(addWork) {
+                    console.log("work = addWork;\n");
+                    work = addWork;
+                });
+            }).then(function() {
+                return Q.all([
+                    Q().then(function() {
+                        console.log("return client2.startInvoice();");
+                        return client2.startInvoice();
+                    }),
+                    Q().then(function() {
+                        console.log("return work;");
+                        return work;
+                    })
+                ]).spread(function(startInvoice, work) {
+                    console.log("startInvoice:" + startInvoice);console.log("work:" + work);
+                    return work.submit(startInvoice);
+                });
+            });
+        };
+        behavior().then(function() {
+            done(new Error("Error expected (WrongClient), none occurred"));
+        }, function(error) {
+            try {
+                console.log(error);
+                assert.equal(error.name, 'ValidationError');
+                assert.ok(error.errors.submit);
+                done();
+            } catch (e) {
+                done(e);
+            }                
+        });
     });
     test('cannotSubmitWorkToInvoiceAlreadyInvoiced', function(done) {
-        try {
-            var behavior = function() {
-                var invoice;
-                var work;
-                var me = this;
+        var behavior = function() {
+            var invoice;
+            var work;
+            var me = this;
+            return Q().then(function() {
                 return Q().then(function() {
-                    return Q().then(function() {
-                        console.log("return Examples.client();");
-                        return Examples.client();
-                    }).then(function(client) {
-                        console.log("return client.newTask(\"Some task\");");
-                        return client.newTask("Some task");
-                    }).then(function(newTask) {
-                        console.log("return newTask.addWork(1);");
-                        return newTask.addWork(1);
-                    }).then(function(addWork) {
-                        console.log("work = addWork;\n");
-                        work = addWork;
-                    });
-                }).then(function() {
-                    return Q().then(function() {
-                        console.log("return work.getClient();");
-                        return work.getClient();
-                    }).then(function(client) {
-                        console.log("return client.startInvoice();");
-                        return client.startInvoice();
-                    }).then(function(startInvoice) {
-                        console.log("invoice = startInvoice;\n");
-                        invoice = startInvoice;
-                    });
-                }).then(function() {
-                    return Q().then(function() {
-                        console.log("return work.submit(invoice);");
-                        return work.submit(invoice);
-                    });
-                }).then(function() {
-                    return Q().then(function() {
-                        console.log("return work.submit(invoice);");
-                        return work.submit(invoice);
-                    });
+                    console.log("return Examples.client();");
+                    return Examples.client();
+                }).then(function(client) {
+                    console.log("return client.newTask(\"Some task\");");
+                    return client.newTask("Some task");
+                }).then(function(newTask) {
+                    console.log("return newTask.addWork(1);");
+                    return newTask.addWork(1);
+                }).then(function(addWork) {
+                    console.log("work = addWork;\n");
+                    work = addWork;
                 });
-            };
-            behavior().then(done, done);
-        } catch (e) {
-            return;
-        }
-        throw "Failure expected, but no failure occurred"
+            }).then(function() {
+                return Q().then(function() {
+                    console.log("return work.getClient();");
+                    return work.getClient();
+                }).then(function(client) {
+                    console.log("return client.startInvoice();");
+                    return client.startInvoice();
+                }).then(function(startInvoice) {
+                    console.log("invoice = startInvoice;\n");
+                    invoice = startInvoice;
+                });
+            }).then(function() {
+                return Q().then(function() {
+                    console.log("return work.submit(invoice);");
+                    return work.submit(invoice);
+                });
+            }).then(function() {
+                return Q().then(function() {
+                    console.log("return work.submit(invoice);");
+                    return work.submit(invoice);
+                });
+            });
+        };
+        behavior().then(function() {
+            done(new Error("Error expected (AlreadyInvoiced), none occurred"));
+        }, function(error) {
+            try {
+                console.log(error);
+                assert.equal(error.name, 'ValidationError');
+                assert.ok(error.errors.submit);
+                done();
+            } catch (e) {
+                done(e);
+            }                
+        });
     });
     test('unitsWorkedMustBePositive', function(done) {
-        try {
-            var behavior = function() {
-                var me = this;
-                return Q().then(function() {
-                    console.log("return Examples.task();");
-                    return Examples.task();
-                }).then(function(task) {
-                    console.log("return task.addWork(-1);");
-                    return task.addWork(-1);
-                });
-            };
-            behavior().then(done, done);
-        } catch (e) {
-            return;
-        }
-        throw "Failure expected, but no failure occurred"
+        var behavior = function() {
+            var me = this;
+            return Q().then(function() {
+                console.log("return Examples.task();");
+                return Examples.task();
+            }).then(function(task) {
+                console.log("return task.addWork(-(1));");
+                return task.addWork(-(1));
+            });
+        };
+        behavior().then(function() {
+            done(new Error("Error expected (MustBePositive), none occurred"));
+        }, function(error) {
+            try {
+                console.log(error);
+                assert.equal(error.name, 'ValidationError');
+                assert.ok(error.errors.units);
+                done();
+            } catch (e) {
+                done(e);
+            }                
+        });
     });
     test('unitsWorkedMayNotBeZero', function(done) {
-        try {
-            var behavior = function() {
-                var me = this;
-                return Q().then(function() {
-                    console.log("return Examples.task();");
-                    return Examples.task();
-                }).then(function(task) {
-                    console.log("return task.addWork(0);");
-                    return task.addWork(0);
-                });
-            };
-            behavior().then(done, done);
-        } catch (e) {
-            return;
-        }
-        throw "Failure expected, but no failure occurred"
+        var behavior = function() {
+            var me = this;
+            return Q().then(function() {
+                console.log("return Examples.task();");
+                return Examples.task();
+            }).then(function(task) {
+                console.log("return task.addWork(0);");
+                return task.addWork(0);
+            });
+        };
+        behavior().then(function() {
+            done(new Error("Error expected (MustBePositive), none occurred"));
+        }, function(error) {
+            try {
+                console.log(error);
+                assert.equal(error.name, 'ValidationError');
+                assert.ok(error.errors.units);
+                done();
+            } catch (e) {
+                done(e);
+            }                
+        });
     });
 });
 

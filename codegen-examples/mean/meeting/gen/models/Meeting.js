@@ -41,28 +41,45 @@ var meetingSchema = new Schema({
  */
 meetingSchema.methods.leave = function () {
     var me = this;
-    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
-        console.log("User.current.meetings = null;\nUser.current = null;\n");
-        User.current.meetings = null;
-        User.current = null;
-    }).then(function(/*no-arg*/) {
-        return Q.all([
-            Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
-            })
-        ]).spread(function() {
-            /* no-result */    
+    return Q().then(function() {
+        return Q().then(function() {
+            console.log("return me.isParticipating(User.current);");
+            return me.isParticipating(User.current);
+        }).then(function(isParticipating) {
+            console.log("return isParticipating;\n");
+            return isParticipating;
         });
-    }).then(function(/*no-arg*/) {
-        return Q.all([
-            Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
-            })
-        ]).spread(function() {
-            /* no-result */    
-        });
-    })
-    ;
+    }).then(function(pass) {
+        if (!pass) {
+            var error = new Error("Precondition violated:  (on 'meeting::Meeting::leave')");
+            error.context = 'meeting::Meeting::leave';
+            error.constraint = '';
+            throw error;
+        }    
+    }).then(function() {
+        return Q().then(function() {
+            console.log("User.current.meetings = null;\nUser.current = null;\n");
+            User.current.meetings = null;
+            User.current = null;
+        }).then(function(/*no-arg*/) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(me, 'save', [  ]);
+                })
+            ]).spread(function() {
+                /* no-result */    
+            });
+        }).then(function(/*no-arg*/) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(me, 'save', [  ]);
+                })
+            ]).spread(function() {
+                /* no-result */    
+            });
+        })
+        ;
+    });
 };
 
 /**
@@ -70,28 +87,45 @@ meetingSchema.methods.leave = function () {
  */
 meetingSchema.methods.join = function () {
     var me = this;
-    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
-        console.log("me.participants.push(User.current._id);\nUser.current.meetings.push(me._id);\n");
-        me.participants.push(User.current._id);
-        User.current.meetings.push(me._id);
-    }).then(function(/*no-arg*/) {
-        return Q.all([
-            Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
-            })
-        ]).spread(function() {
-            /* no-result */    
+    return Q().then(function() {
+        return Q().then(function() {
+            console.log("return me.isParticipating(User.current);");
+            return me.isParticipating(User.current);
+        }).then(function(isParticipating) {
+            console.log("return !(isParticipating);\n");
+            return !(isParticipating);
         });
-    }).then(function(/*no-arg*/) {
-        return Q.all([
-            Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
-            })
-        ]).spread(function() {
-            /* no-result */    
-        });
-    })
-    ;
+    }).then(function(pass) {
+        if (!pass) {
+            var error = new Error("Precondition violated:  (on 'meeting::Meeting::join')");
+            error.context = 'meeting::Meeting::join';
+            error.constraint = '';
+            throw error;
+        }    
+    }).then(function() {
+        return Q().then(function() {
+            console.log("me.participants.push(User.current._id);\nUser.current.meetings.push(me._id);\n");
+            me.participants.push(User.current._id);
+            User.current.meetings.push(me._id);
+        }).then(function(/*no-arg*/) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(me, 'save', [  ]);
+                })
+            ]).spread(function() {
+                /* no-result */    
+            });
+        }).then(function(/*no-arg*/) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(me, 'save', [  ]);
+                })
+            ]).spread(function() {
+                /* no-result */    
+            });
+        })
+        ;
+    });
 };
 
 /**
@@ -99,10 +133,19 @@ meetingSchema.methods.join = function () {
  */
 meetingSchema.methods.addParticipant = function (newParticipant) {
     var me = this;
-    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
-        console.log("me.participants.push(newParticipant._id);\nnewParticipant.meetings.push(me._id);\n");
-        me.participants.push(newParticipant._id);
-        newParticipant.meetings.push(me._id);
+    return Q.all([
+        Q().then(function() {
+            console.log("return Q.npost(User, 'findOne', [ ({ _id : newParticipant._id }) ]);");
+            return Q.npost(User, 'findOne', [ ({ _id : newParticipant._id }) ]);
+        }),
+        Q().then(function() {
+            console.log("return me;");
+            return me;
+        })
+    ]).spread(function(newParticipant, readSelfAction) {
+        console.log("newParticipant:" + newParticipant);console.log("readSelfAction:" + readSelfAction);
+        readSelfAction.participants.push(newParticipant._id);
+        newParticipant.meetings.push(readSelfAction._id);
     }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
@@ -127,20 +170,56 @@ meetingSchema.methods.addParticipant = function (newParticipant) {
  *  Starts a meeting having the current user as organizer. 
  */
 meetingSchema.statics.startMeeting = function (title, description, date) {
+    var me = this;
     return Q().then(function() {
-        console.log("return User.current.startMeetingOnBehalf(title, description, date);");
-        return User.current.startMeetingOnBehalf(title, description, date);
+        /*sync*/console.log("return !(User.current == null);");
+        return !(User.current == null);
+    }).then(function(pass) {
+        if (!pass) {
+            var error = new Error("Precondition violated:  (on 'meeting::Meeting::startMeeting')");
+            error.context = 'meeting::Meeting::startMeeting';
+            error.constraint = '';
+            throw error;
+        }    
+    }).then(function() {
+        return Q.all([
+            Q().then(function() {
+                console.log("return Q.npost(String, 'findOne', [ ({ _id : title._id }) ]);");
+                return Q.npost(String, 'findOne', [ ({ _id : title._id }) ]);
+            }),
+            Q().then(function() {
+                console.log("return Q.npost(Memo, 'findOne', [ ({ _id : description._id }) ]);");
+                return Q.npost(Memo, 'findOne', [ ({ _id : description._id }) ]);
+            }),
+            Q().then(function() {
+                console.log("return Q.npost(Date, 'findOne', [ ({ _id : date._id }) ]);");
+                return Q.npost(Date, 'findOne', [ ({ _id : date._id }) ]);
+            }),
+            Q().then(function() {
+                console.log("return User.current;");
+                return User.current;
+            })
+        ]).spread(function(title, description, date, current) {
+            console.log("title:" + title);console.log("description:" + description);console.log("date:" + date);console.log("current:" + current);
+            return current.startMeetingOnBehalf(title, description, date);
+        });
     });
 };
 /*************************** PRIVATE OPS ***********************/
 
 meetingSchema.methods.isParticipating = function (candidate) {
     var me = this;
-    return Q().then(function() {
-        console.log("return Q.npost(User, 'find', [ ({ meetings : me._id }) ]);");
-        return Q.npost(User, 'find', [ ({ meetings : me._id }) ]);
-    }).then(function(participants) {
-        console.log("return Q.npost(/*TBD*/includes, 'exec', [  ])\n;\n");
+    return Q.all([
+        Q().then(function() {
+            console.log("return Q.npost(User, 'findOne', [ ({ _id : candidate._id }) ]);");
+            return Q.npost(User, 'findOne', [ ({ _id : candidate._id }) ]);
+        }),
+        Q().then(function() {
+            console.log("return Q.npost(User, 'find', [ ({ meetings : me._id }) ]);");
+            return Q.npost(User, 'find', [ ({ meetings : me._id }) ]);
+        })
+    ]).spread(function(candidate, participants) {
+        console.log("candidate:" + candidate);console.log("participants:" + participants);
         return Q.npost(/*TBD*/includes, 'exec', [  ])
         ;
     });
@@ -148,17 +227,18 @@ meetingSchema.methods.isParticipating = function (candidate) {
 
 meetingSchema.methods.isOrganizing = function (candidate) {
     var me = this;
-    return /* Working set: [me] *//* Working set: [me] */Q.all([
+    return Q.all([
         Q().then(function() {
             console.log("return Q.npost(User, 'findOne', [ ({ _id : me.organizer }) ]);");
             return Q.npost(User, 'findOne', [ ({ _id : me.organizer }) ]);
         }),
         Q().then(function() {
-            console.log("return candidate;");
-            return candidate;
+            console.log("return Q.npost(User, 'findOne', [ ({ _id : candidate._id }) ]);");
+            return Q.npost(User, 'findOne', [ ({ _id : candidate._id }) ]);
         })
-    ]).spread(function(organizer, Candidate) {
-        return organizer == Candidate;
+    ]).spread(function(organizer, candidate) {
+        console.log("organizer:" + organizer);console.log("candidate:" + candidate);
+        return organizer == candidate;
     }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {

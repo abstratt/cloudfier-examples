@@ -11,6 +11,7 @@ var invoiceSchema = new Schema({
     issueDate : {
         type : Date,
         "default" : (function() {
+            /*sync*/console.log("return new Date();");
             return new Date();
         })()
     },
@@ -36,40 +37,63 @@ var invoiceSchema = new Schema({
 
 invoiceSchema.methods.issue = function () {
     var me = this;
-    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
-        console.log("me['issueDate'] = new Date();\n");
-        me['issueDate'] = new Date();
-    }).then(function(/*no-arg*/) {
-        return Q.all([
-            Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
-            })
-        ]).spread(function() {
-            /* no-result */    
+    return Q().then(function() {
+        return Q().then(function() {
+            console.log("return Q.npost(Work, 'find', [ ({ invoice : me._id }) ]);");
+            return Q.npost(Work, 'find', [ ({ invoice : me._id }) ]);
+        }).then(function(reported) {
+            console.log("return !(/*TBD*/isEmpty);\n");
+            return !(/*TBD*/isEmpty);
         });
-    }).then(function(/*no-arg*/) {
-        return Q.all([
-            Q().then(function() {
-                return Q.npost(me, 'save', [  ]);
-            })
-        ]).spread(function() {
-            /* no-result */    
-        });
-    })
-    ;
+    }).then(function(pass) {
+        if (!pass) {
+            var error = new Error("Precondition violated: Cannot issue an invoice that has no work reported. (on 'timetracker::Invoice::issue')");
+            error.context = 'timetracker::Invoice::issue';
+            error.constraint = 'MustHaveWork';
+            error.description = 'Cannot issue an invoice that has no work reported.';
+            throw error;
+        }    
+    }).then(function() {
+        return Q().then(function() {
+            console.log("me['issueDate'] = new Date();\n");
+            me['issueDate'] = new Date();
+        }).then(function(/*no-arg*/) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(me, 'save', [  ]);
+                })
+            ]).spread(function() {
+                /* no-result */    
+            });
+        }).then(function(/*no-arg*/) {
+            return Q.all([
+                Q().then(function() {
+                    return Q.npost(me, 'save', [  ]);
+                })
+            ]).spread(function() {
+                /* no-result */    
+            });
+        })
+        ;
+    });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
-invoiceSchema.virtual('number').get(function () {
-    return "" + (this.issueDate.getYear() + 1900) + "." + this.invoiceId;
-});
+invoiceSchema.methods.getNumber = function () {
+    console.log("this.number: " + JSON.stringify(this));
+    /*sync*/console.log("return \"\" + ( this.issueDate.getYear() + 1900) + \".\" +  this.getInvoiceId();");
+    return "" + ( this.issueDate.getYear() + 1900) + "." +  this.getInvoiceId();
+};
 
 
-invoiceSchema.virtual('open').get(function () {
-    return this.status == "Preparation";
-});
+invoiceSchema.methods.isOpen = function () {
+    console.log("this.open: " + JSON.stringify(this));
+    /*sync*/console.log("return  this.status == \"Preparation\";");
+    return  this.status == "Preparation";
+};
 
-invoiceSchema.virtual('totalUnits').get(function () {
+invoiceSchema.methods.getTotalUnits = function () {
+    console.log("this.totalUnits: " + JSON.stringify(this));
     var me = this;
     return Q().then(function() {
         return Q().then(function() {
@@ -87,14 +111,14 @@ invoiceSchema.virtual('totalUnits').get(function () {
             ;
         });
     });
-});
+};
 /*************************** PRIVATE OPS ***********************/
 
 invoiceSchema.methods.sendInvoice = function () {
     var me = this;
-    return /* Working set: [me] *//* Working set: [me] */Q().then(function() {
-        console.log("me.invoicer.invoiceIssued();\n");
-        me.invoicer.invoiceIssued();
+    return Q().then(function() {
+        console.log("return me.invoicer.invoiceIssued();;");
+        return me.invoicer.invoiceIssued();;
     }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
@@ -129,26 +153,26 @@ invoiceSchema.methods.handleEvent = function (event) {
                         return me.sendInvoice();
                     });
                 })();
-                return;
+                break;
             }
             break;
         
         case 'InvoicePaid' :
             if (this.status == 'Invoiced') {
                 this.status = 'Received';
-                return;
+                break;
             }
             break;
     }
-    console.log("completed handleEvent("+ event+"): "+ this);
-    
+    console.log("completed handleEvent("+ event+")");
+    return Q.npost( this, 'save', [  ]);
 };
 
 invoiceSchema.methods.issue = function () {
-    this.handleEvent('issue');
+    return this.handleEvent('issue');
 };
 invoiceSchema.methods.invoicePaid = function () {
-    this.handleEvent('InvoicePaid');
+    return this.handleEvent('InvoicePaid');
 };
 
 

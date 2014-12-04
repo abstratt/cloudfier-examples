@@ -24,6 +24,7 @@ var taskSchema = new Schema({
         date : {
             type : Date,
             "default" : (function() {
+                /*sync*/console.log("return new Date();");
                 return new Date();
             })()
         },
@@ -45,13 +46,16 @@ var taskSchema = new Schema({
 taskSchema.methods.addWork = function (units) {
     var newWork;
     var me = this;
-    return /* Working set: [me] *//* Working set: [me, newWork] */Q().then(function() {
+    return Q().then(function() {
         return Q().then(function() {
             console.log("newWork = new Work();\n");
             newWork = new Work();
         });
     }).then(function() {
         return Q().then(function() {
+            console.log("return Q.npost(Integer, 'findOne', [ ({ _id : units._id }) ]);");
+            return Q.npost(Integer, 'findOne', [ ({ _id : units._id }) ]);
+        }).then(function(units) {
             console.log("newWork['units'] = units;\n");
             newWork['units'] = units;
         });
@@ -90,11 +94,20 @@ taskSchema.methods.addWork = function (units) {
 };
 /*************************** DERIVED PROPERTIES ****************/
 
-taskSchema.virtual('unitsReported').get(function () {
-    return this.countUnits(this.reported);
-});
+taskSchema.methods.getUnitsReported = function () {
+    console.log("this.unitsReported: " + JSON.stringify(this));
+    var me = this;
+    return Q().then(function() {
+        console.log("return me.countUnits(me.reported);");
+        return me.countUnits(me.reported);
+    }).then(function(countUnits) {
+        console.log("return countUnits;\n");
+        return countUnits;
+    });
+};
 
-taskSchema.virtual('unitsToInvoice').get(function () {
+taskSchema.methods.getUnitsToInvoice = function () {
+    console.log("this.unitsToInvoice: " + JSON.stringify(this));
     var me = this;
     return Q.all([
         Q().then(function() {
@@ -106,9 +119,13 @@ taskSchema.virtual('unitsToInvoice').get(function () {
             return me;
         })
     ]).spread(function(toInvoice, readSelfAction) {
+        console.log("toInvoice:" + toInvoice);console.log("readSelfAction:" + readSelfAction);
         return readSelfAction.countUnits(toInvoice);
+    }).then(function(countUnits) {
+        console.log("return countUnits;\n");
+        return countUnits;
     });
-});
+};
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 taskSchema.methods.getToInvoice = function () {
@@ -131,10 +148,24 @@ taskSchema.methods.getToInvoice = function () {
 /*************************** PRIVATE OPS ***********************/
 
 taskSchema.methods.countUnits = function (work) {
-    return Q.npost(Work.aggregate()
-                  .group({ _id: null, result: { $sum: '$units' } })
-                  .select('-id result'), 'exec', [  ])
-    ;
+    var me = this;
+    return Q().then(function() {
+        return Q().then(function() {
+            console.log("return Q.npost(Work, 'findOne', [ ({ _id : work._id }) ]);");
+            return Q.npost(Work, 'findOne', [ ({ _id : work._id }) ]);
+        }).then(function(work) {
+            console.log("return Q.npost(Work.aggregate()\n              .group({ _id: null, result: { $sum: '$units' } })\n              .select('-id result'), 'exec', [  ])\n;\n");
+            return Q.npost(Work.aggregate()
+                          .group({ _id: null, result: { $sum: '$units' } })
+                          .select('-id result'), 'exec', [  ])
+            ;
+        });
+    }).then(function() {
+        return Q().then(function() {
+            console.log(";\n");
+            ;
+        });
+    });
 };
 
 // declare model on the schema

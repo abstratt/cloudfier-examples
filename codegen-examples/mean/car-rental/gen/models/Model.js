@@ -24,7 +24,8 @@ var modelSchema = new Schema({
 
 /*************************** DERIVED PROPERTIES ****************/
 
-modelSchema.virtual('description').get(function () {
+modelSchema.methods.getDescription = function () {
+    console.log("this.description: " + JSON.stringify(this));
     var me = this;
     return Q().then(function() {
         console.log("return Q.npost(Make, 'findOne', [ ({ _id : me.make }) ]);");
@@ -33,7 +34,7 @@ modelSchema.virtual('description').get(function () {
         console.log("return make.name + \" \" + me.name;\n");
         return make.name + " " + me.name;
     });
-});
+};
 
 // declare model on the schema
 var exports = module.exports = mongoose.model('Model', modelSchema);

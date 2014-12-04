@@ -31,16 +31,25 @@ suite('Car rental functional tests - CarScenarios', function() {
             }).then(function() {
                 return Q().then(function() {
                     return Q().then(function() {
+                        console.log("return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);");
+                        return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);
+                    }).then(function(car) {
                         console.log("assert.ok(car != null);\n");
                         assert.ok(car != null);
                     });
                 }).then(function() {
                     return Q().then(function() {
+                        console.log("return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);");
+                        return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);
+                    }).then(function(car) {
                         console.log("assert.ok(car.plate != null);\n");
                         assert.ok(car.plate != null);
                     });
                 }).then(function() {
                     return Q().then(function() {
+                        console.log("return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);");
+                        return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);
+                    }).then(function(car) {
                         console.log("return Q.npost(Model, 'findOne', [ ({ _id : car.model }) ]);");
                         return Q.npost(Model, 'findOne', [ ({ _id : car.model }) ]);
                     }).then(function(model) {
@@ -49,6 +58,9 @@ suite('Car rental functional tests - CarScenarios', function() {
                     });
                 }).then(function() {
                     return Q().then(function() {
+                        console.log("return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);");
+                        return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);
+                    }).then(function(car) {
                         console.log("return Q.npost(Model, 'findOne', [ ({ _id : car.model }) ]);");
                         return Q.npost(Model, 'findOne', [ ({ _id : car.model }) ]);
                     }).then(function(model) {
@@ -57,6 +69,9 @@ suite('Car rental functional tests - CarScenarios', function() {
                     });
                 }).then(function() {
                     return Q().then(function() {
+                        console.log("return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);");
+                        return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);
+                    }).then(function(car) {
                         console.log("return Q.npost(Model, 'findOne', [ ({ _id : car.model }) ]);");
                         return Q.npost(Model, 'findOne', [ ({ _id : car.model }) ]);
                     }).then(function(model) {
@@ -68,6 +83,9 @@ suite('Car rental functional tests - CarScenarios', function() {
                     });
                 }).then(function() {
                     return Q().then(function() {
+                        console.log("return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);");
+                        return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);
+                    }).then(function(car) {
                         console.log("return Q.npost(Model, 'findOne', [ ({ _id : car.model }) ]);");
                         return Q.npost(Model, 'findOne', [ ({ _id : car.model }) ]);
                     }).then(function(model) {
@@ -110,148 +128,172 @@ suite('Car rental functional tests - CarScenarios', function() {
                 });
             }).then(function() {
                 return Q().then(function() {
-                    console.log("assert.strictEqual(car.available, true);\n");
-                    assert.strictEqual(car.available, true);
+                    console.log("assert.strictEqual(car.isAvailable(), true);\n");
+                    assert.strictEqual(car.isAvailable(), true);
                 });
             });
         };
         behavior().then(done, done);
     });
     test('tooOld', function(done) {
-        try {
-            var behavior = function() {
-                var car;
-                var me = this;
-                return /* Working set: [car] */Q().then(function() {
-                    return Q().then(function() {
-                        console.log("return Examples.newCar();");
-                        return Examples.newCar();
-                    }).then(function(newCar) {
-                        console.log("car = newCar;\n");
-                        car = newCar;
-                    });
-                }).then(function() {
-                    return Q().then(function() {
-                        console.log("car['year'] = 1900;\n");
-                        car['year'] = 1900;
-                    });
-                }).then(function(/*no-arg*/) {
-                    return Q.all([
-                        Q().then(function() {
-                            return Q.npost(car, 'save', [  ]);
-                        })
-                    ]).spread(function() {
-                        /* no-result */    
-                    });
+        var behavior = function() {
+            var car;
+            var me = this;
+            return Q().then(function() {
+                return Q().then(function() {
+                    console.log("return Examples.newCar();");
+                    return Examples.newCar();
+                }).then(function(newCar) {
+                    console.log("car = newCar;\n");
+                    car = newCar;
                 });
-            };
-            behavior().then(done, done);
-        } catch (e) {
-            return;
-        }
-        throw "Failure expected, but no failure occurred"
+            }).then(function() {
+                return Q().then(function() {
+                    console.log("car['year'] = 1900;\n");
+                    car['year'] = 1900;
+                });
+            }).then(function(/*no-arg*/) {
+                return Q.all([
+                    Q().then(function() {
+                        return Q.npost(car, 'save', [  ]);
+                    })
+                ]).spread(function() {
+                    /* no-result */    
+                });
+            });
+        };
+        behavior().then(function() {
+            done(new Error("Error expected (above_minimum), none occurred"));
+        }, function(error) {
+            try {
+                console.log(error);
+                assert.equal(error.name, 'ValidationError');
+                assert.ok(error.errors.year);
+                done();
+            } catch (e) {
+                done(e);
+            }                
+        });
     });
     test('tooNew', function(done) {
-        try {
-            var behavior = function() {
-                var car;
-                var me = this;
-                return /* Working set: [car] */Q().then(function() {
-                    return Q().then(function() {
-                        console.log("return Examples.newCar();");
-                        return Examples.newCar();
-                    }).then(function(newCar) {
-                        console.log("car = newCar;\n");
-                        car = newCar;
-                    });
-                }).then(function() {
-                    return Q().then(function() {
-                        console.log("car['year'] = 2500;\n");
-                        car['year'] = 2500;
-                    });
-                }).then(function(/*no-arg*/) {
-                    return Q.all([
-                        Q().then(function() {
-                            return Q.npost(car, 'save', [  ]);
-                        })
-                    ]).spread(function() {
-                        /* no-result */    
-                    });
+        var behavior = function() {
+            var car;
+            var me = this;
+            return Q().then(function() {
+                return Q().then(function() {
+                    console.log("return Examples.newCar();");
+                    return Examples.newCar();
+                }).then(function(newCar) {
+                    console.log("car = newCar;\n");
+                    car = newCar;
                 });
-            };
-            behavior().then(done, done);
-        } catch (e) {
-            return;
-        }
-        throw "Failure expected, but no failure occurred"
+            }).then(function() {
+                return Q().then(function() {
+                    console.log("car['year'] = 2500;\n");
+                    car['year'] = 2500;
+                });
+            }).then(function(/*no-arg*/) {
+                return Q.all([
+                    Q().then(function() {
+                        return Q.npost(car, 'save', [  ]);
+                    })
+                ]).spread(function() {
+                    /* no-result */    
+                });
+            });
+        };
+        behavior().then(function() {
+            done(new Error("Error expected (below_maximum), none occurred"));
+        }, function(error) {
+            try {
+                console.log(error);
+                assert.equal(error.name, 'ValidationError');
+                assert.ok(error.errors.year);
+                done();
+            } catch (e) {
+                done(e);
+            }                
+        });
     });
     test('priceIsTooLow', function(done) {
-        try {
-            var behavior = function() {
-                var car;
-                var me = this;
-                return /* Working set: [car] */Q().then(function() {
-                    return Q().then(function() {
-                        console.log("return Examples.newCar();");
-                        return Examples.newCar();
-                    }).then(function(newCar) {
-                        console.log("car = newCar;\n");
-                        car = newCar;
-                    });
-                }).then(function() {
-                    return Q().then(function() {
-                        console.log("car['price'] = 49;\n");
-                        car['price'] = 49;
-                    });
-                }).then(function(/*no-arg*/) {
-                    return Q.all([
-                        Q().then(function() {
-                            return Q.npost(car, 'save', [  ]);
-                        })
-                    ]).spread(function() {
-                        /* no-result */    
-                    });
+        var behavior = function() {
+            var car;
+            var me = this;
+            return Q().then(function() {
+                return Q().then(function() {
+                    console.log("return Examples.newCar();");
+                    return Examples.newCar();
+                }).then(function(newCar) {
+                    console.log("car = newCar;\n");
+                    car = newCar;
                 });
-            };
-            behavior().then(done, done);
-        } catch (e) {
-            return;
-        }
-        throw "Failure expected, but no failure occurred"
+            }).then(function() {
+                return Q().then(function() {
+                    console.log("car['price'] = 49;\n");
+                    car['price'] = 49;
+                });
+            }).then(function(/*no-arg*/) {
+                return Q.all([
+                    Q().then(function() {
+                        return Q.npost(car, 'save', [  ]);
+                    })
+                ]).spread(function() {
+                    /* no-result */    
+                });
+            });
+        };
+        behavior().then(function() {
+            done(new Error("Error expected (above_minimum), none occurred"));
+        }, function(error) {
+            try {
+                console.log(error);
+                assert.equal(error.name, 'ValidationError');
+                assert.ok(error.errors.price);
+                done();
+            } catch (e) {
+                done(e);
+            }                
+        });
     });
     test('priceIsTooHigh', function(done) {
-        try {
-            var behavior = function() {
-                var car;
-                var me = this;
-                return /* Working set: [car] */Q().then(function() {
-                    return Q().then(function() {
-                        console.log("return Examples.newCar();");
-                        return Examples.newCar();
-                    }).then(function(newCar) {
-                        console.log("car = newCar;\n");
-                        car = newCar;
-                    });
-                }).then(function() {
-                    return Q().then(function() {
-                        console.log("car['price'] = 2000;\n");
-                        car['price'] = 2000;
-                    });
-                }).then(function(/*no-arg*/) {
-                    return Q.all([
-                        Q().then(function() {
-                            return Q.npost(car, 'save', [  ]);
-                        })
-                    ]).spread(function() {
-                        /* no-result */    
-                    });
+        var behavior = function() {
+            var car;
+            var me = this;
+            return Q().then(function() {
+                return Q().then(function() {
+                    console.log("return Examples.newCar();");
+                    return Examples.newCar();
+                }).then(function(newCar) {
+                    console.log("car = newCar;\n");
+                    car = newCar;
                 });
-            };
-            behavior().then(done, done);
-        } catch (e) {
-            return;
-        }
-        throw "Failure expected, but no failure occurred"
+            }).then(function() {
+                return Q().then(function() {
+                    console.log("car['price'] = 2000;\n");
+                    car['price'] = 2000;
+                });
+            }).then(function(/*no-arg*/) {
+                return Q.all([
+                    Q().then(function() {
+                        return Q.npost(car, 'save', [  ]);
+                    })
+                ]).spread(function() {
+                    /* no-result */    
+                });
+            });
+        };
+        behavior().then(function() {
+            done(new Error("Error expected (below_maximum), none occurred"));
+        }, function(error) {
+            try {
+                console.log(error);
+                assert.equal(error.name, 'ValidationError');
+                assert.ok(error.errors.price);
+                done();
+            } catch (e) {
+                done(e);
+            }                
+        });
     });
     test('unavailableWhenRented', function(done) {
         var behavior = function() {
@@ -288,6 +330,9 @@ suite('Car rental functional tests - CarScenarios', function() {
                 });
             }).then(function() {
                 return Q().then(function() {
+                    console.log("return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);");
+                    return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);
+                }).then(function(car) {
                     console.log("assert.equal(\"Rented\", car.status);\n");
                     assert.equal("Rented", car.status);
                 });
@@ -299,6 +344,7 @@ suite('Car rental functional tests - CarScenarios', function() {
         var behavior = function() {
             var car;
             var customer;
+            var rental;
             var me = this;
             return Q().then(function() {
                 return Q().then(function() {
@@ -321,31 +367,66 @@ suite('Car rental functional tests - CarScenarios', function() {
             }).then(function() {
                 return Q().then(function() {
                     return Q().then(function() {
-                        console.log("assert.strictEqual(car.available, true);\n");
-                        assert.strictEqual(car.available, true);
+                        console.log("return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);");
+                        return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);
+                    }).then(function(car) {
+                        console.log("assert.strictEqual(car.isAvailable(), true);\n");
+                        assert.strictEqual(car.isAvailable(), true);
+                    });
+                }).then(function() {
+                    return Q.all([
+                        Q().then(function() {
+                            console.log("return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);");
+                            return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);
+                        }),
+                        Q().then(function() {
+                            console.log("return Q.npost(Customer, 'findOne', [ ({ _id : customer._id }) ]);");
+                            return Q.npost(Customer, 'findOne', [ ({ _id : customer._id }) ]);
+                        })
+                    ]).spread(function(car, customer) {
+                        console.log("car:" + car);console.log("customer:" + customer);
+                        return customer.rent(car);
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        console.log("return customer.rent(car);");
-                        return customer.rent(car);
+                        console.log("return Q.npost(Customer, 'findOne', [ ({ _id : customer._id }) ]);");
+                        return Q.npost(Customer, 'findOne', [ ({ _id : customer._id }) ]);
+                    }).then(function(customer) {
+                        console.log("return customer.getCurrentRental();");
+                        return customer.getCurrentRental();
+                    }).then(function(currentRental) {
+                        console.log("rental = currentRental;\n");
+                        rental = currentRental;
                     });
                 });
             }).then(function() {
                 return Q().then(function() {
                     return Q().then(function() {
-                        console.log("assert.strictEqual(!car.available, true);\n");
-                        assert.strictEqual(!car.available, true);
+                        console.log("return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);");
+                        return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);
+                    }).then(function(car) {
+                        console.log("assert.strictEqual(!(car.isAvailable()), true);\n");
+                        assert.strictEqual(!(car.isAvailable()), true);
                     });
                 }).then(function() {
                     return Q().then(function() {
+                        console.log("return Q.npost(Customer, 'findOne', [ ({ _id : customer._id }) ]);");
+                        return Q.npost(Customer, 'findOne', [ ({ _id : customer._id }) ]);
+                    }).then(function(customer) {
                         console.log("return customer.finishRental();");
                         return customer.finishRental();
                     });
                 });
             }).then(function() {
                 return Q().then(function() {
-                    console.log("assert.strictEqual(car.available, true);\n");
-                    assert.strictEqual(car.available, true);
+                    console.log("return Q.npost(Rental, 'findOne', [ ({ _id : rental._id }) ]);");
+                    return Q.npost(Rental, 'findOne', [ ({ _id : rental._id }) ]);
+                }).then(function(rental) {
+                    console.log("return Q.npost(Car, 'findOne', [ ({ _id : rental.car }) ]);");
+                    return Q.npost(Car, 'findOne', [ ({ _id : rental.car }) ]);
+                }).then(function(car) {
+                    console.log("assert.strictEqual(car.isAvailable(), true);\n");
+                    assert.strictEqual(car.isAvailable(), true);
                 });
             });
         };
@@ -366,13 +447,13 @@ suite('Car rental functional tests - CarScenarios', function() {
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        console.log("assert.strictEqual(car.available, true);\n");
-                        assert.strictEqual(car.available, true);
+                        console.log("assert.strictEqual(car.isAvailable(), true);\n");
+                        assert.strictEqual(car.isAvailable(), true);
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        console.log("assert.strictEqual(!car.underRepair, true);\n");
-                        assert.strictEqual(!car.underRepair, true);
+                        console.log("assert.strictEqual(!(car.isUnderRepair()), true);\n");
+                        assert.strictEqual(!(car.isUnderRepair()), true);
                     });
                 }).then(function() {
                     return Q().then(function() {
@@ -383,13 +464,19 @@ suite('Car rental functional tests - CarScenarios', function() {
             }).then(function() {
                 return Q().then(function() {
                     return Q().then(function() {
-                        console.log("assert.strictEqual(!car.available, true);\n");
-                        assert.strictEqual(!car.available, true);
+                        console.log("return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);");
+                        return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);
+                    }).then(function(car) {
+                        console.log("assert.strictEqual(!(car.isAvailable()), true);\n");
+                        assert.strictEqual(!(car.isAvailable()), true);
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        console.log("assert.strictEqual(car.underRepair, true);\n");
-                        assert.strictEqual(car.underRepair, true);
+                        console.log("return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);");
+                        return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);
+                    }).then(function(car) {
+                        console.log("assert.strictEqual(car.isUnderRepair(), true);\n");
+                        assert.strictEqual(car.isUnderRepair(), true);
                     });
                 });
             });
