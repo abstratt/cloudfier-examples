@@ -24,6 +24,8 @@ abstract class Person
     attribute firstName : String;
 
     attribute lastName : String;
+    
+    readonly id attribute email : String;
 end;
 
 enumeration Title
