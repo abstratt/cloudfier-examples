@@ -8,7 +8,7 @@ class Car
 
     attribute plate : String;
 
-    attribute price : Double
+    attribute price : Double := 500.0
         (* Price mustbe $50 at least. *)
         invariant above_minimum { self.price >= 50.0 }
         (* Price cannot be above $500. *)
@@ -22,13 +22,13 @@ class Car
         Rental#currentForCar(self)
     };
 
-    attribute year : Integer
+    attribute year : Integer := { Date#today().year() }
         (* Year must be later than 1990 *)
         invariant above_minimum { (self.year > 1990) }
         (* Year cannot be in the future *)
         invariant below_maximum { self.year <= Date#today().year() };
 
-    attribute color : String;
+    attribute color : String[0,1];
 
     readonly attribute \model : Model;
 
@@ -46,7 +46,7 @@ class Car
 
         initial state Available
             transition on signal(CarRented) to Rented;
-            transition on signal(RepairStarted) to UnderRepair;
+            transition on signal(RepairStarted) to Rented;
         end;
 
         state Rented
@@ -61,13 +61,13 @@ class Car
 
 
     operation startRepair()
-        precondition { self.status == Status#Available };
+        precondition must_be_available { self.status == Status#Available };
     begin
         send RepairStarted() to self;
     end;
 
     operation finishRepair()
-        precondition { self.status == Status#UnderRepair };
+        precondition must_be_under_repair { self.status == Status#UnderRepair };
     begin
         send RepairFinished() to self;
     end;
@@ -104,7 +104,7 @@ class Rental
     };
 
     private operation finish()
-        precondition { self.inProgress };
+        precondition must_be_in_progress { self.inProgress };
     begin
         self.returned := Date#today();
     end;
@@ -122,6 +122,13 @@ class Rental
             (l.customer == c) and l.inProgress
         });
     end;
+    
+    static query completedForCustomer(c : Customer) : Rental[*];
+    begin
+        return Rental extent.select((l : Rental) : Boolean {
+            (l.customer == c) and (not l.inProgress)
+        });
+    end;    
     
     static query inProgress() : Rental[*];
     begin
@@ -172,8 +179,8 @@ class Customer
     };   
 
     operation rent(car : Car)
-        precondition car_available(car) { car.available }
-        precondition no_current_rental { self.currentRental == null };
+        precondition car_must_be_available(car) { car.available }
+        precondition customer_must_have_no_current_rental { self.currentRental == null };
     begin
         var rental;
         rental := new Rental;

@@ -1,25 +1,29 @@
 {
   "social" : {
     "User" : [ {
+      "username" : "gabriel@abstratt.com",
       "name" : "Gabriel",
-      "username" : null,
       "inviter" : [ ],
-      "initiator" : [ ]
+      "initiator" : [ "User@2" ],
+      "rejected" : [ ]
     }, {
+      "username" : "rafael@abstratt.com",
       "name" : "Rafael",
-      "username" : null,
       "inviter" : [ ],
-      "initiator" : [ ]
+      "initiator" : [ ],
+      "rejected" : [ ]
     }, {
+      "username" : "fabiane@abstratt.com",
       "name" : "Fabiane",
-      "username" : null,
       "inviter" : [ ],
-      "initiator" : [ ]
+      "initiator" : [ "User@4" ],
+      "rejected" : [ ]
     }, {
+      "username" : "francisco@abstratt.com",
       "name" : "Francisco",
-      "username" : null,
       "inviter" : [ ],
-      "initiator" : [ ]
+      "initiator" : [ "User@2" ],
+      "rejected" : [ ]
     } ]
   }
 }

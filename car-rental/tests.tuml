@@ -4,16 +4,68 @@ import car_rental;
 /* To avoid clash with uml::Model */
 import car_rental::Model;
 
+[Test]
+class MakeScenarios
+
+    operation creation();
+    begin
+        var carMake;
+        begin
+            carMake := Examples#newMake();
+        end;
+        begin
+            Assert#isNotNull(carMake);
+            Assert#isNotNull(carMake.name);                                    
+            Assert#areEqual("Fiat", carMake.name);                                                
+        end;
+    end;
+end;
+
+
+[Test]
+class ModelScenarios
+
+    operation creation();
+    begin
+        var carModel;
+        begin
+            carModel := Examples#newModel();
+        end;
+        begin
+            Assert#isNotNull(carModel);
+            Assert#isNotNull(carModel.name);            
+            Assert#areEqual("Mille", carModel.name);                                                                        
+            Assert#isNotNull(carModel.make);            
+            Assert#isNotNull(carModel.make.name);                                    
+            Assert#areEqual("Fiat", carModel.make.name);                                                            
+        end;
+    end;
+end;
+
 
 [Test]
 class CustomerScenarios
+
+    operation creation();
+    begin
+        var customer;
+        begin
+            customer := Examples#newCustomer();
+        end;
+        begin
+            Assert#isNotNull(customer);
+            Assert#isNotNull(customer.name);
+            Assert#areEqual("Joana de Almeida", customer.name);                                                                        
+        end;
+    end;
+
 
     operation rentalHistory();
     begin
         var car, customer;
         begin
-            car := Examples#car();
-            customer := Examples#customer();
+            car := Examples#newCar();
+            customer := Examples#newCustomer();
             customer.rent(car);
             Assert#areEqual(1, customer.rentals.size());
             customer.finishRental();
@@ -32,8 +84,8 @@ class RentalScenarios
     begin
         var car, customer;
         begin
-            car := Examples#car();
-            customer := Examples#customer();
+            car := Examples#newCar();
+            customer := Examples#newCustomer();
             Assert#isNull(customer.currentRental);
             customer.rent(car);
         end;
@@ -47,13 +99,13 @@ class RentalScenarios
     begin
         var car, customer, rental;
         begin
-            car := Examples#car();
-            customer := Examples#customer();
+            car := Examples#newCar();
+            customer := Examples#newCustomer();
             customer.rent(car);
             rental := customer.currentRental;
         end;
         begin
-            Assert#isTrue(rental.inProgress);        
+            Assert#isTrue(rental.inProgress);
             customer.finishRental();
         end;
         begin
@@ -61,33 +113,33 @@ class RentalScenarios
         end;
     end;
 
-    [Failure(constraint="no_current_rental")]
+    [Failure(constraint="customer_must_have_no_current_rental")]
     operation oneCarPerCustomer();
     begin
         var car1, car2, customer;
         begin
-            car1 := Examples#car();
-            customer := Examples#customer();
+            car1 := Examples#newCar();
+            customer := Examples#newCustomer();
             customer.rent(car1);
         end;
         begin
-            car2 := Examples#car();
+            car2 := Examples#newCar();
             customer.rent(car2);
         end;
     end;
 
-    [Failure(constraint="car_available")]
+    [Failure(constraint="car_must_be_available")]
     operation carUnavailable();
     begin
         var car, customer1, customer2;
         begin
-            car := Examples#car();
-            customer1 := Examples#customer();
+            car := Examples#newCar();
+            customer1 := Examples#newCustomer();
             customer1.rent(car);
         end;
         begin
             Assert#isTrue(car.rented);
-            customer2 := Examples#customer();
+            customer2 := Examples#newCustomer();
             customer2.rent(car);
         end;
     end;
@@ -96,16 +148,32 @@ end;
 [Test]
 class CarScenarios
 
+    operation creation();
+    begin
+        var car;
+        begin
+            car := Examples#newCar();
+        end;
+        begin
+            Assert#isNotNull(car);
+            Assert#isNotNull(car.plate);            
+            Assert#isNotNull(car.\model);
+            Assert#isNotNull(car.\model.name);            
+            Assert#isNotNull(car.\model.make);                        
+            Assert#isNotNull(car.\model.make.name);                                    
+        end;
+    end;
+
     operation startsAsValid();
     begin
         var car;
-        car := Examples#car();
+        car := Examples#newCar();
     end;
 
     operation startsAsAvailable();
     begin
         var car;
-        car := Examples#car();
+        car := Examples#newCar();
         Assert#isTrue(car.available);
     end;
 
@@ -113,7 +181,7 @@ class CarScenarios
     operation tooOld();
     begin
         var car;
-        car := Examples#car();
+        car := Examples#newCar();
         car.year := 1900;
     end;
 
@@ -121,7 +189,7 @@ class CarScenarios
     operation tooNew();
     begin
         var car;
-        car := Examples#car();
+        car := Examples#newCar();
         car.year := 2500;
     end;
 
@@ -129,7 +197,7 @@ class CarScenarios
     operation priceIsTooLow();
     begin
         var car;
-        car := Examples#car();
+        car := Examples#newCar();
         car.price := 49;
     end;
 
@@ -137,7 +205,7 @@ class CarScenarios
     operation priceIsTooHigh();
     begin
         var car;
-        car := Examples#car();
+        car := Examples#newCar();
         car.price := 2000;
     end;
 
@@ -145,34 +213,34 @@ class CarScenarios
     begin
         var car, customer;
         begin
-            car := Examples#car();
-            customer := Examples#customer();
-            Assert#isTrue(car.available);
+            car := Examples#newCar();
+            customer := Examples#newCustomer();
+            Assert#areEqual(Car::Status#Available, car.status);
             customer.rent(car);
         end;
         begin
-            Assert#isTrue(not car.available);
-            customer.finishRental();
+            Assert#areEqual(Car::Status#Rented, car.status);
         end;
     end;
     
     operation availableUponReturn();
     begin
-        var car, customer;
+        var car, customer, rental;
         begin
-            car := Examples#car();
-            customer := Examples#customer();
+            car := Examples#newCar();
+            customer := Examples#newCustomer();
         end;
         begin
             Assert#isTrue(car.available);
             customer.rent(car);
+            rental := customer.currentRental;
         end;
         begin
             Assert#isTrue(not car.available);
             customer.finishRental();
         end;
         begin
-            Assert#isTrue(car.available);
+            Assert#isTrue(rental.car.available);
         end;
     end;
 
@@ -180,19 +248,21 @@ class CarScenarios
     begin
         var car;
         begin
-            car := Examples#car();
+            car := Examples#newCar();
+            Assert#isTrue(car.available);        
             Assert#isTrue(!car.underRepair);
             car.startRepair();
         end;
         begin
-            Assert#isTrue(car.underRepair);
+            Assert#isTrue(!car.available);        
+            Assert#areEqual(Car::Status#UnderRepair, car.status);
         end;
     end;
 end;
 
 class Examples
 
-    private static operation make() : Make;
+    private static operation newMake() : Make;
     begin
         var make;
         make := new Make;
@@ -200,16 +270,16 @@ class Examples
         return make;
     end;
 
-    private static operation \model() : Model;
+    private static operation newModel() : Model;
     begin
         var carModel;
         carModel := new Model;
         carModel.name := "Mille";
-        carModel.make := Examples#make();
+        carModel.make := Examples#newMake();
         return carModel;
     end;
 
-    private static operation car() : Car;
+    private static operation newCar() : Car;
     begin
         var car;
         car := new Car;
@@ -217,11 +287,11 @@ class Examples
         car.price := 100;
         car.color := "black";
         car.plate := "ABC-1234";
-        car.\model := Examples#\model();
+        car.\model := Examples#newModel();
         return car;
     end;
 
-    private static operation customer() : Customer;
+    private static operation newCustomer() : Customer;
     begin
         var customer;
         customer := new Customer;
