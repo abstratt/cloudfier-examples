@@ -22,7 +22,7 @@
     }, {
       "name" : "Stephanie Enever"
     } ],
-    "Model" : [ {
+    "CarModel" : [ {
       "name" : "Stratus",
       "make" : "Make@1"
     }, {
@@ -47,35 +47,35 @@
       "year" : 2012,
       "color" : "Beige",
       "status" : "Rented",
-      "model" : "Model@6"
+      "model" : "CarModel@6"
     }, {
       "plate" : "FFG-8911",
       "price" : 220.0,
       "year" : 2012,
       "color" : "Silver",
       "status" : "Available",
-      "model" : "Model@1"
+      "model" : "CarModel@1"
     }, {
       "plate" : "XYZ-987",
       "price" : 89.0,
       "year" : 2014,
       "color" : "Silver",
       "status" : "Available",
-      "model" : "Model@3"
+      "model" : "CarModel@3"
     }, {
       "plate" : "GHI-789",
       "price" : 100.0,
       "year" : 2013,
       "color" : "Black",
       "status" : "Available",
-      "model" : "Model@4"
+      "model" : "CarModel@4"
     }, {
       "plate" : "ABC-123",
       "price" : 70.0,
       "year" : 2010,
       "color" : "White",
       "status" : "Rented",
-      "model" : "Model@5"
+      "model" : "CarModel@5"
     } ],
     "Rental" : [ {
       "started" : "2014/08/08",

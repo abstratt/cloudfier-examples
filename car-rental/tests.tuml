@@ -1,8 +1,6 @@
 package tests;
 
 import car_rental;
-/* To avoid clash with uml::Model */
-import car_rental::Model;
 
 [Test]
 class MakeScenarios
@@ -270,10 +268,10 @@ class Examples
         return make;
     end;
 
-    private static operation newModel() : Model;
+    private static operation newModel() : CarModel;
     begin
         var carModel;
-        carModel := new Model;
+        carModel := new CarModel;
         carModel.name := "Mille";
         carModel.make := Examples#newMake();
         return carModel;
