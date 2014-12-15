@@ -6,7 +6,7 @@ codegen-examples
 
 This project allows generating code (and running tests) from example applications deployed to the Cloudfier server.
 
-In order to try it in your own computer:
+In order to try it on your own machine:
 
 ```
 git clone https://github.com/abstratt/codegen-examples.git
