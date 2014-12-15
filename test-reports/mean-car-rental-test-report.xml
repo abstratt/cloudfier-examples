@@ -1,0 +1,45 @@
+<testsuite name="Mocha Tests" tests="43" failures="0" errors="0" skipped="0" timestamp="Mon, 15 Dec 2014 15:54:00 GMT" time="1.383">
+<testcase classname="Car rental CRUD tests Make" name="GET entity" time="0.028"/>
+<testcase classname="Car rental CRUD tests Make" name="GET extent" time="0.223"/>
+<testcase classname="Car rental CRUD tests Make" name="POST" time="0.049"/>
+<testcase classname="Car rental CRUD tests Make" name="GET one" time="0.016"/>
+<testcase classname="Car rental CRUD tests Make" name="PUT" time="0.017"/>
+<testcase classname="Car rental CRUD tests Customer" name="GET entity" time="0.002"/>
+<testcase classname="Car rental CRUD tests Customer" name="GET extent" time="0.123"/>
+<testcase classname="Car rental CRUD tests Customer" name="POST" time="0.015"/>
+<testcase classname="Car rental CRUD tests Customer" name="GET one" time="0.014"/>
+<testcase classname="Car rental CRUD tests Customer" name="PUT" time="0.014"/>
+<testcase classname="Car rental CRUD tests CarModel" name="GET entity" time="0.004"/>
+<testcase classname="Car rental CRUD tests CarModel" name="GET extent" time="0.017"/>
+<testcase classname="Car rental CRUD tests CarModel" name="POST" time="0.009"/>
+<testcase classname="Car rental CRUD tests CarModel" name="GET one" time="0.011"/>
+<testcase classname="Car rental CRUD tests CarModel" name="PUT" time="0.013"/>
+<testcase classname="Car rental CRUD tests Car" name="GET entity" time="0.003"/>
+<testcase classname="Car rental CRUD tests Car" name="GET extent" time="0.154"/>
+<testcase classname="Car rental CRUD tests Car" name="POST" time="0.014"/>
+<testcase classname="Car rental CRUD tests Car" name="GET one" time="0.012"/>
+<testcase classname="Car rental CRUD tests Car" name="PUT" time="0.018"/>
+<testcase classname="Car rental CRUD tests Rental" name="GET entity" time="0.003"/>
+<testcase classname="Car rental CRUD tests Rental" name="GET extent" time="0.14"/>
+<testcase classname="Car rental CRUD tests Rental" name="POST" time="0.011"/>
+<testcase classname="Car rental CRUD tests Rental" name="GET one" time="0.01"/>
+<testcase classname="Car rental CRUD tests Rental" name="PUT" time="0.013"/>
+<testcase classname="Car rental functional tests - CarScenarios" name="creation" time="0.021"/>
+<testcase classname="Car rental functional tests - CarScenarios" name="startsAsValid" time="0.006"/>
+<testcase classname="Car rental functional tests - CarScenarios" name="startsAsAvailable" time="0.006"/>
+<testcase classname="Car rental functional tests - CarScenarios" name="tooOld" time="0.008"/>
+<testcase classname="Car rental functional tests - CarScenarios" name="tooNew" time="0.007"/>
+<testcase classname="Car rental functional tests - CarScenarios" name="priceIsTooLow" time="0.007"/>
+<testcase classname="Car rental functional tests - CarScenarios" name="priceIsTooHigh" time="0.008"/>
+<testcase classname="Car rental functional tests - CarScenarios" name="unavailableWhenRented" time="0.035"/>
+<testcase classname="Car rental functional tests - CarScenarios" name="availableUponReturn" time="0.049"/>
+<testcase classname="Car rental functional tests - CarScenarios" name="unavailableWhenUnderRepair" time="0.012"/>
+<testcase classname="Car rental functional tests - CustomerScenarios" name="creation" time="0.004"/>
+<testcase classname="Car rental functional tests - CustomerScenarios" name="rentalHistory" time="0.097"/>
+<testcase classname="Car rental functional tests - MakeScenarios" name="creation" time="0.005"/>
+<testcase classname="Car rental functional tests - ModelScenarios" name="creation" time="0.013"/>
+<testcase classname="Car rental functional tests - RentalScenarios" name="startsAsInProgress" time="0.035"/>
+<testcase classname="Car rental functional tests - RentalScenarios" name="finishedUponReturn" time="0.047"/>
+<testcase classname="Car rental functional tests - RentalScenarios" name="oneCarPerCustomer" time="0.024"/>
+<testcase classname="Car rental functional tests - RentalScenarios" name="carUnavailable" time="0.024"/>
+</testsuite>
