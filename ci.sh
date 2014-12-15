@@ -18,5 +18,4 @@ rm -Rf node_modules
 npm install -p
 cd -
 echo Testing $APPLICATION on $PLATFORM 
-mkdir -p $PLATFORM/$APPLICATION/test-results/
-./test.sh $PLATFORM $APPLICATION --reporter xunit 1> $PLATFORM/$APPLICATION/test-results/test-report.xml
+./test.sh $PLATFORM $APPLICATION --reporter xunit 1> test-results/$PLATFORM-$APPLICATION-test-report.xml
