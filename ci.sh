@@ -14,6 +14,7 @@ if [[ $? -ne 0 ]] ; then
     exit 1
 fi
 cd $PLATFORM/$APPLICATION/gen
+rm -Rf node_modules
 npm install -p
 cd -
 echo Testing $APPLICATION on $PLATFORM 
