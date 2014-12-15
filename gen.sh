@@ -8,12 +8,14 @@ fi
 PLATFORM=$1
 APPLICATION=$2
 CLOUDFIER_USER=${3:-test}
+BASE_APPLICATION_PATH=${4:-cloudfier-examples}
+APPLICATION_URL=$CLOUDFIER_URL/services/generator/$CLOUDFIER_USER-${BASE_APPLICATION_PATH//\//-}-$APPLICATION
 
-echo Generating $APPLICATION on $PLATFORM 
+echo "Generating $APPLICATION on $PLATFORM (hosted at $APPLICATION_URL)"
 
 rm -Rf $PLATFORM/$APPLICATION/gen
 mkdir -p $PLATFORM/$APPLICATION/gen
-wget -v -d  $CLOUDFIER_URL/services/generator/$CLOUDFIER_USER-cloudfier-examples-$APPLICATION/platform/$PLATFORM  -O generated.zip
+wget -v -d  $APPLICATION_URL/platform/$PLATFORM  -O generated.zip
 if [ $? -ne 0 ] ; then 
     exit 1
 fi
