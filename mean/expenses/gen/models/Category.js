@@ -26,7 +26,7 @@ categorySchema.statics.newCategory = function (name) {
     var me = this;
     return Q().then(function() {
         return Q().then(function() {
-            newCategory = new Category();
+            newCategory = new require('./Category.js')();
         });
     }).then(function() {
         return Q().then(function() {
@@ -53,7 +53,7 @@ categorySchema.statics.newCategory = function (name) {
 categorySchema.methods.getExpensesInThisCategory = function () {
     var me = this;
     return Q().then(function() {
-        return Expense.findExpensesByCategory(me);
+        return require('./Expense.js').findExpensesByCategory(me);
     }).then(function(findExpensesByCategory) {
         return findExpensesByCategory;
     });

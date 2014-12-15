@@ -6,7 +6,7 @@ require('../models/index.js');
 
 var Car = require('../models/Car.js');
 var Rental = require('../models/Rental.js');
-var Model = require('../models/Model.js');
+var CarModel = require('../models/CarModel.js');
 var Make = require('../models/Make.js');
 var Customer = require('../models/Customer.js');
 
@@ -29,19 +29,19 @@ suite('Car rental functional tests - CustomerScenarios', function() {
             }).then(function() {
                 return Q().then(function() {
                     return Q().then(function() {
-                        return Q.npost(Customer, 'findOne', [ ({ _id : customer._id }) ]);
+                        return Q.npost(require('../models/Customer.js'), 'findOne', [ ({ _id : customer._id }) ]);
                     }).then(function(customer) {
                         assert.ok(customer != null);
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        return Q.npost(Customer, 'findOne', [ ({ _id : customer._id }) ]);
+                        return Q.npost(require('../models/Customer.js'), 'findOne', [ ({ _id : customer._id }) ]);
                     }).then(function(customer) {
                         assert.ok(customer.name != null);
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        return Q.npost(Customer, 'findOne', [ ({ _id : customer._id }) ]);
+                        return Q.npost(require('../models/Customer.js'), 'findOne', [ ({ _id : customer._id }) ]);
                     }).then(function(customer) {
                         assert.equal("Joana de Almeida", customer.name);
                     });
@@ -74,7 +74,7 @@ suite('Car rental functional tests - CustomerScenarios', function() {
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        return Q.npost(Rental, 'find', [ ({ customer : customer._id }) ]);
+                        return Q.npost(require('../models/Rental.js'), 'find', [ ({ customer : customer._id }) ]);
                     }).then(function(rentals) {
                         assert.equal(1, rentals.length);
                     });
@@ -87,19 +87,19 @@ suite('Car rental functional tests - CustomerScenarios', function() {
                 return Q().then(function() {
                     return Q.all([
                         Q().then(function() {
-                            return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);
+                            return Q.npost(require('../models/Car.js'), 'findOne', [ ({ _id : car._id }) ]);
                         }),
                         Q().then(function() {
-                            return Q.npost(Customer, 'findOne', [ ({ _id : customer._id }) ]);
+                            return Q.npost(require('../models/Customer.js'), 'findOne', [ ({ _id : customer._id }) ]);
                         })
                     ]).spread(function(car, customer) {
                         return customer.rent(car);
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        return Q.npost(Customer, 'findOne', [ ({ _id : customer._id }) ]);
+                        return Q.npost(require('../models/Customer.js'), 'findOne', [ ({ _id : customer._id }) ]);
                     }).then(function(customer) {
-                        return Q.npost(Rental, 'find', [ ({ customer : customer._id }) ]);
+                        return Q.npost(require('../models/Rental.js'), 'find', [ ({ customer : customer._id }) ]);
                     }).then(function(rentals) {
                         assert.equal(2, rentals.length);
                     });

@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
 var Make = require('./Make.js');
-var Model = require('./Model.js');
+var CarModel = require('./CarModel.js');
 var Car = require('./Car.js');
 var Rental = require('./Rental.js');
 
@@ -30,7 +30,7 @@ customerSchema.methods.rent = function (car) {
     var me = this;
     return Q().then(function() {
         return Q().then(function() {
-            return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);
+            return Q.npost(require('./Car.js'), 'findOne', [ ({ _id : car._id }) ]);
         }).then(function(car) {
             return car.isAvailable();
         });
@@ -62,7 +62,7 @@ customerSchema.methods.rent = function (car) {
     }).then(function() {
         return Q().then(function() {
             return Q().then(function() {
-                rental = new Rental();
+                rental = new require('./Rental.js')();
             });
         }).then(function() {
             return Q().then(function() {
@@ -72,7 +72,7 @@ customerSchema.methods.rent = function (car) {
         }).then(function() {
             return Q.all([
                 Q().then(function() {
-                    return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);
+                    return Q.npost(require('./Car.js'), 'findOne', [ ({ _id : car._id }) ]);
                 }),
                 Q().then(function() {
                     return rental;
@@ -83,7 +83,7 @@ customerSchema.methods.rent = function (car) {
             });
         }).then(function() {
             return Q().then(function() {
-                return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);
+                return Q.npost(require('./Car.js'), 'findOne', [ ({ _id : car._id }) ]);
             }).then(function(car) {
                 return car.carRented();;
             });
@@ -131,7 +131,7 @@ customerSchema.methods.finishRental = function () {
             return Q().then(function() {
                 return me.getCurrentRental();
             }).then(function(currentRental) {
-                return Q.npost(Car, 'findOne', [ ({ _id : currentRental.car }) ]);
+                return Q.npost(require('./Car.js'), 'findOne', [ ({ _id : currentRental.car }) ]);
             }).then(function(car) {
                 return car.carReturned();;
             });
@@ -181,7 +181,7 @@ customerSchema.methods.isHasCurrentRental = function () {
 customerSchema.methods.getCurrentRental = function () {
     var me = this;
     return Q().then(function() {
-        return Rental.currentForCustomer(me);
+        return require('./Rental.js').currentForCustomer(me);
     }).then(function(currentForCustomer) {
         return currentForCustomer;
     });

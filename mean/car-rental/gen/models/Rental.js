@@ -5,7 +5,7 @@ var cls = require('continuation-local-storage');
 
 var Make = require('./Make.js');
 var Customer = require('./Customer.js');
-var Model = require('./Model.js');
+var CarModel = require('./CarModel.js');
 var Car = require('./Car.js');
 
 // declare schema
@@ -13,7 +13,7 @@ var rentalSchema = new Schema({
     started : {
         type : Date,
         "default" : (function() {
-            /*sync*/return new Date();
+            return new Date();
         })()
     },
     returned : {
@@ -39,8 +39,8 @@ rentalSchema.statics.currentForCar = function (c) {
     return Q().then(function() {
         return Q.npost(mongoose.model('Rental').find().where({
             $and : [ 
-                { /*read-structural-feature*/car : c },
-                { /*read-structural-feature*/returned : null }
+                { car : c },
+                { returned : null }
             ]
         }).findOne(), 'exec', [  ])
         ;
@@ -52,8 +52,8 @@ rentalSchema.statics.currentForCustomer = function (c) {
     return Q().then(function() {
         return Q.npost(mongoose.model('Rental').find().where({
             $and : [ 
-                { /*read-structural-feature*/customer : c },
-                { /*read-structural-feature*/returned : null }
+                { customer : c },
+                { returned : null }
             ]
         }).findOne(), 'exec', [  ])
         ;
@@ -65,10 +65,10 @@ rentalSchema.statics.completedForCustomer = function (c) {
     return Q().then(function() {
         return Q.npost(mongoose.model('Rental').find().where({
             $and : [ 
-                { /*read-structural-feature*/customer : c },
+                { customer : c },
                 {
                     $ne : [ 
-                        { /*read-structural-feature*/returned : null },
+                        { returned : null },
                         true
                     ]
                 }
@@ -81,7 +81,7 @@ rentalSchema.statics.completedForCustomer = function (c) {
 rentalSchema.statics.inProgress = function () {
     var me = this;
     return Q().then(function() {
-        return Q.npost(mongoose.model('Rental').find().where({ /*read-structural-feature*/returned : null }), 'exec', [  ])
+        return Q.npost(mongoose.model('Rental').find().where({ returned : null }), 'exec', [  ])
         ;
     });
 };
@@ -98,9 +98,9 @@ rentalSchema.statics.all = function () {
 rentalSchema.methods.getDescription = function () {
     var me = this;
     return Q().then(function() {
-        return Q.npost(Car, 'findOne', [ ({ _id : me.car }) ]);
+        return Q.npost(require('./Car.js'), 'findOne', [ ({ _id : me.car }) ]);
     }).then(function(car) {
-        return Q.npost(Model, 'findOne', [ ({ _id : car.model }) ]);
+        return Q.npost(require('./CarModel.js'), 'findOne', [ ({ _id : car.model }) ]);
     }).then(function(model) {
         return model.getDescription();
     }).then(function(description) {
@@ -109,14 +109,14 @@ rentalSchema.methods.getDescription = function () {
 };
 
 rentalSchema.methods.isInProgress = function () {
-    /*sync*/return  this.returned == null;
+    return  this.returned == null;
 };
 /*************************** PRIVATE OPS ***********************/
 
 rentalSchema.methods.finish = function () {
     var me = this;
     return Q().then(function() {
-        /*sync*/return me.isInProgress();
+        return me.isInProgress();
     }).then(function(pass) {
         if (!pass) {
             var error = new Error("Precondition violated: must_be_in_progress (on 'car_rental::Rental::finish')");

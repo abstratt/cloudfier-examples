@@ -11,7 +11,7 @@ var Examples = {
         var me = this;
         return Q().then(function() {
             return Q().then(function() {
-                client = new Client();
+                client = new require('../models/Client.js')();
             });
         }).then(function() {
             return Q().then(function() {
@@ -46,7 +46,7 @@ var Examples = {
         var me = this;
         return Q().then(function() {
             return Q().then(function() {
-                task = new Task();
+                task = new require('../models/Task.js')();
             });
         }).then(function() {
             return Q().then(function() {
@@ -56,7 +56,7 @@ var Examples = {
             });
         }).then(function() {
             return Q().then(function() {
-                return Q.npost(Client, 'findOne', [ ({ _id : client._id }) ]);
+                return Q.npost(require('../models/Client.js'), 'findOne', [ ({ _id : client._id }) ]);
             }).then(function(client) {
                 task.client = client._id;
                 client.tasks.push(task._id);

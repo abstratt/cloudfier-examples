@@ -178,10 +178,10 @@ var exports = module.exports = {
         app.get("/entities/blog.Article/template", function(req, res) {
             var template = new Article().toObject();
             template.user = (function() {
-                /*sync*/return cls.getNamespace('currentUser');
+                return cls.getNamespace('currentUser');
             })();
             template.createdAt = (function() {
-                /*sync*/return new Date();
+                return new Date();
             })();
             res.json(renderInstance('blog.Article', template));
         });

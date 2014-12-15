@@ -56,7 +56,7 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                 });
             }).then(function() {
                 return Q().then(function() {
-                    return Q.npost(Invoice, 'findOne', [ ({ _id : invoice._id }) ]);
+                    return Q.npost(require('../models/Invoice.js'), 'findOne', [ ({ _id : invoice._id }) ]);
                 }).then(function(invoice) {
                     assert.equal("Invoiced", invoice.status);
                 });
@@ -79,7 +79,7 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        return Q.npost(Client, 'findOne', [ ({ _id : invoice.client }) ]);
+                        return Q.npost(require('../models/Client.js'), 'findOne', [ ({ _id : invoice.client }) ]);
                     }).then(function(client) {
                         return client.newTask("Some task");
                     }).then(function(newTask) {
@@ -98,7 +98,7 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                 });
             }).then(function() {
                 return Q().then(function() {
-                    return Q.npost(Invoice, 'findOne', [ ({ _id : invoice._id }) ]);
+                    return Q.npost(require('../models/Invoice.js'), 'findOne', [ ({ _id : invoice._id }) ]);
                 }).then(function(invoice) {
                     assert.equal("Received", invoice.status);
                 });
@@ -121,7 +121,7 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        return Q.npost(Client, 'findOne', [ ({ _id : task.client }) ]);
+                        return Q.npost(require('../models/Client.js'), 'findOne', [ ({ _id : task.client }) ]);
                     }).then(function(client) {
                         return client.startInvoice();
                     }).then(function(startInvoice) {
@@ -141,10 +141,10 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
             }).then(function() {
                 return Q.all([
                     Q().then(function() {
-                        return Q.npost(Invoice, 'findOne', [ ({ _id : invoice._id }) ]);
+                        return Q.npost(require('../models/Invoice.js'), 'findOne', [ ({ _id : invoice._id }) ]);
                     }),
                     Q().then(function() {
-                        return Q.npost(Task, 'findOne', [ ({ _id : task._id }) ]);
+                        return Q.npost(require('../models/Task.js'), 'findOne', [ ({ _id : task._id }) ]);
                     }).then(function(task) {
                         return task.addWork(2);
                     })

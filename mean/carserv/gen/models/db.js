@@ -10,7 +10,9 @@ mongoose.set('debug', false /*function (coll, method, query, doc) {
 }*/);
 mongoose.connect(dbURI);
 mongoose.connection.on('error', function (err) { console.log(err); } );
+/*
 mongoose.connection.on('connected', function () {
     console.log('Mongoose default connection open to ' + dbURI);
 });
+*/
 var exports = module.exports = mongoose;

@@ -50,7 +50,7 @@ driverSchema.methods.book = function (toRent) {
         }    
     }).then(function() {
         return Q().then(function() {
-            return Q.npost(Taxi, 'findOne', [ ({ _id : toRent._id }) ]);
+            return Q.npost(require('./Taxi.js'), 'findOne', [ ({ _id : toRent._id }) ]);
         }).then(function(toRent) {
             return toRent.isFull();
         }).then(function(full) {
@@ -67,10 +67,10 @@ driverSchema.methods.book = function (toRent) {
     }).then(function() {
         return Q.all([
             Q().then(function() {
-                return Q.npost(Taxi, 'findOne', [ ({ _id : toRent._id }) ]);
+                return Q.npost(require('./Taxi.js'), 'findOne', [ ({ _id : toRent._id }) ]);
             }),
             Q().then(function() {
-                return Q.npost(Taxi, 'findOne', [ ({ _id : me.taxi }) ]);
+                return Q.npost(require('./Taxi.js'), 'findOne', [ ({ _id : me.taxi }) ]);
             })
         ]).spread(function(toRent, taxi) {
             return !(toRent == taxi);
@@ -86,7 +86,7 @@ driverSchema.methods.book = function (toRent) {
     }).then(function() {
         return Q.all([
             Q().then(function() {
-                return Q.npost(Taxi, 'findOne', [ ({ _id : toRent._id }) ]);
+                return Q.npost(require('./Taxi.js'), 'findOne', [ ({ _id : toRent._id }) ]);
             }),
             Q().then(function() {
                 return me;
@@ -137,7 +137,7 @@ driverSchema.methods.release = function () {
     }).then(function() {
         return Q.all([
             Q().then(function() {
-                return Q.npost(Taxi, 'findOne', [ ({ _id : me.taxi }) ]);
+                return Q.npost(require('./Taxi.js'), 'findOne', [ ({ _id : me.taxi }) ]);
             }),
             Q().then(function() {
                 return me;
@@ -171,7 +171,7 @@ driverSchema.methods.isHasBooking = function () {
     var me = this;
     return Q.all([
         Q().then(function() {
-            return Q.npost(Taxi, 'findOne', [ ({ _id : me.taxi }) ]);
+            return Q.npost(require('./Taxi.js'), 'findOne', [ ({ _id : me.taxi }) ]);
         }),
         Q().then(function() {
             return null;
@@ -194,11 +194,11 @@ driverSchema.methods.isPaymentDue = function () {
 driverSchema.methods.getPendingCharges = function () {
     var me = this;
     return Q().then(function() {
-        return Q.npost(Charge, 'find', [ ({ driver : me._id }) ]);
+        return Q.npost(require('./Charge.js'), 'find', [ ({ driver : me._id }) ]);
     }).then(function(charges) {
         return charges.where({
             $ne : [ 
-                { /*read-structural-feature*/status : null },
+                { status : null },
                 true
             ]
         });

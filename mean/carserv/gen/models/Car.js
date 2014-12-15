@@ -34,13 +34,13 @@ var carSchema = new Schema({
         bookedOn : {
             type : Date,
             "default" : (function() {
-                /*sync*/return new Date();
+                return new Date();
             })()
         },
         estimatedReady : {
             type : Date,
             "default" : (function() {
-                /*sync*/return new Date(new Date() + 1* 1000 * 60 * 60 * 24 /*days*/);
+                return new Date(new Date() + 1* 1000 * 60 * 60 * 24 /*days*/);
             })()
         },
         status : {
@@ -65,7 +65,7 @@ carSchema.statics.findByRegistrationNumber = function (regNumber) {
         return mongoose.model('Car').find().where({
             $eq : [ 
                 regNumber,
-                /*read-structural-feature*/registrationNumber
+                registrationNumber
             ]
         }).findOne();
     });
@@ -84,7 +84,7 @@ carSchema.methods.bookService = function (description, estimateInDays) {
             return Q.npost(Integer, 'findOne', [ ({ _id : estimateInDays._id }) ]);
         })
     ]).spread(function(description, estimateInDays) {
-        return Service.newService(me, description, estimateInDays);
+        return require('./Service.js').newService(me, description, estimateInDays);
     }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {
@@ -108,9 +108,9 @@ carSchema.methods.bookService = function (description, estimateInDays) {
 carSchema.statics.findByOwner = function (owner) {
     var me = this;
     return Q().then(function() {
-        return Q.npost(Customer, 'findOne', [ ({ _id : owner._id }) ]);
+        return Q.npost(require('./Customer.js'), 'findOne', [ ({ _id : owner._id }) ]);
     }).then(function(owner) {
-        return Q.npost(Car, 'find', [ ({ owner : owner._id }) ]);
+        return Q.npost(require('./Car.js'), 'find', [ ({ owner : owner._id }) ]);
     }).then(function(cars) {
         return cars;
     });
@@ -120,7 +120,7 @@ carSchema.statics.findByOwner = function (owner) {
 carSchema.methods.getModelName = function () {
     var me = this;
     return Q().then(function() {
-        return Q.npost(Model, 'findOne', [ ({ _id : me.model }) ]);
+        return Q.npost(require('./Model.js'), 'findOne', [ ({ _id : me.model }) ]);
     }).then(function(model) {
         return model.makeAndModel();
     }).then(function(makeAndModel) {
@@ -143,8 +143,8 @@ carSchema.methods.getPendingServices = function () {
     return Q().then(function() {
         return me.services.where({
             $or : [ 
-                { /*read-structural-feature*/status : null },
-                { /*read-structural-feature*/status : null }
+                { status : null },
+                { status : null }
             ]
         });
     });
@@ -157,8 +157,8 @@ carSchema.methods.getCompletedServices = function () {
             $ne : [ 
                 {
                     $or : [ 
-                        { /*read-structural-feature*/status : null },
-                        { /*read-structural-feature*/status : null }
+                        { status : null },
+                        { status : null }
                     ]
                 },
                 true

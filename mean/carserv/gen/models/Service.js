@@ -19,13 +19,13 @@ var serviceSchema = new Schema({
     bookedOn : {
         type : Date,
         "default" : (function() {
-            /*sync*/return new Date();
+            return new Date();
         })()
     },
     estimatedReady : {
         type : Date,
         "default" : (function() {
-            /*sync*/return new Date(new Date() + 1* 1000 * 60 * 60 * 24 /*days*/);
+            return new Date(new Date() + 1* 1000 * 60 * 60 * 24 /*days*/);
         })()
     },
     status : {
@@ -44,7 +44,7 @@ var serviceSchema = new Schema({
 
 serviceSchema.path('estimatedReady').validate(
     function() {
-        /*sync*/return  this.estimatedReady == null ||  this.bookedOn == null ||  this.getEstimatedDays() >= 0;
+        return  this.estimatedReady == null ||  this.bookedOn == null ||  this.getEstimatedDays() >= 0;
     },
     'validation of `{PATH}` failed with value `{VALUE}`'
 );
@@ -70,7 +70,7 @@ serviceSchema.statics.newService = function (carToService, description, estimate
     }).then(function() {
         return Q().then(function() {
             return Q().then(function() {
-                s = new Service();
+                s = new require('./Service.js')();
             });
         }).then(function() {
             return Q.all([
@@ -91,7 +91,7 @@ serviceSchema.statics.newService = function (carToService, description, estimate
             });
         }).then(function() {
             return Q().then(function() {
-                return Q.npost(Car, 'findOne', [ ({ _id : carToService._id }) ]);
+                return Q.npost(require('./Car.js'), 'findOne', [ ({ _id : carToService._id }) ]);
             }).then(function(carToService) {
                 s.car = carToService._id;
                 carToService.services.push(s._id);
@@ -193,7 +193,7 @@ serviceSchema.methods.complete = function () {
 serviceSchema.methods.assignTo = function (technician) {
     var me = this;
     return Q().then(function() {
-        /*sync*/return me.isPending();
+        return me.isPending();
     }).then(function(pass) {
         if (!pass) {
             var error = new Error("Precondition violated: MustBePending (on 'carserv::Service::assignTo')");
@@ -216,7 +216,7 @@ serviceSchema.methods.assignTo = function (technician) {
         }    
     }).then(function() {
         return Q().then(function() {
-            return Q.npost(AutoMechanic, 'findOne', [ ({ _id : technician._id }) ]);
+            return Q.npost(require('./AutoMechanic.js'), 'findOne', [ ({ _id : technician._id }) ]);
         }).then(function(technician) {
             return technician.isWorking();
         });
@@ -229,7 +229,7 @@ serviceSchema.methods.assignTo = function (technician) {
         }    
     }).then(function() {
         return Q().then(function() {
-            return Q.npost(AutoMechanic, 'findOne', [ ({ _id : technician._id }) ]);
+            return Q.npost(require('./AutoMechanic.js'), 'findOne', [ ({ _id : technician._id }) ]);
         }).then(function(technician) {
             me.technician = technician._id;
             technician.services.push(me._id);
@@ -260,7 +260,7 @@ serviceSchema.methods.assignTo = function (technician) {
 serviceSchema.methods.transfer = function (mechanic) {
     var me = this;
     return Q().then(function() {
-        /*sync*/return me.isPending();
+        return me.isPending();
     }).then(function(pass) {
         if (!pass) {
             var error = new Error("Precondition violated: MustBePending (on 'carserv::Service::transfer')");
@@ -284,10 +284,10 @@ serviceSchema.methods.transfer = function (mechanic) {
     }).then(function() {
         return Q.all([
             Q().then(function() {
-                return Q.npost(AutoMechanic, 'findOne', [ ({ _id : me.technician }) ]);
+                return Q.npost(require('./AutoMechanic.js'), 'findOne', [ ({ _id : me.technician }) ]);
             }),
             Q().then(function() {
-                return Q.npost(AutoMechanic, 'findOne', [ ({ _id : mechanic._id }) ]);
+                return Q.npost(require('./AutoMechanic.js'), 'findOne', [ ({ _id : mechanic._id }) ]);
             })
         ]).spread(function(technician, mechanic) {
             return !(technician == mechanic);
@@ -301,7 +301,7 @@ serviceSchema.methods.transfer = function (mechanic) {
         }    
     }).then(function() {
         return Q().then(function() {
-            return Q.npost(AutoMechanic, 'findOne', [ ({ _id : mechanic._id }) ]);
+            return Q.npost(require('./AutoMechanic.js'), 'findOne', [ ({ _id : mechanic._id }) ]);
         }).then(function(mechanic) {
             return mechanic.isWorking();
         });
@@ -314,7 +314,7 @@ serviceSchema.methods.transfer = function (mechanic) {
         }    
     }).then(function() {
         return Q().then(function() {
-            return Q.npost(AutoMechanic, 'findOne', [ ({ _id : mechanic._id }) ]);
+            return Q.npost(require('./AutoMechanic.js'), 'findOne', [ ({ _id : mechanic._id }) ]);
         }).then(function(mechanic) {
             me.technician = mechanic._id;
             mechanic.services.push(me._id);
@@ -343,27 +343,27 @@ serviceSchema.methods.transfer = function (mechanic) {
 serviceSchema.statics.byStatus = function (services, toMatch) {
     var me = this;
     return Q().then(function() {
-        return Q.npost(Service, 'findOne', [ ({ _id : services._id }) ]);
+        return Q.npost(require('./Service.js'), 'findOne', [ ({ _id : services._id }) ]);
     }).then(function(services) {
-        return Q.npost(services.where({ /*read-structural-feature*/status : toMatch }), 'exec', [  ])
+        return Q.npost(services.where({ status : toMatch }), 'exec', [  ])
         ;
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 serviceSchema.methods.isPending = function () {
-    /*sync*/return  this.status == "Booked" ||  this.status == "InProgress";
+    return  this.status == "Booked" ||  this.status == "InProgress";
 };
 
 serviceSchema.methods.getEstimatedDays = function () {
-    /*sync*/return ( this.estimatedReady -  this.bookedOn) / (1000*60*60*24);
+    return ( this.estimatedReady -  this.bookedOn) / (1000*60*60*24);
 };
 
 serviceSchema.methods.isAssigned = function () {
     var me = this;
     return Q.all([
         Q().then(function() {
-            return Q.npost(AutoMechanic, 'findOne', [ ({ _id : me.technician }) ]);
+            return Q.npost(require('./AutoMechanic.js'), 'findOne', [ ({ _id : me.technician }) ]);
         }),
         Q().then(function() {
             return null;

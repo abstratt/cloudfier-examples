@@ -43,13 +43,13 @@ employeeSchema.methods.declareExpense = function (description, amount, date, cat
             return Q.npost(Date, 'findOne', [ ({ _id : date._id }) ]);
         }),
         Q().then(function() {
-            return Q.npost(Category, 'findOne', [ ({ _id : category._id }) ]);
+            return Q.npost(require('./Category.js'), 'findOne', [ ({ _id : category._id }) ]);
         }),
         Q().then(function() {
             return me;
         })
     ]).spread(function(description, amount, date, category, readSelfAction) {
-        return Expense.newExpense(description, amount, date, category, readSelfAction);
+        return require('./Expense.js').newExpense(description, amount, date, category, readSelfAction);
     }).then(function(newExpense) {
         return newExpense;
     }).then(function(__result__) {
@@ -178,7 +178,7 @@ employeeSchema.methods.getRejectedExpenses = function () {
 employeeSchema.methods.totalExpenses = function (toSum) {
     var me = this;
     return Q().then(function() {
-        return Q.npost(Expense, 'findOne', [ ({ _id : toSum._id }) ]);
+        return Q.npost(require('./Expense.js'), 'findOne', [ ({ _id : toSum._id }) ]);
     }).then(function(toSum) {
         return Q.npost(/*TBD*/reduce, 'exec', [  ])
         ;
@@ -188,9 +188,9 @@ employeeSchema.methods.totalExpenses = function (toSum) {
 employeeSchema.methods.expensesByStatus = function (status) {
     var me = this;
     return Q().then(function() {
-        return Q.npost(Expense, 'find', [ ({ employee : me._id }) ]);
+        return Q.npost(require('./Expense.js'), 'find', [ ({ employee : me._id }) ]);
     }).then(function(readLinkAction) {
-        return Q.npost(readLinkAction.where({ /*read-structural-feature*/status : status }), 'exec', [  ])
+        return Q.npost(readLinkAction.where({ status : status }), 'exec', [  ])
         ;
     });
 };

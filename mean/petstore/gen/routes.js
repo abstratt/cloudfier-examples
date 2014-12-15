@@ -363,7 +363,7 @@ var exports = module.exports = {
         app.get("/entities/petstore.Order/template", function(req, res) {
             var template = new Order().toObject();
             template.orderDate = (function() {
-                /*sync*/return new Date();
+                return new Date();
             })();
             res.json(renderInstance('petstore.Order', template));
         });

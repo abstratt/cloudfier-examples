@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var cls = require('continuation-local-storage');
 
 var Customer = require('./Customer.js');
-var Model = require('./Model.js');
+var CarModel = require('./CarModel.js');
 var Car = require('./Car.js');
 var Rental = require('./Rental.js');
 
@@ -16,7 +16,7 @@ var makeSchema = new Schema({
     },
     models : [{
         type : Schema.Types.ObjectId,
-        ref : "Model",
+        ref : "CarModel",
         "default" : []
     }]
 });

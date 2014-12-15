@@ -12,7 +12,7 @@ var orderSchema = new Schema({
     orderDate : {
         type : Date,
         "default" : (function() {
-            /*sync*/return new Date();
+            return new Date();
         })()
     },
     orderStatus : {
@@ -45,7 +45,7 @@ orderSchema.methods.addItem = function (product, quantity) {
     var detail;
     var me = this;
     return Q().then(function() {
-        /*sync*/return me.orderStatus == "New";
+        return me.orderStatus == "New";
     }).then(function(pass) {
         if (!pass) {
             var error = new Error("Precondition violated:  (on 'petstore::Order::addItem')");
@@ -56,11 +56,11 @@ orderSchema.methods.addItem = function (product, quantity) {
     }).then(function() {
         return Q().then(function() {
             return Q().then(function() {
-                detail = new OrderDetail();
+                detail = new require('./OrderDetail.js')();
             });
         }).then(function() {
             return Q().then(function() {
-                return Q.npost(Product, 'findOne', [ ({ _id : product._id }) ]);
+                return Q.npost(require('./Product.js'), 'findOne', [ ({ _id : product._id }) ]);
             }).then(function(product) {
                 detail.product = product._id
                 ;

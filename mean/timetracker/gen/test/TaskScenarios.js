@@ -73,7 +73,7 @@ suite('Time Tracker functional tests - TaskScenarios', function() {
                 });
             }).then(function() {
                 return Q().then(function() {
-                    return Q.npost(Client, 'findOne', [ ({ _id : task.client }) ]);
+                    return Q.npost(require('../models/Client.js'), 'findOne', [ ({ _id : task.client }) ]);
                 }).then(function(client) {
                     return client.startInvoice();
                 }).then(function(startInvoice) {

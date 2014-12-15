@@ -33,7 +33,7 @@ clientSchema.methods.newTask = function (description) {
     var me = this;
     return Q().then(function() {
         return Q().then(function() {
-            newTask = new Task();
+            newTask = new require('./Task.js')();
         });
     }).then(function() {
         return Q().then(function() {
@@ -78,7 +78,7 @@ clientSchema.methods.startInvoice = function () {
     var me = this;
     return Q().then(function() {
         return Q().then(function() {
-            newInvoice = new Invoice();
+            newInvoice = new require('./Invoice.js')();
         });
     }).then(function() {
         return Q().then(function() {

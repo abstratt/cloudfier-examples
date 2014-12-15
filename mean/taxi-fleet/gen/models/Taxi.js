@@ -53,7 +53,7 @@ taxiSchema.methods.charge = function (date) {
         }    
     }).then(function() {
         return Q().then(function() {
-            return Q.npost(Driver, 'find', [ ({ taxi : me._id }) ]);
+            return Q.npost(require('./Driver.js'), 'find', [ ({ taxi : me._id }) ]);
         }).then(function(drivers) {
             /*TBD*/forEach;
         }).then(function(/*no-arg*/) {
@@ -81,7 +81,7 @@ taxiSchema.methods.charge = function (date) {
 taxiSchema.methods.getDriverCount = function () {
     var me = this;
     return Q().then(function() {
-        return Q.npost(Driver, 'find', [ ({ taxi : me._id }) ]);
+        return Q.npost(require('./Driver.js'), 'find', [ ({ taxi : me._id }) ]);
     }).then(function(drivers) {
         return drivers.length;
     });
@@ -91,7 +91,7 @@ taxiSchema.methods.isFull = function () {
     var me = this;
     return Q.all([
         Q().then(function() {
-            return Q.npost(Shift, 'findOne', [ ({ _id : me.shift }) ]);
+            return Q.npost(require('./Shift.js'), 'findOne', [ ({ _id : me.shift }) ]);
         }),
         Q().then(function() {
             return me.getDriverCount();
@@ -114,11 +114,11 @@ taxiSchema.methods.isBooked = function () {
 taxiSchema.methods.getPendingCharges = function () {
     var me = this;
     return Q().then(function() {
-        return Charge.byTaxi(me);
+        return require('./Charge.js').byTaxi(me);
     }).then(function(byTaxi) {
         return byTaxi.where({
             $ne : [ 
-                { /*read-structural-feature*/status : null },
+                { status : null },
                 true
             ]
         });

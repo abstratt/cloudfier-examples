@@ -31,14 +31,14 @@ var shiftSchema = new Schema({
 
 shiftSchema.path('shiftsPerDay').validate(
     function() {
-        /*sync*/return  this.shiftsPerDay > 0;
+        return  this.shiftsPerDay > 0;
     },
     'validation of `{PATH}` failed with value `{VALUE}`'
 );
 
 shiftSchema.path('shiftsPerDay').validate(
     function() {
-        /*sync*/return  this.shiftsPerDay <= 3;
+        return  this.shiftsPerDay <= 3;
     },
     'validation of `{PATH}` failed with value `{VALUE}`'
 );
@@ -48,7 +48,7 @@ shiftSchema.path('shiftsPerDay').validate(
 shiftSchema.methods.getTaxis = function () {
     var me = this;
     return Q().then(function() {
-        return mongoose.model('Taxi').find().where({ /*read-structural-feature*/shift : this });
+        return mongoose.model('Taxi').find().where({ shift : this });
     });
 };
 

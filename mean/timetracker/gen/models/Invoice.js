@@ -11,7 +11,7 @@ var invoiceSchema = new Schema({
     issueDate : {
         type : Date,
         "default" : (function() {
-            /*sync*/return new Date();
+            return new Date();
         })()
     },
     status : {
@@ -38,7 +38,7 @@ invoiceSchema.methods.issue = function () {
     var me = this;
     return Q().then(function() {
         return Q().then(function() {
-            return Q.npost(Work, 'find', [ ({ invoice : me._id }) ]);
+            return Q.npost(require('./Work.js'), 'find', [ ({ invoice : me._id }) ]);
         }).then(function(reported) {
             return !(/*TBD*/isEmpty);
         });
@@ -76,21 +76,21 @@ invoiceSchema.methods.issue = function () {
 /*************************** DERIVED PROPERTIES ****************/
 
 invoiceSchema.methods.getNumber = function () {
-    /*sync*/return "" + ( this.issueDate.getYear() + 1900) + "." +  this.getInvoiceId();
+    return "" + ( this.issueDate.getYear() + 1900) + "." +  this.getInvoiceId();
 };
 
 
 invoiceSchema.methods.isOpen = function () {
-    /*sync*/return  this.status == "Preparation";
+    return  this.status == "Preparation";
 };
 
 invoiceSchema.methods.getTotalUnits = function () {
     var me = this;
     return Q().then(function() {
         return Q().then(function() {
-            return Q.npost(Work, 'find', [ ({ invoice : me._id }) ]);
+            return Q.npost(require('./Work.js'), 'find', [ ({ invoice : me._id }) ]);
         }).then(function(reported) {
-            return Work.aggregate()
+            return require('./Work.js').aggregate()
                           .group({ _id: null, result: { $sum: '$units' } })
                           .select('-id result');
         });

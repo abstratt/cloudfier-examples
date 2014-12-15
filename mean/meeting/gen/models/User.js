@@ -35,7 +35,7 @@ userSchema.methods.startMeetingOnBehalf = function (title, description, date) {
     var me = this;
     return Q().then(function() {
         return Q().then(function() {
-            newMeeting = new Meeting();
+            newMeeting = new require('./Meeting.js')();
         });
     }).then(function() {
         return Q().then(function() {
@@ -63,7 +63,7 @@ userSchema.methods.startMeetingOnBehalf = function (title, description, date) {
     }).then(function() {
         return Q.all([
             Q().then(function() {
-                return Q.npost(User, 'findOne', [ ({ _id : newMeeting.organizer }) ]);
+                return Q.npost(require('./User.js'), 'findOne', [ ({ _id : newMeeting.organizer }) ]);
             }),
             Q().then(function() {
                 return newMeeting;
@@ -96,7 +96,7 @@ userSchema.methods.startMeetingOnBehalf = function (title, description, date) {
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 userSchema.statics.getCurrent = function () {
-    /*sync*/return cls.getNamespace('currentUser');
+    return cls.getNamespace('currentUser');
 };
 
 // declare model on the schema

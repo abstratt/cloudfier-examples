@@ -4,7 +4,7 @@ var cls = require('continuation-local-storage');
 
 var Car = require('./models/Car.js');
 var Rental = require('./models/Rental.js');
-var Model = require('./models/Model.js');
+var CarModel = require('./models/CarModel.js');
 var Make = require('./models/Make.js');
 var Customer = require('./models/Customer.js');
 
@@ -56,15 +56,15 @@ var exports = module.exports = {
                     templateUri : resolveUrl("entities/car_rental.Rental/template")
                 },
                  {
-                    fullName : "car_rental.Model",
-                    label : "Model",
+                    fullName : "car_rental.CarModel",
+                    label : "CarModel",
                     description : "",
-                    uri : resolveUrl("entities/car_rental.Model"),
-                    extentUri : resolveUrl("entities/car_rental.Model/instances"),
+                    uri : resolveUrl("entities/car_rental.CarModel"),
+                    extentUri : resolveUrl("entities/car_rental.CarModel/instances"),
                     user : false,
                     concrete : true,
                     standalone : true,
-                    templateUri : resolveUrl("entities/car_rental.Model/template")
+                    templateUri : resolveUrl("entities/car_rental.CarModel/template")
                 },
                  {
                     fullName : "car_rental.Make",
@@ -136,7 +136,7 @@ var exports = module.exports = {
             var template = new Car().toObject();
             template.price = 500.0;
             template.year = (function() {
-                /*sync*/return (new Date().getYear() + 1900);
+                return (new Date().getYear() + 1900);
             })();
             res.json(renderInstance('car_rental.Car', template));
         });
@@ -222,7 +222,7 @@ var exports = module.exports = {
         app.get("/entities/car_rental.Rental/template", function(req, res) {
             var template = new Rental().toObject();
             template.started = (function() {
-                /*sync*/return new Date();
+                return new Date();
             })();
             res.json(renderInstance('car_rental.Rental', template));
         });
@@ -261,58 +261,58 @@ var exports = module.exports = {
         
         
         
-        // routes for car_rental.Model
-        app.get("/entities/car_rental.Model", function(req, res) {
+        // routes for car_rental.CarModel
+        app.get("/entities/car_rental.CarModel", function(req, res) {
             res.json({
-                fullName : "car_rental.Model",
-                label : "Model",
+                fullName : "car_rental.CarModel",
+                label : "CarModel",
                 description : "",
-                uri : resolveUrl("entities/car_rental.Model"),
-                extentUri : resolveUrl("entities/car_rental.Model/instances"),
+                uri : resolveUrl("entities/car_rental.CarModel"),
+                extentUri : resolveUrl("entities/car_rental.CarModel/instances"),
                 user : false,
                 concrete : true,
                 standalone : true,
-                templateUri : resolveUrl("entities/car_rental.Model/template")
+                templateUri : resolveUrl("entities/car_rental.CarModel/template")
             });
         });
-        app.get("/entities/car_rental.Model/instances/:objectId", function(req, res) {
-            return mongoose.model('Model').where({ _id: req.params.objectId}).findOne().lean().exec(function(error, found) {
+        app.get("/entities/car_rental.CarModel/instances/:objectId", function(req, res) {
+            return mongoose.model('CarModel').where({ _id: req.params.objectId}).findOne().lean().exec(function(error, found) {
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    res.json(renderInstance('car_rental.Model', found));
+                    res.json(renderInstance('car_rental.CarModel', found));
                 }
             });
         });
-        app.get("/entities/car_rental.Model/instances", function(req, res) {
-            return mongoose.model('Model').find().lean().exec(function(error, documents) {
+        app.get("/entities/car_rental.CarModel/instances", function(req, res) {
+            return mongoose.model('CarModel').find().lean().exec(function(error, documents) {
                 var contents = [];
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
                     documents.forEach(function(each) {
-                        contents.push(renderInstance('car_rental.Model', each));
+                        contents.push(renderInstance('car_rental.CarModel', each));
                     });
                     res.json({
-                        uri: resolveUrl('entities/car_rental.Model/instances'),
+                        uri: resolveUrl('entities/car_rental.CarModel/instances'),
                         length: contents.length,
                         contents: contents
                     });
                 }
             });
         });
-        app.get("/entities/car_rental.Model/template", function(req, res) {
-            var template = new Model().toObject();
-            res.json(renderInstance('car_rental.Model', template));
+        app.get("/entities/car_rental.CarModel/template", function(req, res) {
+            var template = new CarModel().toObject();
+            res.json(renderInstance('car_rental.CarModel', template));
         });
-        app.post("/entities/car_rental.Model/instances", function(req, res) {
+        app.post("/entities/car_rental.CarModel/instances", function(req, res) {
             var instanceData = req.body;
-            var newModel = new Model();
-            newModel.name = instanceData.name;
-            newModel.make = instanceData.make && instanceData.make.objectId;
-            newModel.save(function(err, doc) {
+            var newCarModel = new CarModel();
+            newCarModel.name = instanceData.name;
+            newCarModel.make = instanceData.make && instanceData.make.objectId;
+            newCarModel.save(function(err, doc) {
                 if (err) {
                     console.log(err);
                     res.status(400).json({message: err.message});
@@ -321,19 +321,19 @@ var exports = module.exports = {
                     created.objectId = created._id;
                     delete created._id;
                     delete created.__v;
-                    created.uri = resolveUrl('entities/car_rental.Model/instances/' + created.objectId);
+                    created.uri = resolveUrl('entities/car_rental.CarModel/instances/' + created.objectId);
                     res.status(201).json(created);    
                 }
             });
         });
-        app.put("/entities/car_rental.Model/instances/:objectId", function(req, res) {
+        app.put("/entities/car_rental.CarModel/instances/:objectId", function(req, res) {
             var instanceData = req.body;
-            return mongoose.model('Model').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+            return mongoose.model('CarModel').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
                 if (error) {
                     console.log(error);
                     res.status(400).json({ message: error.message });
                 } else {
-                    res.json(renderInstance('car_rental.Model', found));
+                    res.json(renderInstance('car_rental.CarModel', found));
                 }
             });
         });

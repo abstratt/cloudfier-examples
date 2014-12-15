@@ -9,7 +9,7 @@ var Car = require('./Car.js');
 var Rental = require('./Rental.js');
 
 // declare schema
-var modelSchema = new Schema({
+var carModelSchema = new Schema({
     name : {
         type : String,
         "default" : null
@@ -19,19 +19,19 @@ var modelSchema = new Schema({
         ref : "Make"
     }
 });
-//            modelSchema.set('toObject', { getters: true });
+//            carModelSchema.set('toObject', { getters: true });
 
 
 /*************************** DERIVED PROPERTIES ****************/
 
-modelSchema.methods.getDescription = function () {
+carModelSchema.methods.getDescription = function () {
     var me = this;
     return Q().then(function() {
-        return Q.npost(Make, 'findOne', [ ({ _id : me.make }) ]);
+        return Q.npost(require('./Make.js'), 'findOne', [ ({ _id : me.make }) ]);
     }).then(function(make) {
         return make.name + " " + me.name;
     });
 };
 
 // declare model on the schema
-var exports = module.exports = mongoose.model('Model', modelSchema);
+var exports = module.exports = mongoose.model('CarModel', carModelSchema);

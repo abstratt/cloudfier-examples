@@ -178,13 +178,13 @@ var exports = module.exports = {
         app.get("/entities/todo.Todo/template", function(req, res) {
             var template = new Todo().toObject();
             template.creator = (function() {
-                /*sync*/return cls.getNamespace('currentUser');
+                return cls.getNamespace('currentUser');
             })();
             template.assignee = (function() {
-                /*sync*/return cls.getNamespace('currentUser');
+                return cls.getNamespace('currentUser');
             })();
             template.openedOn = (function() {
-                /*sync*/return new Date();
+                return new Date();
             })();
             res.json(renderInstance('todo.Todo', template));
         });

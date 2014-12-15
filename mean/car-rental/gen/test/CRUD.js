@@ -1,3 +1,4 @@
+require('../server.js');
 var HttpClient = require("../http-client.js");
 var helpers = require('../helpers.js');
 var util = require('util');
@@ -42,11 +43,11 @@ var createCustomer = function (values) {
     return createInstance('car_rental.Customer', toCreate);
 };
 
-var createModel = function (values) {
+var createCarModel = function (values) {
     var toCreate = {};
     values = values || {};
     // set required properties
-    return createInstance('car_rental.Model', toCreate);
+    return createInstance('car_rental.CarModel', toCreate);
 };
 
 var createCar = function (values) {
@@ -166,12 +167,12 @@ suite('Car rental CRUD tests', function() {
     });
     
     
-    suite('Model', function() {
+    suite('CarModel', function() {
         var entity;
         test('GET entity', function(done) {
-            getExactEntity('car_rental.Model').then(function(fetched) {
+            getExactEntity('car_rental.CarModel').then(function(fetched) {
                 entity = fetched; 
-                assert.equal(fetched.fullName, "car_rental.Model");
+                assert.equal(fetched.fullName, "car_rental.CarModel");
                 assert.ok(fetched.extentUri);
                 assert.ok(fetched.templateUri);
             }).then(done, done);
@@ -183,14 +184,14 @@ suite('Car rental CRUD tests', function() {
             }).then(done, done);
         });
         test('POST', function(done) {
-            createModel().then(function(created) {
+            createCarModel().then(function(created) {
                 assert.ok(created);
                 assert.ok(created.uri);
             }).then(done, done);
         });
         test('GET one', function(done) {
             var created;
-            createModel().then(function(result) {
+            createCarModel().then(function(result) {
                 created = result;
                 return httpClient.performRequestOnURL(created.uri, null, 200);
             }).then(function(retrieved) {
@@ -201,7 +202,7 @@ suite('Car rental CRUD tests', function() {
         
         test('PUT', function(done) {
             var created;
-            createModel().then(function(result) {
+            createCarModel().then(function(result) {
                 created = result;
                 return httpClient.performRequestOnURL(created.uri, 'PUT', 200, created);
             }).then(function(updated) {

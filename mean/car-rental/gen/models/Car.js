@@ -5,7 +5,7 @@ var cls = require('continuation-local-storage');
 
 var Make = require('./Make.js');
 var Customer = require('./Customer.js');
-var Model = require('./Model.js');
+var CarModel = require('./CarModel.js');
 var Rental = require('./Rental.js');
 
 // declare schema
@@ -21,7 +21,7 @@ var carSchema = new Schema({
     year : {
         type : Number,
         "default" : (function() {
-            /*sync*/return (new Date().getYear() + 1900);
+            return (new Date().getYear() + 1900);
         })()
     },
     color : {
@@ -35,7 +35,7 @@ var carSchema = new Schema({
     },
     model : {
         type : Schema.Types.ObjectId,
-        ref : "Model"
+        ref : "CarModel"
     },
     rentals : [{
         type : Schema.Types.ObjectId,
@@ -49,28 +49,28 @@ var carSchema = new Schema({
 
 carSchema.path('price').validate(
     function() {
-        /*sync*/return  this.price >= 50.0;
+        return  this.price >= 50.0;
     },
     'validation of `{PATH}` failed with value `{VALUE}`'
 );
 
 carSchema.path('price').validate(
     function() {
-        /*sync*/return  this.price <= 500.0;
+        return  this.price <= 500.0;
     },
     'validation of `{PATH}` failed with value `{VALUE}`'
 );
 
 carSchema.path('year').validate(
     function() {
-        /*sync*/return  this.year > 1990;
+        return  this.year > 1990;
     },
     'validation of `{PATH}` failed with value `{VALUE}`'
 );
 
 carSchema.path('year').validate(
     function() {
-        /*sync*/return  this.year <= (new Date().getYear() + 1900);
+        return  this.year <= (new Date().getYear() + 1900);
     },
     'validation of `{PATH}` failed with value `{VALUE}`'
 );
@@ -80,7 +80,7 @@ carSchema.path('year').validate(
 carSchema.methods.startRepair = function () {
     var me = this;
     return Q().then(function() {
-        /*sync*/return me.status == "Available";
+        return me.status == "Available";
     }).then(function(pass) {
         if (!pass) {
             var error = new Error("Precondition violated: must_be_available (on 'car_rental::Car::startRepair')");
@@ -115,7 +115,7 @@ carSchema.methods.startRepair = function () {
 carSchema.methods.finishRepair = function () {
     var me = this;
     return Q().then(function() {
-        /*sync*/return me.status == "UnderRepair";
+        return me.status == "UnderRepair";
     }).then(function(pass) {
         if (!pass) {
             var error = new Error("Precondition violated: must_be_under_repair (on 'car_rental::Car::finishRepair')");
@@ -151,7 +151,7 @@ carSchema.methods.finishRepair = function () {
 carSchema.methods.getDescription = function () {
     var me = this;
     return Q().then(function() {
-        return Q.npost(Model, 'findOne', [ ({ _id : me.model }) ]);
+        return Q.npost(require('./CarModel.js'), 'findOne', [ ({ _id : me.model }) ]);
     }).then(function(model) {
         return model.getDescription();
     }).then(function(description) {
@@ -160,22 +160,22 @@ carSchema.methods.getDescription = function () {
 };
 
 carSchema.methods.isAvailable = function () {
-    /*sync*/return  this.status == "Available";
+    return  this.status == "Available";
 };
 
 carSchema.methods.isUnderRepair = function () {
-    /*sync*/return  this.status == "UnderRepair";
+    return  this.status == "UnderRepair";
 };
 
 carSchema.methods.isRented = function () {
-    /*sync*/return  this.status == "Rented";
+    return  this.status == "Rented";
 };
 /*************************** DERIVED RELATIONSHIPS ****************/
 
 carSchema.methods.getCurrentRental = function () {
     var me = this;
     return Q().then(function() {
-        return Rental.currentForCar(me);
+        return require('./Rental.js').currentForCar(me);
     }).then(function(currentForCar) {
         return currentForCar;
     });
@@ -192,7 +192,7 @@ carSchema.methods.handleEvent = function (event) {
         
         case 'RepairStarted' :
             if (this.status == 'Available') {
-                this.status = 'Rented';
+                this.status = 'UnderRepair';
                 break;
             }
             break;

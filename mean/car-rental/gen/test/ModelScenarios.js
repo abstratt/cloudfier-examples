@@ -6,7 +6,7 @@ require('../models/index.js');
 
 var Car = require('../models/Car.js');
 var Rental = require('../models/Rental.js');
-var Model = require('../models/Model.js');
+var CarModel = require('../models/CarModel.js');
 var Make = require('../models/Make.js');
 var Customer = require('../models/Customer.js');
 
@@ -29,43 +29,43 @@ suite('Car rental functional tests - ModelScenarios', function() {
             }).then(function() {
                 return Q().then(function() {
                     return Q().then(function() {
-                        return Q.npost(Model, 'findOne', [ ({ _id : carModel._id }) ]);
+                        return Q.npost(require('../models/CarModel.js'), 'findOne', [ ({ _id : carModel._id }) ]);
                     }).then(function(carModel) {
                         assert.ok(carModel != null);
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        return Q.npost(Model, 'findOne', [ ({ _id : carModel._id }) ]);
+                        return Q.npost(require('../models/CarModel.js'), 'findOne', [ ({ _id : carModel._id }) ]);
                     }).then(function(carModel) {
                         assert.ok(carModel.name != null);
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        return Q.npost(Model, 'findOne', [ ({ _id : carModel._id }) ]);
+                        return Q.npost(require('../models/CarModel.js'), 'findOne', [ ({ _id : carModel._id }) ]);
                     }).then(function(carModel) {
                         assert.equal("Mille", carModel.name);
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        return Q.npost(Model, 'findOne', [ ({ _id : carModel._id }) ]);
+                        return Q.npost(require('../models/CarModel.js'), 'findOne', [ ({ _id : carModel._id }) ]);
                     }).then(function(carModel) {
-                        return Q.npost(Make, 'findOne', [ ({ _id : carModel.make }) ]);
+                        return Q.npost(require('../models/Make.js'), 'findOne', [ ({ _id : carModel.make }) ]);
                     }).then(function(make) {
                         assert.ok(make != null);
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        return Q.npost(Model, 'findOne', [ ({ _id : carModel._id }) ]);
+                        return Q.npost(require('../models/CarModel.js'), 'findOne', [ ({ _id : carModel._id }) ]);
                     }).then(function(carModel) {
-                        return Q.npost(Make, 'findOne', [ ({ _id : carModel.make }) ]);
+                        return Q.npost(require('../models/Make.js'), 'findOne', [ ({ _id : carModel.make }) ]);
                     }).then(function(make) {
                         assert.ok(make.name != null);
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        return Q.npost(Model, 'findOne', [ ({ _id : carModel._id }) ]);
+                        return Q.npost(require('../models/CarModel.js'), 'findOne', [ ({ _id : carModel._id }) ]);
                     }).then(function(carModel) {
-                        return Q.npost(Make, 'findOne', [ ({ _id : carModel.make }) ]);
+                        return Q.npost(require('../models/Make.js'), 'findOne', [ ({ _id : carModel.make }) ]);
                     }).then(function(make) {
                         assert.equal("Fiat", make.name);
                     });

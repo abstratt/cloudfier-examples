@@ -6,7 +6,7 @@ require('../models/index.js');
 
 var Car = require('../models/Car.js');
 var Rental = require('../models/Rental.js');
-var Model = require('../models/Model.js');
+var CarModel = require('../models/CarModel.js');
 var Make = require('../models/Make.js');
 var Customer = require('../models/Customer.js');
 
@@ -48,7 +48,7 @@ suite('Car rental functional tests - RentalScenarios', function() {
             }).then(function() {
                 return Q().then(function() {
                     return Q().then(function() {
-                        return Q.npost(Customer, 'findOne', [ ({ _id : customer._id }) ]);
+                        return Q.npost(require('../models/Customer.js'), 'findOne', [ ({ _id : customer._id }) ]);
                     }).then(function(customer) {
                         return customer.getCurrentRental();
                     }).then(function(currentRental) {
@@ -56,7 +56,7 @@ suite('Car rental functional tests - RentalScenarios', function() {
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        return Q.npost(Customer, 'findOne', [ ({ _id : customer._id }) ]);
+                        return Q.npost(require('../models/Customer.js'), 'findOne', [ ({ _id : customer._id }) ]);
                     }).then(function(customer) {
                         return customer.getCurrentRental();
                     }).then(function(currentRental) {
@@ -100,20 +100,20 @@ suite('Car rental functional tests - RentalScenarios', function() {
             }).then(function() {
                 return Q().then(function() {
                     return Q().then(function() {
-                        return Q.npost(Rental, 'findOne', [ ({ _id : rental._id }) ]);
+                        return Q.npost(require('../models/Rental.js'), 'findOne', [ ({ _id : rental._id }) ]);
                     }).then(function(rental) {
                         assert.strictEqual(rental.isInProgress(), true);
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        return Q.npost(Customer, 'findOne', [ ({ _id : customer._id }) ]);
+                        return Q.npost(require('../models/Customer.js'), 'findOne', [ ({ _id : customer._id }) ]);
                     }).then(function(customer) {
                         return customer.finishRental();
                     });
                 });
             }).then(function() {
                 return Q().then(function() {
-                    return Q.npost(Rental, 'findOne', [ ({ _id : rental._id }) ]);
+                    return Q.npost(require('../models/Rental.js'), 'findOne', [ ({ _id : rental._id }) ]);
                 }).then(function(rental) {
                     assert.strictEqual(!(rental.isInProgress()), true);
                 });
@@ -154,7 +154,7 @@ suite('Car rental functional tests - RentalScenarios', function() {
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        return Q.npost(Customer, 'findOne', [ ({ _id : customer._id }) ]);
+                        return Q.npost(require('../models/Customer.js'), 'findOne', [ ({ _id : customer._id }) ]);
                     }).then(function(customer) {
                         return customer.rent(car2);
                     });
@@ -201,7 +201,7 @@ suite('Car rental functional tests - RentalScenarios', function() {
             }).then(function() {
                 return Q().then(function() {
                     return Q().then(function() {
-                        return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);
+                        return Q.npost(require('../models/Car.js'), 'findOne', [ ({ _id : car._id }) ]);
                     }).then(function(car) {
                         assert.strictEqual(car.isRented(), true);
                     });
@@ -214,7 +214,7 @@ suite('Car rental functional tests - RentalScenarios', function() {
                 }).then(function() {
                     return Q.all([
                         Q().then(function() {
-                            return Q.npost(Car, 'findOne', [ ({ _id : car._id }) ]);
+                            return Q.npost(require('../models/Car.js'), 'findOne', [ ({ _id : car._id }) ]);
                         }),
                         Q().then(function() {
                             return customer2;

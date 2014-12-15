@@ -27,7 +27,7 @@ var expenseSchema = new Schema({
     date : {
         type : Date,
         "default" : (function() {
-            /*sync*/return new Date();
+            return new Date();
         })()
     },
     processed : {
@@ -61,7 +61,7 @@ expenseSchema.statics.newExpense = function (description, amount, date, category
     var me = this;
     return Q().then(function() {
         return Q().then(function() {
-            newExpense = new Expense();
+            newExpense = new require('./Expense.js')();
         });
     }).then(function() {
         return Q().then(function() {
@@ -83,14 +83,14 @@ expenseSchema.statics.newExpense = function (description, amount, date, category
         });
     }).then(function() {
         return Q().then(function() {
-            return Q.npost(Category, 'findOne', [ ({ _id : category._id }) ]);
+            return Q.npost(require('./Category.js'), 'findOne', [ ({ _id : category._id }) ]);
         }).then(function(category) {
             newExpense.category = category._id
             ;
         });
     }).then(function() {
         return Q().then(function() {
-            return Q.npost(Employee, 'findOne', [ ({ _id : employee._id }) ]);
+            return Q.npost(require('./Employee.js'), 'findOne', [ ({ _id : employee._id }) ]);
         }).then(function(employee) {
             newExpense.employee = employee._id;
             employee.expenses.push(newExpense._id);
@@ -114,7 +114,7 @@ expenseSchema.methods.approve = function () {
     var me = this;
     return Q().then(function() {
         return Q().then(function() {
-            return Q.npost(Employee, 'findOne', [ ({ _id : me.employee }) ]);
+            return Q.npost(require('./Employee.js'), 'findOne', [ ({ _id : me.employee }) ]);
         }).then(function(employee) {
             return !(cls.getNamespace('currentUser') == employee);
         });
@@ -157,7 +157,7 @@ expenseSchema.methods.approve = function () {
 expenseSchema.methods.reject = function (reason) {
     var me = this;
     return Q().then(function() {
-        /*sync*/return !(me.isAutomaticApproval());
+        return !(me.isAutomaticApproval());
     }).then(function(pass) {
         if (!pass) {
             var error = new Error("Precondition violated: Cannot reject an expense under the auto-approval limit. (on 'expenses::Expense::reject')");
@@ -221,7 +221,7 @@ expenseSchema.methods.submit = function () {
 expenseSchema.statics.findExpensesByCategory = function (category) {
     var me = this;
     return Q().then(function() {
-        return Q.npost(mongoose.model('Expense').find().where({ /*read-link*/{ 'category' : e  } : category }), 'exec', [  ])
+        return Q.npost(mongoose.model('Expense').find().where({ { 'category' : e  } : category }), 'exec', [  ])
         ;
     });
 };
@@ -236,7 +236,7 @@ expenseSchema.statics.findExpensesInPeriod = function (start, end_) {
                         { start : null },
                         {
                             $gte : [ 
-                                /*read-structural-feature*/date,
+                                date,
                                 start
                             ]
                         }
@@ -247,7 +247,7 @@ expenseSchema.statics.findExpensesInPeriod = function (start, end_) {
                         { end_ : null },
                         {
                             $lte : [ 
-                                /*read-structural-feature*/date,
+                                date,
                                 end_
                             ]
                         }
@@ -262,14 +262,14 @@ expenseSchema.statics.findExpensesInPeriod = function (start, end_) {
 expenseSchema.statics.findByStatus = function (status) {
     var me = this;
     return Q().then(function() {
-        return Q.npost(mongoose.model('Expense').find().where({ /*read-structural-feature*/status : status }), 'exec', [  ])
+        return Q.npost(mongoose.model('Expense').find().where({ status : status }), 'exec', [  ])
         ;
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 expenseSchema.methods.getMoniker = function () {
-    /*sync*/return  this.description + " on " +  this.date;
+    return  this.description + " on " +  this.date;
 };
 
 
@@ -277,11 +277,11 @@ expenseSchema.methods.getMoniker = function () {
  *  Whether this expense qualifies for automatic approval. 
  */
 expenseSchema.methods.isAutomaticApproval = function () {
-    /*sync*/return  this.amount < 50;
+    return  this.amount < 50;
 };
 
 expenseSchema.methods.getDaysProcessed = function () {
-    /*sync*/if ( this.processed == null) {
+    if ( this.processed == null) {
         return 0;
     } else  {
         return ( this.processed - new Date()) / (1000*60*60*24);
@@ -293,14 +293,14 @@ expenseSchema.methods.reportApproved = function () {
     var me = this;
     return Q.all([
         Q().then(function() {
-            return Q.npost(Employee, 'findOne', [ ({ _id : me.employee }) ]);
+            return Q.npost(require('./Employee.js'), 'findOne', [ ({ _id : me.employee }) ]);
         }),
         Q().then(function() {
             return me.amount;
         }),
         Q.all([
             Q().then(function() {
-                return Q.npost(Category, 'findOne', [ ({ _id : me.category }) ]);
+                return Q.npost(require('./Category.js'), 'findOne', [ ({ _id : me.category }) ]);
             }),
             Q().then(function() {
                 return me.description + "(";
@@ -342,7 +342,7 @@ expenseSchema.methods.handleEvent = function (event) {
         case 'submit' :
             if (this.status == 'Draft') {
                 guard = function() {
-                    /*sync*/return  this.isAutomaticApproval();
+                    return  this.isAutomaticApproval();
                 }
                 ;
                 if (guard.call(this)) {
@@ -365,7 +365,7 @@ expenseSchema.methods.handleEvent = function (event) {
             }
             if (this.status == 'Draft') {
                 guard = function() {
-                    /*sync*/return !( this.isAutomaticApproval());
+                    return !( this.isAutomaticApproval());
                 }
                 ;
                 if (guard.call(this)) {
@@ -407,7 +407,7 @@ expenseSchema.methods.handleEvent = function (event) {
                 this.status = 'Rejected';
                 // on entering Rejected
                 (function() {
-                    /*sync*/ this['processed'] = new Date();
+                     this['processed'] = new Date();
                 })();
                 break;
             }

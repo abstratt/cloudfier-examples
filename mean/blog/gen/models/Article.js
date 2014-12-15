@@ -22,7 +22,7 @@ var articleSchema = new Schema({
     createdAt : {
         type : Date,
         "default" : (function() {
-            /*sync*/return new Date();
+            return new Date();
         })()
     },
     user : {
@@ -37,7 +37,7 @@ var articleSchema = new Schema({
         createdAt : {
             type : Date,
             "default" : (function() {
-                /*sync*/return new Date();
+                return new Date();
             })()
         },
         user : {

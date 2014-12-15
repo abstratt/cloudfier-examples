@@ -171,11 +171,11 @@ autoMechanicSchema.methods.retire = function () {
 /*************************** DERIVED PROPERTIES ****************/
 
 personSchema.methods.getFullName = function () {
-    /*sync*/return  this.firstName + " " +  this.lastName;
+    return  this.firstName + " " +  this.lastName;
 };
 
 autoMechanicSchema.methods.isWorking = function () {
-    /*sync*/return  this.status == "Working";
+    return  this.status == "Working";
 };
 
 autoMechanicSchema.methods.isWorkInProgress = function () {
@@ -204,13 +204,13 @@ autoMechanicSchema.methods.getCurrentServices = function () {
     var me = this;
     return Q.all([
         Q().then(function() {
-            return Q.npost(Service, 'find', [ ({ technician : me._id }) ]);
+            return Q.npost(require('./Service.js'), 'find', [ ({ technician : me._id }) ]);
         }),
         Q().then(function() {
             return "InProgress";
         })
     ]).spread(function(services, valueSpecificationAction) {
-        return Service.byStatus(services, valueSpecificationAction);
+        return require('./Service.js').byStatus(services, valueSpecificationAction);
     }).then(function(byStatus) {
         return byStatus;
     });
@@ -223,13 +223,13 @@ autoMechanicSchema.methods.getUpcomingServices = function () {
     var me = this;
     return Q.all([
         Q().then(function() {
-            return Q.npost(Service, 'find', [ ({ technician : me._id }) ]);
+            return Q.npost(require('./Service.js'), 'find', [ ({ technician : me._id }) ]);
         }),
         Q().then(function() {
             return "Booked";
         })
     ]).spread(function(services, valueSpecificationAction) {
-        return Service.byStatus(services, valueSpecificationAction);
+        return require('./Service.js').byStatus(services, valueSpecificationAction);
     }).then(function(byStatus) {
         return byStatus;
     });

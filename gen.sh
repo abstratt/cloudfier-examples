@@ -1,7 +1,23 @@
-rm -Rf $1/$2/gen
-mkdir -p $1/$2/gen
-wget -v -d  http://develop.cloudfier.com/services/generator/test-cloudfier-examples-$2/platform/$1  -O generated.zip
-unzip -d $1/$2/gen generated.zip
+CLOUDFIER_URL=${CLOUDFIER_URL:-http://develop.cloudfier.com}
+
+if [ "$#" -lt 2 ] ; then
+    echo 'Parameters PLATFORM and APPLICATION are required'
+    exit 1
+fi
+
+PLATFORM=$1
+APPLICATION=$2
+CLOUDFIER_USER=${3:-test}
+
+echo Generating $APPLICATION on $PLATFORM 
+
+rm -Rf $PLATFORM/$APPLICATION/gen
+mkdir -p $PLATFORM/$APPLICATION/gen
+wget -v -d  $CLOUDFIER_URL/services/generator/$CLOUDFIER_USER-cloudfier-examples-$APPLICATION/platform/$PLATFORM  -O generated.zip
+if [ $? -ne 0 ] ; then 
+    exit 1
+fi
+unzip -d $PLATFORM/$APPLICATION/gen generated.zip
 rm -Rf generated.zip
-ln -s ../../../node_modules $1/$2/gen/	
+ln -s ../../../node_modules $PLATFORM/$APPLICATION/gen/	
 

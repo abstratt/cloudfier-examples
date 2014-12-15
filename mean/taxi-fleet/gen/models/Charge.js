@@ -58,17 +58,17 @@ chargeSchema.statics.newCharge = function (taxi, payer, date) {
     var me = this;
     return Q().then(function() {
         return Q().then(function() {
-            charge = new Charge();
+            charge = new require('./Charge.js')();
         });
     }).then(function() {
         return Q.all([
             Q().then(function() {
-                return Q.npost(Taxi, 'findOne', [ ({ _id : taxi._id }) ]);
+                return Q.npost(require('./Taxi.js'), 'findOne', [ ({ _id : taxi._id }) ]);
             }).then(function(taxi) {
-                return Q.npost(Shift, 'findOne', [ ({ _id : taxi.shift }) ]);
+                return Q.npost(require('./Shift.js'), 'findOne', [ ({ _id : taxi.shift }) ]);
             }),
             Q().then(function() {
-                return Q.npost(Taxi, 'findOne', [ ({ _id : taxi._id }) ]);
+                return Q.npost(require('./Taxi.js'), 'findOne', [ ({ _id : taxi._id }) ]);
             }).then(function(taxi) {
                 return taxi.name + " - ";
             })
@@ -77,15 +77,15 @@ chargeSchema.statics.newCharge = function (taxi, payer, date) {
         });
     }).then(function() {
         return Q().then(function() {
-            return Q.npost(Taxi, 'findOne', [ ({ _id : taxi._id }) ]);
+            return Q.npost(require('./Taxi.js'), 'findOne', [ ({ _id : taxi._id }) ]);
         }).then(function(taxi) {
-            return Q.npost(Shift, 'findOne', [ ({ _id : taxi.shift }) ]);
+            return Q.npost(require('./Shift.js'), 'findOne', [ ({ _id : taxi.shift }) ]);
         }).then(function(shift) {
             charge['amount'] = shift.price;
         });
     }).then(function() {
         return Q().then(function() {
-            return Q.npost(Taxi, 'findOne', [ ({ _id : taxi._id }) ]);
+            return Q.npost(require('./Taxi.js'), 'findOne', [ ({ _id : taxi._id }) ]);
         }).then(function(taxi) {
             charge.taxi = taxi._id
             ;
@@ -99,7 +99,7 @@ chargeSchema.statics.newCharge = function (taxi, payer, date) {
     }).then(function() {
         return Q.all([
             Q().then(function() {
-                return Q.npost(Driver, 'findOne', [ ({ _id : payer._id }) ]);
+                return Q.npost(require('./Driver.js'), 'findOne', [ ({ _id : payer._id }) ]);
             }),
             Q().then(function() {
                 return charge;
@@ -125,7 +125,7 @@ chargeSchema.statics.pendingCharges = function () {
     return Q().then(function() {
         return Q.npost(mongoose.model('Charge').find().where({
             $ne : [ 
-                { /*read-structural-feature*/status : null },
+                { status : null },
                 true
             ]
         }), 'exec', [  ])
@@ -136,7 +136,7 @@ chargeSchema.statics.pendingCharges = function () {
 chargeSchema.statics.byTaxi = function (taxi) {
     var me = this;
     return Q().then(function() {
-        return Q.npost(mongoose.model('Charge').find().where({ /*read-structural-feature*/taxi : taxi }), 'exec', [  ])
+        return Q.npost(mongoose.model('Charge').find().where({ taxi : taxi }), 'exec', [  ])
         ;
     });
 };
@@ -144,14 +144,14 @@ chargeSchema.statics.byTaxi = function (taxi) {
 chargeSchema.statics.paidCharges = function () {
     var me = this;
     return Q().then(function() {
-        return Q.npost(mongoose.model('Charge').find().where({ /*read-structural-feature*/status : null }), 'exec', [  ])
+        return Q.npost(mongoose.model('Charge').find().where({ status : null }), 'exec', [  ])
         ;
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
 
 chargeSchema.methods.isPaid = function () {
-    /*sync*/return  this.status == "Paid";
+    return  this.status == "Paid";
 };
 /*************************** STATE MACHINE ********************/
 chargeSchema.methods.handleEvent = function (event) {
@@ -161,7 +161,7 @@ chargeSchema.methods.handleEvent = function (event) {
                 this.status = 'Paid';
                 // on entering Paid
                 (function() {
-                    /*sync*/ this['receivedOn'] = new Date();
+                     this['receivedOn'] = new Date();
                 })();
                 break;
             }

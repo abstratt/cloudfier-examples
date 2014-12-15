@@ -31,7 +31,7 @@ var personSchema = new Schema({
 /*************************** DERIVED PROPERTIES ****************/
 
 personSchema.methods.getFullName = function () {
-    /*sync*/return  this.firstName + " " +  this.lastName;
+    return  this.firstName + " " +  this.lastName;
 };
 
 // declare model on the schema

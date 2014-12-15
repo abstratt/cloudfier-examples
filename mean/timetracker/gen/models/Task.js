@@ -24,7 +24,7 @@ var taskSchema = new Schema({
         date : {
             type : Date,
             "default" : (function() {
-                /*sync*/return new Date();
+                return new Date();
             })()
         },
         memo : {
@@ -47,7 +47,7 @@ taskSchema.methods.addWork = function (units) {
     var me = this;
     return Q().then(function() {
         return Q().then(function() {
-            newWork = new Work();
+            newWork = new require('./Work.js')();
         });
     }).then(function() {
         return Q().then(function() {
@@ -121,7 +121,7 @@ taskSchema.methods.getToInvoice = function () {
             $ne : [ 
                 {
                     $ne : [ 
-                        { /*read-structural-feature*/invoice : null },
+                        { invoice : null },
                         true
                     ]
                 },
@@ -136,9 +136,9 @@ taskSchema.methods.countUnits = function (work) {
     var me = this;
     return Q().then(function() {
         return Q().then(function() {
-            return Q.npost(Work, 'findOne', [ ({ _id : work._id }) ]);
+            return Q.npost(require('./Work.js'), 'findOne', [ ({ _id : work._id }) ]);
         }).then(function(work) {
-            return Q.npost(Work.aggregate()
+            return Q.npost(require('./Work.js').aggregate()
                           .group({ _id: null, result: { $sum: '$units' } })
                           .select('-id result'), 'exec', [  ])
             ;

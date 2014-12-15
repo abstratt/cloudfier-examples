@@ -76,13 +76,13 @@ customerSchema.statics.findByName = function (firstName, lastName) {
                 $or : [ 
                     {
                         $eq : [ 
-                            /*read-structural-feature*/firstName,
+                            firstName,
                             firstName
                         ]
                     },
                     {
                         $eq : [ 
-                            /*read-structural-feature*/lastName,
+                            lastName,
                             lastName
                         ]
                     }
@@ -99,7 +99,7 @@ customerSchema.statics.vipCustomers = function () {
             $gte : [ 
                 {
                     /*unknown:size*/size : [ 
-                        /*read-structural-feature*/cars,
+                        cars,
                         true
                     ]
                 },
@@ -111,7 +111,7 @@ customerSchema.statics.vipCustomers = function () {
 /*************************** DERIVED PROPERTIES ****************/
 
 personSchema.methods.getFullName = function () {
-    /*sync*/return  this.firstName + " " +  this.lastName;
+    return  this.firstName + " " +  this.lastName;
 };
 
 /**
@@ -120,7 +120,7 @@ personSchema.methods.getFullName = function () {
 customerSchema.methods.isVip = function () {
     var me = this;
     return Q().then(function() {
-        return Q.npost(Car, 'find', [ ({ owner : me._id }) ]);
+        return Q.npost(require('./Car.js'), 'find', [ ({ owner : me._id }) ]);
     }).then(function(cars) {
         return cars.length >= 2;
     });
@@ -130,7 +130,7 @@ customerSchema.methods.isVip = function () {
 customerSchema.methods.getPendingServices = function () {
     var me = this;
     return Q().then(function() {
-        return Q.npost(Car, 'find', [ ({ owner : me._id }) ]);
+        return Q.npost(require('./Car.js'), 'find', [ ({ owner : me._id }) ]);
     }).then(function(cars) {
         return /*TBD*/reduce;
     });
@@ -139,7 +139,7 @@ customerSchema.methods.getPendingServices = function () {
 customerSchema.methods.getCompletedServices = function () {
     var me = this;
     return Q().then(function() {
-        return Q.npost(Car, 'find', [ ({ owner : me._id }) ]);
+        return Q.npost(require('./Car.js'), 'find', [ ({ owner : me._id }) ]);
     }).then(function(cars) {
         return /*TBD*/reduce;
     });

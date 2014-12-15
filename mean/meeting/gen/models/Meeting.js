@@ -129,7 +129,7 @@ meetingSchema.methods.addParticipant = function (newParticipant) {
     var me = this;
     return Q.all([
         Q().then(function() {
-            return Q.npost(User, 'findOne', [ ({ _id : newParticipant._id }) ]);
+            return Q.npost(require('./User.js'), 'findOne', [ ({ _id : newParticipant._id }) ]);
         }),
         Q().then(function() {
             return me;
@@ -163,7 +163,7 @@ meetingSchema.methods.addParticipant = function (newParticipant) {
 meetingSchema.statics.startMeeting = function (title, description, date) {
     var me = this;
     return Q().then(function() {
-        /*sync*/return !(User.current == null);
+        return !(User.current == null);
     }).then(function(pass) {
         if (!pass) {
             var error = new Error("Precondition violated:  (on 'meeting::Meeting::startMeeting')");
@@ -196,10 +196,10 @@ meetingSchema.methods.isParticipating = function (candidate) {
     var me = this;
     return Q.all([
         Q().then(function() {
-            return Q.npost(User, 'findOne', [ ({ _id : candidate._id }) ]);
+            return Q.npost(require('./User.js'), 'findOne', [ ({ _id : candidate._id }) ]);
         }),
         Q().then(function() {
-            return Q.npost(User, 'find', [ ({ meetings : me._id }) ]);
+            return Q.npost(require('./User.js'), 'find', [ ({ meetings : me._id }) ]);
         })
     ]).spread(function(candidate, participants) {
         return Q.npost(/*TBD*/includes, 'exec', [  ])
@@ -211,10 +211,10 @@ meetingSchema.methods.isOrganizing = function (candidate) {
     var me = this;
     return Q.all([
         Q().then(function() {
-            return Q.npost(User, 'findOne', [ ({ _id : me.organizer }) ]);
+            return Q.npost(require('./User.js'), 'findOne', [ ({ _id : me.organizer }) ]);
         }),
         Q().then(function() {
-            return Q.npost(User, 'findOne', [ ({ _id : candidate._id }) ]);
+            return Q.npost(require('./User.js'), 'findOne', [ ({ _id : candidate._id }) ]);
         })
     ]).spread(function(organizer, candidate) {
         return organizer == candidate;

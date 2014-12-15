@@ -3,7 +3,7 @@ require('../models/index.js');
 var Q = require("q");
 var Car = require('../models/Car.js');
 var Rental = require('../models/Rental.js');
-var Model = require('../models/Model.js');
+var CarModel = require('../models/CarModel.js');
 var Make = require('../models/Make.js');
 var Customer = require('../models/Customer.js');
 
@@ -13,7 +13,7 @@ var Examples = {
         var me = this;
         return Q().then(function() {
             return Q().then(function() {
-                make = new Make();
+                make = new require('../models/Make.js')();
             });
         }).then(function() {
             return Q().then(function() {
@@ -38,7 +38,7 @@ var Examples = {
         var me = this;
         return Q().then(function() {
             return Q().then(function() {
-                carModel = new Model();
+                carModel = new require('../models/CarModel.js')();
             });
         }).then(function() {
             return Q().then(function() {
@@ -70,7 +70,7 @@ var Examples = {
         var me = this;
         return Q().then(function() {
             return Q().then(function() {
-                car = new Car();
+                car = new require('../models/Car.js')();
             });
         }).then(function() {
             return Q().then(function() {
@@ -114,7 +114,7 @@ var Examples = {
         var me = this;
         return Q().then(function() {
             return Q().then(function() {
-                customer = new Customer();
+                customer = new require('../models/Customer.js')();
             });
         }).then(function() {
             return Q().then(function() {

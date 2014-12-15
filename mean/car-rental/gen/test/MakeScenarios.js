@@ -6,7 +6,7 @@ require('../models/index.js');
 
 var Car = require('../models/Car.js');
 var Rental = require('../models/Rental.js');
-var Model = require('../models/Model.js');
+var CarModel = require('../models/CarModel.js');
 var Make = require('../models/Make.js');
 var Customer = require('../models/Customer.js');
 
@@ -29,19 +29,19 @@ suite('Car rental functional tests - MakeScenarios', function() {
             }).then(function() {
                 return Q().then(function() {
                     return Q().then(function() {
-                        return Q.npost(Make, 'findOne', [ ({ _id : carMake._id }) ]);
+                        return Q.npost(require('../models/Make.js'), 'findOne', [ ({ _id : carMake._id }) ]);
                     }).then(function(carMake) {
                         assert.ok(carMake != null);
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        return Q.npost(Make, 'findOne', [ ({ _id : carMake._id }) ]);
+                        return Q.npost(require('../models/Make.js'), 'findOne', [ ({ _id : carMake._id }) ]);
                     }).then(function(carMake) {
                         assert.ok(carMake.name != null);
                     });
                 }).then(function() {
                     return Q().then(function() {
-                        return Q.npost(Make, 'findOne', [ ({ _id : carMake._id }) ]);
+                        return Q.npost(require('../models/Make.js'), 'findOne', [ ({ _id : carMake._id }) ]);
                     }).then(function(carMake) {
                         assert.equal("Fiat", carMake.name);
                     });

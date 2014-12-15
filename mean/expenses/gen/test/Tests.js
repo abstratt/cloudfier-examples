@@ -61,7 +61,7 @@ suite('Expenses Application functional tests - Tests', function() {
                 });
             }).then(function() {
                 return Q().then(function() {
-                    return Q.npost(Expense, 'findOne', [ ({ _id : expense._id }) ]);
+                    return Q.npost(require('../models/Expense.js'), 'findOne', [ ({ _id : expense._id }) ]);
                 }).then(function(expense) {
                     assert.equal("Draft", expense.status);
                 });
@@ -106,13 +106,13 @@ suite('Expenses Application functional tests - Tests', function() {
                 });
             }).then(function() {
                 return Q().then(function() {
-                    return Q.npost(Expense, 'findOne', [ ({ _id : expense._id }) ]);
+                    return Q.npost(require('../models/Expense.js'), 'findOne', [ ({ _id : expense._id }) ]);
                 }).then(function(expense) {
                     return expense.submit();
                 });
             }).then(function() {
                 return Q().then(function() {
-                    return Q.npost(Expense, 'findOne', [ ({ _id : expense._id }) ]);
+                    return Q.npost(require('../models/Expense.js'), 'findOne', [ ({ _id : expense._id }) ]);
                 }).then(function(expense) {
                     assert.equal("Approved", expense.status);
                 });
@@ -138,13 +138,13 @@ suite('Expenses Application functional tests - Tests', function() {
                 });
             }).then(function() {
                 return Q().then(function() {
-                    return Q.npost(Expense, 'findOne', [ ({ _id : expense._id }) ]);
+                    return Q.npost(require('../models/Expense.js'), 'findOne', [ ({ _id : expense._id }) ]);
                 }).then(function(expense) {
                     return expense.submit();
                 });
             }).then(function() {
                 return Q().then(function() {
-                    return Q.npost(Expense, 'findOne', [ ({ _id : expense._id }) ]);
+                    return Q.npost(require('../models/Expense.js'), 'findOne', [ ({ _id : expense._id }) ]);
                 }).then(function(expense) {
                     assert.equal("Submitted", expense.status);
                 });
@@ -164,19 +164,19 @@ suite('Expenses Application functional tests - Tests', function() {
                 });
             }).then(function() {
                 return Q().then(function() {
-                    return Q.npost(Expense, 'findOne', [ ({ _id : expense._id }) ]);
+                    return Q.npost(require('../models/Expense.js'), 'findOne', [ ({ _id : expense._id }) ]);
                 }).then(function(expense) {
                     return expense.submit();
                 });
             }).then(function() {
                 return Q().then(function() {
-                    return Q.npost(Expense, 'findOne', [ ({ _id : expense._id }) ]);
+                    return Q.npost(require('../models/Expense.js'), 'findOne', [ ({ _id : expense._id }) ]);
                 }).then(function(expense) {
                     return expense.reject("Non-reimbursable");
                 });
             }).then(function() {
                 return Q().then(function() {
-                    return Q.npost(Expense, 'findOne', [ ({ _id : expense._id }) ]);
+                    return Q.npost(require('../models/Expense.js'), 'findOne', [ ({ _id : expense._id }) ]);
                 }).then(function(expense) {
                     assert.equal("Rejected", expense.status);
                 });
