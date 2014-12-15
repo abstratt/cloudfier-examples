@@ -1,3 +1,4 @@
+#!/bin/bash
 if [ "$#" -lt 2 ] ; then
     echo 'Parameters PLATFORM and APPLICATION are required'
     exit 1

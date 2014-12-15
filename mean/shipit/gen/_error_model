@@ -65,7 +65,7 @@ java.lang.ClassCastException: org.eclipse.uml2.uml.internal.impl.EnumerationImpl
 	at com.abstratt.resman.impl.BasicResourceManager.runTask(BasicResourceManager.java:144)
 	at com.abstratt.mdd.core.RepositoryService.runTask(RepositoryService.java:59)
 	at com.abstratt.mdd.frontend.web.GeneratorResource.generateWorkspace(GeneratorResource.java:48)
-	at sun.reflect.GeneratedMethodAccessor3.invoke(Unknown Source)
+	at sun.reflect.GeneratedMethodAccessor33.invoke(Unknown Source)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
 	at java.lang.reflect.Method.invoke(Method.java:483)
 	at org.restlet.resource.ServerResource.doHandle(ServerResource.java:524)

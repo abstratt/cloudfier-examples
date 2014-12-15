@@ -1,3 +1,4 @@
+#!/bin/bash
 CLOUDFIER_URL=${CLOUDFIER_URL:-http://develop.cloudfier.com}
 
 if [ "$#" -lt 2 ] ; then
