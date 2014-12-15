@@ -22,6 +22,7 @@ If you want to run it against your own application deployed on Cloudfier:
     ./test.sh mean <your-app>
     
 For instance:
+
     ./gen.sh mean todo johndoe my-projects
     ./test.sh mean johndoe
 
