@@ -44,8 +44,8 @@ meetingSchema.methods.leave = function () {
     return Q().then(function() {
         return Q().then(function() {
             return me.isParticipating(User.current);
-        }).then(function(isParticipating) {
-            return isParticipating;
+        }).then(function(isParticipatingResult) {
+            return isParticipatingResult;
         });
     }).then(function(pass) {
         if (!pass) {
@@ -87,8 +87,8 @@ meetingSchema.methods.join = function () {
     return Q().then(function() {
         return Q().then(function() {
             return me.isParticipating(User.current);
-        }).then(function(isParticipating) {
-            return !(isParticipating);
+        }).then(function(isParticipatingResult) {
+            return !(isParticipatingResult);
         });
     }).then(function(pass) {
         if (!pass) {
@@ -172,21 +172,8 @@ meetingSchema.statics.startMeeting = function (title, description, date) {
             throw error;
         }    
     }).then(function() {
-        return Q.all([
-            Q().then(function() {
-                return Q.npost(String, 'findOne', [ ({ _id : title._id }) ]);
-            }),
-            Q().then(function() {
-                return Q.npost(Memo, 'findOne', [ ({ _id : description._id }) ]);
-            }),
-            Q().then(function() {
-                return Q.npost(Date, 'findOne', [ ({ _id : date._id }) ]);
-            }),
-            Q().then(function() {
-                return User.current;
-            })
-        ]).spread(function(title, description, date, current) {
-            return current.startMeetingOnBehalf(title, description, date);
+        return Q().then(function() {
+            return User.current.startMeetingOnBehalf(title, description, date);
         });
     });
 };
@@ -202,7 +189,9 @@ meetingSchema.methods.isParticipating = function (candidate) {
             return Q.npost(require('./User.js'), 'find', [ ({ meetings : me._id }) ]);
         })
     ]).spread(function(candidate, participants) {
-        return Q.npost(/*TBD*/includes, 'exec', [  ])
+        return /*TBD*/includes;
+    }).then(function(includesResult) {
+        return Q.npost(includesResult, 'exec', [  ])
         ;
     });
 };

@@ -1,10 +1,7 @@
 require('../models/index.js');
 
 var Q = require("q");
-var Client = require('../models/Client.js');
-var Task = require('../models/Task.js');
-var Invoice = require('../models/Invoice.js');
-
+var mongoose = require('../models/db.js');
 var Examples = {
     clientWithName : function(name) {
         var client;
@@ -15,8 +12,6 @@ var Examples = {
             });
         }).then(function() {
             return Q().then(function() {
-                return Q.npost(String, 'findOne', [ ({ _id : name._id }) ]);
-            }).then(function(name) {
                 client['name'] = name;
             });
         }).then(function() {
@@ -37,8 +32,8 @@ var Examples = {
         var me = this;
         return Q().then(function() {
             return Examples.clientWithName("New Client");
-        }).then(function(clientWithName) {
-            return clientWithName;
+        }).then(function(clientWithNameResult) {
+            return clientWithNameResult;
         });
     },
     taskWithName : function(description, client) {
@@ -50,8 +45,6 @@ var Examples = {
             });
         }).then(function() {
             return Q().then(function() {
-                return Q.npost(String, 'findOne', [ ({ _id : description._id }) ]);
-            }).then(function(description) {
                 task['description'] = description;
             });
         }).then(function() {
@@ -79,10 +72,10 @@ var Examples = {
         var me = this;
         return Q().then(function() {
             return Examples.client();
-        }).then(function(client) {
-            return Examples.taskWithName("New Task", client);
-        }).then(function(taskWithName) {
-            return taskWithName;
+        }).then(function(clientResult) {
+            return Examples.taskWithName("New Task", clientResult);
+        }).then(function(taskWithNameResult) {
+            return taskWithNameResult;
         });
     }
 };

@@ -40,7 +40,9 @@ invoiceSchema.methods.issue = function () {
         return Q().then(function() {
             return Q.npost(require('./Work.js'), 'find', [ ({ invoice : me._id }) ]);
         }).then(function(reported) {
-            return !(/*TBD*/isEmpty);
+            return /*TBD*/isEmpty;
+        }).then(function(isEmptyResult) {
+            return !(isEmptyResult);
         });
     }).then(function(pass) {
         if (!pass) {
@@ -93,6 +95,8 @@ invoiceSchema.methods.getTotalUnits = function () {
             return require('./Work.js').aggregate()
                           .group({ _id: null, result: { $sum: '$units' } })
                           .select('-id result');
+        }).then(function(sumResult) {
+            return sumResult;
         });
     }).then(function() {
         return Q().then(function() {

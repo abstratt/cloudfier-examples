@@ -39,6 +39,8 @@ driverSchema.methods.book = function (toRent) {
     return Q().then(function() {
         return Q().then(function() {
             return <UNSUPPORTED: CallOperationAction> (exists);
+        }).then(function(existsResult) {
+            return existsResult;
         });
     }).then(function(pass) {
         if (!pass) {
@@ -186,7 +188,9 @@ driverSchema.methods.isPaymentDue = function () {
     return Q().then(function() {
         return me.getPendingCharges();
     }).then(function(pendingCharges) {
-        return !(/*TBD*/isEmpty);
+        return /*TBD*/isEmpty;
+    }).then(function(isEmptyResult) {
+        return !(isEmptyResult);
     });
 };
 /*************************** DERIVED RELATIONSHIPS ****************/
@@ -202,6 +206,8 @@ driverSchema.methods.getPendingCharges = function () {
                 true
             ]
         });
+    }).then(function(selectResult) {
+        return selectResult;
     });
 };
 

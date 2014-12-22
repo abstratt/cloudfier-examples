@@ -68,6 +68,8 @@ carSchema.statics.findByRegistrationNumber = function (regNumber) {
                 registrationNumber
             ]
         }).findOne();
+    }).then(function(anyResult) {
+        return anyResult;
     });
 };
 
@@ -76,14 +78,7 @@ carSchema.statics.findByRegistrationNumber = function (regNumber) {
  */
 carSchema.methods.bookService = function (description, estimateInDays) {
     var me = this;
-    return Q.all([
-        Q().then(function() {
-            return Q.npost(Memo, 'findOne', [ ({ _id : description._id }) ]);
-        }),
-        Q().then(function() {
-            return Q.npost(Integer, 'findOne', [ ({ _id : estimateInDays._id }) ]);
-        })
-    ]).spread(function(description, estimateInDays) {
+    return Q().then(function() {
         return require('./Service.js').newService(me, description, estimateInDays);
     }).then(function(/*no-arg*/) {
         return Q.all([
@@ -123,8 +118,8 @@ carSchema.methods.getModelName = function () {
         return Q.npost(require('./Model.js'), 'findOne', [ ({ _id : me.model }) ]);
     }).then(function(model) {
         return model.makeAndModel();
-    }).then(function(makeAndModel) {
-        return makeAndModel;
+    }).then(function(makeAndModelResult) {
+        return makeAndModelResult;
     });
 };
 
@@ -134,6 +129,8 @@ carSchema.methods.getPending = function () {
         return me.getPendingServices();
     }).then(function(pendingServices) {
         return pendingServices.length;
+    }).then(function(sizeResult) {
+        return sizeResult;
     });
 };
 /*************************** DERIVED RELATIONSHIPS ****************/
@@ -147,6 +144,8 @@ carSchema.methods.getPendingServices = function () {
                 { status : null }
             ]
         });
+    }).then(function(selectResult) {
+        return selectResult;
     });
 };
 
@@ -164,6 +163,8 @@ carSchema.methods.getCompletedServices = function () {
                 true
             ]
         });
+    }).then(function(selectResult) {
+        return selectResult;
     });
 };
 

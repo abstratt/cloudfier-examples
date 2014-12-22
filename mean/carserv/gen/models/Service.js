@@ -55,11 +55,7 @@ serviceSchema.statics.newService = function (carToService, description, estimate
     var s;
     var me = this;
     return Q().then(function() {
-        return Q().then(function() {
-            return Q.npost(Integer, 'findOne', [ ({ _id : estimate._id }) ]);
-        }).then(function(estimate) {
-            return estimate > 0;
-        });
+        return estimate > 0;
     }).then(function(pass) {
         if (!pass) {
             var error = new Error("Precondition violated: EstimateMustBePositive (on 'carserv::Service::newService')");
@@ -73,20 +69,11 @@ serviceSchema.statics.newService = function (carToService, description, estimate
                 s = new require('./Service.js')();
             });
         }).then(function() {
-            return Q.all([
-                Q().then(function() {
-                    return Q.npost(Integer, 'findOne', [ ({ _id : estimate._id }) ]);
-                }),
-                Q().then(function() {
-                    return s.bookedOn;
-                })
-            ]).spread(function(estimate, bookedOn) {
-                s['estimatedReady'] = new Date(bookedOn + estimate* 1000 * 60 * 60 * 24 /*days*/);
+            return Q().then(function() {
+                s['estimatedReady'] = new Date(s.bookedOn + estimate* 1000 * 60 * 60 * 24 /*days*/);
             });
         }).then(function() {
             return Q().then(function() {
-                return Q.npost(Memo, 'findOne', [ ({ _id : description._id }) ]);
-            }).then(function(description) {
                 s['description'] = description;
             });
         }).then(function() {
@@ -345,7 +332,9 @@ serviceSchema.statics.byStatus = function (services, toMatch) {
     return Q().then(function() {
         return Q.npost(require('./Service.js'), 'findOne', [ ({ _id : services._id }) ]);
     }).then(function(services) {
-        return Q.npost(services.where({ status : toMatch }), 'exec', [  ])
+        return services.where({ status : toMatch });
+    }).then(function(selectResult) {
+        return Q.npost(selectResult, 'exec', [  ])
         ;
     });
 };

@@ -72,8 +72,8 @@ chargeSchema.statics.newCharge = function (taxi, payer, date) {
             }).then(function(taxi) {
                 return taxi.name + " - ";
             })
-        ]).spread(function(shift, add) {
-            charge['description'] = add + shift.description;
+        ]).spread(function(shift, addResult) {
+            charge['description'] = addResult + shift.description;
         });
     }).then(function() {
         return Q().then(function() {
@@ -92,8 +92,6 @@ chargeSchema.statics.newCharge = function (taxi, payer, date) {
         });
     }).then(function() {
         return Q().then(function() {
-            return Q.npost(Date, 'findOne', [ ({ _id : date._id }) ]);
-        }).then(function(date) {
             charge['date'] = date;
         });
     }).then(function() {
@@ -123,12 +121,14 @@ chargeSchema.statics.newCharge = function (taxi, payer, date) {
 chargeSchema.statics.pendingCharges = function () {
     var me = this;
     return Q().then(function() {
-        return Q.npost(mongoose.model('Charge').find().where({
+        return mongoose.model('Charge').find().where({
             $ne : [ 
                 { status : null },
                 true
             ]
-        }), 'exec', [  ])
+        });
+    }).then(function(selectResult) {
+        return Q.npost(selectResult, 'exec', [  ])
         ;
     });
 };
@@ -136,7 +136,9 @@ chargeSchema.statics.pendingCharges = function () {
 chargeSchema.statics.byTaxi = function (taxi) {
     var me = this;
     return Q().then(function() {
-        return Q.npost(mongoose.model('Charge').find().where({ taxi : taxi }), 'exec', [  ])
+        return mongoose.model('Charge').find().where({ taxi : taxi });
+    }).then(function(selectResult) {
+        return Q.npost(selectResult, 'exec', [  ])
         ;
     });
 };
@@ -144,7 +146,9 @@ chargeSchema.statics.byTaxi = function (taxi) {
 chargeSchema.statics.paidCharges = function () {
     var me = this;
     return Q().then(function() {
-        return Q.npost(mongoose.model('Charge').find().where({ status : null }), 'exec', [  ])
+        return mongoose.model('Charge').find().where({ status : null });
+    }).then(function(selectResult) {
+        return Q.npost(selectResult, 'exec', [  ])
         ;
     });
 };

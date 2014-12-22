@@ -39,20 +39,14 @@ userSchema.methods.startMeetingOnBehalf = function (title, description, date) {
         });
     }).then(function() {
         return Q().then(function() {
-            return Q.npost(Date, 'findOne', [ ({ _id : date._id }) ]);
-        }).then(function(date) {
             newMeeting['date'] = date;
         });
     }).then(function() {
         return Q().then(function() {
-            return Q.npost(String, 'findOne', [ ({ _id : title._id }) ]);
-        }).then(function(title) {
             newMeeting['title'] = title;
         });
     }).then(function() {
         return Q().then(function() {
-            return Q.npost(Memo, 'findOne', [ ({ _id : description._id }) ]);
-        }).then(function(description) {
             newMeeting['description'] = description;
         });
     }).then(function() {

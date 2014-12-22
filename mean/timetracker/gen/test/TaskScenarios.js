@@ -1,6 +1,7 @@
 
 var assert = require("assert");
 var Q = require("q");
+var mongoose = require('../models/db.js');
 require('../models/index.js');        
 
 
@@ -21,8 +22,8 @@ suite('Time Tracker functional tests - TaskScenarios', function() {
             return Q().then(function() {
                 return Q().then(function() {
                     return Examples.task();
-                }).then(function(task) {
-                    task = task;
+                }).then(function(taskResult) {
+                    task = taskResult;
                 });
             }).then(function() {
                 return Q().then(function() {
@@ -34,7 +35,9 @@ suite('Time Tracker functional tests - TaskScenarios', function() {
                 });
             }).then(function() {
                 return Q().then(function() {
-                    assert.equal(2, task.reported.length);
+                    return task.reported.length;
+                }).then(function(sizeResult) {
+                    assert.equal(2, sizeResult);
                 });
             }).then(function() {
                 return Q().then(function() {
@@ -56,28 +59,28 @@ suite('Time Tracker functional tests - TaskScenarios', function() {
             return Q().then(function() {
                 return Q().then(function() {
                     return Examples.task();
-                }).then(function(task) {
-                    task = task;
+                }).then(function(taskResult) {
+                    task = taskResult;
                 });
             }).then(function() {
                 return Q().then(function() {
                     return task.addWork(4);
-                }).then(function(addWork) {
-                    work1 = addWork;
+                }).then(function(addWorkResult) {
+                    work1 = addWorkResult;
                 });
             }).then(function() {
                 return Q().then(function() {
                     return task.addWork(3);
-                }).then(function(addWork) {
-                    work2 = addWork;
+                }).then(function(addWorkResult) {
+                    work2 = addWorkResult;
                 });
             }).then(function() {
                 return Q().then(function() {
                     return Q.npost(require('../models/Client.js'), 'findOne', [ ({ _id : task.client }) ]);
                 }).then(function(client) {
                     return client.startInvoice();
-                }).then(function(startInvoice) {
-                    invoice = startInvoice;
+                }).then(function(startInvoiceResult) {
+                    invoice = startInvoiceResult;
                 });
             }).then(function() {
                 return Q().then(function() {
@@ -87,7 +90,9 @@ suite('Time Tracker functional tests - TaskScenarios', function() {
                 return Q().then(function() {
                     return task.getToInvoice();
                 }).then(function(toInvoice) {
-                    assert.equal(1, toInvoice.length);
+                    return toInvoice.length;
+                }).then(function(sizeResult) {
+                    assert.equal(1, sizeResult);
                 });
             }).then(function() {
                 return Q().then(function() {

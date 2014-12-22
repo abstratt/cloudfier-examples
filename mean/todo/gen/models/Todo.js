@@ -65,8 +65,8 @@ todoSchema.statics.open = function () {
     var me = this;
     return Q().then(function() {
         return require('./Todo.js').byStatus(mongoose.model('Todo').find(), "Open");
-    }).then(function(byStatus) {
-        return Q.npost(byStatus, 'exec', [  ])
+    }).then(function(byStatusResult) {
+        return Q.npost(byStatusResult, 'exec', [  ])
         ;
     });
 };
@@ -92,8 +92,8 @@ todoSchema.statics.mineOpen = function () {
         })
     ]).spread(function(todos, valueSpecificationAction) {
         return require('./Todo.js').byStatus(todos, valueSpecificationAction);
-    }).then(function(byStatus) {
-        return Q.npost(byStatus, 'exec', [  ])
+    }).then(function(byStatusResult) {
+        return Q.npost(byStatusResult, 'exec', [  ])
         ;
     });
 };
@@ -102,8 +102,8 @@ todoSchema.statics.openedToday = function () {
     var me = this;
     return Q().then(function() {
         return require('./Todo.js').byOpeningDate(mongoose.model('Todo').find(), 0);
-    }).then(function(byOpeningDate) {
-        return Q.npost(byOpeningDate, 'exec', [  ])
+    }).then(function(byOpeningDateResult) {
+        return Q.npost(byOpeningDateResult, 'exec', [  ])
         ;
     });
 };
@@ -112,8 +112,8 @@ todoSchema.statics.completedToday = function () {
     var me = this;
     return Q().then(function() {
         return require('./Todo.js').byCompletionDate(mongoose.model('Todo').find(), 0);
-    }).then(function(byCompletionDate) {
-        return Q.npost(byCompletionDate, 'exec', [  ])
+    }).then(function(byCompletionDateResult) {
+        return Q.npost(byCompletionDateResult, 'exec', [  ])
         ;
     });
 };
@@ -124,7 +124,9 @@ todoSchema.statics.byStatus = function (todos, status) {
     return Q().then(function() {
         return Q.npost(require('./Todo.js'), 'findOne', [ ({ _id : todos._id }) ]);
     }).then(function(todos) {
-        return Q.npost(todos.where({ status : status }), 'exec', [  ])
+        return todos.where({ status : status });
+    }).then(function(selectResult) {
+        return Q.npost(selectResult, 'exec', [  ])
         ;
     });
 };
@@ -134,7 +136,7 @@ todoSchema.statics.byOpeningDate = function (todos, days) {
     return Q().then(function() {
         return Q.npost(require('./Todo.js'), 'findOne', [ ({ _id : todos._id }) ]);
     }).then(function(todos) {
-        return Q.npost(todos.where({
+        return todos.where({
             $lte : [ 
                 {
                     /*unknown:differenceInDays*/differenceInDays : [ 
@@ -144,7 +146,9 @@ todoSchema.statics.byOpeningDate = function (todos, days) {
                 },
                 days
             ]
-        }), 'exec', [  ])
+        });
+    }).then(function(selectResult) {
+        return Q.npost(selectResult, 'exec', [  ])
         ;
     });
 };
@@ -154,7 +158,7 @@ todoSchema.statics.byCompletionDate = function (todos, days) {
     return Q().then(function() {
         return Q.npost(require('./Todo.js'), 'findOne', [ ({ _id : todos._id }) ]);
     }).then(function(todos) {
-        return Q.npost(todos.where({
+        return todos.where({
             $and : [ 
                 { status : null },
                 {
@@ -169,7 +173,9 @@ todoSchema.statics.byCompletionDate = function (todos, days) {
                     ]
                 }
             ]
-        }), 'exec', [  ])
+        });
+    }).then(function(selectResult) {
+        return Q.npost(selectResult, 'exec', [  ])
         ;
     });
 };

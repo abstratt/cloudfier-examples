@@ -43,26 +43,7 @@ var customerSchema = new Schema({
 customerSchema.statics.findByName = function (firstName, lastName) {
     var me = this;
     return Q().then(function() {
-        return Q.all([
-            Q().then(function() {
-                return Q.npost(String, 'findOne', [ ({ _id : lastName._id }) ]);
-            }),
-            Q().then(function() {
-                return null;
-            }),
-            Q.all([
-                Q().then(function() {
-                    return Q.npost(String, 'findOne', [ ({ _id : firstName._id }) ]);
-                }),
-                Q().then(function() {
-                    return null;
-                })
-            ]).spread(function(firstName, valueSpecificationAction) {
-                return firstName == valueSpecificationAction;
-            })
-        ]).spread(function(lastName, valueSpecificationAction, testIdentityAction) {
-            return !(testIdentityAction && lastName == valueSpecificationAction);
-        });
+        return !(firstName == null && lastName == null);
     }).then(function(pass) {
         if (!pass) {
             var error = new Error("Precondition violated: OneMustBeProvided (on 'carserv::Customer::findByName')");
@@ -88,6 +69,8 @@ customerSchema.statics.findByName = function (firstName, lastName) {
                     }
                 ]
             });
+        }).then(function(selectResult) {
+            return selectResult;
         });
     });
 };
@@ -106,6 +89,8 @@ customerSchema.statics.vipCustomers = function () {
                 2
             ]
         });
+    }).then(function(selectResult) {
+        return selectResult;
     });
 };
 /*************************** DERIVED PROPERTIES ****************/
@@ -122,7 +107,9 @@ customerSchema.methods.isVip = function () {
     return Q().then(function() {
         return Q.npost(require('./Car.js'), 'find', [ ({ owner : me._id }) ]);
     }).then(function(cars) {
-        return cars.length >= 2;
+        return cars.length;
+    }).then(function(sizeResult) {
+        return sizeResult >= 2;
     });
 };
 /*************************** DERIVED RELATIONSHIPS ****************/
@@ -133,6 +120,8 @@ customerSchema.methods.getPendingServices = function () {
         return Q.npost(require('./Car.js'), 'find', [ ({ owner : me._id }) ]);
     }).then(function(cars) {
         return /*TBD*/reduce;
+    }).then(function(reduceResult) {
+        return reduceResult;
     });
 };
 
@@ -142,6 +131,8 @@ customerSchema.methods.getCompletedServices = function () {
         return Q.npost(require('./Car.js'), 'find', [ ({ owner : me._id }) ]);
     }).then(function(cars) {
         return /*TBD*/reduce;
+    }).then(function(reduceResult) {
+        return reduceResult;
     });
 };
 

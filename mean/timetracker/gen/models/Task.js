@@ -51,8 +51,6 @@ taskSchema.methods.addWork = function (units) {
         });
     }).then(function() {
         return Q().then(function() {
-            return Q.npost(Integer, 'findOne', [ ({ _id : units._id }) ]);
-        }).then(function(units) {
             newWork['units'] = units;
         });
     }).then(function() {
@@ -92,8 +90,8 @@ taskSchema.methods.getUnitsReported = function () {
     var me = this;
     return Q().then(function() {
         return me.countUnits(me.reported);
-    }).then(function(countUnits) {
-        return countUnits;
+    }).then(function(countUnitsResult) {
+        return countUnitsResult;
     });
 };
 
@@ -108,8 +106,8 @@ taskSchema.methods.getUnitsToInvoice = function () {
         })
     ]).spread(function(toInvoice, readSelfAction) {
         return readSelfAction.countUnits(toInvoice);
-    }).then(function(countUnits) {
-        return countUnits;
+    }).then(function(countUnitsResult) {
+        return countUnitsResult;
     });
 };
 /*************************** DERIVED RELATIONSHIPS ****************/
@@ -128,6 +126,8 @@ taskSchema.methods.getToInvoice = function () {
                 true
             ]
         });
+    }).then(function(selectResult) {
+        return selectResult;
     });
 };
 /*************************** PRIVATE OPS ***********************/
@@ -138,9 +138,11 @@ taskSchema.methods.countUnits = function (work) {
         return Q().then(function() {
             return Q.npost(require('./Work.js'), 'findOne', [ ({ _id : work._id }) ]);
         }).then(function(work) {
-            return Q.npost(require('./Work.js').aggregate()
+            return require('./Work.js').aggregate()
                           .group({ _id: null, result: { $sum: '$units' } })
-                          .select('-id result'), 'exec', [  ])
+                          .select('-id result');
+        }).then(function(sumResult) {
+            return Q.npost(sumResult, 'exec', [  ])
             ;
         });
     }).then(function() {

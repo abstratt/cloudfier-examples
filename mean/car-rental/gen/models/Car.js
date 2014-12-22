@@ -176,8 +176,8 @@ carSchema.methods.getCurrentRental = function () {
     var me = this;
     return Q().then(function() {
         return require('./Rental.js').currentForCar(me);
-    }).then(function(currentForCar) {
-        return currentForCar;
+    }).then(function(currentForCarResult) {
+        return currentForCarResult;
     });
 };
 /*************************** STATE MACHINE ********************/

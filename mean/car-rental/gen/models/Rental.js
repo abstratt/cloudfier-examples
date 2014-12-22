@@ -37,12 +37,14 @@ var rentalSchema = new Schema({
 rentalSchema.statics.currentForCar = function (c) {
     var me = this;
     return Q().then(function() {
-        return Q.npost(mongoose.model('Rental').find().where({
+        return mongoose.model('Rental').find().where({
             $and : [ 
                 { car : c },
                 { returned : null }
             ]
-        }).findOne(), 'exec', [  ])
+        }).findOne();
+    }).then(function(anyResult) {
+        return Q.npost(anyResult, 'exec', [  ])
         ;
     });
 };
@@ -50,12 +52,14 @@ rentalSchema.statics.currentForCar = function (c) {
 rentalSchema.statics.currentForCustomer = function (c) {
     var me = this;
     return Q().then(function() {
-        return Q.npost(mongoose.model('Rental').find().where({
+        return mongoose.model('Rental').find().where({
             $and : [ 
                 { customer : c },
                 { returned : null }
             ]
-        }).findOne(), 'exec', [  ])
+        }).findOne();
+    }).then(function(anyResult) {
+        return Q.npost(anyResult, 'exec', [  ])
         ;
     });
 };
@@ -63,7 +67,7 @@ rentalSchema.statics.currentForCustomer = function (c) {
 rentalSchema.statics.completedForCustomer = function (c) {
     var me = this;
     return Q().then(function() {
-        return Q.npost(mongoose.model('Rental').find().where({
+        return mongoose.model('Rental').find().where({
             $and : [ 
                 { customer : c },
                 {
@@ -73,7 +77,9 @@ rentalSchema.statics.completedForCustomer = function (c) {
                     ]
                 }
             ]
-        }), 'exec', [  ])
+        });
+    }).then(function(selectResult) {
+        return Q.npost(selectResult, 'exec', [  ])
         ;
     });
 };
@@ -81,7 +87,9 @@ rentalSchema.statics.completedForCustomer = function (c) {
 rentalSchema.statics.inProgress = function () {
     var me = this;
     return Q().then(function() {
-        return Q.npost(mongoose.model('Rental').find().where({ returned : null }), 'exec', [  ])
+        return mongoose.model('Rental').find().where({ returned : null });
+    }).then(function(selectResult) {
+        return Q.npost(selectResult, 'exec', [  ])
         ;
     });
 };

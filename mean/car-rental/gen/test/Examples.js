@@ -1,12 +1,7 @@
 require('../models/index.js');
 
 var Q = require("q");
-var Car = require('../models/Car.js');
-var Rental = require('../models/Rental.js');
-var CarModel = require('../models/CarModel.js');
-var Make = require('../models/Make.js');
-var Customer = require('../models/Customer.js');
-
+var mongoose = require('../models/db.js');
 var Examples = {
     newMake : function() {
         var make;
@@ -47,9 +42,9 @@ var Examples = {
         }).then(function() {
             return Q().then(function() {
                 return Examples.newMake();
-            }).then(function(newMake) {
-                carModel.make = newMake._id;
-                newMake.models.push(carModel._id);
+            }).then(function(newMakeResult) {
+                carModel.make = newMakeResult._id;
+                newMakeResult.models.push(carModel._id);
             });
         }).then(function() {
             return Q().then(function() {
@@ -91,8 +86,8 @@ var Examples = {
         }).then(function() {
             return Q().then(function() {
                 return Examples.newModel();
-            }).then(function(newModel) {
-                car.model = newModel._id
+            }).then(function(newModelResult) {
+                car.model = newModelResult._id
                 ;
             });
         }).then(function() {

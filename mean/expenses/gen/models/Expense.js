@@ -65,20 +65,14 @@ expenseSchema.statics.newExpense = function (description, amount, date, category
         });
     }).then(function() {
         return Q().then(function() {
-            return Q.npost(String, 'findOne', [ ({ _id : description._id }) ]);
-        }).then(function(description) {
             newExpense['description'] = description;
         });
     }).then(function() {
         return Q().then(function() {
-            return Q.npost(Double, 'findOne', [ ({ _id : amount._id }) ]);
-        }).then(function(amount) {
             newExpense['amount'] = amount;
         });
     }).then(function() {
         return Q().then(function() {
-            return Q.npost(Date, 'findOne', [ ({ _id : date._id }) ]);
-        }).then(function(date) {
             newExpense['date'] = date;
         });
     }).then(function() {
@@ -169,8 +163,6 @@ expenseSchema.methods.reject = function (reason) {
     }).then(function() {
         return Q().then(function() {
             return Q().then(function() {
-                return Q.npost(Memo, 'findOne', [ ({ _id : reason._id }) ]);
-            }).then(function(reason) {
                 me['rejectionReason'] = reason;
             });
         }).then(function() {
@@ -221,7 +213,9 @@ expenseSchema.methods.submit = function () {
 expenseSchema.statics.findExpensesByCategory = function (category) {
     var me = this;
     return Q().then(function() {
-        return Q.npost(mongoose.model('Expense').find().where({ { 'category' : e  } : category }), 'exec', [  ])
+        return mongoose.model('Expense').find().where({ category : category });
+    }).then(function(selectResult) {
+        return Q.npost(selectResult, 'exec', [  ])
         ;
     });
 };
@@ -229,7 +223,7 @@ expenseSchema.statics.findExpensesByCategory = function (category) {
 expenseSchema.statics.findExpensesInPeriod = function (start, end_) {
     var me = this;
     return Q().then(function() {
-        return Q.npost(mongoose.model('Expense').find().where({
+        return mongoose.model('Expense').find().where({
             $and : [ 
                 {
                     $or : [ 
@@ -254,7 +248,9 @@ expenseSchema.statics.findExpensesInPeriod = function (start, end_) {
                     ]
                 }
             ]
-        }), 'exec', [  ])
+        });
+    }).then(function(selectResult) {
+        return Q.npost(selectResult, 'exec', [  ])
         ;
     });
 };
@@ -262,7 +258,9 @@ expenseSchema.statics.findExpensesInPeriod = function (start, end_) {
 expenseSchema.statics.findByStatus = function (status) {
     var me = this;
     return Q().then(function() {
-        return Q.npost(mongoose.model('Expense').find().where({ status : status }), 'exec', [  ])
+        return mongoose.model('Expense').find().where({ status : status });
+    }).then(function(selectResult) {
+        return Q.npost(selectResult, 'exec', [  ])
         ;
     });
 };
@@ -305,8 +303,8 @@ expenseSchema.methods.reportApproved = function () {
             Q().then(function() {
                 return me.description + "(";
             })
-        ]).spread(function(category, add) {
-            return add + category.name + ")";
+        ]).spread(function(category, addResult) {
+            return addResult + category.name + ")";
         }),
         Q().then(function() {
             return me.getExpenseId();
@@ -314,8 +312,8 @@ expenseSchema.methods.reportApproved = function () {
         Q().then(function() {
             return me.expensePayer;
         })
-    ]).spread(function(employee, amount, add, expenseId, expensePayer) {
-        return expensePayer.expenseApproved(employee.name, amount, add, expenseId);;
+    ]).spread(function(employee, amount, addResult, expenseId, expensePayer) {
+        return expensePayer.expenseApproved(employee.name, amount, addResult, expenseId);;
     }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {

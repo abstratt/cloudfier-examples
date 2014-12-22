@@ -55,7 +55,7 @@ taxiSchema.methods.charge = function (date) {
         return Q().then(function() {
             return Q.npost(require('./Driver.js'), 'find', [ ({ taxi : me._id }) ]);
         }).then(function(drivers) {
-            /*TBD*/forEach;
+            return /*TBD*/forEach;
         }).then(function(/*no-arg*/) {
             return Q.all([
                 Q().then(function() {
@@ -84,6 +84,8 @@ taxiSchema.methods.getDriverCount = function () {
         return Q.npost(require('./Driver.js'), 'find', [ ({ taxi : me._id }) ]);
     }).then(function(drivers) {
         return drivers.length;
+    }).then(function(sizeResult) {
+        return sizeResult;
     });
 };
 
@@ -115,13 +117,15 @@ taxiSchema.methods.getPendingCharges = function () {
     var me = this;
     return Q().then(function() {
         return require('./Charge.js').byTaxi(me);
-    }).then(function(byTaxi) {
-        return byTaxi.where({
+    }).then(function(byTaxiResult) {
+        return byTaxiResult.where({
             $ne : [ 
                 { status : null },
                 true
             ]
         });
+    }).then(function(selectResult) {
+        return selectResult;
     });
 };
 

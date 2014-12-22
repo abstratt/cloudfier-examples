@@ -67,8 +67,6 @@ orderSchema.methods.addItem = function (product, quantity) {
             });
         }).then(function() {
             return Q().then(function() {
-                return Q.npost(Integer, 'findOne', [ ({ _id : quantity._id }) ]);
-            }).then(function(quantity) {
                 detail['quantity'] = quantity;
             });
         }).then(function() {
@@ -111,8 +109,8 @@ orderSchema.methods.getOrderWeightTotal = function () {
     var me = this;
     return Q().then(function() {
         return me.computeWeightTotal();
-    }).then(function(computeWeightTotal) {
-        return computeWeightTotal;
+    }).then(function(computeWeightTotalResult) {
+        return computeWeightTotalResult;
     });
 };
 
@@ -120,8 +118,8 @@ orderSchema.methods.getOrderTotal = function () {
     var me = this;
     return Q().then(function() {
         return me.computeOrderTotal();
-    }).then(function(computeOrderTotal) {
-        return computeOrderTotal;
+    }).then(function(computeOrderTotalResult) {
+        return computeOrderTotalResult;
     });
 };
 /*************************** PRIVATE OPS ***********************/
@@ -129,7 +127,9 @@ orderSchema.methods.getOrderTotal = function () {
 orderSchema.methods.computeOrderTotal = function () {
     var me = this;
     return Q().then(function() {
-        return Q.npost(/*TBD*/reduce, 'exec', [  ])
+        return /*TBD*/reduce;
+    }).then(function(reduceResult) {
+        return Q.npost(reduceResult, 'exec', [  ])
         ;
     });
 };
@@ -137,7 +137,9 @@ orderSchema.methods.computeOrderTotal = function () {
 orderSchema.methods.computeWeightTotal = function () {
     var me = this;
     return Q().then(function() {
-        return Q.npost(/*TBD*/reduce, 'exec', [  ])
+        return /*TBD*/reduce;
+    }).then(function(reduceResult) {
+        return Q.npost(reduceResult, 'exec', [  ])
         ;
     });
 };

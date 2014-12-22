@@ -30,8 +30,6 @@ categorySchema.statics.newCategory = function (name) {
         });
     }).then(function() {
         return Q().then(function() {
-            return Q.npost(String, 'findOne', [ ({ _id : name._id }) ]);
-        }).then(function(name) {
             newCategory['name'] = name;
         });
     }).then(function() {
@@ -54,8 +52,8 @@ categorySchema.methods.getExpensesInThisCategory = function () {
     var me = this;
     return Q().then(function() {
         return require('./Expense.js').findExpensesByCategory(me);
-    }).then(function(findExpensesByCategory) {
-        return findExpensesByCategory;
+    }).then(function(findExpensesByCategoryResult) {
+        return findExpensesByCategoryResult;
     });
 };
 

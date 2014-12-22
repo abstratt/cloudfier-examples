@@ -183,7 +183,9 @@ autoMechanicSchema.methods.isWorkInProgress = function () {
     return Q().then(function() {
         return me.getCurrentServices();
     }).then(function(currentServices) {
-        return !(/*TBD*/isEmpty);
+        return /*TBD*/isEmpty;
+    }).then(function(isEmptyResult) {
+        return !(isEmptyResult);
     });
 };
 
@@ -192,7 +194,9 @@ autoMechanicSchema.methods.isWorkScheduled = function () {
     return Q().then(function() {
         return me.getUpcomingServices();
     }).then(function(upcomingServices) {
-        return !(/*TBD*/isEmpty);
+        return /*TBD*/isEmpty;
+    }).then(function(isEmptyResult) {
+        return !(isEmptyResult);
     });
 };
 /*************************** DERIVED RELATIONSHIPS ****************/
@@ -211,8 +215,8 @@ autoMechanicSchema.methods.getCurrentServices = function () {
         })
     ]).spread(function(services, valueSpecificationAction) {
         return require('./Service.js').byStatus(services, valueSpecificationAction);
-    }).then(function(byStatus) {
-        return byStatus;
+    }).then(function(byStatusResult) {
+        return byStatusResult;
     });
 };
 
@@ -230,8 +234,8 @@ autoMechanicSchema.methods.getUpcomingServices = function () {
         })
     ]).spread(function(services, valueSpecificationAction) {
         return require('./Service.js').byStatus(services, valueSpecificationAction);
-    }).then(function(byStatus) {
-        return byStatus;
+    }).then(function(byStatusResult) {
+        return byStatusResult;
     });
 };
 /*************************** PRIVATE OPS ***********************/
@@ -241,7 +245,7 @@ autoMechanicSchema.methods.doUnassign = function () {
     return Q().then(function() {
         return me.getUpcomingServices();
     }).then(function(upcomingServices) {
-        /*TBD*/forEach;
+        return /*TBD*/forEach;
     }).then(function(/*no-arg*/) {
         return Q.all([
             Q().then(function() {

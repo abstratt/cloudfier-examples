@@ -37,8 +37,8 @@ userSchema.methods.getOpenTodos = function () {
         })
     ]).spread(function(todos, valueSpecificationAction) {
         return require('./Todo.js').byStatus(todos, valueSpecificationAction);
-    }).then(function(byStatus) {
-        return byStatus;
+    }).then(function(byStatusResult) {
+        return byStatusResult;
     });
 };
 

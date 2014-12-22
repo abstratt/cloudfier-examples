@@ -37,8 +37,6 @@ clientSchema.methods.newTask = function (description) {
         });
     }).then(function() {
         return Q().then(function() {
-            return Q.npost(String, 'findOne', [ ({ _id : description._id }) ]);
-        }).then(function(description) {
             newTask['description'] = description;
         });
     }).then(function() {

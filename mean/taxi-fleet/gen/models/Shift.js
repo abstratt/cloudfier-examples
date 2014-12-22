@@ -49,6 +49,8 @@ shiftSchema.methods.getTaxis = function () {
     var me = this;
     return Q().then(function() {
         return mongoose.model('Taxi').find().where({ shift : this });
+    }).then(function(selectResult) {
+        return selectResult;
     });
 };
 

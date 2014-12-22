@@ -182,8 +182,8 @@ customerSchema.methods.getCurrentRental = function () {
     var me = this;
     return Q().then(function() {
         return require('./Rental.js').currentForCustomer(me);
-    }).then(function(currentForCustomer) {
-        return currentForCustomer;
+    }).then(function(currentForCustomerResult) {
+        return currentForCustomerResult;
     });
 };
 

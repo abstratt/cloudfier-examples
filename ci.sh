@@ -6,6 +6,8 @@ fi
 
 echo Continuous testing of generation of $APPLICATION on $PLATFORM 
 
+mkdir node_modules
+
 PLATFORM=$1
 APPLICATION=$2
 CLOUDFIER_USER=${3:-test}
@@ -15,8 +17,10 @@ echo 0
 if [[ $? -ne 0 ]] ; then
     exit 1
 fi
+mkdir $PLATFORM/$APPLICATION/gen
 cd $PLATFORM/$APPLICATION/gen
 rm -Rf node_modules
+ln -s ../../../node_modules .	
 npm install -p
 cd -
 echo Testing $APPLICATION on $PLATFORM 

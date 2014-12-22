@@ -1,6 +1,7 @@
 
 var assert = require("assert");
 var Q = require("q");
+var mongoose = require('../models/db.js');
 require('../models/index.js');        
 
 
@@ -23,8 +24,8 @@ suite('Car rental functional tests - MakeScenarios', function() {
             return Q().then(function() {
                 return Q().then(function() {
                     return Examples.newMake();
-                }).then(function(newMake) {
-                    carMake = newMake;
+                }).then(function(newMakeResult) {
+                    carMake = newMakeResult;
                 });
             }).then(function() {
                 return Q().then(function() {
