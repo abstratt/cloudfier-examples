@@ -11,9 +11,20 @@ class TaskScenarios
         task := Examples#task();
         task.addWork(4);
         task.addWork(3);
-        Assert#areEqual(2, task.reported.size());
         Assert#areEqual(7, task.unitsReported);
     end;
+    
+    operation itemsReported();
+    begin
+        var task, actuallyReported;
+        task := Examples#task();
+        task.addWork(4);
+        task.addWork(3);
+        Assert#areEqual(2, task.reported.size());
+
+        task.addWork(5);
+        Assert#areEqual(3, task.reported.size());
+    end; 
 
     operation timeToInvoice();
     begin
