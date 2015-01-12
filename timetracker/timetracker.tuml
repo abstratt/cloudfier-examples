@@ -41,19 +41,16 @@ class Task
     readonly attribute client : Client;
 
     derived attribute unitsReported : Integer := {
-        self.countUnits(self.reported)
+        (self.reported.sum((w : Work) : Integer {
+            w.units
+        }) as Integer)
     };
 
     derived attribute unitsToInvoice : Integer := {
-        self.countUnits(self.toInvoice)
-    };
-
-    private query countUnits(work : Work[*]) : Integer;
-    begin
-        return (work.sum((w : Work) : Integer {
+        (self.toInvoice.sum((w : Work) : Integer {
             w.units
-        }) as Integer);
-    end;
+        }) as Integer)
+    };
 
     operation addWork(units : Integer) : Work;
     begin
