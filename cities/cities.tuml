@@ -1,0 +1,42 @@
+package cities;
+
+class City
+    attribute name : String;
+    attribute population : Integer;
+    attribute \state : State;
+end;
+
+datatype StatePopulation
+    attribute \state : State;
+    attribute population : Integer;
+end;
+
+class State
+    attribute name : String;
+    attribute acronym : String;
+    attribute cities : City[*];
+    query computePopulation() : Integer;
+    begin
+        return (self.cities.sum((c : City) : Integer { c.population }) as Integer);
+    end;
+    static query populousStates(threshold : Integer) : StatePopulation[*];
+    begin
+        return (City extent
+            .groupBy((c : City) : State { c.\state }) as mdd_collections::Grouping<City>)
+            .collect((citiesByState : City[*]) : StatePopulation {
+            	({
+            	    \state := citiesByState.one().\state,
+            	    population := citiesByState.sum((c : City) : Integer { c.population })
+            	} as StatePopulation)
+            })
+            .select((sp : StatePopulation) : Boolean { sp.population > threshold }
+        );
+    end;
+end;
+
+aggregation 
+    role City.\state;
+    role State.cities;
+end;
+
+end.

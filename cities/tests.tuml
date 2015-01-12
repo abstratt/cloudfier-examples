@@ -1,0 +1,50 @@
+package cities_tests;
+
+import cities;
+
+import cities::State;
+
+[Test]
+class Tests
+
+    static operation newCity(name : String, population : Integer, \state : State) : City;
+    begin
+        var city;
+        city := new City;
+        city.name := name;
+        city.population := population;
+        city.\state := \state;
+        return city;
+    end;
+    
+    static operation newState(name : String, acronym : String) : State;
+    begin
+        var newState;
+        newState := new State;
+        newState.name := name;
+        newState.acronym := acronym;
+        return newState;
+    end;
+
+    operation statePopulation();
+    begin
+        var california, oregon,
+            portland, eugene;
+        begin
+            california := Tests#newState("California", "CA");
+            Tests#newCity("San Francisco", 837442, california);
+            Tests#newCity("San Mateo", 101128, california);
+            Tests#newCity("San Diego", 1356000, california);
+            
+            oregon := Tests#newState("Oregon", "OR");
+            portland := Tests#newCity("Portland", 609456, oregon);
+            eugene := Tests#newCity("Eugene", 159190, oregon);
+        end;
+        begin
+            Assert#areEqual(portland.population + eugene.population, oregon.computePopulation());
+        end;
+    end;
+    
+end;
+    
+end.
