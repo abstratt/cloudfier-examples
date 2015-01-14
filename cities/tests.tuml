@@ -41,7 +41,32 @@ class Tests
             eugene := Tests#newCity("Eugene", 159190, oregon);
         end;
         begin
-            Assert#areEqual(portland.population + eugene.population, oregon.computePopulation());
+            Assert#areEqual(portland.population + eugene.population, oregon.population);
+        end;
+    end;
+    
+    operation populousStates();
+    begin
+        var california, oregon, wyoming, populous;
+        
+        begin
+            california := Tests#newState("California", "CA");
+            Tests#newCity("San Francisco", 837442, california);
+            Tests#newCity("San Mateo", 101128, california);
+            Tests#newCity("San Diego", 1356000, california);
+            
+            oregon := Tests#newState("Oregon", "OR");
+            Tests#newCity("Portland", 609456, oregon);
+            Tests#newCity("Eugene", 159190, oregon);
+            
+            wyoming := Tests#newState("Wyoming", "WY");
+            Tests#newCity("Cheyenne", 62448, wyoming);
+        end;
+        begin
+            populous := State#populousStates(500000);
+            Assert#isTrue(populous.includes("CA"));
+            Assert#isTrue(populous.includes("OR"));            
+            Assert#isTrue(!populous.includes("WY"));
         end;
     end;
     
