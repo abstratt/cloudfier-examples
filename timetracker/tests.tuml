@@ -101,6 +101,23 @@ class InvoiceScenarios
         end;
     end;
     
+    operation totalUnits();
+    begin
+        var invoice, task1, task2, client;
+        begin
+            client := Examples#client();
+            invoice := client.startInvoice();
+            task1 := client.newTask("Task 1");
+            task2 := client.newTask("Task 2");
+            task1.addWork(1).submit(invoice);
+            task1.addWork(3).submit(invoice);
+            task2.addWork(7).submit(invoice);            
+        end;
+        begin
+            Assert#areEqual(11, invoice.totalUnits);
+        end;
+    end;    
+    
     operation invoicePaid();
     begin
         var invoice;

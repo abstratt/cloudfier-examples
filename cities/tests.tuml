@@ -47,7 +47,7 @@ class Tests
     
     operation populousStates();
     begin
-        var california, oregon, wyoming, populous;
+        var california, oregon, wyoming, populousStates, populousStateAcronyms;
         
         begin
             california := Tests#newState("California", "CA");
@@ -63,11 +63,13 @@ class Tests
             Tests#newCity("Cheyenne", 62448, wyoming);
         end;
         begin
-            populous := State#populousStates(500000);
-            Assert#isTrue(populous.includes("CA"));
-            Assert#isTrue(populous.includes("OR"));            
-            Assert#isTrue(!populous.includes("WY"));
+            populousStateAcronyms := State#acronymsOfStatesMorePopulousThan(500000);
+            Assert#areEqual(2, populousStateAcronyms.size());
+            Assert#isTrue(populousStateAcronyms.includes("CA"));
+            Assert#isTrue(populousStateAcronyms.includes("OR"));            
+            Assert#isTrue(!populousStateAcronyms.includes("WY"));
         end;
+
     end;
     
 end;

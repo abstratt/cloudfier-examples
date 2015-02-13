@@ -41,15 +41,11 @@ class Task
     readonly attribute client : Client;
 
     derived attribute unitsReported : Integer := {
-        (self.reported.sum((w : Work) : Integer {
-            w.units
-        }) as Integer)
+        self.reported.sum((w : Work) : Integer { w.units })
     };
 
     derived attribute unitsToInvoice : Integer := {
-        (self.toInvoice.sum((w : Work) : Integer {
-            w.units
-        }) as Integer)
+        self.toInvoice.sum((w : Work) : Integer { w.units })
     };
 
     operation addWork(units : Integer) : Work;
@@ -83,9 +79,7 @@ class Invoice
     required port invoicer : Invoicer;
 
     derived attribute totalUnits : Integer := {
-        (self.reported.sum((w : Work) : Integer {
-            w.units
-        }) as Integer)
+        self.reported.sum((w : Work) : Integer { w.units })
     };
 
     operation issue()

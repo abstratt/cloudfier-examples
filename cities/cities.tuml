@@ -8,7 +8,7 @@ end;
 
 datatype StatePopulation
     attribute stateAcronym : String;
-    attribute population : Integer;
+    attribute statePopulation : Integer;
 end;
 
 class State
@@ -16,21 +16,42 @@ class State
     attribute acronym : String;
     attribute cities : City[*];
     derived attribute population  : Integer := { 
-        self.cities.sumInteger((c : City) : Integer { c.population })
+        (self.cities.sum((c : City) : Integer { c.population }) as Integer)
     };
     
-    static query populousStates(threshold : Integer) : String[*];
+    static query statesMorePopulousThan(threshold : Integer) : State[*];
     begin
-        return (City extent
-            .groupBy((c : City) : State { c.\state }) as mdd_collections::Grouping<City>)
-            .collect((citiesByState : City[*]) : StatePopulation {
-            	({
-            	    stateAcronym := citiesByState.one().\state.acronym,
-            	    population := citiesByState.sumInteger((c : City) : Integer { c.population })
-            	} as StatePopulation)
-            })
-            .select((sp : StatePopulation) : Boolean { sp.population > threshold })
-            .collect((sp : StatePopulation) : String { sp.stateAcronym });
+        return City extent
+            .groupBy((c : City) : State { c.\state })
+            .groupCollect((cities : City[*]) : {:State, :Integer} {
+            	{
+            		\state := cities.one().\state, 
+            		statePopulation := cities.sum((c : City) : Integer { c.population } ) 
+        		}
+        	})
+            .select((aggregated : {:State, statePopulation:Integer}) : Boolean {
+            	aggregated.statePopulation > threshold 
+        	})
+        	.collect((stats : {\state : State, : Integer}) : State { stats.\state });
+	end;
+    
+    static query acronymsOfStatesMorePopulousThan(threshold : Integer) : String[*];
+    begin
+        return State#statesMorePopulousThan(threshold).collect((s : State) : String { s.acronym });
+        /*
+            db.City.aggregate({
+              	$group : {
+                    _id : "$state",
+                    statePopulation : { $sum : "$population" } 
+                }
+            }, {
+            	$match : {
+            		statePopulation : {
+            			$gte : threshold 
+        			} 
+    			} 
+			})
+		*/
     end;
 end;
 

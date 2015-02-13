@@ -199,11 +199,9 @@ class Reports implements ReportingService
 
     query paymentsPerDay() : DailyPayments[*];
     begin
-        var groups;
-        groups := (Charge#paidCharges().groupBy((c : Charge) : Date {
+        return Charge#paidCharges().groupBy((c : Charge) : Date {
             c.receivedOn
-        }) as mdd_collections::Grouping<Charge>);
-        return groups.collect((grouped : Charge[*]) : DailyPayments {
+        }).groupCollect((grouped : Charge[*]) : DailyPayments {
             ({
                 paidOn := grouped.\any((c : Charge) : Boolean { true }).receivedOn, 
                 dailyTotal := grouped.sum((c : Charge) : Double { c.amount })
