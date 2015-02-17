@@ -1,77 +1,86 @@
 package cities_tests;
 
-import cities;
-
 import cities::State;
+import cities;
 
 [Test]
 class Tests
 
-    static operation newCity(name : String, population : Integer, \state : State) : City;
+    operation stateByAbbreviation();
+    begin
+        TestData#build();
+        Assert#isNull(State#byAbbreviation("ZZ"));
+        Assert#isNotNull(State#byAbbreviation("OR"));
+    end;
+
+    operation cityByName();
+    begin
+        var california;
+        TestData#build();
+        california := State#byAbbreviation("CA");
+        Assert#isNull(california.city("FooBar"));
+        Assert#isNotNull(california.city("San Francisco"));
+    end;
+
+    operation statePopulation();
+    begin
+        var oregon, portland, eugene;
+        TestData#build();
+        oregon := State#byAbbreviation("OR");
+        portland := oregon.city("Portland");
+        eugene := oregon.city("Eugene");
+        Assert#areEqual(portland.population + eugene.population, oregon.population);
+    end;
+
+    operation populousStates();
+    begin
+        var populousStateAbbreviations;
+        TestData#build();
+        populousStateAbbreviations := State#abbreviationsOfStatesMorePopulousThan(500000);
+        Assert#areEqual(2, populousStateAbbreviations.size());
+        Assert#isTrue(populousStateAbbreviations.includes("CA"));
+        Assert#isTrue(populousStateAbbreviations.includes("OR"));
+        Assert#isTrue(! populousStateAbbreviations.includes("WY"));
+    end;
+end;
+
+class TestData
+
+    static operation build();
+    begin
+        var california, oregon, wyoming;
+        
+        california := TestData#newState("California", "CA");
+        TestData#newCity("San Francisco", 837442, california);
+        TestData#newCity("San Mateo", 101128, california);
+        TestData#newCity("San Diego", 1356000, california);
+        
+        oregon := TestData#newState("Oregon", "OR");
+        TestData#newCity("Portland", 609456, oregon);
+        TestData#newCity("Eugene", 159190, oregon);
+        
+        wyoming := TestData#newState("Wyoming", "WY");
+        TestData#newCity("Cheyenne", 62448, wyoming);
+    end;
+
+    static operation newCity(name : String, population : Integer, cityState : State) : City;
     begin
         var city;
         city := new City;
         city.name := name;
         city.population := population;
-        city.\state := \state;
+        city.cityState := cityState;
         return city;
     end;
-    
-    static operation newState(name : String, acronym : String) : State;
+
+    static operation newState(name : String, abbreviation : String) : State;
     begin
         var newState;
         newState := new State;
         newState.name := name;
-        newState.acronym := acronym;
+        newState.abbreviation := abbreviation;
         return newState;
     end;
-
-    operation statePopulation();
-    begin
-        var california, oregon,
-            portland, eugene;
-        begin
-            california := Tests#newState("California", "CA");
-            Tests#newCity("San Francisco", 837442, california);
-            Tests#newCity("San Mateo", 101128, california);
-            Tests#newCity("San Diego", 1356000, california);
-            
-            oregon := Tests#newState("Oregon", "OR");
-            portland := Tests#newCity("Portland", 609456, oregon);
-            eugene := Tests#newCity("Eugene", 159190, oregon);
-        end;
-        begin
-            Assert#areEqual(portland.population + eugene.population, oregon.population);
-        end;
-    end;
-    
-    operation populousStates();
-    begin
-        var california, oregon, wyoming, populousStates, populousStateAcronyms;
-        
-        begin
-            california := Tests#newState("California", "CA");
-            Tests#newCity("San Francisco", 837442, california);
-            Tests#newCity("San Mateo", 101128, california);
-            Tests#newCity("San Diego", 1356000, california);
-            
-            oregon := Tests#newState("Oregon", "OR");
-            Tests#newCity("Portland", 609456, oregon);
-            Tests#newCity("Eugene", 159190, oregon);
-            
-            wyoming := Tests#newState("Wyoming", "WY");
-            Tests#newCity("Cheyenne", 62448, wyoming);
-        end;
-        begin
-            populousStateAcronyms := State#acronymsOfStatesMorePopulousThan(500000);
-            Assert#areEqual(2, populousStateAcronyms.size());
-            Assert#isTrue(populousStateAcronyms.includes("CA"));
-            Assert#isTrue(populousStateAcronyms.includes("OR"));            
-            Assert#isTrue(!populousStateAcronyms.includes("WY"));
-        end;
-
-    end;
-    
 end;
-    
+
 end.
