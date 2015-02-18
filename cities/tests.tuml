@@ -24,13 +24,12 @@ class Tests
 
     operation statePopulation();
     begin
-        var oregon, portland, eugene;
+        var oregon, expected;
         TestData#build();
         oregon := State#byAbbreviation("OR");
-        portland := oregon.city("Portland");
-        eugene := oregon.city("Eugene");
         Assert#isTrue(oregon.population > 0);
-        Assert#areEqual(portland.population + eugene.population, oregon.population);
+        expected := oregon.city("Portland").population + oregon.city("Eugene").population;
+        Assert#areEqual(expected, oregon.population);
     end;
 
     operation populousStates();
