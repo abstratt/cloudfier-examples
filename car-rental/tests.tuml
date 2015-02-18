@@ -248,12 +248,30 @@ class CarScenarios
         begin
             car := Examples#newCar();
             Assert#isTrue(car.available);        
-            Assert#isTrue(!car.underRepair);
+            Assert#isTrue(not car.underRepair);
             car.startRepair();
         end;
         begin
-            Assert#isTrue(!car.available);        
-            Assert#areEqual(Car::Status#UnderRepair, car.status);
+            Assert#isTrue(not car.available);        
+            Assert#isTrue(car.underRepair);
+        end;
+    end;
+    
+        
+    operation availableUponRepairCompletion();
+    begin
+        var car;
+        begin
+            car := Examples#newCar();
+            Assert#isTrue(car.available);
+            car.startRepair();
+        end;
+        begin
+            Assert#isTrue(not car.available);
+            car.finishRepair();
+        end;
+        begin
+            Assert#isTrue(car.available);
         end;
     end;
 end;
