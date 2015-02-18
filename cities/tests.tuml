@@ -9,8 +9,8 @@ class Tests
     operation stateByAbbreviation();
     begin
         TestData#build();
-        Assert#isNull(State#byAbbreviation("ZZ"));
         Assert#isNotNull(State#byAbbreviation("OR"));
+        Assert#isNull(State#byAbbreviation("ZZ"));
     end;
 
     operation cityByName();
@@ -18,8 +18,8 @@ class Tests
         var california;
         TestData#build();
         california := State#byAbbreviation("CA");
-        Assert#isNull(california.city("FooBar"));
         Assert#isNotNull(california.city("San Francisco"));
+        Assert#isNull(california.city("FooBar"));
     end;
 
     operation statePopulation();
@@ -29,6 +29,7 @@ class Tests
         oregon := State#byAbbreviation("OR");
         portland := oregon.city("Portland");
         eugene := oregon.city("Eugene");
+        Assert#isTrue(oregon.population > 0);
         Assert#areEqual(portland.population + eugene.population, oregon.population);
     end;
 
@@ -49,16 +50,13 @@ class TestData
     static operation build();
     begin
         var california, oregon, wyoming;
-        
         california := TestData#newState("California", "CA");
         TestData#newCity("San Francisco", 837442, california);
         TestData#newCity("San Mateo", 101128, california);
         TestData#newCity("San Diego", 1356000, california);
-        
         oregon := TestData#newState("Oregon", "OR");
         TestData#newCity("Portland", 609456, oregon);
         TestData#newCity("Eugene", 159190, oregon);
-        
         wyoming := TestData#newState("Wyoming", "WY");
         TestData#newCity("Cheyenne", 62448, wyoming);
     end;

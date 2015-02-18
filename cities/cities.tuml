@@ -1,73 +1,77 @@
 package cities;
 
 class City
+
     attribute name : String;
+
     attribute population : Integer;
+
     attribute cityState : State;
 end;
 
 datatype StatePopulation
+
     attribute stateAbbreviation : String;
+
     attribute statePopulation : Integer;
 end;
 
 class State
+
     attribute name : String;
+
     attribute abbreviation : String;
+
     attribute cities : City[*];
-    derived attribute population  : Integer := { 
+
+    derived attribute population : Integer := {
         self.cities.sum((c : City) : Integer { c.population })
     };
-    
-    query city(name : String) : City[0,1];
+
+    query city(name : String) : City[0, 1];
     begin
         return self.cities.\any((c : City) : Boolean { c.name = name });
     end;
-    
-    static query byAbbreviation(abbreviation : String) : State[0,1];
+
+    static query byAbbreviation(abbreviation : String) : State[0, 1];
     begin
-        return State extent.\any((s : State) : Boolean { s.abbreviation = abbreviation });
+        return State extent.\any((s : State) : Boolean {
+            s.abbreviation = abbreviation
+        });
     end;
-    
+
     static query statesMorePopulousThan(threshold : Integer) : State[*];
     begin
-        return City extent
-            .groupBy((c : City) : State { c.cityState })
-            .groupCollect((cities : City[*]) : {:State, :Integer} {
-            	{
-            		cityState := cities.one().cityState, 
-            		statePopulation := cities.sum((c : City) : Integer { c.population } ) 
-        		}
-        	})
-            .select((aggregated : {:State, statePopulation:Integer}) : Boolean {
-            	aggregated.statePopulation > threshold 
-        	})
-        	.collect((stats : {cityState : State, : Integer}) : State { stats.cityState });
-	end;
-    
+        return City extent.groupBy((c : City) : State {
+        	c.cityState
+    	}).groupCollect((cities : City[*]) : { : State,  : Integer} {
+            {
+                cityState := cities.one().cityState, 
+                statePopulation := cities.sum((c : City) : Integer {
+                    c.population
+                })
+            }
+        }).select((aggregated : { : State, statePopulation : Integer}) : Boolean {
+            aggregated.statePopulation > threshold
+        }).collect((stats : {cityState : State,  : Integer}) : State {
+            stats.cityState
+        });
+    end;
+
     static query abbreviationsOfStatesMorePopulousThan(threshold : Integer) : String[*];
     begin
-        return State#statesMorePopulousThan(threshold).collect((s : State) : String { s.abbreviation });
-        /*
-            db.City.aggregate({
-              	$group : {
-                    _id : "$state",
-                    statePopulation : { $sum : "$population" } 
-                }
-            }, {
-            	$match : {
-            		statePopulation : {
-            			$gte : threshold 
-        			} 
-    			} 
-			})
-		*/
+        return State#statesMorePopulousThan(threshold).collect((s : State) : String {
+            s.abbreviation
+        });
     end;
 end;
 
-aggregation CityStates 
+aggregation CityStates
+
     role City.cityState;
-    role State.cities; 
+
+    role State.cities;
+
 end;
 
 end.
