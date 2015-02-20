@@ -3,7 +3,7 @@ package car_rental;
 class Car
 
     derived attribute description : String := {
-        self.\model.description + " - " + self.plate
+        self.carModel.description + " - " + self.plate
     };
 
     attribute plate : String;
@@ -30,7 +30,7 @@ class Car
 
     attribute color : String[0,1];
 
-    readonly attribute \model : CarModel;
+    readonly attribute carModel : CarModel;
 
     derived attribute underRepair : Boolean := {
         self.status == Status#UnderRepair
@@ -88,7 +88,7 @@ end;
 class Rental
 
     derived attribute description : String := {
-        self.car.\model.description + " on " + self.started
+        self.car.carModel.description + " on " + self.started
     };
 
     readonly attribute started : Date := { Date#today() };

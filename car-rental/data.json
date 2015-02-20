@@ -47,35 +47,35 @@
       "year" : 2012,
       "color" : "Beige",
       "status" : "Rented",
-      "model" : "CarModel@6"
+      "carModel" : "CarModel@6"
     }, {
       "plate" : "FFG-8911",
       "price" : 220.0,
       "year" : 2012,
       "color" : "Silver",
       "status" : "Available",
-      "model" : "CarModel@1"
+      "carModel" : "CarModel@1"
     }, {
       "plate" : "XYZ-987",
       "price" : 89.0,
       "year" : 2014,
       "color" : "Silver",
       "status" : "Available",
-      "model" : "CarModel@3"
+      "carModel" : "CarModel@3"
     }, {
       "plate" : "GHI-789",
       "price" : 100.0,
       "year" : 2013,
       "color" : "Black",
       "status" : "Available",
-      "model" : "CarModel@4"
+      "carModel" : "CarModel@4"
     }, {
       "plate" : "ABC-123",
       "price" : 70.0,
       "year" : 2010,
       "color" : "White",
       "status" : "Rented",
-      "model" : "CarModel@5"
+      "carModel" : "CarModel@5"
     } ],
     "Rental" : [ {
       "started" : "2014/08/08",

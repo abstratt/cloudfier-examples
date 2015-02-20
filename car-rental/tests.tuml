@@ -155,10 +155,10 @@ class CarScenarios
         begin
             Assert#isNotNull(car);
             Assert#isNotNull(car.plate);            
-            Assert#isNotNull(car.\model);
-            Assert#isNotNull(car.\model.name);            
-            Assert#isNotNull(car.\model.make);                        
-            Assert#isNotNull(car.\model.make.name);                                    
+            Assert#isNotNull(car.carModel);
+            Assert#isNotNull(car.carModel.name);            
+            Assert#isNotNull(car.carModel.make);                        
+            Assert#isNotNull(car.carModel.make.name);                                    
         end;
     end;
 
@@ -303,7 +303,7 @@ class Examples
         car.price := 100;
         car.color := "black";
         car.plate := "ABC-1234";
-        car.\model := Examples#newModel();
+        car.carModel := Examples#newModel();
         return car;
     end;
 
