@@ -405,6 +405,7 @@ class Issue
 
         state Resolved
             transition on call(verify) to Verified;
+            transition on call(reopen) to Open;            
         end;
 
         state Verified
