@@ -35,7 +35,6 @@ var customerSchema = new Schema({
         "default" : []
     }]
 });
-//            customerSchema.set('toObject', { getters: true });
 
 
 /*************************** ACTIONS ***************************/
@@ -51,9 +50,9 @@ customerSchema.statics.findByName = function (firstName, lastName) {
             error.constraint = 'OneMustBeProvided';
             throw error;
         }    
-    }).then(function() {
+    }).then(function(/*noargs*/) {
         return Q().then(function() {
-            return mongoose.model('Customer').find().where({
+            return mongoose.model('Customer').where({
                 $or : [ 
                     {
                         $eq : [ 
@@ -78,7 +77,7 @@ customerSchema.statics.findByName = function (firstName, lastName) {
 customerSchema.statics.vipCustomers = function () {
     var me = this;
     return Q().then(function() {
-        return mongoose.model('Customer').find().where({
+        return mongoose.model('Customer').where({
             $gte : [ 
                 {
                     /*unknown:size*/size : [ 

@@ -42,7 +42,6 @@ var chargeSchema = new Schema({
         ref : "Taxi"
     }
 });
-//            chargeSchema.set('toObject', { getters: true });
 
 
 /*************************** ACTIONS ***************************/
@@ -121,7 +120,7 @@ chargeSchema.statics.newCharge = function (taxi, payer, date) {
 chargeSchema.statics.pendingCharges = function () {
     var me = this;
     return Q().then(function() {
-        return mongoose.model('Charge').find().where({
+        return mongoose.model('Charge').where({
             $ne : [ 
                 { status : null },
                 true
@@ -136,7 +135,7 @@ chargeSchema.statics.pendingCharges = function () {
 chargeSchema.statics.byTaxi = function (taxi) {
     var me = this;
     return Q().then(function() {
-        return mongoose.model('Charge').find().where({ taxi : taxi });
+        return mongoose.model('Charge').where({ taxi : taxi });
     }).then(function(selectResult) {
         return Q.npost(selectResult, 'exec', [  ])
         ;
@@ -146,7 +145,7 @@ chargeSchema.statics.byTaxi = function (taxi) {
 chargeSchema.statics.paidCharges = function () {
     var me = this;
     return Q().then(function() {
-        return mongoose.model('Charge').find().where({ status : null });
+        return mongoose.model('Charge').where({ status : null });
     }).then(function(selectResult) {
         return Q.npost(selectResult, 'exec', [  ])
         ;

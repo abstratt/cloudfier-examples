@@ -25,7 +25,6 @@ var personSchema = new Schema({
         "default" : null
     }
 });
-//            personSchema.set('toObject', { getters: true });
 
 
 /*************************** DERIVED PROPERTIES ****************/

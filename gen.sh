@@ -14,7 +14,7 @@ APPLICATION_URL=$CLOUDFIER_URL/services/generator/$CLOUDFIER_USER-${BASE_APPLICA
 
 echo "Generating $APPLICATION on $PLATFORM (hosted at $APPLICATION_URL)"
 
-mkdir node_modules
+mkdir -p node_modules
 rm -Rf $PLATFORM/$APPLICATION/gen
 mkdir -p $PLATFORM/$APPLICATION/gen
 wget -v -d  $APPLICATION_URL/platform/$PLATFORM  -O generated.zip

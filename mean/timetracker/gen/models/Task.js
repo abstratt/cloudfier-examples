@@ -5,6 +5,7 @@ var cls = require('continuation-local-storage');
 
 var Client = require('./Client.js');
 var Invoice = require('./Invoice.js');
+var Work = require('./Work.js');
 
 // declare schema
 var taskSchema = new Schema({
@@ -12,32 +13,16 @@ var taskSchema = new Schema({
         type : String,
         "default" : null
     },
+    reported : [{
+        type : Schema.Types.ObjectId,
+        ref : "Work",
+        "default" : []
+    }],
     client : {
         type : Schema.Types.ObjectId,
         ref : "Client"
-    },
-    reported : [{
-        units : {
-            type : Number,
-            "default" : 0
-        },
-        date : {
-            type : Date,
-            "default" : (function() {
-                return new Date();
-            })()
-        },
-        memo : {
-            type : String,
-            "default" : null
-        },
-        invoice : {
-            type : Schema.Types.ObjectId,
-            ref : "Invoice"
-        }
-    }]
+    }
 });
-//            taskSchema.set('toObject', { getters: true });
 
 
 /*************************** ACTIONS ***************************/
@@ -89,25 +74,22 @@ taskSchema.methods.addWork = function (units) {
 taskSchema.methods.getUnitsReported = function () {
     var me = this;
     return Q().then(function() {
-        return me.countUnits(me.reported);
-    }).then(function(countUnitsResult) {
-        return countUnitsResult;
+        return Q.npost(require('./Work.js'), 'find', [ ({ task : me._id }) ]);
+    }).then(function(reported) {
+        return <UNSUPPORTED: Activity> >;
+    }).then(function(sumResult) {
+        return sumResult;
     });
 };
 
 taskSchema.methods.getUnitsToInvoice = function () {
     var me = this;
-    return Q.all([
-        Q().then(function() {
-            return me.getToInvoice();
-        }),
-        Q().then(function() {
-            return me;
-        })
-    ]).spread(function(toInvoice, readSelfAction) {
-        return readSelfAction.countUnits(toInvoice);
-    }).then(function(countUnitsResult) {
-        return countUnitsResult;
+    return Q().then(function() {
+        return me.getToInvoice();
+    }).then(function(toInvoice) {
+        return <UNSUPPORTED: Activity> >;
+    }).then(function(sumResult) {
+        return sumResult;
     });
 };
 /*************************** DERIVED RELATIONSHIPS ****************/
@@ -115,7 +97,9 @@ taskSchema.methods.getUnitsToInvoice = function () {
 taskSchema.methods.getToInvoice = function () {
     var me = this;
     return Q().then(function() {
-        return me.reported.where({
+        return Q.npost(require('./Work.js'), 'find', [ ({ task : me._id }) ]);
+    }).then(function(reported) {
+        return reported.where({
             $ne : [ 
                 {
                     $ne : [ 
@@ -128,27 +112,6 @@ taskSchema.methods.getToInvoice = function () {
         });
     }).then(function(selectResult) {
         return selectResult;
-    });
-};
-/*************************** PRIVATE OPS ***********************/
-
-taskSchema.methods.countUnits = function (work) {
-    var me = this;
-    return Q().then(function() {
-        return Q().then(function() {
-            return Q.npost(require('./Work.js'), 'findOne', [ ({ _id : work._id }) ]);
-        }).then(function(work) {
-            return require('./Work.js').aggregate()
-                          .group({ _id: null, result: { $sum: '$units' } })
-                          .select('-id result');
-        }).then(function(sumResult) {
-            return Q.npost(sumResult, 'exec', [  ])
-            ;
-        });
-    }).then(function() {
-        return Q().then(function() {
-            ;
-        });
     });
 };
 

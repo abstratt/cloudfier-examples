@@ -5,6 +5,7 @@ var cls = require('continuation-local-storage');
 
 var Invoice = require('./Invoice.js');
 var Task = require('./Task.js');
+var Work = require('./Work.js');
 
 // declare schema
 var clientSchema = new Schema({
@@ -23,7 +24,6 @@ var clientSchema = new Schema({
         "default" : []
     }]
 });
-//            clientSchema.set('toObject', { getters: true });
 
 
 /*************************** ACTIONS ***************************/

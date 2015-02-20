@@ -22,7 +22,6 @@ var makeSchema = new Schema({
         "default" : []
     }]
 });
-//            makeSchema.set('toObject', { getters: true });
 
 
 

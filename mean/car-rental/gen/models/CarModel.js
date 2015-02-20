@@ -19,7 +19,6 @@ var carModelSchema = new Schema({
         ref : "Make"
     }
 });
-//            carModelSchema.set('toObject', { getters: true });
 
 
 /*************************** DERIVED PROPERTIES ****************/

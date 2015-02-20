@@ -8,6 +8,7 @@ require('../models/index.js');
 var Client = require('../models/Client.js');
 var Task = require('../models/Task.js');
 var Invoice = require('../models/Invoice.js');
+var Work = require('../models/Work.js');
 
 var Examples = require('./Examples.js');
 

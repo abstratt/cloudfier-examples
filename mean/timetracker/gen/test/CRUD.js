@@ -50,6 +50,14 @@ var createTask = function (values) {
     return createInstance('timetracker.Task', toCreate);
 };
 
+var createWork = function (values) {
+    var toCreate = {};
+    values = values || {};
+    // set required properties
+    toCreate.units = values.units || 0;
+    return createInstance('timetracker.Work', toCreate);
+};
+
 suite('Time Tracker CRUD tests', function() {
     this.timeout(10000);
 
@@ -166,6 +174,26 @@ suite('Time Tracker CRUD tests', function() {
             }).then(function(updated) {
                 assert.ok(updated);
                 assert.ok(updated.uri);
+            }).then(done, done);
+        });
+        
+    });
+    
+    
+    suite('Work', function() {
+        var entity;
+        test('GET entity', function(done) {
+            getExactEntity('timetracker.Work').then(function(fetched) {
+                entity = fetched; 
+                assert.equal(fetched.fullName, "timetracker.Work");
+                assert.ok(fetched.extentUri);
+                assert.ok(fetched.templateUri === undefined);
+            }).then(done, done);
+        });
+        test('GET extent', function(done) {
+            httpClient.performRequestOnURL(entity.extentUri, null, 200).then(function(instances) {
+                assert.ok(typeof instances.length === 'number');
+                assert.ok(instances.length >= 0); 
             }).then(done, done);
         });
         

@@ -25,7 +25,6 @@ var employeeSchema = new Schema({
         "default" : []
     }]
 });
-//            employeeSchema.set('toObject', { getters: true });
 
 
 /*************************** ACTIONS ***************************/
@@ -169,7 +168,7 @@ employeeSchema.methods.getRejectedExpenses = function () {
 employeeSchema.methods.totalExpenses = function (toSum) {
     var me = this;
     return Q().then(function() {
-        return Q.npost(require('./Expense.js'), 'findOne', [ ({ _id : toSum._id }) ]);
+        return toSum;
     }).then(function(toSum) {
         return /*TBD*/reduce;
     }).then(function(reduceResult) {

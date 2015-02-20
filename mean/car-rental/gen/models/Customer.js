@@ -20,7 +20,6 @@ var customerSchema = new Schema({
         "default" : []
     }]
 });
-//            customerSchema.set('toObject', { getters: true });
 
 
 /*************************** ACTIONS ***************************/
@@ -59,7 +58,7 @@ customerSchema.methods.rent = function (car) {
             error.constraint = 'customer_must_have_no_current_rental';
             throw error;
         }    
-    }).then(function() {
+    }).then(function(/*noargs*/) {
         return Q().then(function() {
             return Q().then(function() {
                 rental = new require('./Rental.js')();
@@ -126,7 +125,7 @@ customerSchema.methods.finishRental = function () {
             error.constraint = 'current_rental_exists';
             throw error;
         }    
-    }).then(function() {
+    }).then(function(/*noargs*/) {
         return Q().then(function() {
             return Q().then(function() {
                 return me.getCurrentRental();

@@ -43,7 +43,6 @@ var carSchema = new Schema({
         "default" : []
     }]
 });
-//            carSchema.set('toObject', { getters: true });
 
 /*************************** INVARIANTS ***************************/
 
@@ -88,7 +87,7 @@ carSchema.methods.startRepair = function () {
             error.constraint = 'must_be_available';
             throw error;
         }    
-    }).then(function() {
+    }).then(function(/*noargs*/) {
         return Q().then(function() {
             return me.repairStarted();;
         }).then(function(/*no-arg*/) {
@@ -123,7 +122,7 @@ carSchema.methods.finishRepair = function () {
             error.constraint = 'must_be_under_repair';
             throw error;
         }    
-    }).then(function() {
+    }).then(function(/*noargs*/) {
         return Q().then(function() {
             return me.repairFinished();;
         }).then(function(/*no-arg*/) {

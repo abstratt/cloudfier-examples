@@ -25,7 +25,6 @@ var shiftSchema = new Schema({
         "default" : 1
     }
 });
-//            shiftSchema.set('toObject', { getters: true });
 
 /*************************** INVARIANTS ***************************/
 
@@ -48,7 +47,7 @@ shiftSchema.path('shiftsPerDay').validate(
 shiftSchema.methods.getTaxis = function () {
     var me = this;
     return Q().then(function() {
-        return mongoose.model('Taxi').find().where({ shift : this });
+        return mongoose.model('Taxi').where({ shift : this });
     }).then(function(selectResult) {
         return selectResult;
     });

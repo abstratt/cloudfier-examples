@@ -51,7 +51,6 @@ var expenseSchema = new Schema({
         ref : "Employee"
     }
 });
-//            expenseSchema.set('toObject', { getters: true });
 
 
 /*************************** ACTIONS ***************************/
@@ -120,7 +119,7 @@ expenseSchema.methods.approve = function () {
             error.description = 'Cannot approve own expenses.';
             throw error;
         }    
-    }).then(function() {
+    }).then(function(/*noargs*/) {
         return Q().then(function() {
             me.approver = cls.getNamespace('currentUser')._id
             ;
@@ -160,7 +159,7 @@ expenseSchema.methods.reject = function (reason) {
             error.description = 'Cannot reject an expense under the auto-approval limit.';
             throw error;
         }    
-    }).then(function() {
+    }).then(function(/*noargs*/) {
         return Q().then(function() {
             return Q().then(function() {
                 me['rejectionReason'] = reason;
@@ -213,7 +212,7 @@ expenseSchema.methods.submit = function () {
 expenseSchema.statics.findExpensesByCategory = function (category) {
     var me = this;
     return Q().then(function() {
-        return mongoose.model('Expense').find().where({ category : category });
+        return mongoose.model('Expense').where({ category : category });
     }).then(function(selectResult) {
         return Q.npost(selectResult, 'exec', [  ])
         ;
@@ -223,7 +222,7 @@ expenseSchema.statics.findExpensesByCategory = function (category) {
 expenseSchema.statics.findExpensesInPeriod = function (start, end_) {
     var me = this;
     return Q().then(function() {
-        return mongoose.model('Expense').find().where({
+        return mongoose.model('Expense').where({
             $and : [ 
                 {
                     $or : [ 
@@ -258,7 +257,7 @@ expenseSchema.statics.findExpensesInPeriod = function (start, end_) {
 expenseSchema.statics.findByStatus = function (status) {
     var me = this;
     return Q().then(function() {
-        return mongoose.model('Expense').find().where({ status : status });
+        return mongoose.model('Expense').where({ status : status });
     }).then(function(selectResult) {
         return Q.npost(selectResult, 'exec', [  ])
         ;

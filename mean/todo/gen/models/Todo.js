@@ -46,10 +46,13 @@ var todoSchema = new Schema({
         author : {
             type : Schema.Types.ObjectId,
             ref : "User"
+        },
+        todo : {
+            type : Schema.Types.ObjectId,
+            ref : "Todo"
         }
     }]
 });
-//            todoSchema.set('toObject', { getters: true });
 
 
 /*************************** ACTIONS ***************************/
@@ -64,7 +67,7 @@ todoSchema.methods.cancel = function () {
 todoSchema.statics.open = function () {
     var me = this;
     return Q().then(function() {
-        return require('./Todo.js').byStatus(mongoose.model('Todo').find(), "Open");
+        return require('./Todo.js').byStatus(mongoose.model('Todo'), "Open");
     }).then(function(byStatusResult) {
         return Q.npost(byStatusResult, 'exec', [  ])
         ;
@@ -101,7 +104,7 @@ todoSchema.statics.mineOpen = function () {
 todoSchema.statics.openedToday = function () {
     var me = this;
     return Q().then(function() {
-        return require('./Todo.js').byOpeningDate(mongoose.model('Todo').find(), 0);
+        return require('./Todo.js').byOpeningDate(mongoose.model('Todo'), 0);
     }).then(function(byOpeningDateResult) {
         return Q.npost(byOpeningDateResult, 'exec', [  ])
         ;
@@ -111,7 +114,7 @@ todoSchema.statics.openedToday = function () {
 todoSchema.statics.completedToday = function () {
     var me = this;
     return Q().then(function() {
-        return require('./Todo.js').byCompletionDate(mongoose.model('Todo').find(), 0);
+        return require('./Todo.js').byCompletionDate(mongoose.model('Todo'), 0);
     }).then(function(byCompletionDateResult) {
         return Q.npost(byCompletionDateResult, 'exec', [  ])
         ;
@@ -122,7 +125,7 @@ todoSchema.statics.completedToday = function () {
 todoSchema.statics.byStatus = function (todos, status) {
     var me = this;
     return Q().then(function() {
-        return Q.npost(require('./Todo.js'), 'findOne', [ ({ _id : todos._id }) ]);
+        return todos;
     }).then(function(todos) {
         return todos.where({ status : status });
     }).then(function(selectResult) {
@@ -134,7 +137,7 @@ todoSchema.statics.byStatus = function (todos, status) {
 todoSchema.statics.byOpeningDate = function (todos, days) {
     var me = this;
     return Q().then(function() {
-        return Q.npost(require('./Todo.js'), 'findOne', [ ({ _id : todos._id }) ]);
+        return todos;
     }).then(function(todos) {
         return todos.where({
             $lte : [ 
@@ -156,7 +159,7 @@ todoSchema.statics.byOpeningDate = function (todos, days) {
 todoSchema.statics.byCompletionDate = function (todos, days) {
     var me = this;
     return Q().then(function() {
-        return Q.npost(require('./Todo.js'), 'findOne', [ ({ _id : todos._id }) ]);
+        return todos;
     }).then(function(todos) {
         return todos.where({
             $and : [ 

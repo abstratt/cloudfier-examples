@@ -16,7 +16,6 @@ var userSchema = new Schema({
         "default" : null
     }
 });
-//            userSchema.set('toObject', { getters: true });
 
 
 

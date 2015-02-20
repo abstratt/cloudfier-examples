@@ -19,7 +19,6 @@ var customerSchema = new Schema({
         "default" : []
     }]
 });
-//            customerSchema.set('toObject', { getters: true });
 
 
 

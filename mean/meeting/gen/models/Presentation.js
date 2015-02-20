@@ -23,7 +23,6 @@ var presentationSchema = new Schema({
         required : true
     }
 });
-//            presentationSchema.set('toObject', { getters: true });
 
 
 

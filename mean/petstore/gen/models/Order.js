@@ -30,13 +30,16 @@ var orderSchema = new Schema({
             type : Number,
             "default" : 1
         },
+        order : {
+            type : Schema.Types.ObjectId,
+            ref : "Order"
+        },
         product : {
             type : Schema.Types.ObjectId,
             ref : "Product"
         }
     }]
 });
-//            orderSchema.set('toObject', { getters: true });
 
 
 /*************************** ACTIONS ***************************/
@@ -53,7 +56,7 @@ orderSchema.methods.addItem = function (product, quantity) {
             error.constraint = '';
             throw error;
         }    
-    }).then(function() {
+    }).then(function(/*noargs*/) {
         return Q().then(function() {
             return Q().then(function() {
                 detail = new require('./OrderDetail.js')();

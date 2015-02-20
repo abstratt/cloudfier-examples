@@ -35,7 +35,6 @@ var autoMechanicSchema = new Schema({
         "default" : []
     }]
 });
-//            autoMechanicSchema.set('toObject', { getters: true });
 
 
 /*************************** ACTIONS ***************************/
@@ -58,7 +57,7 @@ autoMechanicSchema.methods.unassign = function () {
             error.constraint = 'NoWorkScheduled';
             throw error;
         }    
-    }).then(function() {
+    }).then(function(/*noargs*/) {
         return Q().then(function() {
             return me.doUnassign();
         }).then(function(/*no-arg*/) {
@@ -100,7 +99,7 @@ autoMechanicSchema.methods.beginVacation = function () {
             error.constraint = 'NoWorkInProgress';
             throw error;
         }    
-    }).then(function() {
+    }).then(function(/*noargs*/) {
         return Q().then(function() {
             ;
         }).then(function(/*no-arg*/) {
@@ -145,7 +144,7 @@ autoMechanicSchema.methods.retire = function () {
             error.constraint = 'NoWorkInProgress';
             throw error;
         }    
-    }).then(function() {
+    }).then(function(/*noargs*/) {
         return Q().then(function() {
             ;
         }).then(function(/*no-arg*/) {

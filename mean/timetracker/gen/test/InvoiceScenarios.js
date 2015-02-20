@@ -8,6 +8,7 @@ require('../models/index.js');
 var Client = require('../models/Client.js');
 var Task = require('../models/Task.js');
 var Invoice = require('../models/Invoice.js');
+var Work = require('../models/Work.js');
 
 var Examples = require('./Examples.js');
 
@@ -60,6 +61,69 @@ suite('Time Tracker functional tests - InvoiceScenarios', function() {
                     return Q.npost(require('../models/Invoice.js'), 'findOne', [ ({ _id : invoice._id }) ]);
                 }).then(function(invoice) {
                     assert.equal("Invoiced", invoice.status);
+                });
+            });
+        };
+        behavior().then(done, done);
+    });
+    test('totalUnits', function(done) {
+        var behavior = function() {
+            var invoice;
+            var task1;
+            var task2;
+            var client;
+            var me = this;
+            return Q().then(function() {
+                return Q().then(function() {
+                    return Q().then(function() {
+                        return Examples.client();
+                    }).then(function(clientResult) {
+                        client = clientResult;
+                    });
+                }).then(function() {
+                    return Q().then(function() {
+                        return client.startInvoice();
+                    }).then(function(startInvoiceResult) {
+                        invoice = startInvoiceResult;
+                    });
+                }).then(function() {
+                    return Q().then(function() {
+                        return client.newTask("Task 1");
+                    }).then(function(newTaskResult) {
+                        task1 = newTaskResult;
+                    });
+                }).then(function() {
+                    return Q().then(function() {
+                        return client.newTask("Task 2");
+                    }).then(function(newTaskResult) {
+                        task2 = newTaskResult;
+                    });
+                }).then(function() {
+                    return Q().then(function() {
+                        return task1.addWork(1);
+                    }).then(function(addWorkResult) {
+                        return addWorkResult.submit(invoice);
+                    });
+                }).then(function() {
+                    return Q().then(function() {
+                        return task1.addWork(3);
+                    }).then(function(addWorkResult) {
+                        return addWorkResult.submit(invoice);
+                    });
+                }).then(function() {
+                    return Q().then(function() {
+                        return task2.addWork(7);
+                    }).then(function(addWorkResult) {
+                        return addWorkResult.submit(invoice);
+                    });
+                });
+            }).then(function() {
+                return Q().then(function() {
+                    return Q.npost(require('../models/Invoice.js'), 'findOne', [ ({ _id : invoice._id }) ]);
+                }).then(function(invoice) {
+                    return invoice.getTotalUnits();
+                }).then(function(totalUnits) {
+                    assert.equal(11, totalUnits);
                 });
             });
         };

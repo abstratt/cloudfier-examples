@@ -22,7 +22,6 @@ var modelSchema = new Schema({
         required : true
     }
 });
-//            modelSchema.set('toObject', { getters: true });
 
 
 

@@ -33,12 +33,15 @@ var serviceSchema = new Schema({
         enum : ["Booked", "InProgress", "Completed", "Cancelled"],
         "default" : "Booked"
     },
+    car : {
+        type : Schema.Types.ObjectId,
+        ref : "Car"
+    },
     technician : {
         type : Schema.Types.ObjectId,
         ref : "AutoMechanic"
     }
 });
-//            serviceSchema.set('toObject', { getters: true });
 
 /*************************** INVARIANTS ***************************/
 
@@ -63,7 +66,7 @@ serviceSchema.statics.newService = function (carToService, description, estimate
             error.constraint = 'EstimateMustBePositive';
             throw error;
         }    
-    }).then(function() {
+    }).then(function(/*noargs*/) {
         return Q().then(function() {
             return Q().then(function() {
                 s = new require('./Service.js')();
@@ -123,7 +126,7 @@ serviceSchema.methods.start = function () {
             error.constraint = '';
             throw error;
         }    
-    }).then(function() {
+    }).then(function(/*noargs*/) {
         return Q().then(function() {
             ;
         }).then(function(/*no-arg*/) {
@@ -214,7 +217,7 @@ serviceSchema.methods.assignTo = function (technician) {
             error.constraint = 'TechnicianMustBeWorking';
             throw error;
         }    
-    }).then(function() {
+    }).then(function(/*noargs*/) {
         return Q().then(function() {
             return Q.npost(require('./AutoMechanic.js'), 'findOne', [ ({ _id : technician._id }) ]);
         }).then(function(technician) {
@@ -299,7 +302,7 @@ serviceSchema.methods.transfer = function (mechanic) {
             error.constraint = 'TechnicianMustBeWorking';
             throw error;
         }    
-    }).then(function() {
+    }).then(function(/*noargs*/) {
         return Q().then(function() {
             return Q.npost(require('./AutoMechanic.js'), 'findOne', [ ({ _id : mechanic._id }) ]);
         }).then(function(mechanic) {
@@ -330,7 +333,7 @@ serviceSchema.methods.transfer = function (mechanic) {
 serviceSchema.statics.byStatus = function (services, toMatch) {
     var me = this;
     return Q().then(function() {
-        return Q.npost(require('./Service.js'), 'findOne', [ ({ _id : services._id }) ]);
+        return services;
     }).then(function(services) {
         return services.where({ status : toMatch });
     }).then(function(selectResult) {

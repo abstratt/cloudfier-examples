@@ -400,8 +400,52 @@ suite('Car rental functional tests - CarScenarios', function() {
                     return Q().then(function() {
                         return Q.npost(require('../models/Car.js'), 'findOne', [ ({ _id : car._id }) ]);
                     }).then(function(car) {
-                        assert.equal("UnderRepair", car.status);
+                        assert.strictEqual(car.isUnderRepair(), true);
                     });
+                });
+            });
+        };
+        behavior().then(done, done);
+    });
+    test('availableUponRepairCompletion', function(done) {
+        var behavior = function() {
+            var car;
+            var me = this;
+            return Q().then(function() {
+                return Q().then(function() {
+                    return Q().then(function() {
+                        return Examples.newCar();
+                    }).then(function(newCarResult) {
+                        car = newCarResult;
+                    });
+                }).then(function() {
+                    return Q().then(function() {
+                        assert.strictEqual(car.isAvailable(), true);
+                    });
+                }).then(function() {
+                    return Q().then(function() {
+                        return car.startRepair();
+                    });
+                });
+            }).then(function() {
+                return Q().then(function() {
+                    return Q().then(function() {
+                        return Q.npost(require('../models/Car.js'), 'findOne', [ ({ _id : car._id }) ]);
+                    }).then(function(car) {
+                        assert.strictEqual(!(car.isAvailable()), true);
+                    });
+                }).then(function() {
+                    return Q().then(function() {
+                        return Q.npost(require('../models/Car.js'), 'findOne', [ ({ _id : car._id }) ]);
+                    }).then(function(car) {
+                        return car.finishRepair();
+                    });
+                });
+            }).then(function() {
+                return Q().then(function() {
+                    return Q.npost(require('../models/Car.js'), 'findOne', [ ({ _id : car._id }) ]);
+                }).then(function(car) {
+                    assert.strictEqual(car.isAvailable(), true);
                 });
             });
         };

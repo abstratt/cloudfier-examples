@@ -27,7 +27,6 @@ var taxiSchema = new Schema({
         "default" : []
     }]
 });
-//            taxiSchema.set('toObject', { getters: true });
 
 
 /*************************** ACTIONS ***************************/
@@ -48,10 +47,10 @@ taxiSchema.methods.charge = function (date) {
             var error = new Error("Precondition violated: Not booked, can't charge (on 'taxi_fleet::Taxi::charge')");
             error.context = 'taxi_fleet::Taxi::charge';
             error.constraint = '';
-            error.description = 'Not booked, can't charge';
+            error.description = 'Not booked, can\'t charge';
             throw error;
         }    
-    }).then(function() {
+    }).then(function(/*noargs*/) {
         return Q().then(function() {
             return Q.npost(require('./Driver.js'), 'find', [ ({ taxi : me._id }) ]);
         }).then(function(drivers) {

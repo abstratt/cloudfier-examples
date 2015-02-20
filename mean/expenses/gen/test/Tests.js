@@ -18,7 +18,7 @@ var Tests = {
         var me = this;
         return Q().then(function() {
             return Q().then(function() {
-                return mongoose.model('Employee').find();
+                return mongoose.model('Employee');
             }).then(function(asSequenceResult) {
                 return Q.npost(asSequenceResult.findOne(), 'exec', [  ]);
             }).then(function(headResult) {
@@ -26,7 +26,7 @@ var Tests = {
             });
         }).then(function() {
             return Q().then(function() {
-                return mongoose.model('Category').find();
+                return mongoose.model('Category');
             }).then(function(asSequenceResult) {
                 return Q.npost(asSequenceResult.findOne(), 'exec', [  ]);
             }).then(function(headResult) {

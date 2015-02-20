@@ -5,6 +5,7 @@ var cls = require('continuation-local-storage');
 
 var Client = require('./Client.js');
 var Task = require('./Task.js');
+var Work = require('./Work.js');
 
 // declare schema
 var invoiceSchema = new Schema({
@@ -29,7 +30,6 @@ var invoiceSchema = new Schema({
         "default" : []
     }]
 });
-//            invoiceSchema.set('toObject', { getters: true });
 
 
 /*************************** ACTIONS ***************************/
@@ -52,7 +52,7 @@ invoiceSchema.methods.issue = function () {
             error.description = 'Cannot issue an invoice that has no work reported.';
             throw error;
         }    
-    }).then(function() {
+    }).then(function(/*noargs*/) {
         return Q().then(function() {
             me['issueDate'] = new Date();
         }).then(function(/*no-arg*/) {
@@ -89,19 +89,11 @@ invoiceSchema.methods.isOpen = function () {
 invoiceSchema.methods.getTotalUnits = function () {
     var me = this;
     return Q().then(function() {
-        return Q().then(function() {
-            return Q.npost(require('./Work.js'), 'find', [ ({ invoice : me._id }) ]);
-        }).then(function(reported) {
-            return require('./Work.js').aggregate()
-                          .group({ _id: null, result: { $sum: '$units' } })
-                          .select('-id result');
-        }).then(function(sumResult) {
-            return sumResult;
-        });
-    }).then(function() {
-        return Q().then(function() {
-            ;
-        });
+        return Q.npost(require('./Work.js'), 'find', [ ({ invoice : me._id }) ]);
+    }).then(function(reported) {
+        return <UNSUPPORTED: Activity> >;
+    }).then(function(sumResult) {
+        return sumResult;
     });
 };
 /*************************** PRIVATE OPS ***********************/

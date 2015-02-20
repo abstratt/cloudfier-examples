@@ -40,13 +40,16 @@ var articleSchema = new Schema({
                 return new Date();
             })()
         },
+        article : {
+            type : Schema.Types.ObjectId,
+            ref : "Article"
+        },
         user : {
             type : Schema.Types.ObjectId,
             ref : "User"
         }
     }]
 });
-//            articleSchema.set('toObject', { getters: true });
 
 
 

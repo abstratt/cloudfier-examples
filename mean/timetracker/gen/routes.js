@@ -5,6 +5,7 @@ var cls = require('continuation-local-storage');
 var Client = require('./models/Client.js');
 var Task = require('./models/Task.js');
 var Invoice = require('./models/Invoice.js');
+var Work = require('./models/Work.js');
 
 var exports = module.exports = { 
     build: function (app, resolveUrl) {
@@ -59,6 +60,16 @@ var exports = module.exports = {
                     description : "",
                     uri : resolveUrl("entities/timetracker.Invoice"),
                     extentUri : resolveUrl("entities/timetracker.Invoice/instances"),
+                    user : false,
+                    concrete : true,
+                    standalone : true
+                },
+                 {
+                    fullName : "timetracker.Work",
+                    label : "Work",
+                    description : "",
+                    uri : resolveUrl("entities/timetracker.Work"),
+                    extentUri : resolveUrl("entities/timetracker.Work/instances"),
                     user : false,
                     concrete : true,
                     standalone : true
@@ -271,6 +282,61 @@ var exports = module.exports = {
                     res.status(400).json({ message: error.message });
                 } else {
                     res.json(renderInstance('timetracker.Invoice', found));
+                }
+            });
+        });
+        
+        
+        
+        // routes for timetracker.Work
+        app.get("/entities/timetracker.Work", function(req, res) {
+            res.json({
+                fullName : "timetracker.Work",
+                label : "Work",
+                description : "",
+                uri : resolveUrl("entities/timetracker.Work"),
+                extentUri : resolveUrl("entities/timetracker.Work/instances"),
+                user : false,
+                concrete : true,
+                standalone : true
+            });
+        });
+        app.get("/entities/timetracker.Work/instances/:objectId", function(req, res) {
+            return mongoose.model('Work').where({ _id: req.params.objectId}).findOne().lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('timetracker.Work', found));
+                }
+            });
+        });
+        app.get("/entities/timetracker.Work/instances", function(req, res) {
+            return mongoose.model('Work').find().lean().exec(function(error, documents) {
+                var contents = [];
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    documents.forEach(function(each) {
+                        contents.push(renderInstance('timetracker.Work', each));
+                    });
+                    res.json({
+                        uri: resolveUrl('entities/timetracker.Work/instances'),
+                        length: contents.length,
+                        contents: contents
+                    });
+                }
+            });
+        });
+        app.put("/entities/timetracker.Work/instances/:objectId", function(req, res) {
+            var instanceData = req.body;
+            return mongoose.model('Work').findByIdAndUpdate(req.params.objectId, instanceData).lean().exec(function(error, found) {
+                if (error) {
+                    console.log(error);
+                    res.status(400).json({ message: error.message });
+                } else {
+                    res.json(renderInstance('timetracker.Work', found));
                 }
             });
         });

@@ -31,7 +31,6 @@ var meetingSchema = new Schema({
         "default" : []
     }]
 });
-//            meetingSchema.set('toObject', { getters: true });
 
 
 /*************************** ACTIONS ***************************/
@@ -54,7 +53,7 @@ meetingSchema.methods.leave = function () {
             error.constraint = '';
             throw error;
         }    
-    }).then(function() {
+    }).then(function(/*noargs*/) {
         return Q().then(function() {
             User.current.meetings = null;
             User.current = null;
@@ -97,7 +96,7 @@ meetingSchema.methods.join = function () {
             error.constraint = '';
             throw error;
         }    
-    }).then(function() {
+    }).then(function(/*noargs*/) {
         return Q().then(function() {
             me.participants.push(User.current._id);
             User.current.meetings.push(me._id);
@@ -171,7 +170,7 @@ meetingSchema.statics.startMeeting = function (title, description, date) {
             error.constraint = '';
             throw error;
         }    
-    }).then(function() {
+    }).then(function(/*noargs*/) {
         return Q().then(function() {
             return User.current.startMeetingOnBehalf(title, description, date);
         });

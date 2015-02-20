@@ -27,34 +27,11 @@ var carSchema = new Schema({
         required : true
     },
     services : [{
-        description : {
-            type : String,
-            "default" : null
-        },
-        bookedOn : {
-            type : Date,
-            "default" : (function() {
-                return new Date();
-            })()
-        },
-        estimatedReady : {
-            type : Date,
-            "default" : (function() {
-                return new Date(new Date() + 1* 1000 * 60 * 60 * 24 /*days*/);
-            })()
-        },
-        status : {
-            type : String,
-            enum : ["Booked", "InProgress", "Completed", "Cancelled"],
-            "default" : "Booked"
-        },
-        technician : {
-            type : Schema.Types.ObjectId,
-            ref : "AutoMechanic"
-        }
+        type : Schema.Types.ObjectId,
+        ref : "Service",
+        "default" : []
     }]
 });
-//            carSchema.set('toObject', { getters: true });
 
 
 /*************************** ACTIONS ***************************/
@@ -62,7 +39,7 @@ var carSchema = new Schema({
 carSchema.statics.findByRegistrationNumber = function (regNumber) {
     var me = this;
     return Q().then(function() {
-        return mongoose.model('Car').find().where({
+        return mongoose.model('Car').where({
             $eq : [ 
                 regNumber,
                 registrationNumber
@@ -138,7 +115,9 @@ carSchema.methods.getPending = function () {
 carSchema.methods.getPendingServices = function () {
     var me = this;
     return Q().then(function() {
-        return me.services.where({
+        return Q.npost(require('./Service.js'), 'find', [ ({ car : me._id }) ]);
+    }).then(function(services) {
+        return services.where({
             $or : [ 
                 { status : null },
                 { status : null }
@@ -152,7 +131,9 @@ carSchema.methods.getPendingServices = function () {
 carSchema.methods.getCompletedServices = function () {
     var me = this;
     return Q().then(function() {
-        return me.services.where({
+        return Q.npost(require('./Service.js'), 'find', [ ({ car : me._id }) ]);
+    }).then(function(services) {
+        return services.where({
             $ne : [ 
                 {
                     $or : [ 

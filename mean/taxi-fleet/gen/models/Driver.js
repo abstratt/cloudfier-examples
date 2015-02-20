@@ -26,7 +26,6 @@ var driverSchema = new Schema({
         "default" : []
     }]
 });
-//            driverSchema.set('toObject', { getters: true });
 
 
 /*************************** ACTIONS ***************************/
@@ -38,7 +37,7 @@ driverSchema.methods.book = function (toRent) {
     var me = this;
     return Q().then(function() {
         return Q().then(function() {
-            return <UNSUPPORTED: CallOperationAction> (exists);
+            return <UNSUPPORTED: CallOperationAction> (exists)>;
         }).then(function(existsResult) {
             return existsResult;
         });
@@ -85,7 +84,7 @@ driverSchema.methods.book = function (toRent) {
             error.description = 'Taxi already booked by this driver';
             throw error;
         }    
-    }).then(function() {
+    }).then(function(/*noargs*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(require('./Taxi.js'), 'findOne', [ ({ _id : toRent._id }) ]);
@@ -136,7 +135,7 @@ driverSchema.methods.release = function () {
             error.description = 'No bookings to release';
             throw error;
         }    
-    }).then(function() {
+    }).then(function(/*noargs*/) {
         return Q.all([
             Q().then(function() {
                 return Q.npost(require('./Taxi.js'), 'findOne', [ ({ _id : me.taxi }) ]);

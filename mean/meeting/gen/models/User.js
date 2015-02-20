@@ -22,7 +22,6 @@ var userSchema = new Schema({
         "default" : []
     }]
 });
-//            userSchema.set('toObject', { getters: true });
 
 
 /*************************** ACTIONS ***************************/

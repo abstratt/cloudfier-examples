@@ -29,7 +29,6 @@ var rentalSchema = new Schema({
         ref : "Customer"
     }
 });
-//            rentalSchema.set('toObject', { getters: true });
 
 
 /*************************** QUERIES ***************************/
@@ -37,7 +36,7 @@ var rentalSchema = new Schema({
 rentalSchema.statics.currentForCar = function (c) {
     var me = this;
     return Q().then(function() {
-        return mongoose.model('Rental').find().where({
+        return mongoose.model('Rental').where({
             $and : [ 
                 { car : c },
                 { returned : null }
@@ -52,7 +51,7 @@ rentalSchema.statics.currentForCar = function (c) {
 rentalSchema.statics.currentForCustomer = function (c) {
     var me = this;
     return Q().then(function() {
-        return mongoose.model('Rental').find().where({
+        return mongoose.model('Rental').where({
             $and : [ 
                 { customer : c },
                 { returned : null }
@@ -67,7 +66,7 @@ rentalSchema.statics.currentForCustomer = function (c) {
 rentalSchema.statics.completedForCustomer = function (c) {
     var me = this;
     return Q().then(function() {
-        return mongoose.model('Rental').find().where({
+        return mongoose.model('Rental').where({
             $and : [ 
                 { customer : c },
                 {
@@ -87,7 +86,7 @@ rentalSchema.statics.completedForCustomer = function (c) {
 rentalSchema.statics.inProgress = function () {
     var me = this;
     return Q().then(function() {
-        return mongoose.model('Rental').find().where({ returned : null });
+        return mongoose.model('Rental').where({ returned : null });
     }).then(function(selectResult) {
         return Q.npost(selectResult, 'exec', [  ])
         ;
@@ -97,7 +96,7 @@ rentalSchema.statics.inProgress = function () {
 rentalSchema.statics.all = function () {
     var me = this;
     return Q().then(function() {
-        return Q.npost(mongoose.model('Rental').find(), 'exec', [  ])
+        return Q.npost(mongoose.model('Rental'), 'exec', [  ])
         ;
     });
 };
@@ -132,7 +131,7 @@ rentalSchema.methods.finish = function () {
             error.constraint = 'must_be_in_progress';
             throw error;
         }    
-    }).then(function() {
+    }).then(function(/*noargs*/) {
         return Q().then(function() {
             me['returned'] = new Date();
         }).then(function(/*no-arg*/) {

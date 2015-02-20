@@ -16,7 +16,6 @@ var categorySchema = new Schema({
         "default" : null
     }
 });
-//            categorySchema.set('toObject', { getters: true });
 
 
 /*************************** ACTIONS ***************************/
