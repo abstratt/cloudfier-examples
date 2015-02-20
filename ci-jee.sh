@@ -7,4 +7,4 @@ for app_path in jee/* ; do
 	./gen.sh jee $app
 	./test.sh jee $app "-DreportsDirectory=$CWD/test-reports"
 done
-cd -
+
