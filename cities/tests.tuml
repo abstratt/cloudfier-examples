@@ -30,7 +30,7 @@ class Tests
         Assert#isTrue(oregon.population > 0);
         expected := oregon.city("Portland").population + oregon.city("Eugene").population;
         Assert#areEqual(expected, oregon.population);
-    end;
+    end; 
 
     operation populousStates();
     begin
@@ -41,6 +41,23 @@ class Tests
         Assert#isTrue(populousStateAbbreviations.includes("CA"));
         Assert#isTrue(populousStateAbbreviations.includes("OR"));
         Assert#isTrue(! populousStateAbbreviations.includes("WY"));
+    end;
+    
+    static operation statsFinder(abbreviation : String) : {(: StatePopulation) : Boolean};
+    begin
+        return (stat : StatePopulation) : Boolean { stat.abbreviation == abbreviation };
+    end;
+    
+    operation statePopulations();
+    begin
+        var populations, oregon, wyoming;
+        TestData#build();
+        oregon := State#byAbbreviation("OR");
+        wyoming := State#byAbbreviation("WY");
+        populations := State#statePopulations();
+        Assert#areEqual(State extent.size(), populations.size());
+        Assert#areEqual(wyoming.population, populations.\any((stat : StatePopulation) : Boolean { stat.abbreviation = "WY" }).population);
+        Assert#areEqual(oregon.population, populations.\any((stat : StatePopulation) : Boolean { stat.abbreviation = "OR" }).population);
     end;
 end;
 
