@@ -11,9 +11,9 @@ end;
 
 datatype StatePopulation
 
-    attribute stateAbbreviation : String;
+    attribute abbreviation : String;
 
-    attribute statePopulation : Integer;
+    attribute population : Integer;
 end;
 
 class State
@@ -62,6 +62,16 @@ class State
     begin
         return State#statesMorePopulousThan(threshold).collect((s : State) : String {
             s.abbreviation
+        });
+    end;
+    
+    static query statePopulations() : StatePopulation[*];
+    begin
+        return State extent.collect((cityState : State) : StatePopulation {
+            ({
+                abbreviation := cityState.abbreviation, 
+                population := cityState.population
+            } as StatePopulation)
         });
     end;
 end;
