@@ -119,6 +119,7 @@ class Customer specializes Person
 
     attribute title : Title;
 
+/*
     derived attribute pendingServices : Service[*] := {
         self.cars.reduce((c : Car, soFar : Service[*]) : Service[*] {
             c.pendingServices.union(soFar)
@@ -130,11 +131,11 @@ class Customer specializes Person
             c.completedServices.union(soFar)
         }, Service[])
     };
-
+*/
     (* A valuable customer is a customer that has two or more cars with us *)
     derived attribute vip : Boolean := { self.cars.size() >= 2 };
 
-    static operation findByName(firstName : String[0, 1], lastName : String[0, 1]) : Customer[*]
+    static query findByName(firstName : String[0, 1], lastName : String[0, 1]) : Customer[*]
         precondition OneMustBeProvided(firstName, lastName) {
             not ((firstName == null) and (lastName == null))
         };
@@ -144,7 +145,7 @@ class Customer specializes Person
         });
     end;
 
-    static operation vipCustomers() : Customer[*];
+    static query vipCustomers() : Customer[*];
     begin
         return Customer extent.select((c : Customer) : Boolean { c.vip });
     end;
@@ -189,7 +190,7 @@ class Car
         return self.\model.makeAndModel() + " " + self.registrationNumber;
     end;
 
-    static operation findByRegistrationNumber(regNumber : String) : Car[0, 1];
+    static query findByRegistrationNumber(regNumber : String) : Car[0, 1];
     begin
         return Car extent.\any((c : Car) : Boolean {
             regNumber = c.registrationNumber
@@ -202,7 +203,7 @@ class Car
         Service#newService(self, description, estimateInDays);
     end;
 
-    static operation findByOwner(owner : Customer) : Car[*];
+    static query findByOwner(owner : Customer) : Car[*];
     begin
         return owner.cars;
     end;
