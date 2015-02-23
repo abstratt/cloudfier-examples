@@ -1,3 +1,5 @@
+set -e
+set -o pipefail
 CWD=$WORKSPACE
 : ${CWD:=$PWD}
 
