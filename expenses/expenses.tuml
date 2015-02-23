@@ -92,7 +92,7 @@ class Expense
     end;
     
     (* Reconsider this expense. *)
-    operation reconsider() : Boolean
+    operation reconsider()
         (* Cannot reconsider after a week. *)
         precondition { self.daysProcessed < 7 };
     
@@ -100,7 +100,7 @@ class Expense
     operation review();
 
     (* Submit this expense. *)
-    operation submit() : Boolean;
+    operation submit();
 
     private operation reportApproved();
     begin
