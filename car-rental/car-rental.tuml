@@ -103,7 +103,7 @@ class Rental
         self.returned == null
     };
 
-    private operation finish()
+    protected operation finish()
         precondition must_be_in_progress { self.inProgress };
     begin
         self.returned := Date#today();
