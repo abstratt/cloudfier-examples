@@ -323,7 +323,7 @@ class Issue
         self.addComment(text, null);
     end;
 
-    private operation addComment(text : Memo, inReplyTo : Comment);
+    protected operation addComment(text : Memo, inReplyTo : Comment);
     begin
         var comment;
         comment := new Comment;
