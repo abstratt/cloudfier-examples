@@ -19,7 +19,7 @@ class User
     private derived attribute committer : Boolean := {
         self.kind = UserKind#Committer
     };
-
+    
     private attribute issuesAssignedToUser : Issue[*];
 
     readonly attribute issuesReportedByUser : Issue[*];
@@ -266,7 +266,7 @@ class Issue
         });
     end;
 
-    private static query filterByStatus(issues : Issue[*], toMatch : Status) : Issue[*];
+    package static query filterByStatus(issues : Issue[*], toMatch : Status) : Issue[*];
     begin
         return issues.select((issue : Issue) : Boolean {
             issue.status == toMatch

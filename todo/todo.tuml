@@ -59,7 +59,7 @@ class Todo
         return Todo#byCompletionDate(Todo extent, 0);
     end;
 
-    private static query byStatus(todos : Todo[*], status : Status) : Todo[*];
+    package static query byStatus(todos : Todo[*], status : Status) : Todo[*];
     begin
         return todos.select((t : Todo) : Boolean {
         	t.status == status
