@@ -1,0 +1,99 @@
+package carserv::tests;
+
+import carserv;
+
+[Test]
+class MechanicScenarios
+
+    operation goesOnVacation();
+    begin
+        var mechanic;
+        begin
+            mechanic := TestData#getAMechanic();
+            Assert#isTrue(mechanic.working);
+            mechanic.beginVacation(); 
+        end;
+        begin
+        	Assert#isTrue(!mechanic.working);
+        end;
+        begin
+        	mechanic.endVacation();
+        end;
+        begin
+        	Assert#isTrue(mechanic.working);
+        end;
+    end;
+    
+    operation workInProgress();
+    begin
+        var mechanic, service;
+        begin
+            mechanic := TestData#getAMechanic();
+            service := mechanic.upcomingServices.one();
+            service.start();
+            Assert#isTrue(!mechanic.workInProgress);
+        end;
+        begin
+            Assert#isTrue(mechanic.workInProgress);
+        	service.complete();
+        end;
+        begin
+            Assert#isTrue(!mechanic.workInProgress);
+        end;
+    end;
+    
+    [Failure(constraint="NoWorkInProgress")]
+    operation cannotGoOnVacationIfWorkInProgress();
+    begin
+        var mechanic, service;
+        begin
+            mechanic := TestData#getAMechanic();
+            service := mechanic.upcomingServices.one();
+            service.start();
+        end;
+        begin
+        	mechanic.beginVacation();
+        end;
+    end;
+    
+    [Failure(constraint="MustBeOnVacation")]
+    operation cannotEndVacationIfAlreadyWorking();
+    begin
+        var mechanic;
+        begin
+            mechanic := TestData#getAMechanic();
+        	mechanic.endVacation();
+        end;
+    end;
+    
+	operation retires();
+    begin
+        var mechanic;
+        begin
+            mechanic := TestData#getAMechanic();
+            Assert#isTrue(mechanic.workScheduled);
+            Assert#isTrue(!mechanic.workInProgress);
+            mechanic.retire(); 
+        end;
+        begin
+            Assert#isTrue(!mechanic.workScheduled);
+        end;
+    end;
+end;
+
+class TestData
+
+    static operation getAMechanic() : AutoMechanic;
+    begin
+        return TestData#findMechanic("Teresa", "Perkins");
+    end;
+
+    static operation findMechanic(first : String, last : String) : AutoMechanic[0,1];
+    begin
+        return AutoMechanic extent.\any((m : AutoMechanic) : Boolean {
+            (m.firstName = first) and (m.lastName = last)
+        });
+    end;
+end;
+
+end.

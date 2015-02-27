@@ -63,10 +63,10 @@ class AutoMechanic specializes Person
     derived attribute workScheduled : Boolean := {
         not self.upcomingServices.isEmpty()
     };
-
+    
     (* Unassigns any work scheduled. Does not affect work in progress. *)
     operation unassign()
-        precondition NoWorkScheduled { self.workScheduled };
+        precondition SomeWorkScheduled { self.workScheduled };
     begin
         self.doUnassign();
     end;
@@ -85,7 +85,8 @@ class AutoMechanic specializes Person
     end;
 
     (* Brings the employee back from vacation. Employee can be assigned work again. *)
-    operation endVacation();
+    operation endVacation()
+        precondition MustBeOnVacation { self.status == WorkingStatus#Vacation };
 
     operation retire()
         precondition NoWorkInProgress { not self.workInProgress };
@@ -103,7 +104,9 @@ class AutoMechanic specializes Person
             transition on call(endVacation) to Working;
         end;
 
-        state Retired end;
+        state Retired 
+        	entry { self.doUnassign(); };
+        end;
 
     end;
 
