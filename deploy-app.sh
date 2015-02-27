@@ -1,7 +1,4 @@
 #!/bin/bash
-set -e
-set -o pipefail
-
 CLOUDFIER_URL=${CLOUDFIER_URL:-http://develop.cloudfier.com}
 
 if [ "$#" -lt 1 ] ; then
@@ -12,5 +9,7 @@ fi
 APPLICATION=$1
 CLOUDFIER_USER=${2:-test}
 
-./deploy-app.sh $APPLICATION $CLOUDFIER_USER
-./deploy-db.sh $APPLICATION $CLOUDFIER_USER
+echo
+echo 
+echo "Compiling the application $APPLICATION"
+curl -X POST $CLOUDFIER_URL/services/deployer/?path=$CLOUDFIER_USER/cloudfier-examples/$APPLICATION
