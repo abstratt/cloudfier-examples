@@ -1,5 +1,7 @@
-package carserv::tests;
+package carserv_tests;
 
+import carserv::Model;
+import carserv::Service;
 import carserv;
 
 [Test]
@@ -11,72 +13,75 @@ class MechanicScenarios
         begin
             mechanic := TestData#getAMechanic();
             Assert#isTrue(mechanic.working);
-            mechanic.beginVacation(); 
+            mechanic.beginVacation();
         end;
         begin
-        	Assert#isTrue(!mechanic.working);
+            Assert#isTrue(! mechanic.working);
         end;
         begin
-        	mechanic.endVacation();
+            mechanic.endVacation();
         end;
         begin
-        	Assert#isTrue(mechanic.working);
+            Assert#isTrue(mechanic.working);
         end;
     end;
-    
-    operation workInProgress();
+
+    operation workCompleted();
     begin
         var mechanic, service;
         begin
-            mechanic := TestData#getAMechanic();
+            mechanic := TestData#getAMechanicWithWorkScheduled();
             service := mechanic.upcomingServices.one();
+            Assert#isTrue(mechanic.workScheduled);
+            Assert#isTrue(! mechanic.workInProgress);
             service.start();
-            Assert#isTrue(!mechanic.workInProgress);
         end;
         begin
+            Assert#isTrue(!mechanic.workScheduled);
             Assert#isTrue(mechanic.workInProgress);
-        	service.complete();
+            service.complete();
         end;
         begin
-            Assert#isTrue(!mechanic.workInProgress);
+            Assert#isTrue(! mechanic.workInProgress);
+            Assert#isTrue(!mechanic.workScheduled);
         end;
     end;
-    
+
     [Failure(constraint="NoWorkInProgress")]
     operation cannotGoOnVacationIfWorkInProgress();
     begin
         var mechanic, service;
         begin
-            mechanic := TestData#getAMechanic();
+            mechanic := TestData#getAMechanicWithWorkScheduled();
             service := mechanic.upcomingServices.one();
             service.start();
         end;
         begin
-        	mechanic.beginVacation();
+            mechanic.beginVacation();
         end;
     end;
-    
+
     [Failure(constraint="MustBeOnVacation")]
     operation cannotEndVacationIfAlreadyWorking();
     begin
         var mechanic;
         begin
             mechanic := TestData#getAMechanic();
-        	mechanic.endVacation();
+            mechanic.endVacation();
         end;
     end;
-    
-	operation retires();
+
+    operation retires();
     begin
         var mechanic;
         begin
-            mechanic := TestData#getAMechanic();
+            mechanic := TestData#getAMechanicWithWorkScheduled();
             Assert#isTrue(mechanic.workScheduled);
-            Assert#isTrue(!mechanic.workInProgress);
-            mechanic.retire(); 
+            Assert#isTrue(! mechanic.workInProgress);
+            mechanic.retire();
         end;
         begin
-            Assert#isTrue(!mechanic.workScheduled);
+            Assert#isTrue(! mechanic.workScheduled);
         end;
     end;
 end;
@@ -85,14 +90,64 @@ class TestData
 
     static operation getAMechanic() : AutoMechanic;
     begin
-        return TestData#findMechanic("Teresa", "Perkins");
+        var mechanic;
+        mechanic := TestData#newMechanic();
+        return mechanic;
     end;
 
-    static operation findMechanic(first : String, last : String) : AutoMechanic[0,1];
+    static operation getAMechanicWithWorkScheduled() : AutoMechanic;
     begin
-        return AutoMechanic extent.\any((m : AutoMechanic) : Boolean {
-            (m.firstName = first) and (m.lastName = last)
-        });
+        var mechanic, service, car;
+        mechanic := TestData#newMechanic();
+        car := TestData#newCar(TestData#newCustomer());
+        service := Service#newService(car, Memo#fromString("A service"), 1);
+        return mechanic;
+    end;
+
+    static operation newMechanic() : AutoMechanic;
+    begin
+        var mechanic;
+        mechanic := new AutoMechanic;
+        mechanic.firstName := "John";
+        mechanic.lastName := "Fixalot";
+        return mechanic;
+    end;
+
+    static operation newCustomer() : Customer;
+    begin
+        var customer;
+        customer := new Customer;
+        customer.firstName := "John";
+        customer.lastName := "Fixalot";
+        customer.title := Title#Mr;
+        return customer;
+    end;
+
+    static operation newCar(customer : Customer) : Car;
+    begin
+        var car;
+        car := new Car;
+        car.registrationNumber := "1234567890";
+        car.\model := TestData#newModel();
+        car.owner := customer;
+        return car;
+    end;
+
+    static operation newModel() : Model;
+    begin
+        var carModel;
+        carModel := new Model;
+        carModel.name := "A Model";
+        carModel.make := TestData#newMake();
+        return carModel;
+    end;
+
+    static operation newMake() : Make;
+    begin
+        var make;
+        make := new Make;
+        make.name := "A Make";
+        return make;
     end;
 end;
 
