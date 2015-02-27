@@ -109,14 +109,14 @@ class Rental
         self.returned := Date#today();
     end;
 
-    static query currentForCar(c : Car) : Rental;
+    static query currentForCar(c : Car) : Rental[0,1];
     begin
         return Rental extent.\any((l : Rental) : Boolean {
             (l.car == c) and l.inProgress
         });
     end;
 
-    static query currentForCustomer(c : Customer) : Rental;
+    static query currentForCustomer(c : Customer) : Rental[0,1];
     begin
         return Rental extent.\any((l : Rental) : Boolean {
             (l.customer == c) and l.inProgress

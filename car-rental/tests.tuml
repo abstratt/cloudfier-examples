@@ -196,7 +196,7 @@ class CarScenarios
     begin
         var car;
         car := Examples#newCar();
-        car.price := 49;
+        car.price := 49.0;
     end;
 
     [Failure(constraint="below_maximum", context="price")]
@@ -204,7 +204,7 @@ class CarScenarios
     begin
         var car;
         car := Examples#newCar();
-        car.price := 2000;
+        car.price := 2000.0;
     end;
 
     operation unavailableWhenRented();
@@ -300,7 +300,7 @@ class Examples
         var car;
         car := new Car;
         car.year := Date#today().year();
-        car.price := 100;
+        car.price := 100.0;
         car.color := "black";
         car.plate := "ABC-1234";
         car.carModel := Examples#newModel();
