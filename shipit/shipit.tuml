@@ -46,6 +46,30 @@ class User
     begin
         return (System#user() as User);
     end;
+    
+        
+    query isVoter(toCheck : Issue) : Boolean;
+    begin
+    	return self<-VotedIssues->voted.includes(toCheck);
+    end;
+        
+    operation voteOn(issue : Issue)
+        precondition NotVotedYet (issue) {
+            !self.isVoter(issue)
+        };
+    begin
+        link VotedIssues(voted := issue, voters := self);
+    end;
+
+    operation withdrawVoteFrom(issue : Issue)
+        precondition IsAVoter (issue) {
+            self.isVoter(issue)
+        };
+    begin
+        unlink VotedIssues(voted := issue, voters := self);
+    end;
+
+
 end;
 
 enumeration UserKind
@@ -227,7 +251,7 @@ class Issue
     private derived attribute mine : Boolean := {
         User#current == self.assignee
     };
-
+    
     private derived attribute free : Boolean := { self.assignee == null };
 
     private query referenceDate() : Date;
@@ -246,17 +270,25 @@ class Issue
         precondition Must_be_logged_in { User#provisioned };
     begin
         var newIssue;
-        newIssue := new Issue;
-        newIssue.summary := summary;
-        newIssue.description := description;
-        newIssue.severity := severity;
-        newIssue.reporter := User#current;
-        newIssue.project := project;
+        newIssue := Issue#createIssue(User#current, project, summary, description, severity);
         send IssueReported(
             issueKey := newIssue.issueKey, 
             summary := summary, 
             description := description, 
             userEmail := newIssue.reporter.email) to newIssue.userNotifier;
+    end;
+    
+    static operation createIssue(reporter : User, project : Project, summary : String, description : Memo, 
+            severity : Severity := Normal) : Issue;
+    begin
+        var newIssue;
+        newIssue := new Issue;
+        newIssue.summary := summary;
+        newIssue.description := description;
+        newIssue.severity := severity;
+        newIssue.project := project;
+        newIssue.reporter := reporter;
+        return newIssue;
     end;
 
     static query bySeverity(toMatch : Severity) : Issue[*];
@@ -343,25 +375,18 @@ class Issue
     begin
         link WatchedIssues(issuesWatched := self, watchers := userToAdd);
     end;
-
+    
     operation vote()
-        precondition { not (User#current == null) }
-        precondition { ! self.mine }
-        precondition {
-            ! self<-VotedIssues->voters.includes(User#current)
-        };
+        precondition MustLogIn { not (User#current == null) };
     begin
-        link VotedIssues(voted := self, voters := User#current);
+        User#current.voteOn(self);
     end;
 
     operation withdrawVote()
-        precondition { not (User#current == null) }
-        precondition {
-            self<-VotedIssues->voters.includes(User#current)
-        };
+        precondition MustLogIn{ not (User#current == null) };    
     begin
-        unlink VotedIssues(voted := self, voters := User#current);
-    end;
+        User#current.withdrawVoteFrom(self);
+    end;        
 
     (* Take over an issue currently available. *)
     operation assignToMe()

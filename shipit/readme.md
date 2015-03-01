@@ -13,3 +13,12 @@ service when issues are reported, commented on or resolved.
 
 See the sibling project shipit-plus for how those notifications are eventually
 sent as email notifications.
+
+#### Email notifications
+
+This application has the ability of sending email notifications 
+when issues are reported, commented on or resolved. In order to
+do that, this application includes an integration with an external service 
+that can send email notications:
+
+* external service [code](https://script.google.com/d/1d54TavITWQNgGjgsF8CA_KboYe1ySszVSt_tpPHSpGDrsg7BJ9lsCJGM/edit?usp=sharing>)  (Google login required)

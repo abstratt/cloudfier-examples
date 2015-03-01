@@ -1,0 +1,69 @@
+package tests;
+
+import shipit::User;
+import shipit;
+
+[Test]
+class IssueScenarios
+
+
+    operation testIsVoter();
+    begin
+        var issue, user1, user2;
+        begin
+            user1 := TestData#newUser("User 1");
+            user2 := TestData#newUser("User 2");            
+            issue := Issue#createIssue(user1, TestData#newProject(), "A new bug", Memo#fromString("Just found it"), null);
+            user1.voteOn(issue);
+        end;
+        begin
+            Assert#isTrue(user1.isVoter(issue));
+            Assert#isTrue(!user2.isVoter(issue));            
+        end;
+    end;
+
+    operation testVoteCounts();
+    begin
+        var issue, user1, user2;
+        begin
+            user1 := TestData#newUser("User 1");
+            user2 := TestData#newUser("User 2");            
+            issue := Issue#createIssue(user1, TestData#newProject(), "A new bug", Memo#fromString("Just found it"), null);
+            Assert#areEqual(issue.votes, 0);
+            user1.voteOn(issue);
+        end;
+        begin
+            Assert#areEqual(issue.votes, 1);
+            user2.voteOn(issue);
+        end;
+        begin
+            Assert#areEqual(issue.votes, 2);
+            user1.withdrawVoteFrom(issue);
+        end;        
+        begin
+            Assert#areEqual(issue.votes, 1);
+        end;
+    end;
+end;
+
+class TestData
+
+    static operation newProject() : Project;
+    begin
+        var newProject;
+        newProject := new Project;
+        newProject.description := "A Project";
+        newProject.token := "PRJ";
+        return newProject;
+    end;
+
+    static operation newUser(name : String) : User;
+    begin
+        var newUser;
+        newUser := new User;
+        newUser.fullName := name;
+        return newUser;
+    end;
+end;
+
+end.
