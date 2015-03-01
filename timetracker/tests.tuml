@@ -16,10 +16,10 @@ class TaskScenarios
     
     operation itemsReported();
     begin
-        var task, actuallyReported;
+        var task;
         task := Examples#task();
         task.addWork(4);
-        task.addWork(3);
+        task.addWork(3);   
         Assert#areEqual(2, task.reported.size());
 
         task.addWork(5);
@@ -132,11 +132,10 @@ class InvoiceScenarios
         end;
     end;
 
-
     [Failure(constraint="InvoiceNotOpen", context="submit")]
     operation cannotSubmitWorkIfInvoiceNotOpen();
     begin
-        var task, invoice, work;
+        var task, invoice;
         begin
             task := Examples#task();
             invoice := task.client.startInvoice();
