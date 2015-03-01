@@ -101,6 +101,7 @@ class TestData
         mechanic := TestData#newMechanic();
         car := TestData#newCar(TestData#newCustomer());
         service := Service#newService(car, Memo#fromString("A service"), 1);
+        service.assignTo(mechanic);
         return mechanic;
     end;
 
