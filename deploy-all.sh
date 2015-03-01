@@ -16,8 +16,7 @@ echo "Server:" $CLOUDFIER_URL
 ./deploy.sh expenses $CLOUDFIER_USER
 ./deploy.sh meeting $CLOUDFIER_USER
 ./deploy.sh petstore $CLOUDFIER_USER
-./deploy-app.sh shipit $CLOUDFIER_USER
-./deploy.sh shipit-plus $CLOUDFIER_USER
+./deploy.sh shipit $CLOUDFIER_USER
 ./deploy.sh taxi-fleet $CLOUDFIER_USER
 ./deploy.sh timetracker $CLOUDFIER_USER
 ./deploy.sh todo $CLOUDFIER_USER
