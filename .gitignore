@@ -1,4 +1,4 @@
 test-reports
 node_modules
-**/gen/**
+**/gen/*
 !**/gen/.gitignore
