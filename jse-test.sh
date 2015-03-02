@@ -4,4 +4,4 @@ if [ "$#" -lt 1 ] ; then
     exit 1
 fi
 APPLICATION=$1
-./java-test.sh $APPLICATION jee $2 $3 $4 $5 $6 $7 $8 $9
+./java-test.sh $APPLICATION jse $2 $3 $4 $5 $6 $7 $8 $9
