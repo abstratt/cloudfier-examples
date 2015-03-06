@@ -59,25 +59,15 @@ class Todo
     
     static query openedToday() : Todo[*];
     begin
-        return Todo#byOpeningDate(Todo extent, 0);
+        return Todo extent.select((t : Todo) : Boolean {
+        	t.openedOn.differenceInDays(Date#today()) <= 0
+    	});
     end;
     
     static query completedToday() : Todo[*];
     begin
-        return Todo#byCompletionDate(Todo extent, 0);
-    end;
-
-    private static query byOpeningDate(todos : Todo[*], days : Integer) : Todo[*];
-    begin
-        return todos.select((t : Todo) : Boolean {
-        	t.openedOn.differenceInDays(Date#today()) <= days
-    	});
-    end;
-    
-    private static query byCompletionDate(todos : Todo[*], days : Integer) : Todo[*];
-    begin
-        return todos.select((t : Todo) : Boolean {
-        	t.status == Status#Completed and (t.completedOn.differenceInDays(Date#today()) <= days)
+        return Todo extent.select((t : Todo) : Boolean {
+        	t.status == Status#Completed and (t.completedOn.differenceInDays(Date#today()) <= 0)
     	});
     end;
 
