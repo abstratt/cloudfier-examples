@@ -44,16 +44,18 @@ class AutoMechanic specializes Person
         self.status == WorkingStatus#Working
     };
 
-    private attribute services : Service[*];
-
     (* Services currently in progress by this worker. *)
     derived attribute currentServices : Service[*] := {
-        Service#byStatus(self.services, Service::Status#InProgress)
+        self<-TechnicianWorksOnService->services.select((service : Service) : Boolean {
+            service.status == Service::Status#InProgress
+        })
     };
 
     (* Services assigned to this worker but not yet started. *)
     derived attribute upcomingServices : Service[*] := {
-        Service#byStatus(self.services, Service::Status#Booked)
+        self<-TechnicianWorksOnService->services.select((service : Service) : Boolean {
+            service.status == Service::Status#Booked
+        })        
     };
 
     derived attribute workInProgress : Boolean := {
@@ -158,7 +160,7 @@ association TechnicianWorksOnService
 
     role Service.technician;
 
-    role AutoMechanic.services;
+    role services : Service[*];
 
 end;
 
@@ -242,13 +244,6 @@ class Service
     };
 
     derived attribute assigned : Boolean := { not (self.technician == null) };
-
-    static query byStatus(services : Service[*], toMatch : Status) : Service[*];
-    begin
-        return services.select((service : Service) : Boolean {
-            service.status == toMatch
-        });
-    end;
 
     static operation newService(carToService : Car, description : Memo, estimate : Integer := 1) : Service
         precondition EstimateMustBePositive(estimate) { estimate > 0 };

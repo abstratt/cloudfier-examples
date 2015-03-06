@@ -9,7 +9,11 @@ class User
     
     attribute todos : Todo[*];
 
-    derived attribute openTodos : Todo[*] := { Todo#byStatus(self.todos, Todo::Status#Open) };
+    derived attribute openTodos : Todo[*] := {
+    	self.todos.select((t : Todo) : Boolean {
+        	t.status == Todo::Status#Open
+    	})
+	};
     
     private static derived attribute me : User := { (System#user() as User) };
 end;
@@ -36,7 +40,9 @@ class Todo
 
     static query open() : Todo[*];
     begin
-        return Todo#byStatus(Todo extent, Status#Open);
+    	return Todo extent.select((t : Todo) : Boolean {
+        	t.status == Status#Open
+    	});
     end;
     
     static query mine() : Todo[*];
@@ -46,7 +52,9 @@ class Todo
     
     static query mineOpen() : Todo[*];
     begin
-        return Todo#byStatus(User#me.todos, Status#Open);
+        return User#me.todos.select((t : Todo) : Boolean {
+        	t.status == Status#Open
+    	});
     end;
     
     static query openedToday() : Todo[*];
@@ -59,13 +67,6 @@ class Todo
         return Todo#byCompletionDate(Todo extent, 0);
     end;
 
-    package static query byStatus(todos : Todo[*], status : Status) : Todo[*];
-    begin
-        return todos.select((t : Todo) : Boolean {
-        	t.status == status
-    	});
-    end;
-    
     private static query byOpeningDate(todos : Todo[*], days : Integer) : Todo[*];
     begin
         return todos.select((t : Todo) : Boolean {
