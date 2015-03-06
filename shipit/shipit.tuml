@@ -25,11 +25,15 @@ class User
     readonly attribute issuesReportedByUser : Issue[*];
 
     derived attribute issuesCurrentlyInProgress : Issue[*] := {
-        Issue#filterByStatus(self.issuesAssignedToUser, Issue::Status#InProgress)
+        self.issuesAssignedToUser.select((issue : Issue) : Boolean {
+            issue.status == Issue::Status#InProgress 
+        })
     };
 
     derived attribute issuesCurrentlyAssigned : Issue[*] := {
-        Issue#filterByStatus(self.issuesAssignedToUser, Issue::Status#Assigned)
+        self.issuesAssignedToUser.select((issue : Issue) : Boolean {
+            issue.status == Issue::Status#Assigned
+        })
     };
 
     private derived static attribute provisioned : Boolean := {
@@ -296,18 +300,6 @@ class Issue
         return Issue extent.select((i : Issue) : Boolean {
             i.severity == toMatch
         });
-    end;
-
-    package static query filterByStatus(issues : Issue[*], toMatch : Status) : Issue[*];
-    begin
-        return issues.select((issue : Issue) : Boolean {
-            issue.status == toMatch
-        });
-    end;
-
-    static query byStatus(toMatch : Status) : Issue[*];
-    begin
-        return Issue#filterByStatus(Issue extent, toMatch);
     end;
 
     (* Release the issue so another committer can work on it. *)
