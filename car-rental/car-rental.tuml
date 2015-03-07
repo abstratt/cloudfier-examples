@@ -93,7 +93,7 @@ class Rental
 
     readonly attribute started : Date := { Date#today() };
 
-    readonly attribute returned : Date;
+    readonly attribute returned : Date[0,1];
 
     readonly attribute car : Car;
 
