@@ -111,6 +111,7 @@ class TestData
         mechanic := new AutoMechanic;
         mechanic.firstName := "John";
         mechanic.lastName := "Fixalot";
+        mechanic.email := "john.fixalot@carserv.com";
         return mechanic;
     end;
 
@@ -118,9 +119,10 @@ class TestData
     begin
         var customer;
         customer := new Customer;
-        customer.firstName := "John";
-        customer.lastName := "Fixalot";
+        customer.firstName := "James";
+        customer.lastName := "Rider";
         customer.title := Title#Mr;
+        customer.email := "james.a.rider@freemail.com";
         return customer;
     end;
 
