@@ -5,12 +5,16 @@ import expenses;
 [Test]
 class Tests
 
+    private static operation declareFor(amount : Double, employee : Employee) : Expense;
+    begin
+        var cat; 
+        cat := Tests#category("Sample category");
+        return employee.declareExpense("just a test expense", amount, Date#today(), cat);
+    end;
+
     private static operation declare(amount : Double) : Expense;
     begin
-        var emp, cat; 
-        emp := Tests#employee("John Doe");
-        cat := Tests#category("Sample category");
-        return emp.declareExpense("just a test expense", amount, Date#today(), cat);
+        return Tests#declareFor(amount, Tests#employee("John Doe"));
     end;
     
     private static operation category(name : String) : Category;
@@ -26,6 +30,7 @@ class Tests
         var employee;
         employee := new Employee;
         employee.name := name;
+        employee.username := name;        
         return employee;
     end;
 
@@ -42,8 +47,10 @@ class Tests
 
     operation automaticApproval();
     begin
-        Assert#isTrue(Tests#declare(49.9).automaticApproval);
-        Assert#isTrue(not Tests#declare(50.0).automaticApproval);
+        var employee;
+        employee := Tests#employee("Jane Doe");
+        Assert#isTrue(Tests#declareFor(49.9, employee).automaticApproval);
+        Assert#isTrue(not Tests#declareFor(50.0, employee).automaticApproval);
     end;
 
     operation submitExpenseUnder50IsAutomaticallyApproved();
