@@ -13,7 +13,11 @@ class IssueScenarios
         begin
             user1 := TestData#newUser("User 1");
             user2 := TestData#newUser("User 2");            
+        end;
+        begin
             issue := Issue#createIssue(user1, TestData#newProject(), "A new bug", Memo#fromString("Just found it"), null);
+        end;
+        begin
             user1.voteOn(issue);
         end;
         begin
@@ -28,7 +32,11 @@ class IssueScenarios
         begin
             user1 := TestData#newUser("User 1");
             user2 := TestData#newUser("User 2");            
+        end;            
+        begin        
             issue := Issue#createIssue(user1, TestData#newProject(), "A new bug", Memo#fromString("Just found it"), null);
+        end;
+        begin            
             Assert#areEqual(issue.votes, 0);
             user1.voteOn(issue);
         end;
@@ -62,6 +70,7 @@ class TestData
         var newUser;
         newUser := new User;
         newUser.fullName := name;
+        newUser.email := name;        
         return newUser;
     end;
 end;
