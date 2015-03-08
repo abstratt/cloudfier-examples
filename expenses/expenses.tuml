@@ -201,19 +201,19 @@ class Employee
     };
 
     derived attribute totalRecorded : Double := {
-        self.totalExpenses(self.recordedExpenses)
+        self.recordedExpenses.sum((e : Expense) : Double { e.amount })
     };
 
     derived attribute totalSubmitted : Double := {
-        self.totalExpenses(self.submittedExpenses)
+        self.submittedExpenses.sum((e : Expense) : Double { e.amount })        
     };
 
     derived attribute totalApproved : Double := {
-        self.totalExpenses(self.approvedExpenses)
+        self.approvedExpenses.sum((e : Expense) : Double { e.amount })        
     };
 
     derived attribute totalRejected : Double := {
-        self.totalExpenses(self.rejectedExpenses)
+        self.rejectedExpenses.sum((e : Expense) : Double { e.amount })                
     };
 
     operation declareExpense(description : String, amount : Double, date : Date, 
