@@ -19,7 +19,9 @@ class Car
     };
 
     derived attribute currentRental : Rental := {
-        Rental#currentForCar(self)
+        Rental extent.\any((l : Rental) : Boolean {
+            (l.car == self) and l.inProgress
+        })
     };
 
     attribute year : Integer := { Date#today().year() }
@@ -108,27 +110,6 @@ class Rental
     begin
         self.returned := Date#today();
     end;
-
-    static query currentForCar(c : Car) : Rental[0,1];
-    begin
-        return Rental extent.\any((l : Rental) : Boolean {
-            (l.car == c) and l.inProgress
-        });
-    end;
-
-    static query currentForCustomer(c : Customer) : Rental[0,1];
-    begin
-        return Rental extent.\any((l : Rental) : Boolean {
-            (l.customer == c) and l.inProgress
-        });
-    end;
-    
-    static query completedForCustomer(c : Customer) : Rental[*];
-    begin
-        return Rental extent.select((l : Rental) : Boolean {
-            (l.customer == c) and (not l.inProgress)
-        });
-    end;    
     
     static query inProgress() : Rental[*];
     begin
@@ -190,7 +171,9 @@ class Customer
     end;
 
     derived attribute currentRental : Rental := {
-        Rental#currentForCustomer(self)
+        Rental extent.\any((l : Rental) : Boolean {
+            (l.customer == self) and l.inProgress
+        })
     }; 
 
     operation finishRental()
