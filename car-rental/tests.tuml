@@ -70,6 +70,8 @@ class CustomerScenarios
         end;
         begin
             customer.rent(car);
+        end;            
+        begin        
             Assert#areEqual(2, customer.rentals.size());
         end;
     end;
