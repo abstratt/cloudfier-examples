@@ -32,7 +32,7 @@ class Todo
 
     readonly attribute openedOn : Date := { Date#today() };
 
-    readonly attribute completedOn : Date;
+    readonly attribute completedOn : Date[0,1];
 
     operation complete();
 
@@ -59,15 +59,20 @@ class Todo
     
     static query openedToday() : Todo[*];
     begin
+        return Todo#openedOn(Date#today());
+    end;
+    
+    static query openedOn(date : Date) : Todo[*];
+    begin
         return Todo extent.select((t : Todo) : Boolean {
-        	t.openedOn.differenceInDays(Date#today()) <= 0
+        	t.openedOn = date
     	});
     end;
     
     static query completedToday() : Todo[*];
     begin
         return Todo extent.select((t : Todo) : Boolean {
-        	t.status == Status#Completed and (t.completedOn.differenceInDays(Date#today()) <= 0)
+        	t.status == Status#Completed and (t.completedOn = Date#today())
     	});
     end;
 

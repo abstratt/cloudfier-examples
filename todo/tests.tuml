@@ -1,0 +1,96 @@
+package tests;
+
+import todo;
+import todo::User;
+
+[Test]
+class TodoScenarios
+
+
+
+    operation allTodos();
+    begin
+        var user;
+        begin
+            Assert#areEqual(0, Todo extent.size());
+            user := Examples#userWithName("auser");
+	        Examples#todoFor(user, "");
+	        Examples#todoFor(user, "");        
+            Examples#todoFor(user, "");                
+        end;
+        begin        
+            Assert#areEqual(3, Todo extent.size());
+        end;        
+    end;
+
+    operation openTodos();
+    begin
+        var todo, user;
+        begin
+            user := Examples#userWithName("auser");
+	        Examples#todoFor(user, "");
+	        Examples#todoFor(user, "");        
+            todo := Examples#todoFor(user, "");                
+        end;
+        begin        
+            Assert#areEqual(3, Todo#open().size());
+            todo.complete();
+        end;
+        begin        
+            Assert#areEqual(2, Todo#open().size());
+        end;        
+    end;
+
+    operation openedToday();
+    begin
+        var todo, today, yesterday, user;
+        begin
+            user := Examples#userWithName("auser");
+            today := Date#today();
+            yesterday := today.transpose(Duration#days(-1));            
+	        Examples#todoFor(user, "");
+	        Examples#todoFor(user, "");        
+            todo := Examples#todoFor(user, "");
+        end;
+        begin        
+            Assert#areEqual(3, Todo#openedOn(today).size());
+            Assert#areEqual(0, Todo#openedOn(yesterday).size());            
+            todo.openedOn := yesterday;
+        end;
+        begin        
+            Assert#areEqual(2, Todo#openedOn(today).size());
+            Assert#areEqual(1, Todo#openedOn(yesterday).size());            
+        end;        
+    end;
+end;
+
+class Examples
+
+    private static operation userWithName(name : String) : User;
+    begin
+        var user;
+        user := new User;
+        user.name := name;
+        user.email := name + "@compuserve.com";
+        return user;
+    end;
+
+    private static operation todoFor(user : User, task : String) : Todo;
+    begin
+        var newTodo;
+        newTodo := new Todo;
+        newTodo.description := task;
+        newTodo.details := Memo#fromString(task + " details");        
+        newTodo.creator := user;
+        newTodo.assignee := user;        
+        return newTodo;
+    end;
+    
+    private static operation todo(task : String) : Todo;
+    begin
+        return Examples#todoFor(Examples#userWithName("a user"), task);
+    end;
+    
+end;
+
+end.
