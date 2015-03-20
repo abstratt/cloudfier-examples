@@ -249,7 +249,7 @@ class Issue
     derived attribute commentCount : Integer := { self.comments.size() };
 
     derived attribute waitingFor : String := {
-        "" + self.reportedOn.differenceInDays(self.referenceDate()) + " day(s)"
+        "" + self.reportedOn.difference(self.referenceDate()).toDays() + " day(s)"
     };
 
     private derived attribute mine : Boolean := {

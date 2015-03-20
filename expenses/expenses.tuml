@@ -71,7 +71,7 @@ class Expense
     	if (self.processed == null) then
     	    return 0
     	else
-    	    return Date#today().differenceInDays(self.processed);
+    	    return Date#today().difference(self.processed).toDays();
     };
 
     operation approve()

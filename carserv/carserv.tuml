@@ -240,7 +240,7 @@ class Service
     attribute status : Status;
 
     derived attribute estimatedDays : Integer := {
-        self.bookedOn.differenceInDays(self.estimatedReady)
+        self.bookedOn.difference(self.estimatedReady).toDays()
     };
 
     derived attribute assigned : Boolean := { not (self.technician == null) };

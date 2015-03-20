@@ -231,16 +231,16 @@ class CarScenarios
             customer := Examples#newCustomer();
         end;
         begin
-            Assert#isTrue(car.available);
+            Assert#areEqual(Car::Status#Available, car.status);            
             customer.rent(car);
             rental := customer.currentRental;
         end;
         begin
-            Assert#isTrue(not car.available);
+            Assert#areEqual(Car::Status#Rented, car.status);                        
             customer.finishRental();
         end;
         begin
-            Assert#isTrue(rental.car.available);
+            Assert#areEqual(Car::Status#Available, car.status);
         end;
     end;
 
