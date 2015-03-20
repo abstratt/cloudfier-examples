@@ -14,3 +14,4 @@ CLOUDFIER_USER=${2:-test}
 
 ./deploy-app.sh $APPLICATION $CLOUDFIER_USER
 ./deploy-db.sh $APPLICATION $CLOUDFIER_USER
+./deploy-test.sh $APPLICATION $CLOUDFIER_USER
