@@ -131,6 +131,33 @@ class Expense
             e.status == status
         });
     end;
+    
+    static query openExpenseCountPerCategory() : { category : Category, count : Integer }[*];
+    begin
+        return Expense extent.select((e : Expense) : Boolean {
+            e.status == Status#Submitted
+        }).groupBy(
+        	(e : Expense) : Category { e.category }
+    	).groupCollect((group : Expense[*]) : { category : Category, count : Integer } {
+        	{
+        		category := group.one().category,
+        		count := group.size()
+    		}
+        });
+    end;
+    
+    static query expenseCountPerEmployee() : { employee : Employee, expenseCount : Integer }[*];
+    begin
+        return Expense extent.groupBy(
+        	(e : Expense) : Employee { e.employee }
+    	).groupCollect((group : Expense[*]) : { employee : Employee, expenseCount : Integer } {
+        	{
+        		employee := group.one().employee,
+        		expenseCount := group.size()
+    		}
+        });
+    end;
+    
 
     (* 
         The different statuses an expense can go through. 

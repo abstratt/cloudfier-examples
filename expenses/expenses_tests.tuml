@@ -98,6 +98,70 @@ class Tests
             Assert#areEqual(Expense::Status#Rejected, expense.status);
         end;
     end;    
+    operation expenseByCategoryCounts();
+    begin
+        var employee, cat1, cat2, cat3;
+        begin
+            employee := Tests#employee("Jane Doe");
+            cat1 := Tests#category("category 1");
+            cat2 := Tests#category("category 2");
+            cat3 := Tests#category("category 2");            
+        end; 
+        begin        
+            employee.declareExpense("expense 1", 100, Date#today(), cat1).submit();
+            employee.declareExpense("expense 2", 100, Date#today(), cat1).submit();
+            employee.declareExpense("expense 3", 100, Date#today(), cat2).submit();
+        end;
+        begin
+            var stats, cat1Stats;
+            stats := Expense#openExpenseCountPerCategory();
+            Assert#isTrue(stats.size() >= 2);
+            
+            cat1Stats := stats.\any(
+            	(group : {category : Category, count : Integer}) : Boolean {
+            		group.category == cat1 
+        		}
+        	);
+            Assert#isNotNull(cat1Stats);
+            Assert#areEqual(2, cat1Stats.count);            
+        end;
+    end;    
+    
+    operation expenseByEmployeeCounts();
+    begin
+        var ceo, salesGuy, programmer;
+        begin
+            ceo := Tests#employee("The CEO");
+            salesGuy := Tests#employee("A sales guy");            
+            programmer := Tests#employee("A programmer that never expenses anything");                        
+        end; 
+        begin        
+            Tests#declareFor(800, ceo);
+            Tests#declareFor(1000, ceo);            
+            Tests#declareFor(2000, ceo);                        
+            Tests#declareFor(500, salesGuy);            
+        end;
+        begin
+            var stats, ceoStats, salesGuyStats;
+            stats := Expense#expenseCountPerEmployee();
+            Assert#isTrue(stats.size() >= 2);
+            
+            ceoStats := stats.\any(
+            	(group : {employee : Employee, expenseCount : Integer}) : Boolean {
+            		group.employee == ceo
+        		}
+        	);
+            salesGuyStats := stats.\any(
+            	(group : {employee : Employee, expenseCount : Integer}) : Boolean {
+            		group.employee == salesGuy
+        		}
+        	);        	
+            Assert#isNotNull(ceoStats);
+            Assert#areEqual(3, ceoStats.expenseCount);            
+            Assert#isNotNull(salesGuyStats);
+            Assert#areEqual(1, salesGuyStats.expenseCount);            
+        end;
+    end;        
 end;
 
 end.
