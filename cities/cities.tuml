@@ -32,6 +32,18 @@ class State
     begin
         return self.cities.\any((c : City) : Boolean { c.name = name });
     end;
+    
+    static query citiesByState() : { stateAcronym : String, cities : City[*] }[*];
+    begin
+        return City extent.groupBy((c : City) : State {
+        	c.cityState
+    	}).groupCollect((cities : City[*]) : { stateAcronym  : String, cities : City[*]} {
+            {
+                stateAcronym := cities.one().cityState.abbreviation, 
+                cities := cities
+            }
+        });
+    end;
 
     static query byAbbreviation(abbreviation : String) : State[0, 1];
     begin
@@ -56,6 +68,14 @@ class State
         }).collect((stats : {cityState : State,  : Integer}) : State {
             stats.cityState
         });
+        /*
+          CriteriaQuery<City> q = cb.createQuery(City.class);
+		  Root<City> c = q.from(City.class);
+		  q.select(c.get("currency"), cb.sum(c.get("population")));
+		  q.where(cb.isMember("Europe", c.get("continents")));
+		  q.groupBy(c.get("currency"));
+		  g.having(cb.gt(cb.count(c), 1));
+         */
     end;
 
     static query abbreviationsOfStatesMorePopulousThan(threshold : Integer) : String[*];
