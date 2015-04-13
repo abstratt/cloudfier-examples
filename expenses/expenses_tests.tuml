@@ -98,6 +98,45 @@ class Tests
             Assert#areEqual(Expense::Status#Rejected, expense.status);
         end;
     end;    
+
+    operation expenseByCategoryTotals();
+    begin
+        var employee, cat1, cat2, cat3;
+        begin
+            employee := Tests#employee("Jane Doe");
+            cat1 := Tests#category("category 1");
+            cat2 := Tests#category("category 2");
+            cat3 := Tests#category("category 2");            
+        end; 
+        begin        
+            employee.declareExpense("expense 1", 100, Date#today(), cat1).submit();
+            employee.declareExpense("expense 2", 300, Date#today(), cat1).submit();
+            employee.declareExpense("expense 3", 750, Date#today(), cat2).submit();
+        end;
+        begin
+            var stats, cat1Stats, cat2Stats;
+            stats := Category#totalExpensesPerCategory();
+            Assert#isTrue(stats.size() >= 2);
+            
+            cat1Stats := stats.\any(
+            	(group : CategoryTotal) : Boolean {
+            		group.category == cat1 
+        		}
+        	);
+            Assert#isNotNull(cat1Stats);
+            Assert#areEqual(400, cat1Stats.total);            
+            
+            cat2Stats := stats.\any(
+            	(group : CategoryTotal) : Boolean {
+            		group.category == cat2
+        		}
+        	);
+            Assert#isNotNull(cat2Stats);
+            Assert#areEqual(750, cat2Stats.total);            
+        end;
+    end;    
+    
+    
     operation expenseByCategoryCounts();
     begin
         var employee, cat1, cat2, cat3;
@@ -125,7 +164,7 @@ class Tests
             Assert#isNotNull(cat1Stats);
             Assert#areEqual(2, cat1Stats.count);            
         end;
-    end;    
+    end;        
     
     operation expenseByEmployeeCounts();
     begin

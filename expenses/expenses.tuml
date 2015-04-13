@@ -2,6 +2,11 @@ package expenses;
 
 import payment;
 
+datatype CategoryTotal
+    attribute category : Category;
+    attribute total : Double;
+end;
+
 (* The category for an expense. *)
 class Category
 
@@ -18,6 +23,18 @@ class Category
     derived attribute expensesInThisCategory : Expense[*] := {
         Expense#findExpensesByCategory(self)
     };
+    
+    static query totalExpensesPerCategory() : CategoryTotal[*];
+    begin
+        return Expense extent.groupBy((e : Expense) : Category {
+        	e.category
+    	}).groupCollect((expenses : Expense[*]) : CategoryTotal {
+            {
+                category := expenses.one().category, 
+                total := expenses.sum((e : Expense) : Double { e.amount })
+            }
+        });
+    end;
 end;
 
 (* The expense as reported by an employee. *)
