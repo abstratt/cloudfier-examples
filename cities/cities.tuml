@@ -71,7 +71,7 @@ class State
         /*
           CriteriaQuery<City> q = cb.createQuery(City.class);
 		  Root<City> c = q.from(City.class);
-		  q.select(c.get("currency"), cb.sum(c.get("population")));
+		  q.multiselect(c.get("currency"), cb.sum(c.get("population")));
 		  q.where(cb.isMember("Europe", c.get("continents")));
 		  q.groupBy(c.get("currency"));
 		  g.having(cb.gt(cb.count(c), 1));
@@ -84,7 +84,7 @@ class State
             s.abbreviation
         });
     end;
-    
+
     static query statePopulations() : StatePopulation[*];
     begin
         return State extent.collect((cityState : State) : StatePopulation {
@@ -92,6 +92,18 @@ class State
                 abbreviation := cityState.abbreviation, 
                 population := cityState.population
             } as StatePopulation)
+        });
+    end;
+    
+    static query statePopulations2() : StatePopulation[*];
+    begin
+        return City extent.groupBy((c : City) : State {
+        	c.cityState
+    	}).groupCollect((cities : City[*]) : StatePopulation {
+            {
+                abbreviation := cities.one().cityState.abbreviation, 
+                population := cities.sum((c : City) : Integer { c.population })
+            }
         });
     end;
 end;

@@ -35,6 +35,38 @@ class Category
             }
         });
     end;
+    
+    static query totalApprovedExpensesPerCategory() : CategoryTotal[*];
+    begin
+        return Expense extent
+        .select((e : Expense) : Boolean {
+    		e.status == Expense::Status#Approved 
+		}).groupBy((e : Expense) : Category {
+        	e.category
+    	}).groupCollect((expenses : Expense[*]) : CategoryTotal {
+            {
+                category := expenses.one().category, 
+                total := expenses.sum((e : Expense) : Double { e.amount })
+            }
+        });
+    end;    
+    
+    static query mostExpensedCategories(threshold : Double) : CategoryTotal[*];
+    begin
+        return Expense extent.select((e : Expense) : Boolean {
+    		e.status == Expense::Status#Submitted
+		}).groupBy((e : Expense) : Category {
+        	e.category
+    	}).groupCollect((expenses : Expense[*]) : CategoryTotal {
+            {
+                category := expenses.one().category, 
+                total := expenses.sum((e : Expense) : Double { e.amount })
+            }
+        }).select((total : CategoryTotal) : Boolean {
+        	total.total > threshold
+    	});
+    end;    
+
 end;
 
 (* The expense as reported by an employee. *)
