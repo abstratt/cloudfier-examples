@@ -2,7 +2,12 @@ codegen-examples
 ================
 
 
-[![Build Status](https://textuml.ci.cloudbees.com/buildStatus/icon?job=codegen-examples)](https://textuml.ci.cloudbees.com/job/codegen-examples/)
+JEE: [![Build Status](https://textuml.ci.cloudbees.com/buildStatus/icon?job=codegen-examples-JEE)](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/)
+
+JSE: [![Build Status](https://textuml.ci.cloudbees.com/buildStatus/icon?job=codegen-examples-JSE)](https://textuml.ci.cloudbees.com/job/codegen-examples-JSE/)
+
+MEAN: [![Build Status](https://textuml.ci.cloudbees.com/buildStatus/icon?job=codegen-examples-MEAN)](https://textuml.ci.cloudbees.com/job/codegen-examples-MEAN/)
+
 
 This project allows generating code (and running tests) from example applications deployed to the Cloudfier server.
 
