@@ -279,6 +279,46 @@ class Tests
             Assert#areEqual(1, salesGuyStats.expenseCount);            
         end;
     end;        
+    
+    operation expenseDetails();
+    begin
+        var ceo, salesGuy,
+        	cat1, cat2, cat3;
+        begin
+            cat1 := Tests#category("category 1");
+            cat2 := Tests#category("category 2");
+            cat3 := Tests#category("category 2");            
+            ceo := Tests#employee("The CEO");
+            salesGuy := Tests#employee("A sales guy");            
+        end; 
+        begin        
+            ceo.declareExpense("expense 1", 100, Date#today(), cat1);
+            salesGuy.declareExpense("expense 2", 200, Date#today(), cat2);
+        end;
+        begin
+            var details, ceoDetails, salesGuyDetails;
+            details := Expense#expenseDetails();
+            Assert#isTrue(details.size() >= 2);
+             
+            ceoDetails := details.\any(
+            	(it : {reporter : Employee, category : String, expenseAmount : Double}) : Boolean {
+            		it.reporter == ceo
+        		}
+        	);
+            salesGuyDetails := details.\any(
+            	(it : {reporter : Employee, category : String, expenseAmount : Double}) : Boolean {
+            		it.reporter == salesGuy
+        		}
+        	);        	
+            Assert#isNotNull(ceoDetails);
+            Assert#areEqual(100, ceoDetails.expenseAmount);            
+            Assert#areEqual(cat1.name, ceoDetails.category);               
+            Assert#isNotNull(salesGuyDetails);
+            Assert#areEqual(200, salesGuyDetails.expenseAmount);             
+            Assert#areEqual(cat2.name, salesGuyDetails.category);                           
+        end;
+    end;        
+
 end;
 
 end.

@@ -207,6 +207,17 @@ class Expense
         });
     end;
     
+    static query expenseDetails() : { reporter : Employee, category: String, expenseAmount : Double }[*];
+    begin
+        return Expense extent.collect((e : Expense) : { reporter : Employee, category : String, expenseAmount : Double } {
+        	{
+        		reporter := e.employee,
+        		category := e.category.name,
+        		expenseAmount := e.amount
+    		}
+        });
+    end;
+
 
     (* 
         The different statuses an expense can go through. 
