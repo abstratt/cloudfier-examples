@@ -5,5 +5,5 @@ if [ "$#" -lt 2 ] ; then
 fi
 APPLICATION=$1
 PLATFORM=$2
-echo mvn clean install -f $PLATFORM/$APPLICATION/gen/pom.xml $3 $4 $5 $6 $7 $8 $9
-mvn clean install -f $PLATFORM/$APPLICATION/gen/pom.xml $3 $4 $5 $6 $7 $8 $9
+echo mvn clean test -f $PLATFORM/$APPLICATION/gen/pom.xml $3 $4 $5 $6 $7 $8 $9
+mvn clean test -f $PLATFORM/$APPLICATION/gen/pom.xml $3 $4 $5 $6 $7 $8 $9
