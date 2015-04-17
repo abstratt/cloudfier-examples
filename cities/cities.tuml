@@ -68,20 +68,23 @@ class State
         }).collect((stats : {cityState : State,  : Integer}) : State {
             stats.cityState
         });
-        /*
-          CriteriaQuery<City> q = cb.createQuery(City.class);
-		  Root<City> c = q.from(City.class);
-		  q.multiselect(c.get("currency"), cb.sum(c.get("population")));
-		  q.where(cb.isMember("Europe", c.get("continents")));
-		  q.groupBy(c.get("currency"));
-		  g.having(cb.gt(cb.count(c), 1));
-         */
     end;
 
     static query abbreviationsOfStatesMorePopulousThan(threshold : Integer) : String[*];
     begin
-        return State#statesMorePopulousThan(threshold).collect((s : State) : String {
-            s.abbreviation
+        return City extent.groupBy((c : City) : State {
+        	c.cityState
+    	}).groupCollect((cities : City[*]) : { : String,  : Integer} {
+            {
+                cityState := cities.one().cityState.abbreviation, 
+                statePopulation := cities.sum((c : City) : Integer {
+                    c.population
+                })
+            }
+        }).select((aggregated : { : String, statePopulation : Integer}) : Boolean {
+            aggregated.statePopulation > threshold
+        }).collect((aggregated : { cityState : String, statePopulation : Integer}) : String {
+        	aggregated.cityState
         });
     end;
 
