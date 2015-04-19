@@ -10,9 +10,9 @@ class Car
 
     attribute price : Double := 500.0
         (* Price mustbe $50 at least. *)
-        invariant above_minimum { self.price >= 50.0 }
+        invariant PriceAboveMinimum { self.price >= 50.0 }
         (* Price cannot be above $500. *)
-        invariant below_maximum { self.price <= 500.0 };
+        invariant PriceBelowMaximum { self.price <= 500.0 };
 
     derived attribute available : Boolean := {
         self.status == Status#Available
@@ -26,9 +26,9 @@ class Car
 
     attribute year : Integer := { Date#today().year() }
         (* Year must be later than 1990 *)
-        invariant above_minimum { (self.year > 1990) }
+        invariant YearAboveMinimum { (self.year > 1990) }
         (* Year cannot be in the future *)
-        invariant below_maximum { self.year <= Date#today().year() };
+        invariant YearBelowMaximum { self.year <= Date#today().year() };
 
     attribute color : String[0,1];
 
@@ -63,13 +63,13 @@ class Car
 
 
     operation startRepair()
-        precondition must_be_available { self.status == Status#Available };
+        precondition MustBeAvailable { self.status == Status#Available };
     begin
         send RepairStarted() to self;
     end;
 
     operation finishRepair()
-        precondition must_be_under_repair { self.status == Status#UnderRepair };
+        precondition MustBeUnderRepair { self.status == Status#UnderRepair };
     begin
         send RepairFinished() to self;
     end;
@@ -106,7 +106,7 @@ class Rental
     };
 
     protected operation finish()
-        precondition must_be_in_progress { self.inProgress };
+        precondition MustBeInProgress { self.inProgress };
     begin
         self.returned := Date#today();
     end;
@@ -160,8 +160,8 @@ class Customer
     };   
 
     operation rent(car : Car)
-        precondition car_must_be_available(car) { car.available }
-        precondition customer_must_have_no_current_rental { self.currentRental == null };
+        precondition CarMustBeAvailable(car) { car.available }
+        precondition CustomerMustHaveNoCurrentRental { self.currentRental == null };
     begin
         var rental;
         rental := new Rental;
@@ -177,7 +177,7 @@ class Customer
     }; 
 
     operation finishRental()
-        precondition current_rental_exists { self.hasCurrentRental };
+        precondition CurrentRentalExists { self.hasCurrentRental };
     begin
         send CarReturned() to self.currentRental.car;
         self.currentRental.finish();

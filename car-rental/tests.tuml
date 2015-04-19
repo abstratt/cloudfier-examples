@@ -113,7 +113,7 @@ class RentalScenarios
         end;
     end;
 
-    [Failure(constraint="customer_must_have_no_current_rental")]
+    [Failure(constraint="CustomerMustHaveNoCurrentRental")]
     operation oneCarPerCustomer();
     begin
         var car1, car2, customer;
@@ -128,7 +128,7 @@ class RentalScenarios
         end;
     end;
 
-    [Failure(constraint="car_must_be_available")]
+    [Failure(constraint="CarMustBeAvailable")]
     operation carUnavailable();
     begin
         var car, customer1, customer2;
@@ -177,7 +177,7 @@ class CarScenarios
         Assert#isTrue(car.available);
     end;
 
-    [Failure(constraint="above_minimum", context="year")]
+    [Failure(constraint="YearAboveMinimum", context="year")]
     operation tooOld();
     begin
         var car;
@@ -185,7 +185,7 @@ class CarScenarios
         car.year := 1900;
     end;
 
-    [Failure(constraint="below_maximum", context="year")]
+    [Failure(constraint="YearBelowMaximum", context="year")]
     operation tooNew();
     begin
         var car;
@@ -193,7 +193,7 @@ class CarScenarios
         car.year := 2500;
     end;
 
-    [Failure(constraint="above_minimum", context="price")]
+    [Failure(constraint="PriceAboveMinimum", context="price")]
     operation priceIsTooLow();
     begin
         var car;
@@ -201,7 +201,7 @@ class CarScenarios
         car.price := 49.0;
     end;
 
-    [Failure(constraint="below_maximum", context="price")]
+    [Failure(constraint="PriceBelowMaximum", context="price")]
     operation priceIsTooHigh();
     begin
         var car;
