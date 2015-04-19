@@ -119,7 +119,7 @@ end;
 
 class Work
 
-    attribute units : Integer
+    attribute units : Integer := 1
         (* Work must describe a positive number of units. *)
         invariant MustBePositive { self.units > 0 };
 
