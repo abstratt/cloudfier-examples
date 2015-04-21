@@ -26,6 +26,24 @@ class Client
         link ClientInvoice(client := self, invoices := newInvoice);
         return newInvoice;
     end;
+    
+    static query withInvoicesToIssue() : Client[*];
+    begin
+        return Client extent.select((client : Client) : Boolean {
+        	client.invoices.exists((i : Invoice) : Boolean {
+        	    i.status == Invoice::Status#Preparation
+        	})
+        });
+    end;
+    
+    static query withInvoicesIssued() : Client[*];
+    begin
+        return Client extent.select((client : Client) : Boolean {
+        	client.invoices.exists((i : Invoice) : Boolean {
+        	    i.status == Invoice::Status#Invoiced
+        	})
+        });
+    end;    
 end;
 
 class Task
