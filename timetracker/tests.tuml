@@ -2,38 +2,6 @@ package tests;
 
 import timetracker;
 
-
-[Test]
-class ClientScenarios
-    operation clientsWithInvoicesToIssue();
-    begin
-        var client1, client2, client3, client4, client1Invoice, client2Invoice, client3Invoice;
-        begin
-            client1 := Examples#client();
-            client2 := Examples#client();
-            client3 := Examples#client();            
-            client4 := Examples#client();                        
-            client1Invoice := client1.startInvoice();
-            client2Invoice := client2.startInvoice();            
-            client3Invoice := client3.startInvoice();                        
-            client1.newTask("Some task").addWork(1).submit(client1Invoice);
-            client2.newTask("Some task").addWork(1).submit(client2Invoice);
-            client3.newTask("Some task").addWork(1).submit(client3Invoice);            
-            client3Invoice.issue();
-        end;
-        begin
-            var clientsWithInvoicesToIssue;
-            clientsWithInvoicesToIssue := Client#withInvoicesToIssue(); 
-            Assert#areEqual(1, Client#withInvoicesIssued().size());            
-            Assert#isTrue(2 <= clientsWithInvoicesToIssue.size());
-            Assert#isTrue(clientsWithInvoicesToIssue.includes(client1));
-            Assert#isTrue(clientsWithInvoicesToIssue.includes(client2));            
-            Assert#isTrue(!clientsWithInvoicesToIssue.includes(client3));
-            Assert#isTrue(!clientsWithInvoicesToIssue.includes(client4));            
-        end;
-    end;
-end;
-
 [Test]
 class TaskScenarios
 
