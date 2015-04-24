@@ -1,6 +1,7 @@
 codegen-examples
 ================
 
+This project contains command-line tools (bash scripts) for accessing features from a [Cloudfier](http://cloudfier.com) ([git repository](http://github.com/abstratt/cloudfier)) server.
 
 Target platforms
 ----------------
