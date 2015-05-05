@@ -11,7 +11,7 @@ When running these applications, it is usually possible to login as user 'guest'
 the mdd.properties file). The descriptions below include some examples of credentials
 that can be used to log in.
 
-
+This is a test. 
 Expenses
 --------------------------------------------------------------------------------
 
