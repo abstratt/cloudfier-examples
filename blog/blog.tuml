@@ -1,5 +1,8 @@
 package blog;
 
+apply kirra;
+import mdd_types;
+
 [kirra::User]
 class User
     readonly id attribute email : String;

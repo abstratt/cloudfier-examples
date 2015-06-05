@@ -1,5 +1,10 @@
 package review;
 
+
+
+apply kirra;
+import mdd_types;
+
 class Title
 
     attribute name : String;

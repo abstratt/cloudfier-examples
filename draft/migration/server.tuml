@@ -1,5 +1,8 @@
 package migration;
 
+import mdd_types;
+apply kirra;
+
 signal CloningSuccess
 end;
 
@@ -71,9 +74,9 @@ class Server
 end;
 
 enumeration HostKind
-    Physical, 
-    Virtual, 
-    Cloud
+    Physical;
+    Virtual;
+    Cloud;
 end;
 
 end.

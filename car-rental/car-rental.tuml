@@ -1,5 +1,8 @@
 package car_rental;
 
+apply kirra;
+import mdd_types;
+
 class Car
 
     derived attribute description : String := {

@@ -1,5 +1,8 @@
 package expenses;
 
+
+apply kirra;
+import mdd_types;
 import payment;
 
 datatype CategoryTotal

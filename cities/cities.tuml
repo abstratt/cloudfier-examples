@@ -1,5 +1,8 @@
 package cities;
 
+apply kirra;
+import mdd_types;
+
 class City
 
     attribute name : String;

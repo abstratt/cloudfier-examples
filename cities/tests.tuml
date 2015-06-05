@@ -1,5 +1,8 @@
 package cities_tests;
 
+apply mdd_extensions;
+import mdd_types;
+
 import cities::State;
 import cities;
 

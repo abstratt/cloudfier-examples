@@ -1,5 +1,8 @@
 package autolocadora;
 
+apply kirra;
+import mdd_types;
+
 class Carro
 
     attribute placa : String;
@@ -174,10 +177,10 @@ class CartaoDeCredito
 end;
 
 enumeration BandeiraCartao
-    VISA, 
-    Mastercard, 
-    Amex, 
-    Dinners
+    VISA;
+    Mastercard; 
+    Amex; 
+    Dinners;
 end;
 
 end.

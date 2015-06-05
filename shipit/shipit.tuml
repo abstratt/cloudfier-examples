@@ -5,6 +5,10 @@
  */
 package shipit;
 
+
+apply kirra;
+import mdd_types;
+
 [kirra::User]
 class User
 

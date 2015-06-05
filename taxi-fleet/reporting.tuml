@@ -1,5 +1,8 @@
 package reporting;
 
+
+import mdd_types;
+
 interface ReportingService
 
     query listPendingCharges() : ChargeDetails[*];

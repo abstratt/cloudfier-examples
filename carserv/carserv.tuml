@@ -12,6 +12,7 @@
 */
 package carserv;
 
+apply kirra;
 import mdd_types;
 
 [kirra::User]

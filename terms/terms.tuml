@@ -1,5 +1,8 @@
 package terms;
 
+apply kirra;
+import mdd_types;
+
 datatype NoRelatedTermFound
 end;
 

@@ -1,5 +1,7 @@
 package timetracker; 
 
+apply kirra;
+import mdd_types;
 import invoicer;
 
 class Client

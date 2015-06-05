@@ -1,6 +1,7 @@
 package expenses_tests;
 
 import expenses;
+apply mdd_extensions;
 
 [Test]
 class Tests

@@ -1,5 +1,8 @@
 package carserv_tests;
 
+apply mdd_extensions;
+import mdd_types;
+
 import carserv::Model;
 import carserv::Service;
 import carserv;

@@ -1,5 +1,8 @@
-package testes;
+package autolocadora_testes;
 
+
+apply mdd_extensions;
+import mdd_types;
 import autolocadora;
 
 [Test]
@@ -7,7 +10,7 @@ class ClienteCenarios
 
     operation historicoLocacoes();
     begin
-        var carro : Carro, cliente : Cliente;
+        var carro, cliente : Cliente;
         begin
             carro := Exemplos#carro();
             cliente := Exemplos#cliente();
@@ -27,7 +30,7 @@ class LocacaoCenarios
 
     operation comecaEmAberto();
     begin
-        var carro : Carro, cliente : Cliente;
+        var carro, cliente : Cliente;
         begin
             carro := Exemplos#carro();
             cliente := Exemplos#cliente();
@@ -42,7 +45,7 @@ class LocacaoCenarios
 
     operation encerradoQuandoCarroRetornado();
     begin
-        var carro : Carro, cliente : Cliente, locacao : Locacao;
+        var carro, cliente : Cliente, locacao : Locacao;
         begin
             carro := Exemplos#carro();
             cliente := Exemplos#cliente();
@@ -60,7 +63,7 @@ class LocacaoCenarios
 
     operation carroDisponivelQuandoRetornado();
     begin
-        var carro : Carro, cliente : Cliente;
+        var carro, cliente : Cliente;
         begin
             carro := Exemplos#carro();
             cliente := Exemplos#cliente();
@@ -78,7 +81,7 @@ class LocacaoCenarios
     [Failure(constraint="sem_locacao_ativa")]
     operation somenteUmCarroPorCliente();
     begin
-        var carro1 : Carro, carro2 : Carro, cliente : Cliente;
+        var carro1, carro2, cliente : Cliente;
         begin
             carro1 := Exemplos#carro();
             cliente := Exemplos#cliente();
@@ -93,7 +96,7 @@ class LocacaoCenarios
     [Failure(constraint="carro_disponivel")]
     operation carroIndisponivel();
     begin
-        var carro : Carro, cliente1 : Cliente, cliente2 : Cliente;
+        var carro, cliente1 : Cliente, cliente2 : Cliente;
         begin
             carro := Exemplos#carro();
             cliente1 := Exemplos#cliente();
@@ -112,21 +115,21 @@ class CarroCenarios
 
     operation iniciaValido();
     begin
-        var carro : Carro;
+        var carro;
         carro := Exemplos#carro();
     end;
 
     operation iniciaDisponivel();
     begin
-        var carro : Carro;
+        var carro;
         carro := Exemplos#carro();
         Assert#isTrue(carro.disponivel);
     end;
-
+    
     [Failure(constraint="acima_do_minimo", context="ano")]
     operation muitoAntigo();
     begin
-        var carro : Carro;
+        var carro;
         carro := Exemplos#carro();
         carro.ano := 1900;
     end;
@@ -134,7 +137,7 @@ class CarroCenarios
     [Failure(constraint="abaixo_do_maximo", context="ano")]
     operation muitoNovo();
     begin
-        var carro : Carro;
+        var carro;
         carro := Exemplos#carro();
         carro.ano := 2500;
     end;
@@ -142,7 +145,7 @@ class CarroCenarios
     [Failure(constraint="acima_do_minimo", context="diaria")]
     operation diariaMuitoBaixa();
     begin
-        var carro : Carro;
+        var carro;
         carro := Exemplos#carro();
         carro.diaria := 49;
     end;
@@ -150,21 +153,14 @@ class CarroCenarios
     [Failure(constraint="abaixo_do_maximo", context="diaria")]
     operation diariaMuitoAlta();
     begin
-        var carro : Carro;
+        var carro;
         carro := Exemplos#carro();
         carro.diaria := 2000;
     end;
 
-    operation iniciaDisponivel();
-    begin
-        var carro : Carro;
-        carro := Exemplos#carro();
-        Assert#isTrue(carro.disponivel);
-    end;
-
     operation indisponivelQuandoAlugado();
     begin
-        var carro : Carro, cliente : Cliente;
+        var carro, cliente : Cliente;
         begin
             carro := Exemplos#carro();
             cliente := Exemplos#cliente();
@@ -179,7 +175,7 @@ class CarroCenarios
 
     operation disponivelQuandoRetornado();
     begin
-        var carro : Carro, cliente : Cliente;
+        var carro, cliente : Cliente;
         begin
             carro := Exemplos#carro();
             cliente := Exemplos#cliente();
@@ -199,7 +195,7 @@ class CarroCenarios
 
     operation indisponivelQuandoEmReparo();
     begin
-        var carro : Carro;
+        var carro;
         begin
             carro := Exemplos#carro();
             carro.iniciaReparo();
@@ -231,7 +227,7 @@ class Exemplos
 
     private static operation carro() : Carro;
     begin
-        var carro : Carro;
+        var carro;
         carro := new Carro;
         carro.ano := Date#today().year();
         carro.diaria := 100;

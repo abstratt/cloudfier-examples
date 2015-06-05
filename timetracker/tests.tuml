@@ -1,5 +1,9 @@
-package tests;
+package timetracker_tests;
 
+
+apply kirra;
+import mdd_types;
+import mdd_extensions;
 import timetracker;
 
 [Test]

@@ -1,5 +1,9 @@
 package multiplier;
 
+
+apply kirra;
+import mdd_types;
+
 interface Multiplier
 
     operation multiply(v1 : Double, v2 : Double) : Integer;

@@ -1,4 +1,6 @@
-package tests;
+package todo_tests;
+
+apply mdd_extensions;
 
 import todo;
 import todo::User;

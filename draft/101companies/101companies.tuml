@@ -1,5 +1,9 @@
 package _101companies;
 
+
+apply kirra;
+import mdd_types;
+
 class Department
 
     attribute name : String;
