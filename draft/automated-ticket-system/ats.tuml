@@ -288,36 +288,24 @@ class Ticket
         initial state Open
             transition on signal(TicketSuspended) to Suspended;
             transition on signal(TicketInProgress) to InProgress;
-            transition on signal(TicketCompleted) to Completed;
             transition on signal(TicketWithdrawn) to Withdrawn;
         end;
 
         state InProgress
             transition on signal(TicketSuspended) to Suspended;
-            transition on signal(TicketInProgress) to InProgress;
             transition on signal(TicketCompleted) to Completed;
-            transition on signal(TicketWithdrawn) to Withdrawn;
         end;
 
-        state Withdrawn
-            transition on signal(TicketSuspended) to Suspended;
-            transition on signal(TicketInProgress) to InProgress;
-            transition on signal(TicketCompleted) to Completed;
-            transition on signal(TicketWithdrawn) to Withdrawn;
+        terminate state Withdrawn
         end;
 
         state Suspended
-            transition on signal(TicketSuspended) to Suspended;
             transition on signal(TicketInProgress) to InProgress;
-            transition on signal(TicketCompleted) to Completed;
             transition on signal(TicketWithdrawn) to Withdrawn;
         end;
 
         state Completed
-            transition on signal(TicketSuspended) to Suspended;
-            transition on signal(TicketInProgress) to InProgress;
-            transition on signal(TicketCompleted) to Completed;
-            transition on signal(TicketWithdrawn) to Withdrawn;
+            transition on signal(TicketReopened) to Open;
         end;
 
     end;
@@ -335,6 +323,10 @@ end;
 
 signal TicketInProgress
 end;
+
+signal TicketReopened
+end;
+
 
 composition TicketComments
 

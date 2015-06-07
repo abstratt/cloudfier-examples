@@ -110,7 +110,6 @@ class AutoMechanic specializes Person
         state Retired 
         	entry { self.doUnassign(); };
         end;
-
     end;
 
 end;
@@ -175,7 +174,7 @@ class Car
 
     private readonly attribute services : Service[*];
 
-    attribute \model : Model;
+    reference \model : Model;
 
     attribute owner : Customer;
 

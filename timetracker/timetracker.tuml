@@ -111,7 +111,6 @@ class Invoice
         end;
 
         state Received end;
-
     end;
 
 end;

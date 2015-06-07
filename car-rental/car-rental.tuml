@@ -35,7 +35,7 @@ class Car
 
     attribute color : String[0,1];
 
-    readonly attribute carModel : CarModel;
+    readonly reference carModel : CarModel;
 
     derived attribute underRepair : Boolean := {
         self.status == Status#UnderRepair
@@ -60,6 +60,10 @@ class Car
 
         state UnderRepair
             transition on signal(RepairFinished) to Available;
+            transition on signal(CarDecomissioned) to Decomissioned;
+        end;
+        
+        terminate state Decomissioned
         end;
 
     end;
@@ -88,6 +92,9 @@ signal RepairStarted
 end;
 
 signal RepairFinished
+end;
+
+signal CarDecomissioned
 end;
 
 class Rental

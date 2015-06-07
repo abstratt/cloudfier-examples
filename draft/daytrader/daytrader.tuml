@@ -1,8 +1,9 @@
 /* This application is in-progress. */
 package daytrader;
 
-import mdd_types;
 apply kirra;
+
+import mdd_types;
 
 class Account
 
@@ -69,24 +70,39 @@ class Order
     attribute quantity : Double;
 
     attribute holding : Holding;
+    
+    operation process();
+    operation complete();
+    operation close();
+    operation cancel();
 
     statemachine Status
 
-        initial state Open end;
+        initial state Open
+        	transition on call(process) to Processing; 
+        end;
 
-        state Processing end;
+        state Processing
+        	transition on call(complete) to Completed;
+        	transition on call(cancel) to Cancelled;
+        end;
 
-        terminate state Completed end;
+        state Completed
+        	transition on call(close) to Closed;
+        end;
 
-        terminate state Closed end;
+        state Closed end;
 
         terminate state Cancelled end;
 
     end;
+
 end;
 
 enumeration OrderType
+
     Buy;
+
     Sell;
 end;
 
