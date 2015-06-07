@@ -3,6 +3,9 @@ Example Cloudfier apps
 
 This repository contains simple examples of [Cloudfier](http://cloudfier.com) ([git repository](http://github.com/abstratt/cloudfier)) applications.
 
+
+### Loading the examples into Cloudfier
+
 For instructions on how to get these example apps into Cloudfier, 
 [read this](http://cloudfier.com/doc/creating/examples/).
 
@@ -11,7 +14,15 @@ When running these applications, it is usually possible to login as user 'guest'
 the mdd.properties file). The descriptions below include some examples of credentials
 that can be used to log in.
 
-This is a test. 
+### Loading the examples into the TextUML Toolkit
+
+1. clone the entire repository as a single MDD project in the TextUML Toolkit (you will need Git support in Eclipse)
+2. create a second MDD project called kirra
+3. add the contents of [kirra.tuml](https://github.com/abstratt/cloudfier/blob/master/kirra-mdd/com.abstratt.kirra.mdd.core/models/kirra.tuml) there
+
+Note that in this setup, all .uml files (the actual UML models) are created at the root, and you can only visualize diagrams by opening the .uml files, not the source.tuml files (which is possible when the source files are side-by-side with the .uml files).
+
+
 Expenses
 --------------------------------------------------------------------------------
 
