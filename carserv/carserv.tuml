@@ -88,17 +88,21 @@ class AutoMechanic specializes Person
     end;
 
     (* Brings the employee back from vacation. Employee can be assigned work again. *)
-    operation endVacation()
-        precondition MustBeOnVacation { self.status == WorkingStatus#Vacation };
+    operation endVacation();
 
     operation retire()
         precondition NoWorkInProgress { not self.workInProgress };
     begin
     end;
+    
+    operation completeTraining();
 
     statemachine WorkingStatus
 
-        initial state Working
+        initial state Training
+            transition on call(completeTraining) to Working;
+        end;
+        state Working
             transition on call(beginVacation) to Vacation;
             transition on call(retire) to Retired;
         end;
@@ -106,7 +110,7 @@ class AutoMechanic specializes Person
         state Vacation
             transition on call(endVacation) to Working;
         end;
-
+        
         state Retired 
         	entry { self.doUnassign(); };
         end;
