@@ -60,9 +60,14 @@ class Car
 
         state UnderRepair
             transition on signal(RepairFinished) to Available;
+            transition on call(decomission) to Decomissioned;
+        end;
+        
+        terminate state Decomissioned
         end;
     end;
-
+    
+    operation decomission();
 
     operation startRepair()
         precondition MustBeAvailable { self.status == Status#Available };
@@ -118,6 +123,13 @@ class Rental
         return Rental extent.select((l : Rental) : Boolean {
             l.inProgress
         });
+    end;
+    
+    static query countRentalsInProgress() : Integer;
+    begin
+        return Rental extent.select((l : Rental) : Boolean {
+            l.inProgress
+        }).size();
     end;
     static query all() : Rental[*];
     begin
