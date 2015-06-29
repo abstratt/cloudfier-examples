@@ -1,9 +1,8 @@
-package tests;
+package car_rental_tests;
 
 apply mdd_extensions;
 import mdd_types;
-import car_rental
-;
+import car_rental;
 
 [Test]
 class MakeScenarios
