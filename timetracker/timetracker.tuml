@@ -28,6 +28,25 @@ class Client
         link ClientInvoice(client := self, invoices := newInvoice);
         return newInvoice;
     end;
+    
+    static query withInvoicesToIssue() : Client[*];
+    begin
+        return Client extent.select((client : Client) : Boolean {
+        	client.invoices.exists((i : Invoice) : Boolean {
+        	    i.open
+        	})
+        });
+    end;
+    
+    static query withInvoicesPending() : Client[*];
+    begin
+        return Client extent.select((client : Client) : Boolean {
+        	client.invoices.exists((i : Invoice) : Boolean {
+        	    i.pending
+        	})
+        });
+    end;    
+    
 end;
 
 class Task
@@ -75,6 +94,8 @@ class Invoice
     attribute reported : Work[*];
 
     derived attribute open : Boolean := { self.status == Status#Preparation };
+    derived attribute pending : Boolean := { self.status == Status#Invoiced };        
+    derived attribute paid : Boolean := { self.status == Status#Received };        
 
     attribute status : Status;
 
@@ -90,6 +111,8 @@ class Invoice
     begin
         self.issueDate := Date#today();
     end;
+    
+    operation cancel();
 
     private operation sendInvoice();
     begin
@@ -108,9 +131,12 @@ class Invoice
             };
 
             transition on signal(InvoicePaid) to Received;
+            transition on call(cancel) to Canceled;            
         end;
 
         state Received end;
+        
+        state Canceled end;
     end;
 
 end;
