@@ -129,6 +129,30 @@ class RentalScenarios
             customer.rent(car2);
         end;
     end;
+    
+    operation countInProgress();
+    begin
+        var car1, car2, car3, customer1, customer2, customer3, baseline;
+        begin
+            baseline := Rental#countRentalsInProgress();
+            car1 := Examples#newCar();
+            car2 := Examples#newCar();
+            car3 := Examples#newCar();            
+            customer1 := Examples#newCustomer();
+            customer2 := Examples#newCustomer();
+            customer3 := Examples#newCustomer();            
+            customer1.rent(car1);
+            customer2.rent(car2);            
+            customer3.rent(car3);                        
+        end;
+        begin
+            Assert#areEqual(3, Rental#countRentalsInProgress() - baseline);
+            customer3.finishRental();
+        end;
+        begin
+            Assert#areEqual(2, Rental#countRentalsInProgress() - baseline);
+        end;
+    end;
 
     [Failure(constraint="CarMustBeAvailable")]
     operation carUnavailable();
