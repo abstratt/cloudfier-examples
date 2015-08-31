@@ -1,13 +1,14 @@
 codegen-examples
 ================
 
+This project contains command-line tools (bash scripts) for accessing features from a [Cloudfier](http://cloudfier.com) ([git repository](http://github.com/abstratt/cloudfier)) server.
 
 Target platforms
 ----------------
 
-JEE: [![Build Status](https://textuml.ci.cloudbees.com/buildStatus/icon?job=codegen-examples-JEE)](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/)
+JEE: [![Build Status](https://textuml.ci.cloudbees.com/buildStatus/icon?job=codegen-examples-JEE)](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/)  ([generated code](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/))
 
-JSE: [![Build Status](https://textuml.ci.cloudbees.com/buildStatus/icon?job=codegen-examples-JSE)](https://textuml.ci.cloudbees.com/job/codegen-examples-JSE/)
+JSE: [![Build Status](https://textuml.ci.cloudbees.com/buildStatus/icon?job=codegen-examples-JSE)](https://textuml.ci.cloudbees.com/job/codegen-examples-JSE/) ([generated code](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jse/))
 
 MEAN: [![Build Status](https://textuml.ci.cloudbees.com/buildStatus/icon?job=codegen-examples-MEAN)](https://textuml.ci.cloudbees.com/job/codegen-examples-MEAN/)
 
