@@ -1,15 +1,21 @@
 set -e
 set -o pipefail
-CWD=$WORKSPACE
-: ${CWD:=$PWD}
+CWD=$WORKSPACE : ${CWD:=$PWD}
+
+if [ "$#" -lt 2 ] ; then
+    echo 'Parameters PLATFORM and APPLICATION are required'
+    exit 1
+fi
 
 PLATFORM=$1
-CLOUDFIER_USER=$2
+APPLICATION=$2
+CLOUDFIER_USER=${3:-test}
 
-for app_path in $1/* ; do
-	app=${app_path##*/}
-	echo "Running tests for - $app"
-	./gen.sh $PLATFORM $app $CLOUDFIER_USER
-	./test.sh $PLATFORM $app "-DreportsDirectory=$CWD/test-reports"
-done
-
+echo ">\n>\n>\n>\n"	
+echo "Generating code for - $APPLICATION"	
+./gen.sh $PLATFORM $APPLICATION $CLOUDFIER_USER
+echo ">\n>\n>\n>\n"	
+echo "Running tests for - $APPLICATION"
+./test.sh $PLATFORM $APPLICATION "-DreportsDirectory=$CWD/test-reports"
+echo ">\n>\n>\n>\n"	
+echo "Finished running tests for - $APPLICATION"

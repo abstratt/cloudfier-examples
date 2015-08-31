@@ -15,13 +15,13 @@ APPLICATION_URL=$CLOUDFIER_URL/services/generator/$CLOUDFIER_USER-${BASE_APPLICA
 echo "Generating $APPLICATION on $PLATFORM (hosted at $APPLICATION_URL)"
 
 mkdir -p node_modules
-rm -Rf $PLATFORM/$APPLICATION/gen
+#rm -Rf $PLATFORM/$APPLICATION/gen
 mkdir -p $PLATFORM/$APPLICATION/gen
 wget -v -d  $APPLICATION_URL/platform/$PLATFORM  -O generated.zip
 if [ $? -ne 0 ] ; then 
     exit 1
 fi
-unzip -d $PLATFORM/$APPLICATION/gen generated.zip
+unzip -o -d $PLATFORM/$APPLICATION/gen generated.zip
 rm -Rf generated.zip
 
 
