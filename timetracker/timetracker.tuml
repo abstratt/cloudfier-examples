@@ -29,6 +29,12 @@ class Client
         return newInvoice;
     end;
     
+    derived attribute openInvoices : Invoice[*] := {
+    	self.invoices.select((i : Invoice) : Boolean {
+    	    i.open
+    	})
+	};
+    
     static query withInvoicesToIssue() : Client[*];
     begin
         return Client extent.select((client : Client) : Boolean {
@@ -45,8 +51,7 @@ class Client
         	    i.pending
         	})
         });
-    end;    
-    
+    end;
 end;
 
 class Task
@@ -104,7 +109,7 @@ class Invoice
     derived attribute totalUnits : Integer := {
         self.reported.sum((w : Work) : Integer { w.units })
     };
-
+    
     operation issue()
         (* Cannot issue an invoice that has no work reported. *)
         precondition MustHaveWork { not self.reported.isEmpty() };
@@ -123,6 +128,7 @@ class Invoice
 
         initial state Preparation
             transition on call(issue) to Invoiced;
+            transition on call(cancel) to Cancelled;                        
         end;
 
         state Invoiced
@@ -131,12 +137,12 @@ class Invoice
             };
 
             transition on signal(InvoicePaid) to Received;
-            transition on call(cancel) to Canceled;            
+            transition on call(cancel) to Cancelled;            
         end;
 
-        state Received end;
+        state Received end; 
         
-        state Canceled end;
+        state Cancelled end;
     end;
 
 end;

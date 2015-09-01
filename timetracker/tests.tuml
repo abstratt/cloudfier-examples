@@ -105,6 +105,20 @@ class InvoiceScenarios
         end;
     end;
     
+    operation issueCancelled();
+    begin
+        var invoice, client;
+        begin
+            client := Examples#client();
+            invoice := client.startInvoice();
+            client.newTask("Some task").addWork(1).submit(invoice);
+            invoice.cancel();
+        end;
+        begin
+            Assert#areEqual(Invoice::Status#Cancelled, invoice.status);
+        end;
+    end;    
+    
     operation totalUnits();
     begin
         var invoice, task1, task2, client;
@@ -155,6 +169,39 @@ class InvoiceScenarios
     operation cannotIssueInvoiceWithoutAnyWork();
     begin
         Examples#client().startInvoice().issue();
+    end;
+end;
+
+[Test]
+class ClientScenarios
+    operation withInvoicesSubmitted();
+    begin
+        var client1, client2, client3, existing;
+        begin
+            existing := Client#withInvoicesToIssue().size();        
+            client1 := Examples#client();
+            client2 := Examples#client();
+            client3 := Examples#client();            
+            /* one client with one invoice, the other one with two */
+            client1.startInvoice();            
+            client2.startInvoice();
+            client2.startInvoice();            
+        end;
+        begin
+            Assert#areEqual(existing + 2, Client#withInvoicesToIssue().size());
+            client1.openInvoices.one().cancel();
+        end;
+        begin
+            Assert#areEqual(existing + 1, Client#withInvoicesToIssue().size());
+            client2.openInvoices.one().cancel();            
+        end;
+        begin
+            Assert#areEqual(existing + 1, Client#withInvoicesToIssue().size());
+            client2.openInvoices.one().cancel();            
+        end;        
+        begin
+            Assert#areEqual(existing, Client#withInvoicesToIssue().size());        
+        end;
     end;
 end;
 
