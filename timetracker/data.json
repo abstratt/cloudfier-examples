@@ -10,12 +10,12 @@
     "Invoice" : [ {
       "invoiceId" : 9,
       "issueDate" : "2014/07/14",
-      "status" : "Preparation",
+      "status" : "Open",
       "client" : "Client@1"
     }, {
       "invoiceId" : 61,
       "issueDate" : "2014/07/17",
-      "status" : "Preparation",
+      "status" : "Open",
       "client" : "Client@1"
     } ]
   }

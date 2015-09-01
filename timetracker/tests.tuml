@@ -9,6 +9,7 @@ import timetracker;
 [Test]
 class ProjectScenarios
 
+    (* The time reported for a project is the sum of the time of all entries for that project. *)
     operation timeReported();
     begin
         var project;
@@ -24,6 +25,7 @@ class ProjectScenarios
         end;
     end;
 
+    (* Reported entries are collected as discrete objects. *)
     operation itemsReported();
     begin
         var project;
@@ -41,6 +43,7 @@ class ProjectScenarios
         end;
     end;
 
+    (* A project's time to submit is the sum of all units reported but yet to be added to an invoice. *)
     operation timeToInvoice();
     begin
         var project, invoice, entry1, entry2;
@@ -48,12 +51,12 @@ class ProjectScenarios
             project := Examples#project();
             entry1 := project.addEntry(4);
             entry2 := project.addEntry(3);
-            invoice := project.client.startInvoice();
+            invoice := project.client.openInvoice();
             entry1.submit(invoice);
         end;
         begin
-            Assert#areEqual(1, project.toInvoice.size());
-            Assert#areEqual(3, project.unitsToInvoice);
+            Assert#areEqual(1, project.toSubmit.size());
+            Assert#areEqual(3, project.unitsToSubmit);
         end;
     end;
 end;
@@ -61,6 +64,7 @@ end;
 [Test]
 class EntryScenarios
 
+    (* The date for a new entry is today's date. *)
     operation entryDateDefaultsToToday();
     begin
         var anEntry;
@@ -68,6 +72,7 @@ class EntryScenarios
         Assert#areEqual(Date#today(), anEntry.date);
     end;
 
+    (* Entries submitted to an invoice must belong to a project of the same client. *)
     [Failure(constraint="WrongClient", context="submit")]
     operation cannotAssignEntryToInvoiceFromAnotherClient();
     begin
@@ -75,27 +80,32 @@ class EntryScenarios
         client1 := Examples#client();
         client2 := Examples#client();
         anEntry := client1.newProject("Some project").addEntry(1);
-        anEntry.submit(client2.startInvoice());
+        anEntry.submit(client2.openInvoice());
     end;
 
-    [Failure(constraint="AlreadyInvoiced", context="submit")]
-    operation cannotSubmitEntryToInvoiceAlreadyInvoiced();
+    (* Once an entry has been submitted to an invoice, it cannot be resubmitted to another invoice. *)
+    [Failure(constraint="AlreadySubmitted", context="submit")]
+    operation cannotSubmitEntryToTwoInvoices();
     begin
-        var invoice, anEntry;
-        anEntry := Examples#client().newProject("Some project").addEntry(1);
-        invoice := anEntry.client.startInvoice();
-        anEntry.submit(invoice);
-        anEntry.submit(invoice);
+        var project, invoice1, invoice2, anEntry;
+        project := Examples#project();
+        invoice1 := project.client.openInvoice();
+        invoice2 := project.client.openInvoice();        
+        anEntry := project.addEntry(1);
+        anEntry.submit(invoice1);
+        anEntry.submit(invoice2);
     end;
 
+    (* The number of units of work logged must be positive. *)
     [Failure(constraint="MustBePositive", context="units")]
-    operation unitsEntryedMustBePositive();
+    operation unitsMayNotBeNegative();
     begin
         Examples#project().addEntry(- 1);
     end;
 
+    (* The number of units of work logged must be positive. *)
     [Failure(constraint="MustBePositive", context="units")]
-    operation unitsEntryedMayNotBeZero();
+    operation unitsMayNotBeZero();
     begin
         Examples#project().addEntry(0);
     end;
@@ -104,33 +114,42 @@ end;
 [Test]
 class InvoiceScenarios
 
+    (* An invoice begins in the state of Preparation. *)
+    operation prepareInvoice();
+    begin
+        var invoice;
+        begin
+            invoice := Examples#client().openInvoice();
+        end;
+        begin
+            Assert#areEqual(Invoice::Status#Open, invoice.status);
+        end;
+    end;
+
+    (* An invoice once issued goes to the state of Issued. *)
     operation issueInvoice();
     begin
         var invoice, anEntry, client;
         begin
             client := Examples#client();
             anEntry := client.newProject("Some project").addEntry(1);
-            invoice := client.startInvoice();
+            invoice := client.openInvoice();
             anEntry.submit(invoice);
-        end;
-        begin
-            Assert#areEqual(Invoice::Status#Preparation, invoice.status);
             invoice.issue();
         end;
         begin
-            Assert#areEqual(Invoice::Status#Invoiced, invoice.status);
+            Assert#areEqual(Invoice::Status#Issued, invoice.status);
         end;
     end;
 
-    operation issueCancelled();
+    (* An invoice can be cancelled while under preparation. *)
+    operation cancelInvoiceInPreparation();
     begin
-        var invoice, client;
+        var invoice;
         begin
-            client := Examples#client();
-            invoice := client.startInvoice();
+            invoice := Examples#client().openInvoice();
         end;
         begin
-            Assert#areEqual(Invoice::Status#Preparation, invoice.status);        
             invoice.cancel();
         end;
         begin
@@ -138,12 +157,47 @@ class InvoiceScenarios
         end;
     end;
 
+    (* An invoice can be cancelled while pending payment. *)
+    operation cancelInvoiceBeforePayment();
+    begin
+        var invoice, project;
+        begin
+            project := Examples#project();
+            invoice := project.client.openInvoice();
+            project.addEntry(1).submit(invoice);
+            invoice.issue();
+        end;
+        begin
+            invoice.cancel();
+        end;
+        begin
+            Assert#areEqual(Invoice::Status#Cancelled, invoice.status);
+        end;
+    end;
+    
+    (* An invoice cannot be cancelled after payment is received. *)
+    [Failure(constraint="MustBeOpenOrIssued", context="cancel")]
+    operation cannotCancelInvoice();
+    begin
+        var invoice;
+        begin
+            invoice := Examples#client().openInvoice();
+            invoice.client.newProject("Some project").addEntry(1).submit(invoice);
+            invoice.issue();
+            send PaymentReceived() to invoice;            
+        end;
+        begin
+            invoice.cancel();
+        end;
+    end;    
+
+    (* The total of units in an invoice is the sum of the units of all entries submitted. *)
     operation totalUnits();
     begin
         var invoice, project1, project2, client;
         begin
             client := Examples#client();
-            invoice := client.startInvoice();
+            invoice := client.openInvoice();
             project1 := client.newProject("Project 1");
             project2 := client.newProject("Project 2");
             project1.addEntry(1).submit(invoice);
@@ -155,27 +209,29 @@ class InvoiceScenarios
         end;
     end;
 
-    operation invoicePaid();
+    (* Once payment for an invoice is received, the invoice goes to the state of Paid. *)
+    operation PaymentReceived();
     begin
         var invoice;
         begin
-            invoice := Examples#client().startInvoice();
+            invoice := Examples#client().openInvoice();
             invoice.client.newProject("Some project").addEntry(1).submit(invoice);
             invoice.issue();
-            send InvoicePaid() to invoice;
+            send PaymentReceived() to invoice;
         end;
         begin
             Assert#areEqual(Invoice::Status#Received, invoice.status);
         end;
     end;
 
-    [Failure(constraint="InvoiceNotOpen", context="submit")]
-    operation cannotSubmitEntryIfInvoiceNotOpen();
+    (* It is an error to submit an entry to an invoice that has already being issued. *)
+    [Failure(constraint="InvoiceMustBeOpen", context="submit")]
+    operation cannotSubmitEntryIfInvoiceIssued();
     begin
         var project, invoice;
         begin
             project := Examples#project();
-            invoice := project.client.startInvoice();
+            invoice := project.client.openInvoice();
             project.addEntry(1).submit(invoice);
             invoice.issue();
         end;
@@ -184,47 +240,64 @@ class InvoiceScenarios
         end;
     end;
 
+    (* It is an error to submit an entry to an invoice that has already being cancelled. *)    
+    [Failure(constraint="InvoiceMustBeOpen", context="submit")]
+    operation cannotSubmitEntryIfInvoiceCancelled();
+    begin
+        var project, invoice;
+        begin
+            project := Examples#project();
+            invoice := project.client.openInvoice();
+            invoice.cancel();
+        end;
+        begin
+            project.addEntry(2).submit(invoice);
+        end;
+    end;
+
+    (* It is an error to issue an invoice with no entries submitted to it. *)
     [Failure(constraint="MustHaveEntry", context="issue")]
     operation cannotIssueInvoiceWithoutAnyEntry();
     begin
-        Examples#client().startInvoice().issue();
+        Examples#client().openInvoice().issue();
     end;
 end;
 
 [Test]
 class ClientScenarios
-
+    (* It is possible to retrieve the clients with open invoices. *)
     operation withInvoicesSubmitted();
     begin
         var client1, client2, client3, existing;
         begin
-            existing := Client#withInvoicesToIssue().size();
+            existing := Client#withOpenInvoices().size();
             client1 := Examples#client();
             client2 := Examples#client();
             client3 := Examples#client();
             /* one client with one invoice, the other one with two */
-            client1.startInvoice();
-            client2.startInvoice();
-            client2.startInvoice();
+            client1.openInvoice();
+            client2.openInvoice();
+            client2.openInvoice();
         end;
         begin
-            Assert#areEqual(existing + 2, Client#withInvoicesToIssue().size());
+            Assert#areEqual(existing + 2, Client#withOpenInvoices().size());
             client1.openInvoices.one().cancel();
         end;
         begin
-            Assert#areEqual(existing + 1, Client#withInvoicesToIssue().size());
+            Assert#areEqual(existing + 1, Client#withOpenInvoices().size());
             client2.openInvoices.one().cancel();
         end;
         begin
-            Assert#areEqual(existing + 1, Client#withInvoicesToIssue().size());
+            Assert#areEqual(existing + 1, Client#withOpenInvoices().size());
             client2.openInvoices.one().cancel();
         end;
         begin
-            Assert#areEqual(existing, Client#withInvoicesToIssue().size());
+            Assert#areEqual(existing, Client#withOpenInvoices().size());
         end;
     end;
 end;
 
+(* Helper class to set up various test fixtures. *)
 class Examples
 
     private static operation clientWithName(name : String) : Client;

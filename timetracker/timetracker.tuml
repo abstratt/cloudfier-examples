@@ -21,7 +21,7 @@ class Client
         return newProject;
     end;
 
-    operation startInvoice() : Invoice;
+    operation openInvoice() : Invoice;
     begin
         var newInvoice;
         newInvoice := new Invoice;
@@ -35,7 +35,7 @@ class Client
     	})
 	};
     
-    static query withInvoicesToIssue() : Client[*];
+    static query withOpenInvoices() : Client[*];
     begin
         return Client extent.select((client : Client) : Boolean {
         	client.invoices.exists((i : Invoice) : Boolean {
@@ -44,11 +44,11 @@ class Client
         });
     end;
     
-    static query withInvoicesPending() : Client[*];
+    static query withIssuedInvoices() : Client[*];
     begin
         return Client extent.select((client : Client) : Boolean {
         	client.invoices.exists((i : Invoice) : Boolean {
-        	    i.pending
+        	    i.issued
         	})
         });
     end;
@@ -60,8 +60,8 @@ class Project
 
     attribute reported : Entry[*];
 
-    derived attribute toInvoice : Entry[*] := {
-        self.reported.select((e : Entry) : Boolean { not e.invoiced })
+    derived attribute toSubmit : Entry[*] := {
+        self.reported.select((e : Entry) : Boolean { not e.submitted })
     };
 
     readonly attribute client : Client;
@@ -70,8 +70,8 @@ class Project
         self.reported.sum((e : Entry) : Integer { e.units })
     };
 
-    derived attribute unitsToInvoice : Integer := {
-        self.toInvoice.sum((e : Entry) : Integer { e.units })
+    derived attribute unitsToSubmit : Integer := {
+        self.toSubmit.sum((e : Entry) : Integer { e.units })
     };
 
     operation addEntry(units : Integer) : Entry;
@@ -96,28 +96,29 @@ class Invoice
 
     attribute issueDate : Date := { Date#today() };
 
-    attribute reported : Entry[*];
+    attribute submitted : Entry[*];
 
-    derived attribute open : Boolean := { self.status == Status#Preparation };
-    derived attribute pending : Boolean := { self.status == Status#Invoiced };        
-    derived attribute paid : Boolean := { self.status == Status#Received };        
+    derived attribute open : Boolean := { self.status == Status#Open };
+    derived attribute issued : Boolean := { self.status == Status#Issued };        
+    derived attribute received : Boolean := { self.status == Status#Received };        
 
     attribute status : Status;
 
     required port invoicer : Invoicer;
 
     derived attribute totalUnits : Integer := {
-        self.reported.sum((e : Entry) : Integer { e.units })
+        self.submitted.sum((e : Entry) : Integer { e.units })
     };
     
     operation issue()
-        (* Cannot issue an invoice that has no entry reported. *)
-        precondition MustHaveEntry { not self.reported.isEmpty() };
+        (* Cannot issue an invoice that has no entries submitted. *)
+        precondition MustHaveEntry { not self.submitted.isEmpty() };
     begin
         self.issueDate := Date#today();
     end;
     
-    operation cancel();
+    operation cancel()
+        precondition MustBeOpenOrIssued { self.open or (self.issued) };
 
     private operation sendInvoice();
     begin
@@ -126,17 +127,17 @@ class Invoice
 
     statemachine Status
 
-        initial state Preparation
-            transition on call(issue) to Invoiced;
+        initial state Open
+            transition on call(issue) to Issued;
             transition on call(cancel) to Cancelled;                        
         end;
 
-        state Invoiced
+        state Issued
             entry {
                 self.sendInvoice();
             };
 
-            transition on signal(InvoicePaid) to Received;
+            transition on signal(PaymentReceived) to Received;
             transition on call(cancel) to Cancelled;            
         end;
 
@@ -147,7 +148,7 @@ class Invoice
 
 end;
 
-signal InvoicePaid
+signal PaymentReceived
 end;
 
 class Entry
@@ -164,18 +165,18 @@ class Entry
 
     derived attribute client : Client := { self.project.client };
 
-    (* Entry can be only invoiced once. Cannot be set directly but via #submit *)
+    (* Entry can be only submitted to an invoice once. Cannot be set directly but via #submit *)
     readonly attribute invoice : Invoice[0, 1];
 
-    derived attribute invoiced : Boolean := { not (self.invoice == null) };
+    derived attribute submitted : Boolean := { not (self.invoice == null) };
 
     (* Submits this entry to a chosen invoice for the client. *)
     operation submit(invoice : Invoice)
-        precondition AlreadyInvoiced { not self.invoiced }
+        precondition AlreadySubmitted { not self.submitted }
         precondition WrongClient(invoice) {
             invoice.client == self.project.client
         }
-        precondition InvoiceNotOpen(invoice) { invoice.open };
+        precondition InvoiceMustBeOpen(invoice) { invoice.open };
     begin
         self.invoice := invoice;
     end;
@@ -189,9 +190,9 @@ composition ProjectEntry
 
 end;
 
-association InvoicedEntry
+association SubmittedEntry
 
-    role Invoice.reported;
+    role Invoice.submitted;
 
     role Entry.invoice;
 
