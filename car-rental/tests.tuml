@@ -275,6 +275,8 @@ class CarScenarios
         var car;
         begin
             car := Examples#newCar();
+        end;
+        begin
             Assert#isTrue(car.available);        
             Assert#isTrue(not car.underRepair);
             car.startRepair();
@@ -291,6 +293,8 @@ class CarScenarios
         var car;
         begin
             car := Examples#newCar();
+        end;
+        begin
             Assert#isTrue(car.available);
             car.startRepair();
         end;
