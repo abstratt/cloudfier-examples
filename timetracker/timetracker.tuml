@@ -8,17 +8,17 @@ class Client
 
     attribute name : String;
 
-    attribute tasks : Task[*];
+    attribute projects : Project[*];
 
     attribute invoices : Invoice[*];
 
-    operation newTask(description : String) : Task;
+    operation newProject(description : String) : Project;
     begin
-        var newTask;
-        newTask := new Task;
-        newTask.description := description;
-        link ClientTask(client := self, tasks := newTask);
-        return newTask;
+        var newProject;
+        newProject := new Project;
+        newProject.description := description;
+        link ClientProject(client := self, projects := newProject);
+        return newProject;
     end;
 
     operation startInvoice() : Invoice;
@@ -54,33 +54,33 @@ class Client
     end;
 end;
 
-class Task
+class Project
 
     attribute description : String;
 
-    attribute reported : Work[*];
+    attribute reported : Entry[*];
 
-    derived attribute toInvoice : Work[*] := {
-        self.reported.select((w : Work) : Boolean { not w.invoiced })
+    derived attribute toInvoice : Entry[*] := {
+        self.reported.select((e : Entry) : Boolean { not e.invoiced })
     };
 
     readonly attribute client : Client;
 
     derived attribute unitsReported : Integer := {
-        self.reported.sum((w : Work) : Integer { w.units })
+        self.reported.sum((e : Entry) : Integer { e.units })
     };
 
     derived attribute unitsToInvoice : Integer := {
-        self.toInvoice.sum((w : Work) : Integer { w.units })
+        self.toInvoice.sum((e : Entry) : Integer { e.units })
     };
 
-    operation addWork(units : Integer) : Work;
+    operation addEntry(units : Integer) : Entry;
     begin
-        var newWork;
-        newWork := new Work;
-        newWork.units := units;
-        link TaskWork(reported := newWork, task := self);
-        return newWork;
+        var newEntry;
+        newEntry := new Entry;
+        newEntry.units := units;
+        link ProjectEntry(reported := newEntry, project := self);
+        return newEntry;
     end; 
 end;
 
@@ -96,7 +96,7 @@ class Invoice
 
     attribute issueDate : Date := { Date#today() };
 
-    attribute reported : Work[*];
+    attribute reported : Entry[*];
 
     derived attribute open : Boolean := { self.status == Status#Preparation };
     derived attribute pending : Boolean := { self.status == Status#Invoiced };        
@@ -107,12 +107,12 @@ class Invoice
     required port invoicer : Invoicer;
 
     derived attribute totalUnits : Integer := {
-        self.reported.sum((w : Work) : Integer { w.units })
+        self.reported.sum((e : Entry) : Integer { e.units })
     };
     
     operation issue()
-        (* Cannot issue an invoice that has no work reported. *)
-        precondition MustHaveWork { not self.reported.isEmpty() };
+        (* Cannot issue an invoice that has no entry reported. *)
+        precondition MustHaveEntry { not self.reported.isEmpty() };
     begin
         self.issueDate := Date#today();
     end;
@@ -150,30 +150,30 @@ end;
 signal InvoicePaid
 end;
 
-class Work
+class Entry
 
     attribute units : Integer := 1
-        (* Work must describe a positive number of units. *)
+        (* Entry must describe a positive number of units. *)
         invariant MustBePositive { self.units > 0 };
 
-    attribute task : Task;
+    attribute project : Project;
 
     attribute date : Date := { Date#today() };
 
     attribute memo : Memo[0, 1];
 
-    derived attribute client : Client := { self.task.client };
+    derived attribute client : Client := { self.project.client };
 
-    (* Work can be only invoiced once. Cannot be set directly but via #submit *)
+    (* Entry can be only invoiced once. Cannot be set directly but via #submit *)
     readonly attribute invoice : Invoice[0, 1];
 
     derived attribute invoiced : Boolean := { not (self.invoice == null) };
 
-    (* Submits this work to a chosen invoice for the client. *)
+    (* Submits this entry to a chosen invoice for the client. *)
     operation submit(invoice : Invoice)
         precondition AlreadyInvoiced { not self.invoiced }
         precondition WrongClient(invoice) {
-            invoice.client == self.task.client
+            invoice.client == self.project.client
         }
         precondition InvoiceNotOpen(invoice) { invoice.open };
     begin
@@ -181,27 +181,27 @@ class Work
     end;
 end;
 
-composition TaskWork
+composition ProjectEntry
 
-    role Task.reported;
+    role Project.reported;
 
-    role Work.task;
+    role Entry.project;
 
 end;
 
-association InvoicedWork
+association InvoicedEntry
 
     role Invoice.reported;
 
-    role Work.invoice;
+    role Entry.invoice;
 
 end;
 
-association ClientTask
+association ClientProject
 
-    role Client.tasks;
+    role Client.projects;
 
-    role Task.client;
+    role Project.client;
 
 end;
 

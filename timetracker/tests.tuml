@@ -7,97 +7,97 @@ import mdd_types;
 import timetracker;
 
 [Test]
-class TaskScenarios
+class ProjectScenarios
 
     operation timeReported();
     begin
-        var task;
+        var project;
         begin
-            task := Examples#task();
+            project := Examples#project();
         end;
         begin
-            task.addWork(4);
-            task.addWork(3);
+            project.addEntry(4);
+            project.addEntry(3);
         end;
         begin
-            Assert#areEqual(7, task.unitsReported);
+            Assert#areEqual(7, project.unitsReported);
         end;
     end;
 
     operation itemsReported();
     begin
-        var task;
+        var project;
         begin
-            task := Examples#task();
-            task.addWork(4);
-            task.addWork(3);
+            project := Examples#project();
+            project.addEntry(4);
+            project.addEntry(3);
         end;
         begin
-            Assert#areEqual(2, task.reported.size());
-            task.addWork(5);
+            Assert#areEqual(2, project.reported.size());
+            project.addEntry(5);
         end;
         begin
-            Assert#areEqual(3, task.reported.size());
+            Assert#areEqual(3, project.reported.size());
         end;
     end;
 
     operation timeToInvoice();
     begin
-        var task, invoice, work1, work2;
+        var project, invoice, entry1, entry2;
         begin
-            task := Examples#task();
-            work1 := task.addWork(4);
-            work2 := task.addWork(3);
-            invoice := task.client.startInvoice();
-            work1.submit(invoice);
+            project := Examples#project();
+            entry1 := project.addEntry(4);
+            entry2 := project.addEntry(3);
+            invoice := project.client.startInvoice();
+            entry1.submit(invoice);
         end;
         begin
-            Assert#areEqual(1, task.toInvoice.size());
-            Assert#areEqual(3, task.unitsToInvoice);
+            Assert#areEqual(1, project.toInvoice.size());
+            Assert#areEqual(3, project.unitsToInvoice);
         end;
     end;
 end;
 
 [Test]
-class WorkScenarios
+class EntryScenarios
 
-    operation workDateDefaultsToToday();
+    operation entryDateDefaultsToToday();
     begin
-        var work;
-        work := Examples#task().addWork(1);
-        Assert#areEqual(Date#today(), work.date);
+        var anEntry;
+        anEntry := Examples#project().addEntry(1);
+        Assert#areEqual(Date#today(), anEntry.date);
     end;
 
     [Failure(constraint="WrongClient", context="submit")]
-    operation cannotAssignWorkToInvoiceFromAnotherClient();
+    operation cannotAssignEntryToInvoiceFromAnotherClient();
     begin
-        var client1, client2, work;
+        var client1, client2, anEntry;
         client1 := Examples#client();
         client2 := Examples#client();
-        work := client1.newTask("Some task").addWork(1);
-        work.submit(client2.startInvoice());
+        anEntry := client1.newProject("Some project").addEntry(1);
+        anEntry.submit(client2.startInvoice());
     end;
 
     [Failure(constraint="AlreadyInvoiced", context="submit")]
-    operation cannotSubmitWorkToInvoiceAlreadyInvoiced();
+    operation cannotSubmitEntryToInvoiceAlreadyInvoiced();
     begin
-        var invoice, work;
-        work := Examples#client().newTask("Some task").addWork(1);
-        invoice := work.client.startInvoice();
-        work.submit(invoice);
-        work.submit(invoice);
+        var invoice, anEntry;
+        anEntry := Examples#client().newProject("Some project").addEntry(1);
+        invoice := anEntry.client.startInvoice();
+        anEntry.submit(invoice);
+        anEntry.submit(invoice);
     end;
 
     [Failure(constraint="MustBePositive", context="units")]
-    operation unitsWorkedMustBePositive();
+    operation unitsEntryedMustBePositive();
     begin
-        Examples#task().addWork(- 1);
+        Examples#project().addEntry(- 1);
     end;
 
     [Failure(constraint="MustBePositive", context="units")]
-    operation unitsWorkedMayNotBeZero();
+    operation unitsEntryedMayNotBeZero();
     begin
-        Examples#task().addWork(0);
+        Examples#project().addEntry(0);
     end;
 end;
 
@@ -106,12 +106,12 @@ class InvoiceScenarios
 
     operation issueInvoice();
     begin
-        var invoice, work, client;
+        var invoice, anEntry, client;
         begin
             client := Examples#client();
-            work := client.newTask("Some task").addWork(1);
+            anEntry := client.newProject("Some project").addEntry(1);
             invoice := client.startInvoice();
-            work.submit(invoice);
+            anEntry.submit(invoice);
         end;
         begin
             Assert#areEqual(Invoice::Status#Preparation, invoice.status);
@@ -140,15 +140,15 @@ class InvoiceScenarios
 
     operation totalUnits();
     begin
-        var invoice, task1, task2, client;
+        var invoice, project1, project2, client;
         begin
             client := Examples#client();
             invoice := client.startInvoice();
-            task1 := client.newTask("Task 1");
-            task2 := client.newTask("Task 2");
-            task1.addWork(1).submit(invoice);
-            task1.addWork(3).submit(invoice);
-            task2.addWork(7).submit(invoice);
+            project1 := client.newProject("Project 1");
+            project2 := client.newProject("Project 2");
+            project1.addEntry(1).submit(invoice);
+            project1.addEntry(3).submit(invoice);
+            project2.addEntry(7).submit(invoice);
         end;
         begin
             Assert#areEqual(11, invoice.totalUnits);
@@ -160,7 +160,7 @@ class InvoiceScenarios
         var invoice;
         begin
             invoice := Examples#client().startInvoice();
-            invoice.client.newTask("Some task").addWork(1).submit(invoice);
+            invoice.client.newProject("Some project").addEntry(1).submit(invoice);
             invoice.issue();
             send InvoicePaid() to invoice;
         end;
@@ -170,22 +170,22 @@ class InvoiceScenarios
     end;
 
     [Failure(constraint="InvoiceNotOpen", context="submit")]
-    operation cannotSubmitWorkIfInvoiceNotOpen();
+    operation cannotSubmitEntryIfInvoiceNotOpen();
     begin
-        var task, invoice;
+        var project, invoice;
         begin
-            task := Examples#task();
-            invoice := task.client.startInvoice();
-            task.addWork(1).submit(invoice);
+            project := Examples#project();
+            invoice := project.client.startInvoice();
+            project.addEntry(1).submit(invoice);
             invoice.issue();
         end;
         begin
-            task.addWork(2).submit(invoice);
+            project.addEntry(2).submit(invoice);
         end;
     end;
 
-    [Failure(constraint="MustHaveWork", context="issue")]
-    operation cannotIssueInvoiceWithoutAnyWork();
+    [Failure(constraint="MustHaveEntry", context="issue")]
+    operation cannotIssueInvoiceWithoutAnyEntry();
     begin
         Examples#client().startInvoice().issue();
     end;
@@ -240,18 +240,18 @@ class Examples
         return Examples#clientWithName("New Client");
     end;
 
-    private static operation taskWithName(description : String, client : Client) : Task;
+    private static operation projectWithName(description : String, client : Client) : Project;
     begin
-        var task;
-        task := new Task;
-        task.description := description;
-        task.client := client;
-        return task;
+        var project;
+        project := new Project;
+        project.description := description;
+        project.client := client;
+        return project;
     end;
 
-    private static operation task() : Task;
+    private static operation project() : Project;
     begin
-        return Examples#taskWithName("New Task", Examples#client());
+        return Examples#projectWithName("New Project", Examples#client());
     end;
 end;
 
