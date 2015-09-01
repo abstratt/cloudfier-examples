@@ -1,9 +1,9 @@
 package timetracker_tests;
 
-
 apply kirra;
-import mdd_types;
+
 import mdd_extensions;
+import mdd_types;
 import timetracker;
 
 [Test]
@@ -12,44 +12,59 @@ class TaskScenarios
     operation timeReported();
     begin
         var task;
-        task := Examples#task();
-        task.addWork(4);
-        task.addWork(3);
-        Assert#areEqual(7, task.unitsReported);
+        begin
+            task := Examples#task();
+        end;
+        begin
+            task.addWork(4);
+            task.addWork(3);
+        end;
+        begin
+            Assert#areEqual(7, task.unitsReported);
+        end;
     end;
-    
+
     operation itemsReported();
     begin
         var task;
-        task := Examples#task();
-        task.addWork(4);
-        task.addWork(3);   
-        Assert#areEqual(2, task.reported.size());
-
-        task.addWork(5);
-        Assert#areEqual(3, task.reported.size());
-    end; 
+        begin
+            task := Examples#task();
+            task.addWork(4);
+            task.addWork(3);
+        end;
+        begin
+            Assert#areEqual(2, task.reported.size());
+            task.addWork(5);
+        end;
+        begin
+            Assert#areEqual(3, task.reported.size());
+        end;
+    end;
 
     operation timeToInvoice();
     begin
         var task, invoice, work1, work2;
-        task := Examples#task();
-        work1 := task.addWork(4);
-        work2 := task.addWork(3);
-        invoice := task.client.startInvoice();
-        work1.submit(invoice);
-        Assert#areEqual(1, task.toInvoice.size());
-        Assert#areEqual(3, task.unitsToInvoice);
+        begin
+            task := Examples#task();
+            work1 := task.addWork(4);
+            work2 := task.addWork(3);
+            invoice := task.client.startInvoice();
+            work1.submit(invoice);
+        end;
+        begin
+            Assert#areEqual(1, task.toInvoice.size());
+            Assert#areEqual(3, task.unitsToInvoice);
+        end;
     end;
 end;
 
-[Test] 
+[Test]
 class WorkScenarios
 
     operation workDateDefaultsToToday();
     begin
         var work;
-        work := Examples#task().addWork(1); 
+        work := Examples#task().addWork(1);
         Assert#areEqual(Date#today(), work.date);
     end;
 
@@ -97,6 +112,8 @@ class InvoiceScenarios
             work := client.newTask("Some task").addWork(1);
             invoice := client.startInvoice();
             work.submit(invoice);
+        end;
+        begin
             Assert#areEqual(Invoice::Status#Preparation, invoice.status);
             invoice.issue();
         end;
@@ -104,21 +121,23 @@ class InvoiceScenarios
             Assert#areEqual(Invoice::Status#Invoiced, invoice.status);
         end;
     end;
-    
+
     operation issueCancelled();
     begin
         var invoice, client;
         begin
             client := Examples#client();
             invoice := client.startInvoice();
-            client.newTask("Some task").addWork(1).submit(invoice);
+        end;
+        begin
+            Assert#areEqual(Invoice::Status#Preparation, invoice.status);        
             invoice.cancel();
         end;
         begin
             Assert#areEqual(Invoice::Status#Cancelled, invoice.status);
         end;
-    end;    
-    
+    end;
+
     operation totalUnits();
     begin
         var invoice, task1, task2, client;
@@ -129,13 +148,13 @@ class InvoiceScenarios
             task2 := client.newTask("Task 2");
             task1.addWork(1).submit(invoice);
             task1.addWork(3).submit(invoice);
-            task2.addWork(7).submit(invoice);            
+            task2.addWork(7).submit(invoice);
         end;
         begin
             Assert#areEqual(11, invoice.totalUnits);
         end;
-    end;    
-    
+    end;
+
     operation invoicePaid();
     begin
         var invoice;
@@ -174,18 +193,19 @@ end;
 
 [Test]
 class ClientScenarios
+
     operation withInvoicesSubmitted();
     begin
         var client1, client2, client3, existing;
         begin
-            existing := Client#withInvoicesToIssue().size();        
+            existing := Client#withInvoicesToIssue().size();
             client1 := Examples#client();
             client2 := Examples#client();
-            client3 := Examples#client();            
+            client3 := Examples#client();
             /* one client with one invoice, the other one with two */
-            client1.startInvoice();            
+            client1.startInvoice();
             client2.startInvoice();
-            client2.startInvoice();            
+            client2.startInvoice();
         end;
         begin
             Assert#areEqual(existing + 2, Client#withInvoicesToIssue().size());
@@ -193,14 +213,14 @@ class ClientScenarios
         end;
         begin
             Assert#areEqual(existing + 1, Client#withInvoicesToIssue().size());
-            client2.openInvoices.one().cancel();            
+            client2.openInvoices.one().cancel();
         end;
         begin
             Assert#areEqual(existing + 1, Client#withInvoicesToIssue().size());
-            client2.openInvoices.one().cancel();            
-        end;        
+            client2.openInvoices.one().cancel();
+        end;
         begin
-            Assert#areEqual(existing, Client#withInvoicesToIssue().size());        
+            Assert#areEqual(existing, Client#withInvoicesToIssue().size());
         end;
     end;
 end;
