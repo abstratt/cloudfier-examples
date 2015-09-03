@@ -308,6 +308,7 @@ class Examples
         return client;
     end;
 
+    (* A simple client. *)
     private static operation client() : Client;
     begin
         return Examples#clientWithName("New Client");
@@ -322,6 +323,7 @@ class Examples
         return project;
     end;
 
+    (* A simple project and its client. *)
     private static operation project() : Project;
     begin
         return Examples#projectWithName("New Project", Examples#client());
