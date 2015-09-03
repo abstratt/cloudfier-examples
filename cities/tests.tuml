@@ -35,7 +35,7 @@ class Tests
         Assert#areEqual(expected, oregon.population);
     end; 
 
-    operation populousStates();
+    operation populousStates_Abbreviations();
     begin
         var populousStateAbbreviations;
         TestData#build();
@@ -45,6 +45,18 @@ class Tests
         Assert#isTrue(populousStateAbbreviations.includes("OR"));
         Assert#isTrue(! populousStateAbbreviations.includes("WY"));
     end;
+    
+    operation populousStates();
+    begin
+        var populousStates;
+        TestData#build();
+        populousStates := State#statesMorePopulousThan(500000);
+        Assert#areEqual(2, populousStates.size());
+        Assert#isTrue(populousStates.includes(State#byAbbreviation("CA")));        
+        Assert#isTrue(populousStates.includes(State#byAbbreviation("OR")));
+        Assert#isTrue(!populousStates.includes(State#byAbbreviation("WY")));
+    end;
+    
     
     static operation statsFinder(abbreviation : String) : {(: StatePopulation) : Boolean};
     begin

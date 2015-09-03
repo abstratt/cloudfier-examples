@@ -61,15 +61,15 @@ class State
         	c.cityState
     	}).groupCollect((cities : City[*]) : { : State,  : Integer} {
             {
-                cityState := cities.one().cityState, 
+                aState := cities.one().cityState, 
                 statePopulation := cities.sum((c : City) : Integer {
                     c.population
                 })
             }
         }).select((aggregated : { : State, statePopulation : Integer}) : Boolean {
             aggregated.statePopulation > threshold
-        }).collect((stats : {cityState : State,  : Integer}) : State {
-            stats.cityState
+        }).collect((stats : {theState : State,  : Integer}) : State {
+            stats.theState
         });
     end;
 
@@ -77,15 +77,15 @@ class State
     begin
         return City extent.groupBy((c : City) : State {
         	c.cityState
-    	}).groupCollect((cities : City[*]) : { : String,  : Integer} {
+    	}).groupCollect((cities : City[*]) : { cityState : String, : Integer} {
             {
                 cityState := cities.one().cityState.abbreviation, 
                 statePopulation := cities.sum((c : City) : Integer {
                     c.population
                 })
             }
-        }).select((aggregated : { : String, statePopulation : Integer}) : Boolean {
-            aggregated.statePopulation > threshold
+        }).select((aggregated : { : String, statePop : Integer}) : Boolean {
+            aggregated.statePop > threshold
         }).collect((aggregated : { cityState : String, statePopulation : Integer}) : String {
         	aggregated.cityState
         });
