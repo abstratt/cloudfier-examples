@@ -190,6 +190,21 @@ class InvoiceScenarios
             invoice.cancel();
         end;
     end;    
+    
+    (* An invoice cannot be issued after it has been cancelled. *)
+    [Failure(constraint="MustBeOpen", context="issue")]
+    operation cannotIssueCancelledInvoice();
+    begin
+        var invoice;
+        begin
+            invoice := Examples#client().openInvoice();
+            invoice.client.newProject("Some project").addEntry(1).submit(invoice);
+            invoice.cancel();
+        end;
+        begin
+            invoice.issue();
+        end;
+    end;        
 
     (* The total of units in an invoice is the sum of the units of all entries submitted. *)
     operation totalUnits();
@@ -209,8 +224,8 @@ class InvoiceScenarios
         end;
     end;
 
-    (* Once payment for an invoice is received, the invoice goes to the state of Paid. *)
-    operation PaymentReceived();
+    (* Once payment for an invoice is received, the invoice goes to the Received state. *)
+    operation paymentReceived();
     begin
         var invoice;
         begin

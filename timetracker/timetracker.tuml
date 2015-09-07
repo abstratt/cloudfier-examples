@@ -111,6 +111,7 @@ class Invoice
     };
     
     operation issue()
+        precondition MustBeOpen { self.open }
         (* Cannot issue an invoice that has no entries submitted. *)
         precondition MustHaveEntry { not self.submitted.isEmpty() };
     begin
