@@ -100,7 +100,12 @@ class AutoMechanic specializes Person
 
     statemachine WorkingStatus
 
-        initial state Working
+        initial state Apprentice
+            transition on call(retire) to Retired;
+            transition on call(completeTraining) to Working;
+        end;
+
+        state Working
             transition on call(beginVacation) to Vacation;
             transition on call(retire) to Retired;
         end;

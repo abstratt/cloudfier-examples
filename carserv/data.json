@@ -22,9 +22,10 @@
             { "name": "Taurus", "make": "Make@1"}            
         ],
         "AutoMechanic": [
-            { "lastName": "Smith", "firstName": "John"},
-            { "lastName": "Perkins", "firstName": "Teresa"},            
-            { "lastName": "Goodman", "firstName": "Hank"}
+            { "lastName": "Smith", "firstName": "John", status: "Working"},
+            { "lastName": "Perkins", "firstName": "Teresa", status: "Working"},            
+            { "lastName": "Goodman", "firstName": "Hank", status: "Working"},
+            { "lastName": "Parsons", "firstName": "Mark"}            
         ],
         "Customer": [
             {
