@@ -46,6 +46,37 @@ class Tests
         Assert#isTrue(! populousStateAbbreviations.includes("WY"));
     end;
     
+    operation statePopulationsAbove();
+    begin
+        var populations, oregon, found;
+        TestData#build();
+        oregon := State#byAbbreviation("OR");        
+        populations := State#statePopulationsAbove(500000);
+        Assert#areEqual(2, populations.size());
+        found := populations.\any((s : { \state: State, : Integer}) : Boolean {
+        	s.\state.abbreviation = "OR" 
+    	});
+        Assert#areEqual(oregon.population, found.statePopulation);
+    end;
+
+    operation maximumPopulation();
+    begin
+        var san_francisco, maxPopulation;
+        TestData#build();
+        san_francisco := City extent.\any((c : City) : Boolean {c.name = "San Francisco"});
+        maxPopulation := City#maximumPopulation();
+        Assert#areEqual(san_francisco.population, maxPopulation);
+    end;    
+    
+    operation mostPopulousCity();
+    begin
+        var actual;
+        TestData#build();
+        actual := City#mostPopulousCity();
+        Assert#isNotNull(actual);
+        Assert#areEqual("San Francisco", actual.name);
+    end;    
+    
     operation populousStates();
     begin
         var populousStates;
@@ -55,6 +86,14 @@ class Tests
         Assert#isTrue(populousStates.includes(State#byAbbreviation("CA")));        
         Assert#isTrue(populousStates.includes(State#byAbbreviation("OR")));
         Assert#isTrue(!populousStates.includes(State#byAbbreviation("WY")));
+    end;
+    
+    operation citiesMorePopulousThan();
+    begin
+        TestData#build();
+        Assert#areEqual(3, City#citiesMorePopulousThan(500000));
+        Assert#areEqual(1, City#citiesMorePopulousThan(1000000));
+        Assert#areEqual(0, City#citiesMorePopulousThan(2000000));        
     end;
     
     

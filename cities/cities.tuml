@@ -10,6 +10,23 @@ class City
     attribute population : Integer;
 
     attribute cityState : State;
+    
+    static query citiesMorePopulousThan(threshold : Integer) : Integer;
+    begin
+        return City extent.select((c : City) : Boolean { c.population >= threshold } ).size();
+    end;
+
+    static query maximumPopulation() : Integer;
+    begin
+        return City extent.max((c : City) : Integer { c.population } );
+    end;
+    
+    static query mostPopulousCity() : City;
+    begin
+        var maximumPopulation;
+        maximumPopulation := City extent.max((c : City) : Integer { c.population } );
+        return City extent.\any((c : City) : Boolean { c.population == maximumPopulation } );
+    end;
 end;
 
 datatype StatePopulation
@@ -55,6 +72,23 @@ class State
         });
     end;
 
+    static query statePopulationsAbove(threshold : Integer) : { \state : State, statePopulation : Integer}[*];
+    begin
+        return City extent.groupBy((c : City) : State {
+        	c.cityState
+    	}).groupCollect((cities : City[*]) : { : State,  : Integer} {
+            {
+                aState := cities.one().cityState, 
+                statePopulation := cities.sum((c : City) : Integer {
+                    c.population
+                })
+            }
+        }).select((aggregated : { : State, statePopulation : Integer}) : Boolean {
+            aggregated.statePopulation > threshold
+        });
+    end;
+
+
     static query statesMorePopulousThan(threshold : Integer) : State[*];
     begin
         return City extent.groupBy((c : City) : State {
@@ -69,6 +103,17 @@ class State
         }).select((aggregated : { : State, statePopulation : Integer}) : Boolean {
             aggregated.statePopulation > threshold
         }).collect((stats : {theState : State,  : Integer}) : State {
+        	/* 
+        	 * Since we are in aggregated mode, going back to instances would require maybe
+        	 * an outer query that maps the ids of states here to state instances.
+        	 * IOW, if you are grouping by an instance, you are actually grouping by the
+        	 * id of that instance , and getting the instances back requires some
+        	 * legwork.
+        	 * 
+        	 * Also, generated tuple classes that include slots that are instances should map
+        	 * to ids (the type of the primary key).
+        	 */
+        	  
             stats.theState
         });
     end;
