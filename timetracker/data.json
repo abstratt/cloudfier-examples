@@ -13,10 +13,51 @@
       "status" : "Open",
       "client" : "Client@1"
     }, {
-      "invoiceId" : 61,
+      "invoiceId" : 25,
+      "issueDate" : "2015/09/08",
+      "status" : "Open",
+      "client" : "Client@3"
+    }, {
+      "invoiceId" : 27,
+      "issueDate" : "2015/09/08",
+      "status" : "Open",
+      "client" : "Client@3"
+    }, {
+      "invoiceId" : 12,
       "issueDate" : "2014/07/17",
       "status" : "Open",
       "client" : "Client@1"
+    } ],
+    "Project" : [ {
+      "description" : "Greenfield project",
+      "client" : "Client@1"
+    }, {
+      "description" : "Deep roots project",
+      "client" : "Client@2"
+    }, {
+      "description" : "Website redesign",
+      "client" : "Client@3"
+    }, {
+      "description" : "Visual identity",
+      "client" : "Client@3"
+    } ],
+    "Entry" : [ {
+      "units" : 10,
+      "date" : "2015/09/08",
+      "memo" : null,
+      "project" : "Project@2"
+    }, {
+      "units" : 5,
+      "date" : "2015/09/08",
+      "memo" : null,
+      "project" : "Project@4",
+      "invoice" : "Invoice@2"
+    }, {
+      "units" : 7,
+      "date" : "2015/09/08",
+      "memo" : null,
+      "project" : "Project@4",
+      "invoice" : "Invoice@3"
     } ]
   }
 }

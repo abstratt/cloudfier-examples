@@ -17,8 +17,8 @@ class ProjectScenarios
             project := Examples#project();
         end;
         begin
-            project.addEntry(4);
-            project.addEntry(3);
+            project.addEntry(4, null);
+            project.addEntry(3, null);
         end;
         begin
             Assert#areEqual(7, project.unitsReported);
@@ -28,18 +28,22 @@ class ProjectScenarios
     (* Reported entries are collected as discrete objects. *)
     operation itemsReported();
     begin
-        var project;
+        var project1, project2;
         begin
-            project := Examples#project();
-            project.addEntry(4);
-            project.addEntry(3);
+            project1 := Examples#project();
+            project2 := Examples#project();
+            project1.addEntry(4, null);
+            project1.addEntry(3, null);
         end;
         begin
-            Assert#areEqual(2, project.reported.size());
-            project.addEntry(5);
+            Assert#areEqual(2, project1.reported.size());
+            Assert#areEqual(0, project2.reported.size());            
+            project1.addEntry(5, null);
+            project2.addEntry(1, null);            
         end;
         begin
-            Assert#areEqual(3, project.reported.size());
+            Assert#areEqual(3, project1.reported.size());
+            Assert#areEqual(1, project2.reported.size());            
         end;
     end;
 
@@ -49,8 +53,8 @@ class ProjectScenarios
         var project, invoice, entry1, entry2;
         begin
             project := Examples#project();
-            entry1 := project.addEntry(4);
-            entry2 := project.addEntry(3);
+            entry1 := project.addEntry(4, null);
+            entry2 := project.addEntry(3, null);
             invoice := project.client.openInvoice();
             entry1.submit(invoice);
         end;
@@ -68,7 +72,7 @@ class EntryScenarios
     operation entryDateDefaultsToToday();
     begin
         var anEntry;
-        anEntry := Examples#project().addEntry(1);
+        anEntry := Examples#project().addEntry(1, null);
         Assert#areEqual(Date#today(), anEntry.date);
     end;
 
@@ -79,7 +83,7 @@ class EntryScenarios
         var client1, client2, anEntry;
         client1 := Examples#client();
         client2 := Examples#client();
-        anEntry := client1.newProject("Some project").addEntry(1);
+        anEntry := client1.newProject("Some project").addEntry(1, null);
         anEntry.submit(client2.openInvoice());
     end;
 
@@ -91,7 +95,7 @@ class EntryScenarios
         project := Examples#project();
         invoice1 := project.client.openInvoice();
         invoice2 := project.client.openInvoice();        
-        anEntry := project.addEntry(1);
+        anEntry := project.addEntry(1, null);
         anEntry.submit(invoice1);
         anEntry.submit(invoice2);
     end;
@@ -100,14 +104,14 @@ class EntryScenarios
     [Failure(constraint="MustBePositive", context="units")]
     operation unitsMayNotBeNegative();
     begin
-        Examples#project().addEntry(- 1);
+        Examples#project().addEntry(- 1, null);
     end;
 
     (* The number of units of work logged must be positive. *)
     [Failure(constraint="MustBePositive", context="units")]
     operation unitsMayNotBeZero();
     begin
-        Examples#project().addEntry(0);
+        Examples#project().addEntry(0, null);
     end;
 end;
 
@@ -132,7 +136,7 @@ class InvoiceScenarios
         var invoice, anEntry, client;
         begin
             client := Examples#client();
-            anEntry := client.newProject("Some project").addEntry(1);
+            anEntry := client.newProject("Some project").addEntry(1, null);
             invoice := client.openInvoice();
             anEntry.submit(invoice);
             invoice.issue();
@@ -164,7 +168,7 @@ class InvoiceScenarios
         begin
             project := Examples#project();
             invoice := project.client.openInvoice();
-            project.addEntry(1).submit(invoice);
+            project.addEntry(1, null).submit(invoice);
             invoice.issue();
         end;
         begin
@@ -182,7 +186,7 @@ class InvoiceScenarios
         var invoice;
         begin
             invoice := Examples#client().openInvoice();
-            invoice.client.newProject("Some project").addEntry(1).submit(invoice);
+            invoice.client.newProject("Some project").addEntry(1, null).submit(invoice);
             invoice.issue();
             send PaymentReceived() to invoice;            
         end;
@@ -198,7 +202,7 @@ class InvoiceScenarios
         var invoice;
         begin
             invoice := Examples#client().openInvoice();
-            invoice.client.newProject("Some project").addEntry(1).submit(invoice);
+            invoice.client.newProject("Some project").addEntry(1, null).submit(invoice);
             invoice.cancel();
         end;
         begin
@@ -215,9 +219,9 @@ class InvoiceScenarios
             invoice := client.openInvoice();
             project1 := client.newProject("Project 1");
             project2 := client.newProject("Project 2");
-            project1.addEntry(1).submit(invoice);
-            project1.addEntry(3).submit(invoice);
-            project2.addEntry(7).submit(invoice);
+            project1.addEntry(1, null).submit(invoice);
+            project1.addEntry(3, null).submit(invoice);
+            project2.addEntry(7, null).submit(invoice);
         end;
         begin
             Assert#areEqual(11, invoice.totalUnits);
@@ -230,7 +234,7 @@ class InvoiceScenarios
         var invoice;
         begin
             invoice := Examples#client().openInvoice();
-            invoice.client.newProject("Some project").addEntry(1).submit(invoice);
+            invoice.client.newProject("Some project").addEntry(1, null).submit(invoice);
             invoice.issue();
             send PaymentReceived() to invoice;
         end;
@@ -247,11 +251,11 @@ class InvoiceScenarios
         begin
             project := Examples#project();
             invoice := project.client.openInvoice();
-            project.addEntry(1).submit(invoice);
+            project.addEntry(1, null).submit(invoice);
             invoice.issue();
         end;
         begin
-            project.addEntry(2).submit(invoice);
+            project.addEntry(2, null).submit(invoice);
         end;
     end;
 
@@ -266,12 +270,12 @@ class InvoiceScenarios
             invoice.cancel();
         end;
         begin
-            project.addEntry(2).submit(invoice);
+            project.addEntry(2, null).submit(invoice);
         end;
     end;
 
     (* It is an error to issue an invoice with no entries submitted to it. *)
-    [Failure(constraint="MustHaveEntry", context="issue")]
+    [Failure(constraint="MustHaveEntries", context="issue")]
     operation cannotIssueInvoiceWithoutAnyEntry();
     begin
         Examples#client().openInvoice().issue();
