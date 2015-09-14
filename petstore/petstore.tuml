@@ -22,7 +22,7 @@ association
 
     role Customer.orders;
 
-    navigable role customer : Customer;
+    navigable role Order.customer;
 
 end;
 
@@ -76,6 +76,8 @@ class Order
     readonly attribute orderDate : Date := { Date#today() };
 
     attribute orderStatus : Status;
+    
+    readonly attribute customer : Customer;    
 
     readonly attribute items : OrderDetail[*];
 
