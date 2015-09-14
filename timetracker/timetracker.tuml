@@ -8,6 +8,7 @@ import mdd_types;
 (* A person or organization work can be done for. *)
 class Client
 
+    (* The name of the client. *)
     attribute name : String;
 
     attribute projects : Project[*];
@@ -53,6 +54,7 @@ end;
 (* A project provides a context for work entries. *)
 class Project
 
+    (* A description for the project. *)
     attribute description : String;
 
     attribute reported : Entry[*];
@@ -84,6 +86,10 @@ end;
 
 (* An invoice describes work done for a client within one or more projects. *)
 class Invoice
+
+    derived attribute moniker : String := {
+    	self.number + " - " + self.client.name
+    };
 
     derived attribute number : String := {
         "" + self.issueDate.year() + "." + self.invoiceId
@@ -158,14 +164,18 @@ end;
 
 class Entry
 
+    (* The number of units of work in this entry. *)
     attribute units : Integer := 1
         (* Entry must describe a positive number of units. *)
         invariant MustBePositive { self.units > 0 };
 
+    (* The project the work went into. *)
     attribute project : Project;
 
+    (* The date when the work happened. *)
     attribute date : Date := { Date#today() };
 
+    (* An optional description of the work performed . *)
     attribute memo : Memo[0, 1];
 
     derived attribute client : Client := { self.project.client };

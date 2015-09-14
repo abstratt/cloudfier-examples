@@ -8,25 +8,25 @@
       "name" : "Megabrains Consulting"
     } ],
     "Invoice" : [ {
+      "invoiceId" : 18,
+      "issueDate" : "2014/07/17",
+      "status" : "Open",
+      "client" : "Client@1"
+    }, {
       "invoiceId" : 9,
       "issueDate" : "2014/07/14",
       "status" : "Open",
       "client" : "Client@1"
     }, {
-      "invoiceId" : 25,
-      "issueDate" : "2015/09/08",
-      "status" : "Open",
-      "client" : "Client@3"
-    }, {
-      "invoiceId" : 27,
-      "issueDate" : "2015/09/08",
-      "status" : "Open",
-      "client" : "Client@3"
-    }, {
       "invoiceId" : 12,
-      "issueDate" : "2014/07/17",
+      "issueDate" : "2015/09/08",
       "status" : "Open",
-      "client" : "Client@1"
+      "client" : "Client@3"
+    }, {
+      "invoiceId" : 15,
+      "issueDate" : "2015/09/08",
+      "status" : "Open",
+      "client" : "Client@3"
     } ],
     "Project" : [ {
       "description" : "Greenfield project",
@@ -42,6 +42,12 @@
       "client" : "Client@3"
     } ],
     "Entry" : [ {
+      "units" : 2,
+      "date" : "2015/09/09",
+      "memo" : "",
+      "project" : "Project@1",
+      "invoice" : "Invoice@1"
+    }, {
       "units" : 10,
       "date" : "2015/09/08",
       "memo" : null,
@@ -51,13 +57,13 @@
       "date" : "2015/09/08",
       "memo" : null,
       "project" : "Project@4",
-      "invoice" : "Invoice@2"
+      "invoice" : "Invoice@3"
     }, {
       "units" : 7,
       "date" : "2015/09/08",
       "memo" : null,
       "project" : "Project@4",
-      "invoice" : "Invoice@3"
+      "invoice" : "Invoice@4"
     } ]
   }
 }
