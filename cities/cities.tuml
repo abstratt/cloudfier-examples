@@ -23,9 +23,7 @@ class City
     
     static query mostPopulousCity() : City;
     begin
-        var maximumPopulation;
-        maximumPopulation := City extent.max((c : City) : Integer { c.population } );
-        return City extent.\any((c : City) : Boolean { c.population == maximumPopulation } );
+        return City extent.maxElement((c : City) : Integer { c.population } );
     end;
 end;
 
