@@ -10,6 +10,15 @@ import carserv;
 [Test]
 class MechanicScenarios
 
+    operation startsInTraining();
+    begin
+        var mechanic;
+        begin
+	        mechanic := TestData#newMechanic();        
+            Assert#isTrue(mechanic.training);
+        end;
+    end;
+
     operation goesOnVacation();
     begin
         var mechanic;
@@ -94,14 +103,20 @@ class TestData
     static operation getAMechanic() : AutoMechanic;
     begin
         var mechanic;
-        mechanic := TestData#newMechanic();
-        return mechanic;
+        begin
+	        mechanic := TestData#newMechanic();
+	        mechanic.completeTraining();
+        end;
+        begin
+            Assert#areEqual(AutoMechanic::WorkingStatus#Working, mechanic.status);
+            return mechanic;
+        end;        
     end;
 
     static operation getAMechanicWithWorkScheduled() : AutoMechanic;
     begin
         var mechanic, service, car;
-        mechanic := TestData#newMechanic();
+        mechanic := TestData#getAMechanic();
         car := TestData#newCar(TestData#newCustomer());
         service := Service#newService(car, Memo#fromString("A service"), 1);
         service.assignTo(mechanic);
@@ -114,7 +129,6 @@ class TestData
         mechanic := new AutoMechanic;
         mechanic.firstName := "John";
         mechanic.lastName := "Fixalot";
-        mechanic.email := "john.fixalot@carserv.com";
         return mechanic;
     end;
 
@@ -125,7 +139,6 @@ class TestData
         customer.firstName := "James";
         customer.lastName := "Rider";
         customer.title := Title#Mr;
-        customer.email := "james.a.rider@freemail.com";
         return customer;
     end;
 

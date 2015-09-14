@@ -18,15 +18,13 @@ import mdd_types;
 [kirra::User]
 abstract class Person
 
-    derived attribute fullName : String := {
+    derived id attribute fullName : String := {
         self.firstName + " " + self.lastName
     };
 
     attribute firstName : String;
 
     attribute lastName : String;
-    
-    readonly id attribute email : String;
 end;
 
 enumeration Title
@@ -41,9 +39,13 @@ class AutoMechanic specializes Person
 
     attribute status : WorkingStatus;
 
-    derived attribute working : Boolean := {
+    private derived attribute working : Boolean := {
         self.status == WorkingStatus#Working
     };
+    
+    private derived attribute training : Boolean := {
+        self.status == WorkingStatus#Apprentice
+    };    
 
     (* Services currently in progress by this worker. *)
     derived attribute currentServices : Service[*] := {
