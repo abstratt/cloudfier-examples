@@ -96,6 +96,10 @@ class AutoMechanic specializes Person
     begin
     end;
     
+    (* 
+        Completes the training period, promoting the apprentice to a trained mechanic. Mechanic
+        will become apt for taking on services. 
+    *)
     operation completeTraining();
 
     statemachine WorkingStatus
