@@ -215,11 +215,15 @@ end;
 *)
 class Issue
 
+    derived id attribute mnemonic : String := {
+        self.issueKey + " - " + self.summary
+    };
+
     attribute summary : String;
 
-    derived id attribute issueId : Integer;
+    protected derived id attribute issueId : Integer;
 
-    derived attribute issueKey : String := {
+    derived id attribute issueKey : String := {
         self.project.token + "-" + self.issueId
     };
 
@@ -338,7 +342,7 @@ class Issue
     end;
 
     (* Reopen the issue. *)
-    operation reopen(reason : Memo);
+    operation reopen(reason : Memo[0,1]);
     begin
         self.resolvedOn := null;
         self.resolution := null;
