@@ -95,8 +95,8 @@ class AutoMechanic specializes Person
 
     operation retire()
         precondition NoWorkInProgress { not self.workInProgress };
-    begin
-    end;
+
+    operation rehire();
     
     (* 
         Completes the training period, promoting the apprentice to a trained mechanic. Mechanic
@@ -122,6 +122,7 @@ class AutoMechanic specializes Person
         
         state Retired 
         	entry { self.doUnassign(); };
+            transition on call(rehire) to Working;        	
         end;
     end;
 
