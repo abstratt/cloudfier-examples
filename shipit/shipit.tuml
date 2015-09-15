@@ -71,7 +71,8 @@ class User
     end;
 
     operation withdrawVoteFrom(issue : Issue)
-        precondition IsAVoter (issue) {
+        precondition votedOnAnyIssues { !self<-VotedIssues->voted.isEmpty() }
+        precondition IsAVoterOfIssue (issue) {
             self.isVoter(issue)
         };
     begin
