@@ -1,5 +1,16 @@
 {
   "car_rental" : {
+    "Customer" : [ {
+      "name" : "Jeremy Wilson"
+    }, {
+      "name" : "Stephanie Enever"
+    }, {
+      "name" : "Rob Padaratz"
+    }, {
+      "name" : "Serge Burrow"
+    }, {
+      "name" : "Maya deSouza"
+    } ],
     "Make" : [ {
       "name" : "Dodge"
     }, {
@@ -11,23 +22,15 @@
     }, {
       "name" : "Honda"
     } ],
-    "Customer" : [ {
-      "name" : "Rob Padaratz"
-    }, {
-      "name" : "Serge Burrow"
-    }, {
-      "name" : "Maya deSouza"
-    }, {
-      "name" : "Jeremy Wilson"
-    }, {
-      "name" : "Stephanie Enever"
-    } ],
     "CarModel" : [ {
       "name" : "Stratus",
       "make" : "Make@1"
     }, {
       "name" : "Caravan",
       "make" : "Make@1"
+    }, {
+      "name" : "Prius",
+      "make" : "Make@4"
     }, {
       "name" : "Corolla",
       "make" : "Make@4"
@@ -47,7 +50,7 @@
       "year" : 2012,
       "color" : "Beige",
       "status" : "Rented",
-      "carModel" : "CarModel@6"
+      "carModel" : "CarModel@7"
     }, {
       "plate" : "FFG-8911",
       "price" : 220.0,
@@ -61,92 +64,106 @@
       "year" : 2014,
       "color" : "Silver",
       "status" : "Available",
-      "carModel" : "CarModel@3"
+      "carModel" : "CarModel@4"
     }, {
       "plate" : "GHI-789",
       "price" : 100.0,
       "year" : 2013,
       "color" : "Black",
       "status" : "Available",
-      "carModel" : "CarModel@4"
+      "carModel" : "CarModel@5"
+    }, {
+      "plate" : "YHH-6677",
+      "price" : 300.0,
+      "year" : 2015,
+      "color" : "silver",
+      "status" : "Available",
+      "carModel" : "CarModel@3"
     }, {
       "plate" : "ABC-123",
       "price" : 70.0,
       "year" : 2010,
       "color" : "White",
       "status" : "Rented",
-      "carModel" : "CarModel@5"
+      "carModel" : "CarModel@6"
+    }, {
+      "plate" : "AABB-11223",
+      "price" : 260.0,
+      "year" : 2015,
+      "color" : "silver",
+      "status" : "Available",
+      "carModel" : "CarModel@3"
     } ],
     "Rental" : [ {
       "started" : "2014/08/08",
       "returned" : null,
-      "car" : "Car@5",
+      "car" : "Car@1",
       "customer" : "Customer@2"
+    }, {
+      "started" : "2014/05/28",
+      "returned" : "2014/08/08",
+      "car" : "Car@3",
+      "customer" : "Customer@2"
+    }, {
+      "started" : "2014/08/08",
+      "returned" : "2014/08/08",
+      "car" : "Car@4",
+      "customer" : "Customer@1"
+    }, {
+      "started" : "2014/08/08",
+      "returned" : null,
+      "car" : "Car@6",
+      "customer" : "Customer@4"
     }, {
       "started" : "2014/08/08",
       "returned" : "2014/08/08",
       "car" : "Car@2",
-      "customer" : "Customer@2"
-    }, {
-      "started" : "2014/05/28",
-      "returned" : "2014/08/08",
-      "car" : "Car@3",
-      "customer" : "Customer@1"
-    }, {
-      "started" : "2014/08/08",
-      "returned" : "2014/08/08",
-      "car" : "Car@3",
-      "customer" : "Customer@4"
-    }, {
-      "started" : "2014/08/08",
-      "returned" : "2014/08/08",
-      "car" : "Car@4",
-      "customer" : "Customer@4"
-    }, {
-      "started" : "2014/08/08",
-      "returned" : "2014/08/08",
-      "car" : "Car@4",
-      "customer" : "Customer@4"
-    }, {
-      "started" : "2014/08/08",
-      "returned" : "2014/08/08",
-      "car" : "Car@3",
-      "customer" : "Customer@4"
-    }, {
-      "started" : "2014/08/08",
-      "returned" : "2014/08/08",
-      "car" : "Car@4",
-      "customer" : "Customer@4"
-    }, {
-      "started" : "2014/08/08",
-      "returned" : "2014/08/08",
-      "car" : "Car@3",
       "customer" : "Customer@4"
     }, {
       "started" : "2014/05/28",
       "returned" : "2014/08/08",
-      "car" : "Car@4",
-      "customer" : "Customer@1"
-    }, {
-      "started" : "2014/05/28",
-      "returned" : "2014/08/08",
-      "car" : "Car@1",
+      "car" : "Car@3",
       "customer" : "Customer@3"
     }, {
       "started" : "2014/08/08",
-      "returned" : null,
-      "car" : "Car@1",
-      "customer" : "Customer@5"
-    }, {
-      "started" : "2014/05/28",
       "returned" : "2014/08/08",
       "car" : "Car@3",
-      "customer" : "Customer@5"
+      "customer" : "Customer@1"
     }, {
       "started" : "2014/08/08",
       "returned" : "2014/08/08",
       "car" : "Car@4",
-      "customer" : "Customer@4"
+      "customer" : "Customer@1"
+    }, {
+      "started" : "2014/08/08",
+      "returned" : "2014/08/08",
+      "car" : "Car@4",
+      "customer" : "Customer@1"
+    }, {
+      "started" : "2014/08/08",
+      "returned" : "2014/08/08",
+      "car" : "Car@3",
+      "customer" : "Customer@1"
+    }, {
+      "started" : "2014/08/08",
+      "returned" : "2014/08/08",
+      "car" : "Car@4",
+      "customer" : "Customer@1"
+    }, {
+      "started" : "2014/08/08",
+      "returned" : "2014/08/08",
+      "car" : "Car@3",
+      "customer" : "Customer@1"
+    }, {
+      "started" : "2014/05/28",
+      "returned" : "2014/08/08",
+      "car" : "Car@4",
+      "customer" : "Customer@3"
+    }, {
+      "started" : "2014/05/28",
+      "returned" : "2014/08/08",
+      "car" : "Car@1",
+      "customer" : "Customer@5"
     } ]
   }
 }

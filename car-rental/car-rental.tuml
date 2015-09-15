@@ -143,7 +143,7 @@ class CarModel
         self.make.name + " " + self.name
     };
 
-    readonly attribute name : String;
+    attribute name : String;
 
     readonly attribute make : Make;
 end;
