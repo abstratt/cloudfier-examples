@@ -114,7 +114,13 @@ class Rental
         self.status == Status#InProgress
     };
 
-    operation finish();
+    operation complete() 
+        precondition { self.inProgress };
+    begin
+        self.customer.finishRental();
+    end;
+
+    private operation finish();
     
     static query inProgress() : Rental[*];
     begin
