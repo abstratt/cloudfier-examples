@@ -1,5 +1,5 @@
 /*
-  Fixture data copied from the CarServ 
+  Fixture data based on the CarServ 
   sample application that appears in the book 
   book Domain-Driven Design Using Naked Objects
   by Dan Haywood.
@@ -7,72 +7,159 @@
   "http"://pragprog.com/book/dhnako/domain-driven-design-using-naked-objects
 */
 {
-    "carserv": {
-        "Make": [
-            { "name": "Ford" },
-            { "name": "Toyota" },
-            { "name": "Honda" }            
-        ],
-        "Model": [
-            { "name": "Focus", "make": "Make@1"},
-            { "name": "Mustang", "make": "Make@1"},
-            { "name": "Corolla", "make": "Make@2"},            
-            { "name": "Yaris", "make": "Make@2"},
-            { "name": "Civic", "make": "Make@3"},
-            { "name": "Taurus", "make": "Make@1"}            
-        ],
-        "AutoMechanic": [
-            { "lastName": "Smith", "firstName": "John", status: "Working"},
-            { "lastName": "Perkins", "firstName": "Teresa", status: "Working"},            
-            { "lastName": "Goodman", "firstName": "Hank", status: "Working"},
-            { "lastName": "Parsons", "firstName": "Mark"}            
-        ],
-        "Customer": [
-            {
-                "title": "Mr", "lastName": "Frederikson", "firstName": "Boris"
-            },
-            {
-                "title": "Mr", "lastName": "Bloggs", "firstName": "Joe"
-            },            
-            {
-                "title": "Mrs", "lastName": "Bloggs", "firstName": "Mary"
-            },                        
-            { 
-                "firstName": 'Sarah', 
-                "lastName": 'Connor', 
-                "title": "Ms"
-            },
-            { 
-                "firstName": 'John', 
-                "lastName": 'Connor', 
-                "title": "Mr"
-            },
-            { 
-                "firstName": 'Zelda', 
-                "lastName": 'Scott', 
-                "title": "Mrs"
-            }                        
-        ],
-        "Car": [
-                    {"owner": "Customer@1", "model": "Model@1", "registrationNumber": "KP53GRD"},
-                    {"owner": "Customer@1", "model": "Model@3", "registrationNumber": "W379CDV"},                    
-                    {"owner": "Customer@1", "model": "Model@4", "registrationNumber": "MB57WDS"},
-                    {"owner": "Customer@2", "model": "Model@6", "registrationNumber": "M321RNP"},
-                    {"owner": "Customer@2", "model": "Model@5", "registrationNumber": "KL56WGF"},                    
-                    {"owner": "Customer@3", "model": "Model@2", "registrationNumber": "KLP346P"},
-                    {"owner": "Customer@4",  "registrationNumber": "1234FGH456a", "model": "Model@1"},
-                    {"owner": "Customer@4",  "registrationNumber": "1234FGH456b", "model": "Model@4"},
-                    {"owner": "Customer@5",  "registrationNumber": "889222AWY", "model": "Model@3" }
-        
-        ],
-        "Service": [
-            { "car": "Car@1", "technician": "AutoMechanic@1", "description": "Check oil pressure", "bookedOn": "2011/11/30", "estimatedReady": "2011/11/30" },
-            { "car": "Car@1", "technician": "AutoMechanic@2", "description": "Replace all tires", "bookedOn": "2011/07/15", "estimatedReady": "2011/07/15" },
-            { "car": "Car@2", "technician": "AutoMechanic@3", "description": "Fuel injection needs inspection", "bookedOn": "2011/07/04", "estimatedReady": "2011/07/05" },
-            { "car": "Car@5", "technician": "AutoMechanic@2", "description": "Put winter tires", "bookedOn": "2011/12/15", "estimatedReady": "2011/12/15" },
-            { "car": "Car@8", "technician": "AutoMechanic@1", "description": "Bumper needs repair", "bookedOn": "2011/08/12", "estimatedReady": "2011/08/14" },
-            { "car": "Car@9", "technician": "AutoMechanic@2", "description": "Install regular tires", "bookedOn": "2011/02/14", "estimatedReady": "2011/02/14" },
-            { "car": "Car@9", "technician": "AutoMechanic@1", "description": "Install winter tires", "bookedOn": "2010/12/12", "estimatedReady": "2010/12/13" }                            
-        ]
-    }
+  "carserv" : {
+    "Make" : [ {
+      "name" : "Ford"
+    }, {
+      "name" : "Toyota"
+    }, {
+      "name" : "Honda"
+    } ],
+    "Model" : [ {
+      "name" : "Taurus",
+      "make" : "Make@1"
+    }, {
+      "name" : "Focus",
+      "make" : "Make@1"
+    }, {
+      "name" : "Mustang",
+      "make" : "Make@1"
+    }, {
+      "name" : "Corolla",
+      "make" : "Make@2"
+    }, {
+      "name" : "Yaris",
+      "make" : "Make@2"
+    }, {
+      "name" : "Civic",
+      "make" : "Make@3"
+    } ],
+    "Customer" : [ {
+      "firstName" : "Sarah",
+      "lastName" : "Connor",
+      "title" : "Ms"
+    }, {
+      "firstName" : "John",
+      "lastName" : "Connor",
+      "title" : "Mr"
+    }, {
+      "firstName" : "Zelda",
+      "lastName" : "Scott",
+      "title" : "Mrs"
+    }, {
+      "firstName" : "Boris",
+      "lastName" : "Frederikson",
+      "title" : "Mr"
+    }, {
+      "firstName" : "Joe",
+      "lastName" : "Bloggs",
+      "title" : "Mr"
+    }, {
+      "firstName" : "Mary",
+      "lastName" : "Bloggs",
+      "title" : "Mrs"
+    } ],
+    "Car" : [ {
+      "registrationNumber" : "KLP346P",
+      "model" : "Model@3",
+      "owner" : "Customer@6"
+    }, {
+      "registrationNumber" : "1234FGH456a",
+      "model" : "Model@2",
+      "owner" : "Customer@1"
+    }, {
+      "registrationNumber" : "1234FGH456b",
+      "model" : "Model@5",
+      "owner" : "Customer@1"
+    }, {
+      "registrationNumber" : "KP53GRD",
+      "model" : "Model@2",
+      "owner" : "Customer@4"
+    }, {
+      "registrationNumber" : "889222AWY",
+      "model" : "Model@4",
+      "owner" : "Customer@2"
+    }, {
+      "registrationNumber" : "W379CDV",
+      "model" : "Model@4",
+      "owner" : "Customer@4"
+    }, {
+      "registrationNumber" : "MB57WDS",
+      "model" : "Model@5",
+      "owner" : "Customer@4"
+    }, {
+      "registrationNumber" : "M321RNP",
+      "model" : "Model@1",
+      "owner" : "Customer@5"
+    }, {
+      "registrationNumber" : "KL56WGF",
+      "model" : "Model@6",
+      "owner" : "Customer@5"
+    } ],
+    "AutoMechanic" : [ {
+      "firstName" : "John",
+      "lastName" : "Smith",
+      "status" : "Working"
+    }, {
+      "firstName" : "Teresa",
+      "lastName" : "Perkins",
+      "status" : "Working"
+    }, {
+      "firstName" : "Blake",
+      "lastName" : "Gomez",
+      "status" : "Apprentice"
+    }, {
+      "firstName" : "Hank",
+      "lastName" : "Goodman",
+      "status" : "Working"
+    }, {
+      "firstName" : "Mark",
+      "lastName" : "Parsons",
+      "status" : "Apprentice"
+    } ],
+    "Service" : [ {
+      "description" : "Bumper needs repair",
+      "bookedOn" : "2011/08/12",
+      "estimatedReady" : "2011/08/14",
+      "status" : "Booked",
+      "car" : "Car@3"
+    }, {
+      "description" : "Install regular tires",
+      "bookedOn" : "2011/02/14",
+      "estimatedReady" : "2011/02/14",
+      "status" : "Booked",
+      "car" : "Car@5"
+    }, {
+      "description" : "Install winter tires",
+      "bookedOn" : "2010/12/12",
+      "estimatedReady" : "2010/12/13",
+      "status" : "Booked",
+      "car" : "Car@5"
+    }, {
+      "description" : "Check oil pressure",
+      "bookedOn" : "2011/11/30",
+      "estimatedReady" : "2011/11/30",
+      "status" : "Booked",
+      "car" : "Car@4"
+    }, {
+      "description" : "Replace all tires",
+      "bookedOn" : "2011/07/15",
+      "estimatedReady" : "2011/07/15",
+      "status" : "Completed",
+      "car" : "Car@4",
+      "technician" : "AutoMechanic@1"
+    }, {
+      "description" : "Fuel injection needs inspection",
+      "bookedOn" : "2011/07/04",
+      "estimatedReady" : "2011/07/05",
+      "status" : "Booked",
+      "car" : "Car@6"
+    }, {
+      "description" : "Put winter tires",
+      "bookedOn" : "2011/12/15",
+      "estimatedReady" : "2011/12/15",
+      "status" : "Booked",
+      "car" : "Car@9"
+    } ]
+  }
 }
