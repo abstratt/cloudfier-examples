@@ -107,16 +107,14 @@ class Rental
     readonly attribute car : Car;
 
     readonly attribute customer : Customer;
+    
+    attribute status : Status;
 
     derived readonly attribute inProgress : Boolean := {
-        self.returned == null
+        self.status == Status#InProgress
     };
 
-    protected operation finish()
-        precondition MustBeInProgress { self.inProgress };
-    begin
-        self.returned := Date#today();
-    end;
+    operation finish();
     
     static query inProgress() : Rental[*];
     begin
@@ -135,6 +133,17 @@ class Rental
     begin
         return Rental extent;
     end;    
+    
+	statemachine Status
+		initial state InProgress
+			transition on call(finish) to Finished;
+		end;
+		state Finished
+		    entry {
+                self.returned := Date#today();
+		    };
+		end;		
+	end;
 end;
 
 class CarModel
