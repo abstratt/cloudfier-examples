@@ -8,13 +8,20 @@
       "description" : "Half day",
       "price" : 30.0,
       "shiftsPerDay" : 2
+    }, {
+      "description" : "Third",
+      "price" : 25.0,
+      "shiftsPerDay" : 3
     } ],
     "Taxi" : [ {
+      "name" : "Taxi 5",
+      "shift" : "Shift@2"
+    }, {
       "name" : "Taxi 1",
       "shift" : "Shift@1"
     }, {
       "name" : "Taxi 2",
-      "shift" : "Shift@1"
+      "shift" : "Shift@3"
     }, {
       "name" : "Taxi 3",
       "shift" : "Shift@2"
@@ -23,62 +30,67 @@
       "shift" : "Shift@2"
     } ],
     "Driver" : [ {
-      "name" : "Alice Camden",
+      "name" : "John Silver",
       "taxi" : "Taxi@2"
-    }, {
-      "name" : "Terrence Morris"
-    }, {
-      "name" : "John Silver"
     }, {
       "name" : "Katie Gold",
-      "taxi" : "Taxi@4"
+      "taxi" : "Taxi@5"
     }, {
       "name" : "Martin Johnes",
-      "taxi" : "Taxi@3"
+      "taxi" : "Taxi@4"
+    }, {
+      "name" : "Al Gamble"
     }, {
       "name" : "Ann Beasly",
-      "taxi" : "Taxi@3"
+      "taxi" : "Taxi@4"
+    }, {
+      "name" : "Donna Peterson"
+    }, {
+      "name" : "Alice Camden",
+      "taxi" : "Taxi@5"
+    }, {
+      "name" : "Terrence Morris"
     } ],
     "Charge" : [ {
-      "date" : "2014/02/22",
-      "receivedOn" : null,
-      "description" : "Taxi 1 - Full day",
-      "amount" : 50.0,
-      "status" : "Pending",
-      "driver" : "Driver@1",
-      "taxi" : "Taxi@2"
-    }, {
       "date" : "2014/02/22",
       "receivedOn" : "2014/02/22",
       "description" : "Taxi 3 - Half day",
       "amount" : 30.0,
       "status" : "Paid",
       "driver" : "Driver@5",
+      "taxi" : "Taxi@4"
+    }, {
+      "date" : "2014/02/22",
+      "receivedOn" : null,
+      "description" : "Taxi 1 - Full day",
+      "amount" : 50.0,
+      "status" : "Pending",
+      "driver" : "Driver@7",
       "taxi" : "Taxi@3"
+    }, {
+      "date" : "2014/02/22",
+      "receivedOn" : "2014/02/22",
+      "description" : "Taxi 3 - Half day",
+      "amount" : 30.0,
+      "status" : "Paid",
+      "driver" : "Driver@3",
+      "taxi" : "Taxi@4"
     }, {
       "date" : "2014/02/22",
       "receivedOn" : null,
       "description" : "Taxi 4 - Half day",
       "amount" : 30.0,
       "status" : "Pending",
-      "driver" : "Driver@4",
-      "taxi" : "Taxi@4"
+      "driver" : "Driver@2",
+      "taxi" : "Taxi@5"
     }, {
       "date" : "2014/02/22",
       "receivedOn" : null,
       "description" : "Taxi 3 - Half day",
       "amount" : 30.0,
       "status" : "Pending",
-      "driver" : "Driver@5",
-      "taxi" : "Taxi@3"
-    }, {
-      "date" : "2014/02/22",
-      "receivedOn" : "2014/02/22",
-      "description" : "Taxi 3 - Half day",
-      "amount" : 30.0,
-      "status" : "Paid",
-      "driver" : "Driver@6",
-      "taxi" : "Taxi@3"
+      "driver" : "Driver@3",
+      "taxi" : "Taxi@4"
     } ]
   }
 }
