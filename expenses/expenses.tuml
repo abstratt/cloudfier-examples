@@ -184,6 +184,21 @@ class Expense
         });
     end;
     
+    static query pendingExpenses() : Expense[*];
+    begin
+        return Expense#findByStatus(Status#Submitted);
+    end;
+    
+    static query approvedExpenses() : Expense[*];
+    begin
+        return Expense#findByStatus(Status#Approved);
+    end; 
+    
+    static query rejectedExpenses() : Expense[*];
+    begin
+        return Expense#findByStatus(Status#Rejected);    
+    end;
+    
     static query openExpenseCountPerCategory() : { category : Category, count : Integer }[*];
     begin
         return Expense extent.select((e : Expense) : Boolean {

@@ -35,7 +35,32 @@ class Taxi
     derived attribute pendingCharges : Charge[*] := {
         Charge#byTaxi(self).select((c : Charge) : Boolean { not c.paid })
     };
+    
+    (* Book this taxi for a driver. *)
+    operation bookTo(driver : Driver)
+        precondition {
+            not self.full
+        }
+        precondition (driver) { driver.taxi == null };
+    begin
+        driver.book(self);
+    end;
 
+    
+    static query available() : Taxi[*];
+    begin
+        return Taxi extent.select((t : Taxi) : Boolean { !t.full });
+    end;
+
+    static query empty() : Taxi[*];
+    begin
+        return Taxi extent.select((t : Taxi) : Boolean { t.drivers.isEmpty() });
+    end;
+
+    static query full() : Taxi[*];
+    begin
+        return Taxi extent.select((t : Taxi) : Boolean { t.full });
+    end;
 end;
 
 association TaxiDrivers
