@@ -46,6 +46,11 @@ class Car
     readonly attribute rentals : Rental[*];
 
     attribute status : Status;
+    
+    static query byModel(carModel : CarModel) : Car[*];
+    begin
+        return Car extent.select((c : Car) : Boolean { c.carModel == carModel });
+    end;
 
     statemachine Status
 
@@ -135,10 +140,6 @@ class Rental
             l.inProgress
         }).size();
     end;
-    static query all() : Rental[*];
-    begin
-        return Rental extent;
-    end;    
     
 	statemachine Status
 		initial state InProgress
@@ -161,6 +162,8 @@ class CarModel
     attribute name : String;
 
     readonly attribute make : Make;
+    
+    derived attribute cars : Car[*] := { Car#byModel(self) };
 end;
 
 class Make
