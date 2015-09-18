@@ -361,9 +361,9 @@ class Issue
     begin
         var comment;
         comment := new Comment;
-        comment.user := User#current;
         comment.commentedOn := Date#today();
         comment.text := text;
+        comment.user := User#current;
         comment.inReplyTo := inReplyTo;
         link IssueComments(issue := self, comments := comment);
         send CommentAdded(
