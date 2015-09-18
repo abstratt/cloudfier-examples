@@ -259,6 +259,16 @@ class Service
 
     derived attribute assigned : Boolean := { not (self.technician == null) };
 
+    static query inProgress() : Service[*];
+    begin
+        return Service extent.select((s : Service) : Boolean { s.status == Status#InProgress });
+    end;
+    
+    static query booked() : Service[*];
+    begin
+        return Service extent.select((s : Service) : Boolean { s.status == Status#Booked });
+    end;
+
     static operation newService(carToService : Car, description : Memo, estimate : Integer := 1) : Service
         precondition EstimateMustBePositive(estimate) { estimate > 0 };
     begin
@@ -331,7 +341,7 @@ association CarOwner
 
 end;
 
-composition ServiceCar
+aggregation ServiceCar
 
     role Car.services;
 
