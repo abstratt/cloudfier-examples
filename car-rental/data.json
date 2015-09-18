@@ -12,37 +12,49 @@
       "name" : "Maya deSouza"
     } ],
     "Make" : [ {
+      "name" : "Subaru"
+    }, {
+      "name" : "Chrysler"
+    }, {
       "name" : "Toyota"
     }, {
       "name" : "Honda"
     }, {
       "name" : "Dodge"
-    }, {
-      "name" : "Subaru"
-    }, {
-      "name" : "Chrysler"
     } ],
     "CarModel" : [ {
-      "name" : "Civic",
-      "make" : "Make@2"
-    }, {
-      "name" : "Stratus",
-      "make" : "Make@3"
-    }, {
-      "name" : "Caravan",
-      "make" : "Make@3"
-    }, {
-      "name" : "Prius",
-      "make" : "Make@1"
-    }, {
-      "name" : "Corolla",
-      "make" : "Make@1"
-    }, {
-      "name" : "Camry",
-      "make" : "Make@1"
+      "name" : "Fit",
+      "make" : "Make@4"
     }, {
       "name" : "Outback",
+      "make" : "Make@1"
+    }, {
+      "name" : "Civic",
       "make" : "Make@4"
+    }, {
+      "name" : "Stratus",
+      "make" : "Make@5"
+    }, {
+      "name" : "Caravan",
+      "make" : "Make@5"
+    }, {
+      "name" : "Prius",
+      "make" : "Make@3"
+    }, {
+      "name" : "Avalon",
+      "make" : "Make@3"
+    }, {
+      "name" : "CR-V",
+      "make" : "Make@4"
+    }, {
+      "name" : "Corolla",
+      "make" : "Make@3"
+    }, {
+      "name" : "Accord",
+      "make" : "Make@4"
+    }, {
+      "name" : "Camry",
+      "make" : "Make@3"
     } ],
     "Car" : [ {
       "plate" : "DEF-456",
@@ -50,51 +62,94 @@
       "year" : 2012,
       "color" : "Beige",
       "status" : "Rented",
-      "carModel" : "CarModel@1"
+      "carModel" : "CarModel@3"
     }, {
       "plate" : "FFG-8911",
       "price" : 220.0,
       "year" : 2012,
       "color" : "Silver",
       "status" : "Available",
-      "carModel" : "CarModel@2"
+      "carModel" : "CarModel@4"
     }, {
       "plate" : "XYZ-987",
       "price" : 89.0,
       "year" : 2014,
       "color" : "Silver",
       "status" : "Available",
-      "carModel" : "CarModel@5"
+      "carModel" : "CarModel@9"
     }, {
       "plate" : "GHI-789",
       "price" : 100.0,
       "year" : 2013,
       "color" : "Black",
       "status" : "Available",
-      "carModel" : "CarModel@6"
+      "carModel" : "CarModel@11"
     }, {
       "plate" : "YHH-6677",
       "price" : 300.0,
       "year" : 2015,
       "color" : "silver",
       "status" : "Available",
-      "carModel" : "CarModel@4"
+      "carModel" : "CarModel@6"
     }, {
       "plate" : "ABC-123",
       "price" : 70.0,
       "year" : 2010,
       "color" : "White",
       "status" : "Available",
-      "carModel" : "CarModel@7"
+      "carModel" : "CarModel@2"
     }, {
       "plate" : "AABB-11223",
       "price" : 260.0,
       "year" : 2015,
       "color" : "silver",
       "status" : "Available",
-      "carModel" : "CarModel@4"
+      "carModel" : "CarModel@6"
+    }, {
+      "plate" : "GGY-9887",
+      "price" : 250.0,
+      "year" : 2015,
+      "color" : "silver",
+      "status" : "Available",
+      "carModel" : "CarModel@10"
     } ],
     "Rental" : [ {
+      "started" : "2014/08/08",
+      "returned" : "2014/08/08",
+      "status" : "Finished",
+      "car" : "Car@4",
+      "customer" : "Customer@1"
+    }, {
+      "started" : "2014/08/08",
+      "returned" : "2015/09/15",
+      "status" : "Finished",
+      "car" : "Car@6",
+      "customer" : "Customer@4"
+    }, {
+      "started" : "2014/08/08",
+      "returned" : "2014/08/08",
+      "status" : "Finished",
+      "car" : "Car@2",
+      "customer" : "Customer@4"
+    }, {
+      "started" : "2014/05/28",
+      "returned" : "2014/08/08",
+      "status" : "Finished",
+      "car" : "Car@3",
+      "customer" : "Customer@3"
+    }, {
+      "started" : "2014/08/08",
+      "returned" : "2014/08/08",
+      "status" : "Finished",
+      "car" : "Car@3",
+      "customer" : "Customer@1"
+    }, {
+      "started" : "2014/08/08",
+      "returned" : "2014/08/08",
+      "status" : "Finished",
+      "car" : "Car@4",
+      "customer" : "Customer@1"
+    }, {
       "started" : "2014/08/08",
       "returned" : "2015/09/15",
       "status" : "Finished",
@@ -142,42 +197,6 @@
       "status" : "Finished",
       "car" : "Car@3",
       "customer" : "Customer@2"
-    }, {
-      "started" : "2014/08/08",
-      "returned" : "2014/08/08",
-      "status" : "Finished",
-      "car" : "Car@4",
-      "customer" : "Customer@1"
-    }, {
-      "started" : "2014/08/08",
-      "returned" : "2015/09/15",
-      "status" : "Finished",
-      "car" : "Car@6",
-      "customer" : "Customer@4"
-    }, {
-      "started" : "2014/08/08",
-      "returned" : "2014/08/08",
-      "status" : "Finished",
-      "car" : "Car@2",
-      "customer" : "Customer@4"
-    }, {
-      "started" : "2014/05/28",
-      "returned" : "2014/08/08",
-      "status" : "Finished",
-      "car" : "Car@3",
-      "customer" : "Customer@3"
-    }, {
-      "started" : "2014/08/08",
-      "returned" : "2014/08/08",
-      "status" : "Finished",
-      "car" : "Car@3",
-      "customer" : "Customer@1"
-    }, {
-      "started" : "2014/08/08",
-      "returned" : "2014/08/08",
-      "status" : "Finished",
-      "car" : "Car@4",
-      "customer" : "Customer@1"
     } ]
   }
 }
