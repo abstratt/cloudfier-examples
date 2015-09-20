@@ -51,6 +51,11 @@ class Car
     begin
         return Car extent.select((c : Car) : Boolean { c.carModel == carModel });
     end;
+    
+    static query byMake(make : Make) : Car[*];
+    begin
+        return Car extent.select((c : Car) : Boolean { c.carModel.make == make });
+    end;
 
     statemachine Status
 

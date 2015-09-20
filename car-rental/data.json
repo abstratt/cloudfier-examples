@@ -12,191 +12,204 @@
       "name" : "Maya deSouza"
     } ],
     "Make" : [ {
+      "name" : "Honda"
+    }, {
+      "name" : "Dodge"
+    }, {
       "name" : "Subaru"
     }, {
       "name" : "Chrysler"
     }, {
       "name" : "Toyota"
-    }, {
-      "name" : "Honda"
-    }, {
-      "name" : "Dodge"
     } ],
     "CarModel" : [ {
-      "name" : "Fit",
-      "make" : "Make@4"
-    }, {
-      "name" : "Outback",
-      "make" : "Make@1"
-    }, {
-      "name" : "Civic",
-      "make" : "Make@4"
-    }, {
-      "name" : "Stratus",
-      "make" : "Make@5"
-    }, {
-      "name" : "Caravan",
-      "make" : "Make@5"
-    }, {
-      "name" : "Prius",
-      "make" : "Make@3"
-    }, {
       "name" : "Avalon",
-      "make" : "Make@3"
+      "make" : "Make@5"
     }, {
       "name" : "CR-V",
-      "make" : "Make@4"
+      "make" : "Make@1"
+    }, {
+      "name" : "Fit",
+      "make" : "Make@1"
     }, {
       "name" : "Corolla",
-      "make" : "Make@3"
+      "make" : "Make@5"
     }, {
       "name" : "Accord",
-      "make" : "Make@4"
+      "make" : "Make@1"
+    }, {
+      "name" : "Outback",
+      "make" : "Make@3"
     }, {
       "name" : "Camry",
-      "make" : "Make@3"
+      "make" : "Make@5"
+    }, {
+      "name" : "Civic",
+      "make" : "Make@1"
+    }, {
+      "name" : "Stratus",
+      "make" : "Make@2"
+    }, {
+      "name" : "Caravan",
+      "make" : "Make@2"
+    }, {
+      "name" : "Prius",
+      "make" : "Make@5"
     } ],
     "Car" : [ {
-      "plate" : "DEF-456",
-      "price" : 85.0,
-      "year" : 2012,
-      "color" : "Beige",
-      "status" : "Rented",
-      "carModel" : "CarModel@3"
-    }, {
-      "plate" : "FFG-8911",
-      "price" : 220.0,
-      "year" : 2012,
-      "color" : "Silver",
-      "status" : "Available",
-      "carModel" : "CarModel@4"
-    }, {
-      "plate" : "XYZ-987",
-      "price" : 89.0,
-      "year" : 2014,
-      "color" : "Silver",
-      "status" : "Available",
-      "carModel" : "CarModel@9"
-    }, {
       "plate" : "GHI-789",
       "price" : 100.0,
       "year" : 2013,
       "color" : "Black",
       "status" : "Available",
-      "carModel" : "CarModel@11"
+      "carModel" : "CarModel@7"
     }, {
       "plate" : "YHH-6677",
       "price" : 300.0,
       "year" : 2015,
       "color" : "silver",
       "status" : "Available",
-      "carModel" : "CarModel@6"
+      "carModel" : "CarModel@11"
     }, {
       "plate" : "ABC-123",
       "price" : 70.0,
       "year" : 2010,
       "color" : "White",
       "status" : "Available",
-      "carModel" : "CarModel@2"
+      "carModel" : "CarModel@6"
+    }, {
+      "plate" : "bbg-1190",
+      "price" : 220.0,
+      "year" : 2015,
+      "color" : "GREEN",
+      "status" : "Available",
+      "carModel" : "CarModel@6"
     }, {
       "plate" : "AABB-11223",
       "price" : 260.0,
       "year" : 2015,
       "color" : "silver",
-      "status" : "Available",
-      "carModel" : "CarModel@6"
+      "status" : "Rented",
+      "carModel" : "CarModel@11"
     }, {
       "plate" : "GGY-9887",
       "price" : 250.0,
       "year" : 2015,
       "color" : "silver",
       "status" : "Available",
-      "carModel" : "CarModel@10"
+      "carModel" : "CarModel@5"
+    }, {
+      "plate" : "DEF-456",
+      "price" : 85.0,
+      "year" : 2012,
+      "color" : "Beige",
+      "status" : "Rented",
+      "carModel" : "CarModel@8"
+    }, {
+      "plate" : "FFG-8911",
+      "price" : 220.0,
+      "year" : 2012,
+      "color" : "Silver",
+      "status" : "UnderRepair",
+      "carModel" : "CarModel@9"
+    }, {
+      "plate" : "XYZ-987",
+      "price" : 89.0,
+      "year" : 2014,
+      "color" : "Silver",
+      "status" : "Available",
+      "carModel" : "CarModel@4"
     } ],
     "Rental" : [ {
-      "started" : "2014/08/08",
-      "returned" : "2014/08/08",
-      "status" : "Finished",
-      "car" : "Car@4",
-      "customer" : "Customer@1"
-    }, {
-      "started" : "2014/08/08",
-      "returned" : "2015/09/15",
-      "status" : "Finished",
-      "car" : "Car@6",
-      "customer" : "Customer@4"
-    }, {
-      "started" : "2014/08/08",
-      "returned" : "2014/08/08",
-      "status" : "Finished",
-      "car" : "Car@2",
-      "customer" : "Customer@4"
-    }, {
       "started" : "2014/05/28",
       "returned" : "2014/08/08",
       "status" : "Finished",
-      "car" : "Car@3",
+      "car" : "Car@9",
       "customer" : "Customer@3"
     }, {
       "started" : "2014/08/08",
       "returned" : "2014/08/08",
       "status" : "Finished",
-      "car" : "Car@3",
+      "car" : "Car@9",
       "customer" : "Customer@1"
     }, {
       "started" : "2014/08/08",
       "returned" : "2014/08/08",
       "status" : "Finished",
-      "car" : "Car@4",
+      "car" : "Car@1",
       "customer" : "Customer@1"
     }, {
       "started" : "2014/08/08",
       "returned" : "2015/09/15",
       "status" : "Finished",
-      "car" : "Car@4",
+      "car" : "Car@1",
       "customer" : "Customer@1"
     }, {
       "started" : "2014/08/08",
       "returned" : "2015/09/15",
       "status" : "Finished",
-      "car" : "Car@3",
+      "car" : "Car@9",
       "customer" : "Customer@1"
     }, {
       "started" : "2014/08/08",
       "returned" : "2014/08/08",
       "status" : "Finished",
-      "car" : "Car@4",
+      "car" : "Car@1",
       "customer" : "Customer@1"
     }, {
       "started" : "2014/08/08",
       "returned" : "2014/08/08",
       "status" : "Finished",
-      "car" : "Car@3",
+      "car" : "Car@9",
       "customer" : "Customer@1"
-    }, {
-      "started" : "2014/05/28",
-      "returned" : "2014/08/08",
-      "status" : "Finished",
-      "car" : "Car@4",
-      "customer" : "Customer@3"
     }, {
       "started" : "2014/05/28",
       "returned" : "2014/08/08",
       "status" : "Finished",
       "car" : "Car@1",
+      "customer" : "Customer@3"
+    }, {
+      "started" : "2014/05/28",
+      "returned" : "2014/08/08",
+      "status" : "Finished",
+      "car" : "Car@7",
       "customer" : "Customer@5"
     }, {
       "started" : "2014/08/08",
       "returned" : null,
       "status" : "InProgress",
-      "car" : "Car@1",
+      "car" : "Car@7",
       "customer" : "Customer@2"
     }, {
       "started" : "2014/05/28",
       "returned" : "2014/08/08",
       "status" : "Finished",
-      "car" : "Car@3",
+      "car" : "Car@9",
       "customer" : "Customer@2"
+    }, {
+      "started" : "2015/09/20",
+      "returned" : null,
+      "status" : "InProgress",
+      "car" : "Car@5",
+      "customer" : "Customer@1"
+    }, {
+      "started" : "2014/08/08",
+      "returned" : "2014/08/08",
+      "status" : "Finished",
+      "car" : "Car@1",
+      "customer" : "Customer@1"
+    }, {
+      "started" : "2014/08/08",
+      "returned" : "2015/09/15",
+      "status" : "Finished",
+      "car" : "Car@3",
+      "customer" : "Customer@4"
+    }, {
+      "started" : "2014/08/08",
+      "returned" : "2014/08/08",
+      "status" : "Finished",
+      "car" : "Car@8",
+      "customer" : "Customer@4"
     } ]
   }
 }
