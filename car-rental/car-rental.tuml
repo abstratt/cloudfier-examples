@@ -139,7 +139,7 @@ class Rental
         });
     end;
     
-    static query countRentalsInProgress() : Integer;
+    static query countOfRentalsInProgress() : Integer;
     begin
         return Rental extent.select((l : Rental) : Boolean {
             l.inProgress

@@ -121,11 +121,11 @@ class RentalScenarios
         var car1, car2, customer;
         begin
             car1 := Examples#newCar();
+            car2 := Examples#newCar();
             customer := Examples#newCustomer();
             customer.rent(car1);
         end;
         begin
-            car2 := Examples#newCar();
             customer.rent(car2);
         end;
     end;
@@ -134,7 +134,7 @@ class RentalScenarios
     begin
         var car1, car2, car3, customer1, customer2, customer3, baseline;
         begin
-            baseline := Rental#countRentalsInProgress();
+            baseline := Rental#countOfRentalsInProgress();
             car1 := Examples#newCar();
             car2 := Examples#newCar();
             car3 := Examples#newCar();            
@@ -146,11 +146,11 @@ class RentalScenarios
             customer3.rent(car3);                        
         end;
         begin
-            Assert#areEqual(3, Rental#countRentalsInProgress() - baseline);
+            Assert#areEqual(3, Rental#countOfRentalsInProgress() - baseline);
             customer3.finishRental();
         end;
         begin
-            Assert#areEqual(2, Rental#countRentalsInProgress() - baseline);
+            Assert#areEqual(2, Rental#countOfRentalsInProgress() - baseline);
         end;
     end;
 
@@ -161,11 +161,11 @@ class RentalScenarios
         begin
             car := Examples#newCar();
             customer1 := Examples#newCustomer();
+            customer2 := Examples#newCustomer();
             customer1.rent(car);
         end;
         begin
             Assert#isTrue(car.rented);
-            customer2 := Examples#newCustomer();
             customer2.rent(car);
         end;
     end;
