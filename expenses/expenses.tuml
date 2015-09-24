@@ -101,7 +101,7 @@ class Expense
 
     derived id attribute expenseId : Integer;
 
-    static operation newExpense(description : String, amount : Double, date : Date, 
+    static operation newExpense(description : String, amount : Double, date : Date := { Date#today() }, 
             category : Category, employee : Employee) : Expense;
     begin
         var newExpense;
