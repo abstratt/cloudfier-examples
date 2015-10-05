@@ -37,7 +37,7 @@ class Product
     attribute unitCost : Double[0, 1]
         invariant { (self.unitCost > 0) };
 
-    attribute productDescription : String[0, 1];
+    attribute productDescription : Memo[0, 1];
 
     attribute productWeight : Double[0, 1] := 0.0
         invariant { self.productWeight >= 0 };
@@ -73,6 +73,8 @@ end;
 
 class Order
 
+    derived id attribute orderId : String;
+    
     readonly attribute orderDate : Date := { Date#today() };
 
     attribute orderStatus : Status;
