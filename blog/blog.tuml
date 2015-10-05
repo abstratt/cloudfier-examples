@@ -21,6 +21,7 @@ class Article
     attribute body : Memo;    
     readonly attribute user : User := { System#user() };
     attribute comments : Comment[*];
+    derived attribute commentCount : Integer := { self.comments.size() };    
     readonly attribute createdAt : Date := { Date#now() };    
     
     static operation guestPost(title : String, text : Memo);
@@ -48,9 +49,9 @@ class Article
 end;
 
 class Comment
-    readonly attribute article : Article;
+    attribute article : Article;
     attribute body : Memo;        
-    readonly attribute user : User := { System#user() };
+    attribute user : User := { System#user() };
     readonly attribute createdAt : Date := { Date#now() };
 end;
 
