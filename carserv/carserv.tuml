@@ -156,7 +156,7 @@ class Customer specializes Person
 
     static query findByName(firstName : String[0, 1], lastName : String[0, 1]) : Customer[*]
         precondition OneMustBeProvided(firstName, lastName) {
-            not ((firstName == null) and (lastName == null))
+            not ((firstName == null or firstName.isEmpty()) and (lastName == null or lastName.isEmpty()))
         };
     begin
         return Customer extent.select((c : Customer) : Boolean {
