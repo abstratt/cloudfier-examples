@@ -1,14 +1,6 @@
-/*
-  Fixture data based on the CarServ 
-  sample application that appears in the book 
-  book Domain-Driven Design Using Naked Objects
-  by Dan Haywood.
-  
-  "http"://pragprog.com/book/dhnako/domain-driven-design-using-naked-objects
-*/
 {
-  "carserv" : {
-    "Make" : [ {
+  "carserv": {
+    "Make": [ {
       "name" : "Ford"
     }, {
       "name" : "Toyota"
