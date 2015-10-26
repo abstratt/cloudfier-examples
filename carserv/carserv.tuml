@@ -303,7 +303,7 @@ class Service
 
     (* Starts the service. It can no longer be canceled. *)
     operation start()
-        precondition { self.assigned };
+        precondition MustBeAssigned { self.assigned };
     begin
     end;
 

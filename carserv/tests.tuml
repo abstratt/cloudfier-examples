@@ -24,6 +24,8 @@ class MechanicScenarios
         var mechanic;
         begin
             mechanic := TestData#getAMechanic();
+        end;
+        begin
             Assert#isTrue(mechanic.working);
             mechanic.beginVacation();
         end;
@@ -58,6 +60,28 @@ class MechanicScenarios
             Assert#isTrue(!mechanic.workScheduled);
         end;
     end;
+    
+    operation servicesByTechnician();
+    begin
+        var mechanic, car, service1, service2, service3;
+        begin
+            mechanic := TestData#getAMechanic();
+            car := TestData#newCar(TestData#newCustomer());
+            service1 := Service#newService(car, Memo#fromString("Service 1"), 1);
+            service2 := Service#newService(car, Memo#fromString("Service 2"), 1);
+            service3 := Service#newService(car, Memo#fromString("Service 3"), 1);            
+        end;
+        begin
+            service1.assignTo(mechanic);
+            service2.assignTo(mechanic);            
+        end;
+        begin
+            Assert#isTrue(mechanic.upcomingServices.includes(service1));
+            Assert#isTrue(mechanic.upcomingServices.includes(service2));            
+            Assert#isTrue(!mechanic.upcomingServices.includes(service3));            
+        end;
+    end;
+    
 
     [Failure(constraint="NoWorkInProgress")]
     operation cannotGoOnVacationIfWorkInProgress();
@@ -65,6 +89,8 @@ class MechanicScenarios
         var mechanic, service;
         begin
             mechanic := TestData#getAMechanicWithWorkScheduled();
+        end;
+        begin
             service := mechanic.upcomingServices.one();
             service.start();
         end;
@@ -72,6 +98,20 @@ class MechanicScenarios
             mechanic.beginVacation();
         end;
     end;
+
+    [Failure(constraint="MustBeAssigned")]
+    operation cannotStartServiceIfNotAssigned();
+    begin
+        var service, car;
+        begin
+            car := TestData#newCar(TestData#newCustomer());
+            service := Service#newService(car, Memo#fromString("A service"), 1);
+        end;
+        begin
+            service.start();
+        end;
+    end;
+    
 
     [Failure(constraint="MustBeOnVacation")]
     operation cannotEndVacationIfAlreadyWorking();
@@ -88,6 +128,8 @@ class MechanicScenarios
         var mechanic;
         begin
             mechanic := TestData#getAMechanicWithWorkScheduled();
+        end;
+        begin
             Assert#isTrue(mechanic.workScheduled);
             Assert#isTrue(! mechanic.workInProgress);
             mechanic.retire();
@@ -113,10 +155,15 @@ class TestData
     static operation getAMechanicWithWorkScheduled() : AutoMechanic;
     begin
         var mechanic, service, car;
-        mechanic := TestData#getAMechanic();
-        car := TestData#newCar(TestData#newCustomer());
-        service := Service#newService(car, Memo#fromString("A service"), 1);
-        service.assignTo(mechanic);
+        begin
+            mechanic := TestData#getAMechanic();
+            car := TestData#newCar(TestData#newCustomer());
+            service := Service#newService(car, Memo#fromString("A service"), 1);
+        end;
+        begin
+            /* important to perform this step in its own unit of work (so it can see state transitions) */
+            service.assignTo(mechanic);
+        end;
         return mechanic;
     end;
 
