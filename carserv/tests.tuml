@@ -106,9 +106,6 @@ class TestData
         begin
 	        mechanic := TestData#newMechanic();
 	        mechanic.completeTraining();
-        end;
-        begin
-            Assert#areEqual(AutoMechanic::WorkingStatus#Working, mechanic.status);
             return mechanic;
         end;        
     end;
