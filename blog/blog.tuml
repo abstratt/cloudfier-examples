@@ -49,7 +49,7 @@ class Article
 end;
 
 class Comment
-    attribute article : Article;
+    readonly attribute article : Article;
     attribute body : Memo;        
     attribute user : User := { System#user() };
     readonly attribute createdAt : Date := { Date#now() };
@@ -65,5 +65,9 @@ association UserArticles
     navigable role articles : Article[*];    
 end;
 
+association UserComments
+    role Comment.user;
+    navigable role comments : Comment[*];    
+end;
 
 end.
