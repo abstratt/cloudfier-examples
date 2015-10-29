@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.abstratt.cloudfier.examples</groupId>
+	<artifactId>cloudfier-examples</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+<!--
+  Just a marker pom to make it easier to import this as an IDE project.
+-->
+</project>
+
