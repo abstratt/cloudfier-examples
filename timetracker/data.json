@@ -8,15 +8,62 @@
       "name" : "Megabrains Consulting"
     } ],
     "Invoice" : [ {
-      "invoiceId" : 9,
-      "issueDate" : "2014/07/14",
-      "status" : "Preparation",
+      "invoiceId" : 18,
+      "issueDate" : "2014/07/17",
+      "status" : "Open",
       "client" : "Client@1"
     }, {
-      "invoiceId" : 61,
-      "issueDate" : "2014/07/17",
-      "status" : "Preparation",
+      "invoiceId" : 9,
+      "issueDate" : "2014/07/14",
+      "status" : "Open",
       "client" : "Client@1"
+    }, {
+      "invoiceId" : 12,
+      "issueDate" : "2015/09/08",
+      "status" : "Open",
+      "client" : "Client@3"
+    }, {
+      "invoiceId" : 15,
+      "issueDate" : "2015/09/08",
+      "status" : "Open",
+      "client" : "Client@3"
+    } ],
+    "Project" : [ {
+      "description" : "Greenfield project",
+      "client" : "Client@1"
+    }, {
+      "description" : "Deep roots project",
+      "client" : "Client@2"
+    }, {
+      "description" : "Website redesign",
+      "client" : "Client@3"
+    }, {
+      "description" : "Visual identity",
+      "client" : "Client@3"
+    } ],
+    "Entry" : [ {
+      "units" : 2,
+      "date" : "2015/09/09",
+      "memo" : "",
+      "project" : "Project@1",
+      "invoice" : "Invoice@1"
+    }, {
+      "units" : 10,
+      "date" : "2015/09/08",
+      "memo" : null,
+      "project" : "Project@2"
+    }, {
+      "units" : 5,
+      "date" : "2015/09/08",
+      "memo" : null,
+      "project" : "Project@4",
+      "invoice" : "Invoice@3"
+    }, {
+      "units" : 7,
+      "date" : "2015/09/08",
+      "memo" : null,
+      "project" : "Project@4",
+      "invoice" : "Invoice@4"
     } ]
   }
 }

@@ -1,163 +1,322 @@
 package timetracker_tests;
 
-
 apply kirra;
-import mdd_types;
+
 import mdd_extensions;
+import mdd_types;
 import timetracker;
 
 [Test]
-class TaskScenarios
+class ProjectScenarios
 
+    (* The time reported for a project is the sum of the time of all entries for that project. *)
     operation timeReported();
     begin
-        var task;
-        task := Examples#task();
-        task.addWork(4);
-        task.addWork(3);
-        Assert#areEqual(7, task.unitsReported);
+        var project;
+        begin
+            project := Examples#project();
+        end;
+        begin
+            project.addEntry(4, null);
+            project.addEntry(3, null);
+        end;
+        begin
+            Assert#areEqual(7, project.unitsReported);
+        end;
     end;
-    
+
+    (* Reported entries are collected as discrete objects. *)
     operation itemsReported();
     begin
-        var task;
-        task := Examples#task();
-        task.addWork(4);
-        task.addWork(3);   
-        Assert#areEqual(2, task.reported.size());
+        var project1, project2;
+        begin
+            project1 := Examples#project();
+            project2 := Examples#project();
+            project1.addEntry(4, null);
+            project1.addEntry(3, null);
+        end;
+        begin
+            Assert#areEqual(2, project1.reported.size());
+            Assert#areEqual(0, project2.reported.size());            
+            project1.addEntry(5, null);
+            project2.addEntry(1, null);            
+        end;
+        begin
+            Assert#areEqual(3, project1.reported.size());
+            Assert#areEqual(1, project2.reported.size());            
+        end;
+    end;
 
-        task.addWork(5);
-        Assert#areEqual(3, task.reported.size());
-    end; 
-
+    (* A project's time to submit is the sum of all units reported but yet to be added to an invoice. *)
     operation timeToInvoice();
     begin
-        var task, invoice, work1, work2;
-        task := Examples#task();
-        work1 := task.addWork(4);
-        work2 := task.addWork(3);
-        invoice := task.client.startInvoice();
-        work1.submit(invoice);
-        Assert#areEqual(1, task.toInvoice.size());
-        Assert#areEqual(3, task.unitsToInvoice);
+        var project, invoice, entry1, entry2;
+        begin
+            project := Examples#project();
+            entry1 := project.addEntry(4, null);
+            entry2 := project.addEntry(3, null);
+            invoice := project.client.openInvoice();
+            entry1.submit(invoice);
+        end;
+        begin
+            Assert#areEqual(1, project.toSubmit.size());
+            Assert#areEqual(3, project.unitsToSubmit);
+        end;
     end;
 end;
 
-[Test] 
-class WorkScenarios
+[Test]
+class EntryScenarios
 
-    operation workDateDefaultsToToday();
+    (* The date for a new entry is today's date. *)
+    operation entryDateDefaultsToToday();
     begin
-        var work;
-        work := Examples#task().addWork(1); 
-        Assert#areEqual(Date#today(), work.date);
+        var anEntry;
+        anEntry := Examples#project().addEntry(1, null);
+        Assert#areEqual(Date#today(), anEntry.date);
     end;
 
+    (* Entries submitted to an invoice must belong to a project of the same client. *)
     [Failure(constraint="WrongClient", context="submit")]
-    operation cannotAssignWorkToInvoiceFromAnotherClient();
+    operation cannotAssignEntryToInvoiceFromAnotherClient();
     begin
-        var client1, client2, work;
+        var client1, client2, anEntry;
         client1 := Examples#client();
         client2 := Examples#client();
-        work := client1.newTask("Some task").addWork(1);
-        work.submit(client2.startInvoice());
+        anEntry := client1.newProject("Some project").addEntry(1, null);
+        anEntry.submit(client2.openInvoice());
     end;
 
-    [Failure(constraint="AlreadyInvoiced", context="submit")]
-    operation cannotSubmitWorkToInvoiceAlreadyInvoiced();
+    (* Once an entry has been submitted to an invoice, it cannot be resubmitted to another invoice. *)
+    [Failure(constraint="AlreadySubmitted", context="submit")]
+    operation cannotSubmitEntryToTwoInvoices();
     begin
-        var invoice, work;
-        work := Examples#client().newTask("Some task").addWork(1);
-        invoice := work.client.startInvoice();
-        work.submit(invoice);
-        work.submit(invoice);
+        var project, invoice1, invoice2, anEntry;
+        project := Examples#project();
+        invoice1 := project.client.openInvoice();
+        invoice2 := project.client.openInvoice();        
+        anEntry := project.addEntry(1, null);
+        anEntry.submit(invoice1);
+        anEntry.submit(invoice2);
     end;
 
+    (* The number of units of work logged must be positive. *)
     [Failure(constraint="MustBePositive", context="units")]
-    operation unitsWorkedMustBePositive();
+    operation unitsMayNotBeNegative();
     begin
-        Examples#task().addWork(- 1);
+        Examples#project().addEntry(- 1, null);
     end;
 
+    (* The number of units of work logged must be positive. *)
     [Failure(constraint="MustBePositive", context="units")]
-    operation unitsWorkedMayNotBeZero();
+    operation unitsMayNotBeZero();
     begin
-        Examples#task().addWork(0);
+        Examples#project().addEntry(0, null);
     end;
 end;
 
 [Test]
 class InvoiceScenarios
 
+    (* An invoice begins in the state of Preparation. *)
+    operation prepareInvoice();
+    begin
+        var invoice;
+        begin
+            invoice := Examples#client().openInvoice();
+        end;
+        begin
+            Assert#areEqual(Invoice::Status#Open, invoice.status);
+        end;
+    end;
+
+    (* An invoice once issued goes to the state of Issued. *)
     operation issueInvoice();
     begin
-        var invoice, work, client;
+        var invoice, anEntry, client;
         begin
             client := Examples#client();
-            work := client.newTask("Some task").addWork(1);
-            invoice := client.startInvoice();
-            work.submit(invoice);
-            Assert#areEqual(Invoice::Status#Preparation, invoice.status);
+            anEntry := client.newProject("Some project").addEntry(1, null);
+            invoice := client.openInvoice();
+            anEntry.submit(invoice);
             invoice.issue();
         end;
         begin
-            Assert#areEqual(Invoice::Status#Invoiced, invoice.status);
+            Assert#areEqual(Invoice::Status#Issued, invoice.status);
+        end;
+    end;
+
+    (* An invoice can be cancelled while under preparation. *)
+    operation cancelInvoiceInPreparation();
+    begin
+        var invoice;
+        begin
+            invoice := Examples#client().openInvoice();
+        end;
+        begin
+            invoice.cancel();
+        end;
+        begin
+            Assert#areEqual(Invoice::Status#Cancelled, invoice.status);
+        end;
+    end;
+
+    (* An invoice can be cancelled while pending payment. *)
+    operation cancelInvoiceBeforePayment();
+    begin
+        var invoice, project;
+        begin
+            project := Examples#project();
+            invoice := project.client.openInvoice();
+            project.addEntry(1, null).submit(invoice);
+            invoice.issue();
+        end;
+        begin
+            invoice.cancel();
+        end;
+        begin
+            Assert#areEqual(Invoice::Status#Cancelled, invoice.status);
         end;
     end;
     
+    (* An invoice cannot be cancelled after payment is received. *)
+    [Failure(constraint="MustBeOpenOrIssued", context="cancel")]
+    operation cannotCancelInvoice();
+    begin
+        var invoice;
+        begin
+            invoice := Examples#client().openInvoice();
+            invoice.client.newProject("Some project").addEntry(1, null).submit(invoice);
+            invoice.issue();
+            send PaymentReceived() to invoice;            
+        end;
+        begin
+            invoice.cancel();
+        end;
+    end;    
+    
+    (* An invoice cannot be issued after it has been cancelled. *)
+    [Failure(constraint="MustBeOpen", context="issue")]
+    operation cannotIssueCancelledInvoice();
+    begin
+        var invoice;
+        begin
+            invoice := Examples#client().openInvoice();
+            invoice.client.newProject("Some project").addEntry(1, null).submit(invoice);
+            invoice.cancel();
+        end;
+        begin
+            invoice.issue();
+        end;
+    end;        
+
+    (* The total of units in an invoice is the sum of the units of all entries submitted. *)
     operation totalUnits();
     begin
-        var invoice, task1, task2, client;
+        var invoice, project1, project2, client;
         begin
             client := Examples#client();
-            invoice := client.startInvoice();
-            task1 := client.newTask("Task 1");
-            task2 := client.newTask("Task 2");
-            task1.addWork(1).submit(invoice);
-            task1.addWork(3).submit(invoice);
-            task2.addWork(7).submit(invoice);            
+            invoice := client.openInvoice();
+            project1 := client.newProject("Project 1");
+            project2 := client.newProject("Project 2");
+            project1.addEntry(1, null).submit(invoice);
+            project1.addEntry(3, null).submit(invoice);
+            project2.addEntry(7, null).submit(invoice);
         end;
         begin
             Assert#areEqual(11, invoice.totalUnits);
         end;
-    end;    
-    
-    operation invoicePaid();
+    end;
+
+    (* Once payment for an invoice is received, the invoice goes to the Received state. *)
+    operation paymentReceived();
     begin
         var invoice;
         begin
-            invoice := Examples#client().startInvoice();
-            invoice.client.newTask("Some task").addWork(1).submit(invoice);
+            invoice := Examples#client().openInvoice();
+            invoice.client.newProject("Some project").addEntry(1, null).submit(invoice);
             invoice.issue();
-            send InvoicePaid() to invoice;
+            send PaymentReceived() to invoice;
         end;
         begin
             Assert#areEqual(Invoice::Status#Received, invoice.status);
         end;
     end;
 
-    [Failure(constraint="InvoiceNotOpen", context="submit")]
-    operation cannotSubmitWorkIfInvoiceNotOpen();
+    (* It is an error to submit an entry to an invoice that has already being issued. *)
+    [Failure(constraint="InvoiceMustBeOpen", context="submit")]
+    operation cannotSubmitEntryIfInvoiceIssued();
     begin
-        var task, invoice;
+        var project, invoice;
         begin
-            task := Examples#task();
-            invoice := task.client.startInvoice();
-            task.addWork(1).submit(invoice);
+            project := Examples#project();
+            invoice := project.client.openInvoice();
+            project.addEntry(1, null).submit(invoice);
             invoice.issue();
         end;
         begin
-            task.addWork(2).submit(invoice);
+            project.addEntry(2, null).submit(invoice);
         end;
     end;
 
-    [Failure(constraint="MustHaveWork", context="issue")]
-    operation cannotIssueInvoiceWithoutAnyWork();
+    (* It is an error to submit an entry to an invoice that has already being cancelled. *)    
+    [Failure(constraint="InvoiceMustBeOpen", context="submit")]
+    operation cannotSubmitEntryIfInvoiceCancelled();
     begin
-        Examples#client().startInvoice().issue();
+        var project, invoice;
+        begin
+            project := Examples#project();
+            invoice := project.client.openInvoice();
+            invoice.cancel();
+        end;
+        begin
+            project.addEntry(2, null).submit(invoice);
+        end;
+    end;
+
+    (* It is an error to issue an invoice with no entries submitted to it. *)
+    [Failure(constraint="MustHaveEntries", context="issue")]
+    operation cannotIssueInvoiceWithoutAnyEntry();
+    begin
+        Examples#client().openInvoice().issue();
     end;
 end;
 
+[Test]
+class ClientScenarios
+    (* It is possible to retrieve the clients with open invoices. *)
+    operation withInvoicesSubmitted();
+    begin
+        var client1, client2, client3, existing;
+        begin
+            existing := Client#withOpenInvoices().size();
+            client1 := Examples#client();
+            client2 := Examples#client();
+            client3 := Examples#client();
+            /* one client with one invoice, the other one with two */
+            client1.openInvoice();
+            client2.openInvoice();
+            client2.openInvoice();
+        end;
+        begin
+            Assert#areEqual(existing + 2, Client#withOpenInvoices().size());
+            client1.openInvoices.one().cancel();
+        end;
+        begin
+            Assert#areEqual(existing + 1, Client#withOpenInvoices().size());
+            client2.openInvoices.one().cancel();
+        end;
+        begin
+            Assert#areEqual(existing + 1, Client#withOpenInvoices().size());
+            client2.openInvoices.one().cancel();
+        end;
+        begin
+            Assert#areEqual(existing, Client#withOpenInvoices().size());
+        end;
+    end;
+end;
+
+(* Helper class to set up various test fixtures. *)
 class Examples
 
     private static operation clientWithName(name : String) : Client;
@@ -168,23 +327,25 @@ class Examples
         return client;
     end;
 
+    (* A simple client. *)
     private static operation client() : Client;
     begin
         return Examples#clientWithName("New Client");
     end;
 
-    private static operation taskWithName(description : String, client : Client) : Task;
+    private static operation projectWithName(description : String, client : Client) : Project;
     begin
-        var task;
-        task := new Task;
-        task.description := description;
-        task.client := client;
-        return task;
+        var project;
+        project := new Project;
+        project.description := description;
+        project.client := client;
+        return project;
     end;
 
-    private static operation task() : Task;
+    (* A simple project and its client. *)
+    private static operation project() : Project;
     begin
-        return Examples#taskWithName("New Task", Examples#client());
+        return Examples#projectWithName("New Project", Examples#client());
     end;
 end;
 

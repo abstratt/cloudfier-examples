@@ -10,6 +10,21 @@ class City
     attribute population : Integer;
 
     attribute cityState : State;
+    
+    static query citiesMorePopulousThan(threshold : Integer) : Integer;
+    begin
+        return City extent.select((c : City) : Boolean { c.population >= threshold } ).size();
+    end;
+
+    static query maximumPopulation() : Integer;
+    begin
+        return City extent.max((c : City) : Integer { c.population } );
+    end;
+    
+    static query mostPopulousCity() : City;
+    begin
+        return City extent.maxElement((c : City) : Integer { c.population } );
+    end;
 end;
 
 datatype StatePopulation
@@ -55,21 +70,49 @@ class State
         });
     end;
 
-    static query statesMorePopulousThan(threshold : Integer) : State[*];
+    static query statePopulationsAbove(threshold : Integer) : { \state : State, statePopulation : Integer}[*];
     begin
         return City extent.groupBy((c : City) : State {
         	c.cityState
     	}).groupCollect((cities : City[*]) : { : State,  : Integer} {
             {
-                cityState := cities.one().cityState, 
+                aState := cities.one().cityState, 
                 statePopulation := cities.sum((c : City) : Integer {
                     c.population
                 })
             }
         }).select((aggregated : { : State, statePopulation : Integer}) : Boolean {
             aggregated.statePopulation > threshold
-        }).collect((stats : {cityState : State,  : Integer}) : State {
-            stats.cityState
+        });
+    end;
+
+
+    static query statesMorePopulousThan(threshold : Integer) : State[*];
+    begin
+        return City extent.groupBy((c : City) : State {
+        	c.cityState
+    	}).groupCollect((cities : City[*]) : { : State,  : Integer} {
+            {
+                aState := cities.one().cityState, 
+                statePopulation := cities.sum((c : City) : Integer {
+                    c.population
+                })
+            }
+        }).select((aggregated : { : State, statePopulation : Integer}) : Boolean {
+            aggregated.statePopulation > threshold
+        }).collect((stats : {theState : State,  : Integer}) : State {
+        	/* 
+        	 * Since we are in aggregated mode, going back to instances would require maybe
+        	 * an outer query that maps the ids of states here to state instances.
+        	 * IOW, if you are grouping by an instance, you are actually grouping by the
+        	 * id of that instance , and getting the instances back requires some
+        	 * legwork.
+        	 * 
+        	 * Also, generated tuple classes that include slots that are instances should map
+        	 * to ids (the type of the primary key).
+        	 */
+        	  
+            stats.theState
         });
     end;
 
@@ -77,15 +120,15 @@ class State
     begin
         return City extent.groupBy((c : City) : State {
         	c.cityState
-    	}).groupCollect((cities : City[*]) : { : String,  : Integer} {
+    	}).groupCollect((cities : City[*]) : { cityState : String, : Integer} {
             {
                 cityState := cities.one().cityState.abbreviation, 
                 statePopulation := cities.sum((c : City) : Integer {
                     c.population
                 })
             }
-        }).select((aggregated : { : String, statePopulation : Integer}) : Boolean {
-            aggregated.statePopulation > threshold
+        }).select((aggregated : { : String, statePop : Integer}) : Boolean {
+            aggregated.statePop > threshold
         }).collect((aggregated : { cityState : String, statePopulation : Integer}) : String {
         	aggregated.cityState
         });

@@ -1,0 +1,33 @@
+{
+  "blog" : {
+    "User" : [ {
+      "name" : "guest"
+    }, {
+      "name" : "john"
+    }, {
+      "name" : "mary"
+    } ],
+    "Article" : [ {
+      "title" : "A guest post",
+      "body" : "Just a guest post",
+      "createdAt" : "2015/09/13",
+      "user" : "User@1"
+    }, {
+      "title" : "John's post",
+      "body" : "This is John's post.",
+      "createdAt" : "2015/09/13",
+      "user" : "User@2"
+    } ],
+    "Comment" : [ {
+      "body" : "c1",
+      "createdAt" : "2015/09/13",
+      "article" : "Article@2",
+      "user" : "User@1"
+    }, {
+      "body" : "c2",
+      "createdAt" : "2015/09/13",
+      "article" : "Article@2",
+      "user" : "User@1"
+    } ]
+  }
+}

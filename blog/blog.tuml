@@ -5,8 +5,15 @@ import mdd_types;
 
 [kirra::User]
 class User
-    readonly id attribute email : String;
-    attribute name : String;
+    readonly id attribute name : String;
+    static query guest() : User;
+    begin
+        return User extent.\any((u : User) : Boolean { u.name = "guest" });
+    end;
+    operation writeAs(title : String, text : Memo);
+    begin
+        Article#writeAs(title, text, self);
+    end;
 end;
 
 class Article
@@ -14,20 +21,53 @@ class Article
     attribute body : Memo;    
     readonly attribute user : User := { System#user() };
     attribute comments : Comment[*];
-    attribute tags : String[*];
+    derived attribute commentCount : Integer := { self.comments.size() };    
     readonly attribute createdAt : Date := { Date#now() };    
+    
+    static operation guestPost(title : String, text : Memo);
+    begin
+        Article#writeAs(title, text, User#guest());
+    end;
+    
+    static operation writeAs(title : String, text : Memo, user : User);
+    begin
+        var newArticle;
+        newArticle := new Article;
+        newArticle.title := title;
+        newArticle.body := text;
+        newArticle.user := user;
+    end;
+    
+    operation guestComment(text : Memo);
+    begin
+        var newComment;
+        newComment := new Comment;
+        newComment.body := text;
+        newComment.user := User#guest();
+        link ArticleComments(comments := newComment, article := self);
+    end;
 end;
 
 class Comment
     readonly attribute article : Article;
     attribute body : Memo;        
-    readonly attribute user : User := { System#user() };
+    attribute user : User := { System#user() };
     readonly attribute createdAt : Date := { Date#now() };
 end;
 
-composition 
+composition ArticleComments
     role Article.comments;
     role Comment.article;    
+end;
+
+association UserArticles
+    role Article.user;
+    navigable role articles : Article[*];    
+end;
+
+association UserComments
+    role Comment.user;
+    navigable role comments : Comment[*];    
 end;
 
 end.

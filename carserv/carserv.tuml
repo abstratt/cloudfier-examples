@@ -13,25 +13,29 @@
 package carserv;
 
 apply kirra;
+
+
+
 import mdd_types;
 
 [kirra::User]
 abstract class Person
 
-    derived attribute fullName : String := {
+    derived id attribute fullName : String := {
         self.firstName + " " + self.lastName
     };
 
     attribute firstName : String;
 
     attribute lastName : String;
-    
-    readonly id attribute email : String;
 end;
 
 enumeration Title
+
     Mr;
-    Mrs; 
+
+    Mrs;
+
     Ms;
 end;
 
@@ -41,8 +45,12 @@ class AutoMechanic specializes Person
 
     attribute status : WorkingStatus;
 
-    derived attribute working : Boolean := {
+    private derived attribute working : Boolean := {
         self.status == WorkingStatus#Working
+    };
+
+    private derived attribute training : Boolean := {
+        self.status == WorkingStatus#Apprentice
     };
 
     (* Services currently in progress by this worker. *)
@@ -56,7 +64,7 @@ class AutoMechanic specializes Person
     derived attribute upcomingServices : Service[*] := {
         self<-TechnicianWorksOnService->services.select((service : Service) : Boolean {
             service.status == Service::Status#Booked
-        })        
+        })
     };
 
     derived attribute workInProgress : Boolean := {
@@ -66,7 +74,7 @@ class AutoMechanic specializes Person
     derived attribute workScheduled : Boolean := {
         not self.upcomingServices.isEmpty()
     };
-    
+
     (* Unassigns any work scheduled. Does not affect work in progress. *)
     operation unassign()
         precondition SomeWorkScheduled { self.workScheduled };
@@ -89,16 +97,29 @@ class AutoMechanic specializes Person
 
     (* Brings the employee back from vacation. Employee can be assigned work again. *)
     operation endVacation()
-        precondition MustBeOnVacation { self.status == WorkingStatus#Vacation };
+        precondition MustBeOnVacation {
+            self.status == WorkingStatus#Vacation
+        };
 
     operation retire()
         precondition NoWorkInProgress { not self.workInProgress };
-    begin
-    end;
+
+    operation rehire();
+
+    (* 
+        Completes the training period, promoting the apprentice to a trained mechanic. Mechanic
+        will become apt for taking on services. 
+    *)
+    operation completeTraining();
 
     statemachine WorkingStatus
 
-        initial state Working
+        initial state Apprentice
+            transition on call(retire) to Retired;
+            transition on call(completeTraining) to Working;
+        end;
+
+        state Working
             transition on call(beginVacation) to Vacation;
             transition on call(retire) to Retired;
         end;
@@ -107,9 +128,14 @@ class AutoMechanic specializes Person
             transition on call(endVacation) to Working;
         end;
 
-        state Retired 
-        	entry { self.doUnassign(); };
+        state Retired
+            entry {
+                self.doUnassign();
+            };
+
+            transition on call(rehire) to Working;
         end;
+
     end;
 
 end;
@@ -124,7 +150,7 @@ class Customer specializes Person
 
     attribute title : Title;
 
-/*
+    /*
     derived attribute pendingServices : Service[*] := {
         self.cars.reduce((c : Car, soFar : Service[*]) : Service[*] {
             c.pendingServices.union(soFar)
@@ -142,7 +168,7 @@ class Customer specializes Person
 
     static query findByName(firstName : String[0, 1], lastName : String[0, 1]) : Customer[*]
         precondition OneMustBeProvided(firstName, lastName) {
-            not ((firstName == null) and (lastName == null))
+            not ((firstName == null or firstName.isEmpty()) and (lastName == null or lastName.isEmpty()))
         };
     begin
         return Customer extent.select((c : Customer) : Boolean {
@@ -226,7 +252,9 @@ class Service
 
     readonly attribute bookedOn : Date := { Date#today() };
 
-    attribute estimatedReady : Date := { Date#today().transpose(Duration#days(1)) }
+    attribute estimatedReady : Date := {
+        Date#today().transpose(Duration#days(1))
+    }
         invariant DeliveryDateMustBeAfterBookDate {
             ((self.estimatedReady == null) or (self.bookedOn == null)) or (self.estimatedDays >= 0)
         };
@@ -245,6 +273,20 @@ class Service
 
     derived attribute assigned : Boolean := { not (self.technician == null) };
 
+    static query inProgress() : Service[*];
+    begin
+        return Service extent.select((s : Service) : Boolean {
+            s.status == Status#InProgress
+        });
+    end;
+
+    static query booked() : Service[*];
+    begin
+        return Service extent.select((s : Service) : Boolean {
+            s.status == Status#Booked
+        });
+    end;
+
     static operation newService(carToService : Car, description : Memo, estimate : Integer := 1) : Service
         precondition EstimateMustBePositive(estimate) { estimate > 0 };
     begin
@@ -261,7 +303,7 @@ class Service
 
     (* Starts the service. It can no longer be canceled. *)
     operation start()
-        precondition { self.assigned };
+        precondition MustBeAssigned { self.assigned };
     begin
     end;
 
@@ -305,6 +347,7 @@ class Service
         state Completed end;
 
         state Cancelled end;
+
     end;
 
 end;
@@ -317,7 +360,7 @@ association CarOwner
 
 end;
 
-composition ServiceCar
+aggregation ServiceCar
 
     role Car.services;
 

@@ -1,66 +1,95 @@
-package timetracker; 
+package timetracker;
 
 apply kirra;
-import mdd_types;
-import invoicer;
 
+import invoicer;
+import mdd_types;
+
+(* A person or organization work can be done for. *)
 class Client
 
+    (* The name of the client. *)
     attribute name : String;
 
-    attribute tasks : Task[*];
+    attribute projects : Project[*];
 
     attribute invoices : Invoice[*];
 
-    operation newTask(description : String) : Task;
+    operation newProject(description : String) : Project;
     begin
-        var newTask;
-        newTask := new Task;
-        newTask.description := description;
-        link ClientTask(client := self, tasks := newTask);
-        return newTask;
+        var newProject;
+        newProject := new Project;
+        newProject.description := description;
+        link ClientProject(client := self, projects := newProject);
+        return newProject;
     end;
 
-    operation startInvoice() : Invoice;
+    operation openInvoice() : Invoice;
     begin
         var newInvoice;
         newInvoice := new Invoice;
         link ClientInvoice(client := self, invoices := newInvoice);
         return newInvoice;
     end;
+
+    derived attribute openInvoices : Invoice[*] := {
+        self.invoices.select((i : Invoice) : Boolean { i.open })
+    };
+
+    static query withOpenInvoices() : Client[*];
+    begin
+        return Client extent.select((client : Client) : Boolean {
+            client.invoices.exists((i : Invoice) : Boolean { i.open })
+        });
+    end;
+
+    static query withIssuedInvoices() : Client[*];
+    begin
+        return Client extent.select((client : Client) : Boolean {
+            client.invoices.exists((i : Invoice) : Boolean { i.issued })
+        });
+    end;
 end;
 
-class Task
+(* A project provides a context for work entries. *)
+class Project
 
+    (* A description for the project. *)
     attribute description : String;
 
-    attribute reported : Work[*];
+    attribute reported : Entry[*];
 
-    derived attribute toInvoice : Work[*] := {
-        self.reported.select((w : Work) : Boolean { not w.invoiced })
+    derived attribute toSubmit : Entry[*] := {
+        self.reported.select((e : Entry) : Boolean { not e.submitted })
     };
 
     readonly attribute client : Client;
 
     derived attribute unitsReported : Integer := {
-        self.reported.sum((w : Work) : Integer { w.units })
+        self.reported.sum((e : Entry) : Integer { e.units })
     };
 
-    derived attribute unitsToInvoice : Integer := {
-        self.toInvoice.sum((w : Work) : Integer { w.units })
+    derived attribute unitsToSubmit : Integer := {
+        self.toSubmit.sum((e : Entry) : Integer { e.units })
     };
 
-    operation addWork(units : Integer) : Work;
+    operation addEntry(units : Integer, description : Memo[0,1]) : Entry;
     begin
-        var newWork;
-        newWork := new Work;
-        newWork.units := units;
-        link TaskWork(reported := newWork, task := self);
-        return newWork;
-    end; 
+        var newEntry;
+        newEntry := new Entry;
+        newEntry.units := units;
+        newEntry.memo := description;        
+        link ProjectEntry(reported := newEntry, project := self);
+        return newEntry;
+    end;
 end;
 
+(* An invoice describes work done for a client within one or more projects. *)
 class Invoice
+
+    derived attribute moniker : String := {
+    	self.number + " - " + self.client.name
+    };
 
     derived attribute number : String := {
         "" + self.issueDate.year() + "." + self.invoiceId
@@ -72,24 +101,34 @@ class Invoice
 
     attribute issueDate : Date := { Date#today() };
 
-    attribute reported : Work[*];
+    attribute submitted : Entry[*];
 
-    derived attribute open : Boolean := { self.status == Status#Preparation };
+    derived attribute open : Boolean := { self.status == Status#Open };
+
+    derived attribute issued : Boolean := { self.status == Status#Issued };
+
+    derived attribute received : Boolean := {
+        self.status == Status#Received
+    };
 
     attribute status : Status;
 
     required port invoicer : Invoicer;
 
     derived attribute totalUnits : Integer := {
-        self.reported.sum((w : Work) : Integer { w.units })
+        self.submitted.sum((e : Entry) : Integer { e.units })
     };
 
     operation issue()
-        (* Cannot issue an invoice that has no work reported. *)
-        precondition MustHaveWork { not self.reported.isEmpty() };
+        precondition MustBeOpen { self.open }
+        (* Cannot issue an invoice that has no entries submitted. *)
+        precondition MustHaveEntries { not self.submitted.isEmpty() };
     begin
         self.issueDate := Date#today();
     end;
+
+    operation cancel()
+        precondition MustBeOpenOrIssued { self.open or (self.issued) };
 
     private operation sendInvoice();
     begin
@@ -98,78 +137,87 @@ class Invoice
 
     statemachine Status
 
-        initial state Preparation
-            transition on call(issue) to Invoiced;
+        initial state Open
+            transition on call(issue) to Issued;
+            transition on call(cancel) to Cancelled;
         end;
 
-        state Invoiced
+        state Issued
             entry {
                 self.sendInvoice();
             };
 
-            transition on signal(InvoicePaid) to Received;
+            transition on signal(PaymentReceived) to Received;
+            transition on call(cancel) to Cancelled;
         end;
 
         state Received end;
+
+        state Cancelled end;
+
     end;
 
 end;
 
-signal InvoicePaid
+signal PaymentReceived
 end;
 
-class Work
+class Entry
 
+    (* The number of units of work in this entry. *)
     attribute units : Integer := 1
-        (* Work must describe a positive number of units. *)
+        (* Entry must describe a positive number of units. *)
         invariant MustBePositive { self.units > 0 };
 
-    attribute task : Task;
+    (* The project the work went into. *)
+    attribute project : Project;
 
+    (* The date when the work happened. *)
     attribute date : Date := { Date#today() };
 
+    (* An optional description of the work performed . *)
     attribute memo : Memo[0, 1];
 
-    derived attribute client : Client := { self.task.client };
+    derived attribute client : Client := { self.project.client };
 
-    (* Work can be only invoiced once. Cannot be set directly but via #submit *)
+    (* Entry can be only submitted to an invoice once. Cannot be set directly but via #submit *)
     readonly attribute invoice : Invoice[0, 1];
 
-    derived attribute invoiced : Boolean := { not (self.invoice == null) };
+    derived attribute submitted : Boolean := { not (self.invoice == null) };
 
-    (* Submits this work to a chosen invoice for the client. *)
+    (* Submits this entry to a chosen invoice for the client. *)
     operation submit(invoice : Invoice)
-        precondition AlreadyInvoiced { not self.invoiced }
+        precondition AlreadySubmitted { not self.submitted }
         precondition WrongClient(invoice) {
-            invoice.client == self.task.client
+            invoice.client == self.project.client
         }
-        precondition InvoiceNotOpen(invoice) { invoice.open };
+        precondition InvoiceMustBeOpen(invoice) { invoice.open };
     begin
         self.invoice := invoice;
     end;
 end;
 
-composition TaskWork
+composition ProjectEntry
 
-    role Task.reported;
+    role Project.reported;
 
-    role Work.task;
-
-end;
-
-association InvoicedWork
-
-    role Invoice.reported;
-
-    role Work.invoice;
+    role Entry.project;
 
 end;
 
-association ClientTask
+association SubmittedEntry
 
-    role Client.tasks;
+    role Invoice.submitted;
 
-    role Task.client;
+    role Entry.invoice;
+
+end;
+
+association ClientProject
+
+    role Client.projects;
+
+    role Project.client;
 
 end;
 

@@ -101,7 +101,7 @@ class Expense
 
     derived id attribute expenseId : Integer;
 
-    static operation newExpense(description : String, amount : Double, date : Date, 
+    static operation newExpense(description : String, amount : Double, date : Date := { Date#today() }, 
             category : Category, employee : Employee) : Expense;
     begin
         var newExpense;
@@ -182,6 +182,21 @@ class Expense
         return Expense extent.select((e : Expense) : Boolean {
             e.status == status
         });
+    end;
+    
+    static query pendingExpenses() : Expense[*];
+    begin
+        return Expense#findByStatus(Status#Submitted);
+    end;
+    
+    static query approvedExpenses() : Expense[*];
+    begin
+        return Expense#findByStatus(Status#Approved);
+    end; 
+    
+    static query rejectedExpenses() : Expense[*];
+    begin
+        return Expense#findByStatus(Status#Rejected);    
     end;
     
     static query openExpenseCountPerCategory() : { category : Category, count : Integer }[*];

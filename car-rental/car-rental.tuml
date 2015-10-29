@@ -46,6 +46,16 @@ class Car
     readonly attribute rentals : Rental[*];
 
     attribute status : Status;
+    
+    static query byModel(carModel : CarModel) : Car[*];
+    begin
+        return Car extent.select((c : Car) : Boolean { c.carModel == carModel });
+    end;
+    
+    static query byMake(make : Make) : Car[*];
+    begin
+        return Car extent.select((c : Car) : Boolean { c.carModel.make == make });
+    end;
 
     statemachine Status
 
@@ -60,14 +70,14 @@ class Car
 
         state UnderRepair
             transition on signal(RepairFinished) to Available;
-            transition on signal(CarDecomissioned) to Decomissioned;
+            transition on call(decomission) to Decomissioned;
         end;
         
         terminate state Decomissioned
         end;
-
     end;
-
+    
+    operation decomission();
 
     operation startRepair()
         precondition MustBeAvailable { self.status == Status#Available };
@@ -94,9 +104,6 @@ end;
 signal RepairFinished
 end;
 
-signal CarDecomissioned
-end;
-
 class Rental
 
     derived attribute description : String := {
@@ -110,16 +117,20 @@ class Rental
     readonly attribute car : Car;
 
     readonly attribute customer : Customer;
+    
+    attribute status : Status;
 
     derived readonly attribute inProgress : Boolean := {
-        self.returned == null
+        self.status == Status#InProgress
     };
 
-    protected operation finish()
-        precondition MustBeInProgress { self.inProgress };
+    operation complete() 
+        precondition { self.inProgress };
     begin
-        self.returned := Date#today();
+        self.customer.finishRental();
     end;
+
+    private operation finish();
     
     static query inProgress() : Rental[*];
     begin
@@ -127,10 +138,24 @@ class Rental
             l.inProgress
         });
     end;
-    static query all() : Rental[*];
+    
+    static query countOfRentalsInProgress() : Integer;
     begin
-        return Rental extent;
-    end;    
+        return Rental extent.select((l : Rental) : Boolean {
+            l.inProgress
+        }).size();
+    end;
+    
+	statemachine Status
+		initial state InProgress
+			transition on call(finish) to Finished;
+		end;
+		state Finished
+		    entry {
+                self.returned := Date#today();
+		    };
+		end;		
+	end;
 end;
 
 class CarModel
@@ -139,9 +164,11 @@ class CarModel
         self.make.name + " " + self.name
     };
 
-    readonly attribute name : String;
+    attribute name : String;
 
     readonly attribute make : Make;
+    
+    derived attribute cars : Car[*] := { Car#byModel(self) };
 end;
 
 class Make
