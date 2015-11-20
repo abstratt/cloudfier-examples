@@ -1,0 +1,70 @@
+package tests;
+
+import taxi_fleet;
+
+[Test]
+class TaxiScenarios
+
+
+    operation available();
+    begin
+        var taxi1, taxi2, shift, driver;
+        begin
+            shift := TestData#newShift("A shift type", 1);
+            taxi1 := TestData#newTaxi("Taxi 1", shift);
+            taxi2 := TestData#newTaxi("Taxi 2", shift);
+            driver := TestData#newDriver("Driver 1");
+        end;
+        begin
+            Assert#isTrue(Taxi#available().includes(taxi1));
+            Assert#isTrue(Taxi#available().includes(taxi2));            
+            driver.book(taxi1);
+        end;
+        begin
+            Assert#isTrue(!Taxi#available().includes(taxi1));
+            Assert#isTrue(Taxi#available().includes(taxi2));            
+            driver.release();            
+        end;
+        begin
+            Assert#isTrue(Taxi#available().includes(taxi1));
+            Assert#isTrue(Taxi#available().includes(taxi2));            
+        end;
+    end;
+
+end;
+
+class TestData
+
+    static operation newTaxi(name : String, shift : Shift) : Taxi;
+    begin
+        var taxi;
+        begin
+            taxi := new Taxi;
+            taxi.name := name;
+            taxi.shift := shift;
+            return taxi;
+        end;
+    end;
+    static operation newShift(description : String, shiftsPerDay : Integer) : Shift;
+    begin
+        var shift;
+        begin
+            shift := new Shift;
+            shift.description := description;
+            shift.price := 100;
+            shift.shiftsPerDay := 1;
+            return shift;
+        end;
+    end;    
+    static operation newDriver(name : String) : Driver;
+    begin
+        var driver;
+        begin
+            driver := new Driver;
+            driver.name := name;
+            return driver;
+        end;
+    end;    
+end;
+
+end.
