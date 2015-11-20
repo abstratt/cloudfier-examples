@@ -245,6 +245,62 @@ class Tests
         end;
     end;        
     
+    operation anyPendingExpenses();
+    begin
+        var employee1, employee2, expense1, expense2;
+        begin
+            employee1 := Tests#employee("An employee");
+            employee2 := Tests#employee("Another employee");    
+            /* approve any existing expenses */
+            Expense extent.forEach((e : Expense) { e.approve(); });
+        end; 
+        begin        
+            Assert#isTrue(!Expense#anyPendingExpenses());            
+            expense1 := Tests#declareFor(800, employee1);
+            expense2 := Tests#declareFor(1000, employee2);            
+        end;
+        begin
+            expense1.submit();
+            expense2.submit();
+        end;
+        begin
+            Assert#isTrue(Expense#anyPendingExpenses());        
+            expense1.approve();
+        end;
+        begin
+            Assert#isTrue(Expense#anyPendingExpenses());        
+            expense2.approve();
+        end;
+        begin
+            Assert#isTrue(!Expense#anyPendingExpenses());
+        end;
+    end;
+
+    operation employeesWithNoExpenses();
+    begin
+        var employee1, employee2, employee3, baseline;
+        begin
+            baseline := Employee#employeesWithNoExpenses().size();
+            employee1 := Tests#employee("An employee");
+            employee2 := Tests#employee("Another employee");    
+            employee3 := Tests#employee("Employee without expenses");                
+        end; 
+        begin        
+            Assert#areEqual(baseline + 3, Employee#employeesWithNoExpenses().size());            
+            Tests#declareFor(800, employee1);
+            Tests#declareFor(1000, employee2);            
+        end;
+        begin
+            Assert#areEqual(baseline + 1, Employee#employeesWithNoExpenses().size());
+            Assert#isTrue(employee3 == Employee#employeesWithNoExpenses().one());            
+            Tests#declareFor(1000, employee3);                        
+        end;
+        begin
+            Assert#areEqual(baseline, Employee#employeesWithNoExpenses().size());
+        end;
+    end;
+    
+    
     operation expenseByEmployeeCounts();
     begin
         var ceo, salesGuy, programmer;
@@ -319,6 +375,29 @@ class Tests
             Assert#areEqual(cat2.name, salesGuyDetails.category);                           
         end;
     end;        
+    
+    operation deleteEmployee();
+    begin
+        var employee1, expense1, expense2, employeeBaseline, expenseBaseline;
+        begin
+            employeeBaseline := Employee extent.size();
+            expenseBaseline := Expense extent.size();            
+            employee1 := Tests#employee("An employee");
+        end; 
+        begin        
+            expense1 := Tests#declareFor(800, employee1);
+            expense2 := Tests#declareFor(1000, employee1);            
+        end;
+        begin
+            Assert#areEqual(expenseBaseline + 2, Expense extent.size());            
+            Assert#areEqual(employeeBaseline + 1, Employee extent.size());                        
+            employee1.deleteEmployee();
+        end;
+        begin
+            Assert#areEqual(expenseBaseline, Expense extent.size());            
+            Assert#areEqual(employeeBaseline, Employee extent.size());                        
+        end;
+    end;
 
 end;
 

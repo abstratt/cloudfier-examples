@@ -213,6 +213,20 @@ class Expense
         });
     end;
     
+    static query anyPendingExpenses() : Boolean;
+    begin
+    	return Expense extent.exists((e : Expense) : Boolean {
+            e.status == Status#Submitted
+        });
+    end;
+
+    static query pendingExpenseCount() : Integer;
+    begin
+    	return Expense extent.count((e : Expense) : Boolean {
+            e.status == Status#Submitted
+        });
+    end;
+    
     static query expenseCountPerEmployee() : { employee : Employee, expenseCount : Integer }[*];
     begin
         return Expense extent.groupBy(
@@ -340,6 +354,20 @@ class Employee
             e.status == status
         });
     end;
+    
+    static query employeesWithNoExpenses() : Employee[*];
+    begin
+    	return Employee extent.select((e : Employee) : Boolean {
+            e.expenses.isEmpty()
+        });
+    end;
+    
+    operation deleteEmployee();
+    begin
+        self.expenses.forEach((e : Expense) { destroy e; });
+        destroy self;
+    end;
+
 end;
 
 association EmployeeExpenses
