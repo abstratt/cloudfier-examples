@@ -30,6 +30,7 @@ class ModelScenarios
         var carModel;
         begin
             carModel := Examples#newModel();
+            carModel.name := "Mille";
         end;
         begin
             Assert#isNotNull(carModel);
@@ -306,6 +307,33 @@ class CarScenarios
             Assert#isTrue(car.available);
         end;
     end;
+    
+    operation byMake();
+    begin
+	    var make1, make2, make3, model1, model2, model3, model4, car1, car2, car3, car4;
+        begin
+            make1 := Examples#newMake();
+            make2 := Examples#newMake();            
+            make3 := Examples#newMake();            
+        end;
+        begin
+            model1 := Examples#newMakeModel(make1);
+            model2 := Examples#newMakeModel(make2); 
+            model3 := Examples#newMakeModel(make2); 
+            model4 := Examples#newMakeModel(make3);             
+        end;
+        begin
+            car1 := Examples#newCarForModel(model1);
+            car2 := Examples#newCarForModel(model2); 
+            car3 := Examples#newCarForModel(model2); 
+            car4 := Examples#newCarForModel(model3);             
+        end;        
+        begin
+            Assert#areEqual(1, Car#byMake(make1).size());
+            Assert#areEqual(3, Car#byMake(make2).size());
+            Assert#areEqual(0, Car#byMake(make3).size());            
+        end;
+    end;
 end;
 
 class Examples
@@ -320,14 +348,25 @@ class Examples
 
     private static operation newModel() : CarModel;
     begin
+        return Examples#newMakeModel(Examples#newMake());
+    end;
+    
+    private static operation newMakeModel(make : Make) : CarModel;
+    begin
         var carModel;
         carModel := new CarModel;
-        carModel.name := "Mille";
-        carModel.make := Examples#newMake();
+        carModel.name := "A model";
+        carModel.make := make;
         return carModel;
     end;
 
+
     private static operation newCar() : Car;
+    begin
+        return Examples#newCarForModel(Examples#newModel());
+    end;
+
+    private static operation newCarForModel(carModel : CarModel) : Car;
     begin
         var car;
         car := new Car;
@@ -335,7 +374,7 @@ class Examples
         car.price := 100.0;
         car.color := "black";
         car.plate := "ABC-1234";
-        car.carModel := Examples#newModel();
+        car.carModel := carModel;
         return car;
     end;
 
