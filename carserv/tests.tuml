@@ -43,6 +43,29 @@ class CustomerScenarios
             Assert#isTrue(!Customer#vipCustomers().includes(regularCustomer2));                        
         end;
     end;
+    
+    operation carlessCustomers();
+    begin
+        var customer1, customer2, customer3;
+        begin
+            customer1 := TestData#newCustomer();
+            customer2 := TestData#newCustomer();
+            customer3 := TestData#newCustomer();            
+            TestData#newCar(customer1);
+        end;
+        begin
+            Assert#isTrue(!Customer#carlessCustomers().includes(customer1));            
+            Assert#isTrue(Customer#carlessCustomers().includes(customer2));            
+            Assert#isTrue(Customer#carlessCustomers().includes(customer3));                        
+            TestData#newCar(customer2);
+        end;
+        begin
+            Assert#isTrue(!Customer#carlessCustomers().includes(customer1));            
+            Assert#isTrue(!Customer#carlessCustomers().includes(customer2));            
+            Assert#isTrue(Customer#carlessCustomers().includes(customer3));                        
+        end;
+    end;
+    
 end;
 
 [Test]

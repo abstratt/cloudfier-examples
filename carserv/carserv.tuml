@@ -178,7 +178,12 @@ class Customer specializes Person
 
     static query vipCustomers() : Customer[*];
     begin
-        return Customer extent.select((c : Customer) : Boolean { c.vip });
+        return Customer extent.select((c : Customer) : Boolean { c.cars.size() >= 2 });
+    end;
+    
+    static query carlessCustomers() : Customer[*];
+    begin
+        return Customer extent.select((c : Customer) : Boolean { c.cars.isEmpty() });
     end;
 end;
 
