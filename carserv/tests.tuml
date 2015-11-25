@@ -8,6 +8,44 @@ import carserv::Service;
 import carserv;
 
 [Test]
+class CustomerScenarios
+
+    operation vipCustomers();
+    begin
+        var vipCustomer1, vipCustomer2, regularCustomer1, regularCustomer2;
+        begin
+            vipCustomer1 := TestData#newCustomer();
+            vipCustomer2 := TestData#newCustomer();
+            regularCustomer1 := TestData#newCustomer();            
+            regularCustomer2 := TestData#newCustomer();                        
+        end;
+        begin
+            TestData#newCar(vipCustomer1);
+            TestData#newCar(vipCustomer1);            
+            TestData#newCar(vipCustomer2);
+        end;
+        begin
+            Assert#isTrue(vipCustomer1.vip);
+            Assert#isTrue(!vipCustomer2.vip);            
+            Assert#isTrue(!regularCustomer1.vip);            
+            Assert#isTrue(!regularCustomer2.vip);            
+        end;
+        begin
+            TestData#newCar(vipCustomer2);
+        end;
+        begin
+            Assert#isTrue(vipCustomer2.vip);            
+        end;
+        begin
+            Assert#isTrue(Customer#vipCustomers().includes(vipCustomer1));            
+            Assert#isTrue(Customer#vipCustomers().includes(vipCustomer2));            
+            Assert#isTrue(!Customer#vipCustomers().includes(regularCustomer1));            
+            Assert#isTrue(!Customer#vipCustomers().includes(regularCustomer2));                        
+        end;
+    end;
+end;
+
+[Test]
 class MechanicScenarios
 
     operation startsInTraining();
@@ -185,7 +223,7 @@ class TestData
         customer.title := Title#Mr;
         return customer;
     end;
-
+    
     static operation newCar(customer : Customer) : Car;
     begin
         var car;
