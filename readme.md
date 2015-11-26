@@ -3,6 +3,8 @@ Example Cloudfier apps
 
 This repository contains simple examples of [Cloudfier](http://cloudfier.com) ([git repository](http://github.com/abstratt/cloudfier)) applications.
 
+[![Build Status](https://textuml.ci.cloudbees.com/buildStatus/icon?job=cloudfier-examples-deploy)](https://textuml.ci.cloudbees.com/job/cloudfier-examples-deploy/)
+
 
 ### Loading the examples into Cloudfier
 
