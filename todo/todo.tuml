@@ -10,18 +10,18 @@ class User
 
     attribute name : String;
     
-    attribute todos : Todo[*];
+    attribute tasks : Task[*];
 
-    derived attribute openTodos : Todo[*] := {
-        self.todos.select((t : Todo) : Boolean {
-            t.status == Todo::Status#Open
+    derived attribute openTasks : Task[*] := {
+        self.tasks.select((t : Task) : Boolean {
+            t.status == Task::Status#Open
         })
     };
     
     private static derived attribute me : User := { (System#user() as User) };
 end;
 
-class Todo
+class Task
 
     private readonly attribute creator : User := { (System#user() as User) };
 
@@ -41,40 +41,40 @@ class Todo
 
     operation cancel();
 
-    static query open() : Todo[*];
+    static query open() : Task[*];
     begin
-        return Todo extent.select((t : Todo) : Boolean {
+        return Task extent.select((t : Task) : Boolean {
             t.status == Status#Open
         });
     end;
     
-    static query mine() : Todo[*];
+    static query mine() : Task[*];
     begin
-        return User#me.todos;
+        return User#me.tasks;
     end;
     
-    static query mineOpen() : Todo[*];
+    static query mineOpen() : Task[*];
     begin
-        return User#me.todos.select((t : Todo) : Boolean {
+        return User#me.tasks.select((t : Task) : Boolean {
             t.status == Status#Open
         });
     end;
     
-    static query openedToday() : Todo[*];
+    static query openedToday() : Task[*];
     begin
-        return Todo#openedOn(Date#today());
+        return Task#openedOn(Date#today());
     end;
     
-    static query openedOn(date : Date) : Todo[*];
+    static query openedOn(date : Date) : Task[*];
     begin
-        return Todo extent.select((t : Todo) : Boolean {
+        return Task extent.select((t : Task) : Boolean {
             t.openedOn = date
         });
     end;
     
-    static query completedToday() : Todo[*];
+    static query completedToday() : Task[*];
     begin
-        return Todo extent.select((t : Todo) : Boolean {
+        return Task extent.select((t : Task) : Boolean {
             t.status == Status#Completed and (t.completedOn = Date#today())
         });
     end;
@@ -107,13 +107,13 @@ composition
 
     navigable role comments : Comment[*];
 
-    navigable role todo : Todo;
+    navigable role task : Task;
 
 end;
 
 association
-    role User.todos;
-    role Todo.assignee;
+    role User.tasks;
+    role Task.assignee;
 end;
 
 end.

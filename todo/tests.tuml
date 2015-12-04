@@ -6,62 +6,60 @@ import todo;
 import todo::User;
 
 [Test]
-class TodoScenarios
+class TaskScenarios
 
-
-
-    operation allTodos();
+    operation allTasks();
     begin
         var user;
         begin
-            Assert#areEqual(0, Todo extent.size());
+            Assert#areEqual(0, Task extent.size());
             user := Examples#userWithName("auser");
-	        Examples#todoFor(user, "");
-	        Examples#todoFor(user, "");        
-            Examples#todoFor(user, "");                
+	        Examples#taskFor(user, "");
+	        Examples#taskFor(user, "");        
+            Examples#taskFor(user, "");                
         end;
         begin        
-            Assert#areEqual(3, Todo extent.size());
+            Assert#areEqual(3, Task extent.size());
         end;        
     end;
 
-    operation openTodos();
+    operation openTasks();
     begin
-        var todo, user;
+        var task, user;
         begin
             user := Examples#userWithName("auser");
-	        Examples#todoFor(user, "");
-	        Examples#todoFor(user, "");        
-            todo := Examples#todoFor(user, "");                
+	        Examples#taskFor(user, "");
+	        Examples#taskFor(user, "");        
+            task := Examples#taskFor(user, "");                
         end;
         begin        
-            Assert#areEqual(3, Todo#open().size());
-            todo.complete();
+            Assert#areEqual(3, Task#open().size());
+            task.complete();
         end;
         begin        
-            Assert#areEqual(2, Todo#open().size());
+            Assert#areEqual(2, Task#open().size());
         end;        
     end;
 
     operation openedToday();
     begin
-        var todo, today, yesterday, user;
+        var task, today, yesterday, user;
         begin
             user := Examples#userWithName("auser");
             today := Date#today();
             yesterday := today.transpose(Duration#days(-1));            
-	        Examples#todoFor(user, "");
-	        Examples#todoFor(user, "");        
-            todo := Examples#todoFor(user, "");
+	        Examples#taskFor(user, "");
+	        Examples#taskFor(user, "");        
+            task := Examples#taskFor(user, "");
         end;
         begin        
-            Assert#areEqual(3, Todo#openedOn(today).size());
-            Assert#areEqual(0, Todo#openedOn(yesterday).size());            
-            todo.openedOn := yesterday;
+            Assert#areEqual(3, Task#openedOn(today).size());
+            Assert#areEqual(0, Task#openedOn(yesterday).size());            
+            task.openedOn := yesterday;
         end;
         begin        
-            Assert#areEqual(2, Todo#openedOn(today).size());
-            Assert#areEqual(1, Todo#openedOn(yesterday).size());            
+            Assert#areEqual(2, Task#openedOn(today).size());
+            Assert#areEqual(1, Task#openedOn(yesterday).size());            
         end;        
     end;
 end;
@@ -77,20 +75,20 @@ class Examples
         return user;
     end;
 
-    private static operation todoFor(user : User, task : String) : Todo;
+    private static operation taskFor(user : User, task : String) : Task;
     begin
-        var newTodo;
-        newTodo := new Todo;
-        newTodo.description := task;
-        newTodo.details := Memo#fromString(task + " details");        
-        newTodo.creator := user;
-        newTodo.assignee := user;        
-        return newTodo;
+        var newTask;
+        newTask := new Task;
+        newTask.description := task;
+        newTask.details := Memo#fromString(task + " details");        
+        newTask.creator := user;
+        newTask.assignee := user;        
+        return newTask;
     end;
     
-    private static operation todo(task : String) : Todo;
+    private static operation task(task : String) : Task;
     begin
-        return Examples#todoFor(Examples#userWithName("a user"), task);
+        return Examples#taskFor(Examples#userWithName("a user"), task);
     end;
     
 end;
