@@ -30,8 +30,8 @@ class Category
     static query totalExpensesPerCategory() : CategoryTotal[*];
     begin
         return Expense extent.groupBy((e : Expense) : Category {
-        	e.category
-    	}).groupCollect((expenses : Expense[*]) : CategoryTotal {
+            e.category
+        }).groupCollect((expenses : Expense[*]) : CategoryTotal {
             {
                 category := expenses.one().category, 
                 total := expenses.sum((e : Expense) : Double { e.amount })
@@ -43,10 +43,10 @@ class Category
     begin
         return Expense extent
         .select((e : Expense) : Boolean {
-    		e.status == Expense::Status#Approved 
-		}).groupBy((e : Expense) : Category {
-        	e.category
-    	}).groupCollect((expenses : Expense[*]) : CategoryTotal {
+            e.status == Expense::Status#Approved 
+        }).groupBy((e : Expense) : Category {
+            e.category
+        }).groupCollect((expenses : Expense[*]) : CategoryTotal {
             {
                 category := expenses.one().category, 
                 total := expenses.sum((e : Expense) : Double { e.amount })
@@ -57,17 +57,17 @@ class Category
     static query mostExpensedCategories(threshold : Double) : CategoryTotal[*];
     begin
         return Expense extent.select((e : Expense) : Boolean {
-    		e.status == Expense::Status#Submitted
-		}).groupBy((e : Expense) : Category {
-        	e.category
-    	}).groupCollect((expenses : Expense[*]) : CategoryTotal {
+            e.status == Expense::Status#Submitted
+        }).groupBy((e : Expense) : Category {
+            e.category
+        }).groupCollect((expenses : Expense[*]) : CategoryTotal {
             {
                 category := expenses.one().category, 
                 total := expenses.sum((e : Expense) : Double { e.amount })
             }
         }).select((total : CategoryTotal) : Boolean {
-        	total.total > threshold
-    	});
+            total.total > threshold
+        });
     end;    
 
 end;
@@ -120,10 +120,10 @@ class Expense
     };
     
     derived attribute daysProcessed : Integer := {
-    	if (self.processed == null) then
-    	    return 0
-    	else
-    	    return Date#today().difference(self.processed).toDays();
+        if (self.processed == null) then
+            return 0
+        else
+            return Date#today().difference(self.processed).toDays();
     };
 
     operation approve()
@@ -204,25 +204,25 @@ class Expense
         return Expense extent.select((e : Expense) : Boolean {
             e.status == Status#Submitted
         }).groupBy(
-        	(e : Expense) : Category { e.category }
-    	).groupCollect((group : Expense[*]) : { category : Category, count : Integer } {
-        	{
-        		category := group.one().category,
-        		count := group.size()
-    		}
+            (e : Expense) : Category { e.category }
+        ).groupCollect((group : Expense[*]) : { category : Category, count : Integer } {
+            {
+                category := group.one().category,
+                count := group.size()
+            }
         });
     end;
     
     static query anyPendingExpenses() : Boolean;
     begin
-    	return Expense extent.exists((e : Expense) : Boolean {
+        return Expense extent.exists((e : Expense) : Boolean {
             e.status == Status#Submitted
         });
     end;
 
     static query pendingExpenseCount() : Integer;
     begin
-    	return Expense extent.count((e : Expense) : Boolean {
+        return Expense extent.count((e : Expense) : Boolean {
             e.status == Status#Submitted
         });
     end;
@@ -230,23 +230,23 @@ class Expense
     static query expenseCountPerEmployee() : { employee : Employee, expenseCount : Integer }[*];
     begin
         return Expense extent.groupBy(
-        	(e : Expense) : Employee { e.employee }
-    	).groupCollect((group : Expense[*]) : { employee : Employee, expenseCount : Integer } {
-        	{
-        		employee := group.one().employee,
-        		expenseCount := group.size()
-    		}
+            (e : Expense) : Employee { e.employee }
+        ).groupCollect((group : Expense[*]) : { employee : Employee, expenseCount : Integer } {
+            {
+                employee := group.one().employee,
+                expenseCount := group.size()
+            }
         });
     end;
     
     static query expenseDetails() : { reporter : Employee, category: String, expenseAmount : Double }[*];
     begin
         return Expense extent.collect((e : Expense) : { reporter : Employee, category : String, expenseAmount : Double } {
-        	{
-        		reporter := e.employee,
-        		category := e.category.name,
-        		expenseAmount := e.amount
-    		}
+            {
+                reporter := e.employee,
+                category := e.category.name,
+                expenseAmount := e.amount
+            }
         });
     end;
 
@@ -258,7 +258,7 @@ class Expense
 
         initial state Draft
             (*
-		        If amount is under automatic approval limit,
+                If amount is under automatic approval limit,
                 the expense is automaticaly approved. 
             *)
             transition on call(submit) to Approved when {
@@ -277,14 +277,14 @@ class Expense
 
         state Approved
             entry {
-            	self.processed := Date#today();
+                self.processed := Date#today();
                 self.reportApproved();
             };
         end;
 
         state Rejected
             entry {
-            	self.processed := Date#today();
+                self.processed := Date#today();
             };
             transition on call(reconsider) to Submitted;
         end;
@@ -357,7 +357,7 @@ class Employee
     
     static query employeesWithNoExpenses() : Employee[*];
     begin
-    	return Employee extent.select((e : Employee) : Boolean {
+        return Employee extent.select((e : Employee) : Boolean {
             e.expenses.isEmpty()
         });
     end;
