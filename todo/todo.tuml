@@ -13,10 +13,10 @@ class User
     attribute todos : Todo[*];
 
     derived attribute openTodos : Todo[*] := {
-    	self.todos.select((t : Todo) : Boolean {
-        	t.status == Todo::Status#Open
-    	})
-	};
+        self.todos.select((t : Todo) : Boolean {
+            t.status == Todo::Status#Open
+        })
+    };
     
     private static derived attribute me : User := { (System#user() as User) };
 end;
@@ -43,9 +43,9 @@ class Todo
 
     static query open() : Todo[*];
     begin
-    	return Todo extent.select((t : Todo) : Boolean {
-        	t.status == Status#Open
-    	});
+        return Todo extent.select((t : Todo) : Boolean {
+            t.status == Status#Open
+        });
     end;
     
     static query mine() : Todo[*];
@@ -56,8 +56,8 @@ class Todo
     static query mineOpen() : Todo[*];
     begin
         return User#me.todos.select((t : Todo) : Boolean {
-        	t.status == Status#Open
-    	});
+            t.status == Status#Open
+        });
     end;
     
     static query openedToday() : Todo[*];
@@ -68,15 +68,15 @@ class Todo
     static query openedOn(date : Date) : Todo[*];
     begin
         return Todo extent.select((t : Todo) : Boolean {
-        	t.openedOn = date
-    	});
+            t.openedOn = date
+        });
     end;
     
     static query completedToday() : Todo[*];
     begin
         return Todo extent.select((t : Todo) : Boolean {
-        	t.status == Status#Completed and (t.completedOn = Date#today())
-    	});
+            t.status == Status#Completed and (t.completedOn = Date#today())
+        });
     end;
 
     statemachine Status
