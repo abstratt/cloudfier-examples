@@ -101,7 +101,7 @@ class Tests
     begin
         return (stat : StatePopulation) : Boolean { stat.abbreviation == abbreviation };
     end;
-    
+
     operation statePopulations();
     begin
         var populations, oregon, wyoming;
@@ -113,6 +113,19 @@ class Tests
         Assert#areEqual(wyoming.population, populations.\any((stat : StatePopulation) : Boolean { stat.abbreviation = "WY" }).population);
         Assert#areEqual(oregon.population, populations.\any((stat : StatePopulation) : Boolean { stat.abbreviation = "OR" }).population);
     end;
+    
+    operation statePopulationsViaCities();
+    begin
+        var populations, oregon, wyoming;
+        TestData#build();
+        oregon := State#byAbbreviation("OR");
+        wyoming := State#byAbbreviation("WY");
+        populations := State#statePopulationsViaCities();
+        Assert#areEqual(State extent.size(), populations.size());
+        Assert#areEqual(wyoming.population, populations.\any((stat : StatePopulation) : Boolean { stat.abbreviation = "WY" }).population);
+        Assert#areEqual(oregon.population, populations.\any((stat : StatePopulation) : Boolean { stat.abbreviation = "OR" }).population);
+    end;
+
 end;
 
 class TestData
@@ -121,9 +134,9 @@ class TestData
     begin
         var california, oregon, wyoming;
         california := TestData#newState("California", "CA");
-        TestData#newCity("San Francisco", 837442, california);
+        TestData#newCity("San Francisco", 1356000, california);
         TestData#newCity("San Mateo", 101128, california);
-        TestData#newCity("San Diego", 1356000, california);
+        TestData#newCity("San Diego", 837442, california);
         oregon := TestData#newState("Oregon", "OR");
         TestData#newCity("Portland", 609456, oregon);
         TestData#newCity("Eugene", 159190, oregon);

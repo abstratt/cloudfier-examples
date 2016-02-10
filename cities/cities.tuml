@@ -144,7 +144,7 @@ class State
         });
     end;
     
-    static query statePopulations2() : StatePopulation[*];
+    static query statePopulationsViaCities() : StatePopulation[*];
     begin
         return City extent.groupBy((c : City) : State {
         	c.cityState
