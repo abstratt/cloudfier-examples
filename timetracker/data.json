@@ -8,22 +8,22 @@
       "name" : "Megabrains Consulting"
     } ],
     "Invoice" : [ {
-      "invoiceId" : 18,
+      "invoiceInternalNumber" : 18,
       "issueDate" : "2014/07/17",
       "status" : "Open",
       "client" : "Client@1"
     }, {
-      "invoiceId" : 9,
+      "invoiceInternalNumber" : 9,
       "issueDate" : "2014/07/14",
       "status" : "Open",
       "client" : "Client@1"
     }, {
-      "invoiceId" : 12,
+      "invoiceInternalNumber" : 12,
       "issueDate" : "2015/09/08",
       "status" : "Open",
       "client" : "Client@3"
     }, {
-      "invoiceId" : 15,
+      "invoiceInternalNumber" : 15,
       "issueDate" : "2015/09/08",
       "status" : "Open",
       "client" : "Client@3"

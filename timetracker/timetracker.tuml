@@ -92,12 +92,12 @@ class Invoice
     };
 
     derived attribute number : String := {
-        "" + self.issueDate.year() + "." + self.invoiceId
+        "" + self.issueDate.year() + "." + self.invoiceInternalNumber
     };
 
-    derived id attribute invoiceId : Integer;
+    private derived id attribute invoiceInternalNumber : Integer;
 
-    readonly attribute client : Client;
+    attribute client : Client;
 
     attribute issueDate : Date := { Date#today() };
 
@@ -118,6 +118,12 @@ class Invoice
     derived attribute totalUnits : Integer := {
         self.submitted.sum((e : Entry) : Integer { e.units })
     };
+    
+    operation reassign(newClient : Client)
+        precondition MustBeDifferentClient(newClient) { !(self.client == newClient) };
+    begin
+        self.client := newClient;
+    end;
 
     operation issue()
         precondition MustBeOpen { self.open }
