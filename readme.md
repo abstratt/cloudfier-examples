@@ -54,3 +54,64 @@ CarServ
 
 Application reverse engineered from the CarServ sample application that appears in the book 
 [Domain-Driven Design Using Naked Objects](http://pragprog.com/book/dhnako/domain-driven-design-using-naked-objects) by Dan Haywood.
+
+
+### Taking the examples through the JavaEE generator
+
+You can play with the JavaEE-based code generation on your own machine.
+
+#### Prerequisites
+
+* an internet connection
+* git
+* Java 1.8
+* Maven 3.0.x
+
+#### Steps
+
+##### 1 - Clone the examples repo
+
+```
+  git clone https://github.com/abstratt/cloudfier-examples.git
+```
+
+##### 2 - Run the generator
+
+```
+# change into any of the application directories
+cd cloudfier-examples/expenses
+
+# push the application to a temp repository on develop.cloudfier.com and generate the code
+mvn com.abstratt:cloudfier-maven-plugin:publish \
+    com.abstratt:cloudfier-maven-plugin:generate \
+    -Dkirra.target.platform=jee \
+    -Dkirra.project.sourcedir=. \
+    -Dkirra.generator.override=true
+```
+At the end of this step, you will find a fully functioning JavaEE app in the current directory.
+
+##### 3 - Compile the generated code
+
+```
+mvn clean install
+```
+
+##### 4 - Run the tests
+
+```
+mvn test
+```
+
+##### 5 - Run the application
+
+```
+mvn exec:java -Dexec.arguments=initData,run  -Dhttp.port=8888 -Dexec.classpathScope=test
+```
+
+The application REST API will be available at: http://localhost:8888/
+
+If you would rather play through a (generic) UI, you can use this URL instead:
+
+
+
+
