@@ -6,17 +6,16 @@ CLOUDFIER_URL=${CLOUDFIER_URL:-http://develop.cloudfier.com}
 
 CLOUDFIER_USER=${1:-test}
 BASE_APPLICATION_PATH=${2:-cloudfier-examples}
+PLATFORM=${3:-jee}
+for app_path in ${PLATFORM}/* ; do
 
-echo "Server:" $CLOUDFIER_URL
+    if [ ! -f $app_path/.cloudfier-ignore ]
+    then
+	app=${app_path##*/}
+        echo "*** Processing $app under $app_path"
+        ./deploy.sh $app $CLOUDFIER_USER
+    else
+        echo "*** Skipping $app_path"
+    fi
+done
 
-./deploy.sh blog $CLOUDFIER_USER
-./deploy.sh car-rental $CLOUDFIER_USER
-./deploy.sh carserv $CLOUDFIER_USER
-./deploy.sh cities $CLOUDFIER_USER
-./deploy.sh expenses $CLOUDFIER_USER
-./deploy.sh meeting $CLOUDFIER_USER
-./deploy.sh petstore $CLOUDFIER_USER
-./deploy.sh shipit $CLOUDFIER_USER
-./deploy.sh taxi-fleet $CLOUDFIER_USER
-./deploy.sh timetracker $CLOUDFIER_USER
-./deploy.sh todo $CLOUDFIER_USER

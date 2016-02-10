@@ -12,10 +12,10 @@ APPLICATION=$2
 CLOUDFIER_USER=${3:-test}
 
 echo ">\n>\n>\n>\n"	
-echo "Generating code for - $APPLICATION"	
+echo "*** Generating code for - $APPLICATION"	
 ./gen.sh $PLATFORM $APPLICATION $CLOUDFIER_USER
 echo ">\n>\n>\n>\n"	
-echo "Running tests for - $APPLICATION"
+echo "*** Running tests for - $APPLICATION"
 ./test.sh $PLATFORM $APPLICATION "-DreportsDirectory=$CWD/test-reports"
 echo ">\n>\n>\n>\n"	
-echo "Finished running tests for - $APPLICATION"
+echo "*** Finished running tests for - $APPLICATION"

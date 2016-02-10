@@ -13,5 +13,5 @@ BASE_APPLICATION_PATH=${3:-cloudfier-examples}
 
 echo
 echo 
-echo "Deploying the database for $APPLICATION"
+echo "*** Deploying the database for $APPLICATION"
 curl -X POST $CLOUDFIER_URL/services/api/${CLOUDFIER_USER}-cloudfier-examples-${APPLICATION}/data

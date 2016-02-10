@@ -11,5 +11,5 @@ CLOUDFIER_USER=${2:-test}
 
 echo
 echo 
-echo "Compiling the application $APPLICATION"
+echo "*** Compiling the application $APPLICATION"
 curl -X POST $CLOUDFIER_URL/services/deployer/?path=$CLOUDFIER_USER/cloudfier-examples/$APPLICATION

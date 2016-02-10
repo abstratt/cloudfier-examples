@@ -13,5 +13,5 @@ BASE_APPLICATION_PATH=${3:-cloudfier-examples}
 
 echo
 echo 
-echo "Testing the application: $APPLICATION"
-curl -X POST $CLOUDFIER_URL/services/api/${CLOUDFIER_USER}-cloudfier-examples-${APPLICATION}/tests
+echo "*** Testing the application: $APPLICATION"
+curl -sS -X POST $CLOUDFIER_URL/services/api/${CLOUDFIER_USER}-cloudfier-examples-${APPLICATION}/tests
