@@ -70,13 +70,13 @@ You can play with the JavaEE-based code generation on your own machine.
 
 #### Steps
 
-##### 1 - Clone the examples repo
+##### 1 Clone the examples repo
 
 ```
   git clone https://github.com/abstratt/cloudfier-examples.git
 ```
 
-##### 2 - Run the generator
+##### 2 Run the generator
 
 ```
 # change into any of the application directories
@@ -91,20 +91,20 @@ mvn com.abstratt:cloudfier-maven-plugin:publish \
 ```
 At the end of this step, you will find a fully functioning JavaEE app in the current directory.
 
-##### 3 - Compile the generated code
+##### 3 Compile the generated code
 
 ```
 mvn clean install -DskipTests
 ```
 
-##### 4 - Run the tests (optional)
+##### 4 Run the tests (optional)
 
 For this to work, you need to create a database user named 'cloudfier' with password 'password', and this user must have the ability of creating/dropping database schemas.
 ```
 mvn test
 ```
 
-##### 5 - Run the application
+##### 5 Run the application
 
 Just as in the previous step, if you haven't done it yet, you need beforehand to create a database user named 'cloudfier' with password 'password', and this user must have the ability of creating/dropping database schemas.
 
