@@ -6,6 +6,13 @@ apply mdd_extensions;
 [Test]
 class Tests
 
+    private static operation declareOn(date : Date, employee : Employee) : Expense;
+    begin
+        var cat; 
+        cat := Tests#category("Sample category");
+        return employee.declareExpense("just a test expense", 10, date, cat);
+    end;
+
     private static operation declareFor(amount : Double, employee : Employee) : Expense;
     begin
         var cat; 
@@ -276,6 +283,24 @@ class Tests
         end;
     end;
 
+    operation expensesInPeriod();
+    begin
+        var employee, expense1, expense2;
+        begin
+            employee := Tests#employee("An employee");
+        end; 
+        begin        
+            expense1 := Tests#declareOn(Date#make(1900,9,10), employee);                        
+            expense2 := Tests#declareOn(Date#make(1900,10,1), employee);
+        end;
+        begin
+            Assert#areSame(expense2, Expense#findExpensesInPeriod(Date#make(1900,9,30), Date#make(1900,10,2)).one());
+            Assert#areSame(expense2, Expense#findExpensesInPeriod(Date#make(1900,10,1), Date#make(1900,10,1)).one());
+            Assert#areSame(expense1, Expense#findExpensesInPeriod(null, Date#make(1900,9,30)).one());
+            Assert#isNull(Expense#findExpensesInPeriod(Date#make(1900,10,2), Date#make(1900,10,2)).one());
+        end;
+    end;
+    
     operation employeesWithNoExpenses();
     begin
         var employee1, employee2, employee3, baseline;
@@ -292,7 +317,7 @@ class Tests
         end;
         begin
             Assert#areEqual(baseline + 1, Employee#employeesWithNoExpenses().size());
-            Assert#isTrue(employee3 == Employee#employeesWithNoExpenses().one());            
+            Assert#isTrue(Employee#employeesWithNoExpenses().includes(employee3));            
             Tests#declareFor(1000, employee3);                        
         end;
         begin
