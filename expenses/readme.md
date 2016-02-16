@@ -11,11 +11,17 @@ and later be resubmitted. One must be able to find:
 * all expenses for a category
 * all expenses for a given period
 
-#### Diagrams
+### Diagrams
 
-![Class diagram for the application](https://develop.cloudfier.com/services/diagram/test-cloudfier-examples-expenses/package/expenses.uml?showClasses=true "Class diagram")
+#### Class diagram
 
-![Statechart diagram for the application](https://develop.cloudfier.com/services/diagram/test-cloudfier-examples-expenses/package/expenses.uml?showStateMachines=true "Statechart diagram")
+![Class diagram for the application](https://develop.cloudfier.com/services/diagram/test-cloudfier-examples-expenses/package/expenses.uml?showClasses=true)
+
+#### Statechart diagram
+
+![Statechart diagram for the application](https://develop.cloudfier.com/services/diagram/test-cloudfier-examples-expenses/package/expenses.uml?showStateMachines=true)
+
+### Integration with external systems
 
 This application includes an integration with an external system that records approved expenses.
 
