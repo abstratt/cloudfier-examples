@@ -15,7 +15,7 @@ and later be resubmitted. One must be able to find:
 
 #### Class diagram
 
-![Class diagram for the application](https://develop.cloudfier.com/services/diagram/test-cloudfier-examples-expenses/package/expenses.uml?showClasses=true)
+![Class diagram for the application](https://develop.cloudfier.com/services/diagram/test-cloudfier-examples-expenses/package/expenses.uml?showClasses=true&showAttributes=true)
 
 #### Statechart diagram
 
