@@ -11,6 +11,10 @@ and later be resubmitted. One must be able to find:
 * all expenses for a category
 * all expenses for a given period
 
+#### Class diagram
+
+![Class diagram for the application](http://develop.cloudfier.com/services/diagram/test-cloudfier-examples-expenses/package/petstore.uml?showClasses=true "Class diagram")
+
 This application includes an integration with an external system that records approved expenses.
 
 * external system [database](https://docs.google.com/spreadsheet/ccc?key=0ApWq_saU5c8DdENHN0FlSGl4Tm9rdVhpVFlRcE9hVEE) (a Google sheet)
