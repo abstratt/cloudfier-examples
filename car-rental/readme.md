@@ -1,9 +1,7 @@
 Car Rental example
 ------------------------
 
-Includes a bunch of tests (run with 'cloudfier run-tests').
-
-Live app at:
+### Live app
 
 http://develop.cloudfier.com/kirra-api/kirra-ng/?app-path=/services/api-v2/test-cloudfier-examples-car-rental/ (UI)
 
