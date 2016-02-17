@@ -5,7 +5,7 @@ http://develop.cloudfier.com/kirra-api/kirra-ng/?app-path=/services/api-v2/test-
 http://develop.cloudfier.com/services/api-v2/test-cloudfier-examples-todo/ (REST API)
 
 
-### Diagrams
+### Live Diagrams
 
 #### Class diagram
 

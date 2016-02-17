@@ -1,4 +1,11 @@
-### Diagrams
+### Live app
+
+http://develop.cloudfier.com/kirra-api/kirra-ng/?app-path=/services/api-v2/test-cloudfier-examples-petstore/ (UI)
+
+http://develop.cloudfier.com/services/api-v2/test-cloudfier-examples-petstore/ (REST API)
+
+
+### Live Diagrams
 
 #### Class diagram
 
