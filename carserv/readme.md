@@ -1,3 +1,9 @@
+### Live app
+
+http://develop.cloudfier.com/kirra-api/kirra-ng/?app-path=/services/api-v2/test-cloudfier-examples-carserv/ (UI)
+
+http://develop.cloudfier.com/services/api-v2/test-cloudfier-examples-carserv/ (REST API)
+
 ### Diagrams
 
 #### Class diagram
