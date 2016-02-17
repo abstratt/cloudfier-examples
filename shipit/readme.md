@@ -25,7 +25,7 @@ http://develop.cloudfier.com/services/api-v2/test-cloudfier-examples-shipit/ (RE
 
 #### Class diagram
 
-![Class diagram for the application](https://develop.cloudfier.com/services/diagram/test-cloudfier-examples-shipit/package/shipit.uml?showClassifierCompartments=Always&showStaticFeatures=true&showClasses=true&showAssociationEndName=false&showAttributes=true&showOperations=true&showComments=true&showParameters=true&showAssociationEndMultiplicity=false&showMinimumVisibility=Protected&showFeatureVisibility=true&showParameterNames=false&showDerivedElements=false&showAssociationName=true)
+![Class diagram for the application](https://develop.cloudfier.com/services/diagram/test-cloudfier-examples-shipit/package/shipit.uml?showClassifierCompartments=Always&showStaticFeatures=true&showClasses=true&showAssociationEndName=false&showAttributes=true&showOperations=true&showComments=true&showParameters=true&showAssociationEndMultiplicity=true&showMinimumVisibility=Protected&showFeatureVisibility=true&showParameterNames=false&showDerivedElements=false&showAssociationName=true)
 
 #### Statechart diagram
 
