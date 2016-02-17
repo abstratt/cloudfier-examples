@@ -99,14 +99,11 @@ mvn clean install -DskipTests
 
 ##### 4 Run the tests (optional)
 
-For this to work, you need to create a database user named 'cloudfier' with password 'password', and this user must have the ability of creating/dropping database schemas.
 ```
 mvn test
 ```
 
 ##### 5 Run the application
-
-Just as in the previous step, if you haven't done it yet, you need beforehand to create a database user named 'cloudfier' with password 'password', and this user must have the ability of creating/dropping database schemas.
 
 ```
 mvn exec:java -Dexec.arguments=initData,run  -Dhttp.port=8888 -Dexec.classpathScope=test
