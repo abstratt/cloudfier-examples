@@ -11,3 +11,19 @@ shared between two drivers.
 * The application must produce reports on rental performance of taxis
 
 For more details, see [project proposal](https://www.freelancer.com/projects/PHP-MySQL/Simple-payment-entry-software.html).
+
+### Live app
+
+http://develop.cloudfier.com/kirra-api/kirra-ng/?app-path=/services/api-v2/test-cloudfier-examples-taxi-fleet/ (UI)
+
+http://develop.cloudfier.com/services/api-v2/test-cloudfier-examples-taxi-fleet/ (REST API)
+
+### Diagrams
+
+#### Class diagram
+
+![Class diagram for the application](https://develop.cloudfier.com/services/diagram/test-cloudfier-examples-taxi-fleet/package/taxi_fleet.uml?showClassifierCompartments=Always&showStaticFeatures=true&showClasses=true&showAssociationEndName=true&showAttributes=true&showOperations=true&showComments=true&showParameters=true&showAssociationEndMultiplicity=true&showMinimumVisibility=Protected&showFeatureVisibility=true&showParameterNames=false&showDerivedElements=false)
+
+#### Statechart diagram
+
+![Statechart diagram for the application](https://develop.cloudfier.com/services/diagram/test-cloudfier-examples-taxi-fleet/package/taxi_fleet.uml?showStateMachines=true)
