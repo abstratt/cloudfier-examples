@@ -14,6 +14,13 @@ service when issues are reported, commented on or resolved.
 See the sibling project shipit-plus for how those notifications are eventually
 sent as email notifications.
 
+### Live app
+
+http://develop.cloudfier.com/kirra-api/kirra-ng/?app-path=/services/api-v2/test-cloudfier-examples-shipit/ (UI)
+
+http://develop.cloudfier.com/services/api-v2/test-cloudfier-examples-shipit/ (REST API)
+
+
 ### Diagrams
 
 #### Class diagram
