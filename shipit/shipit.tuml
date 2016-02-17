@@ -1,4 +1,3 @@
-
 /*
  * See Example Applications in the documentation for more information:
  *
@@ -6,8 +5,8 @@
  */
 package shipit;
 
-
 apply kirra;
+
 import mdd_types;
 
 [kirra::User]
@@ -19,19 +18,19 @@ class User
 
     readonly attribute kind : UserKind := Reporter;
 
-    private derived static attribute current : User := { System#user() };
+    private derived static attribute current : User[0, 1] := { System#user() };
 
     private derived attribute committer : Boolean := {
         self.kind = UserKind#Committer
     };
-    
+
     private attribute issuesAssignedToUser : Issue[*];
 
     readonly attribute issuesReportedByUser : Issue[*];
 
     derived attribute issuesCurrentlyInProgress : Issue[*] := {
         self.issuesAssignedToUser.select((issue : Issue) : Boolean {
-            issue.status == Issue::Status#InProgress 
+            issue.status == Issue::Status#InProgress
         })
     };
 
@@ -44,54 +43,56 @@ class User
     private derived static attribute provisioned : Boolean := {
         ! (System#user() == null)
     };
-    
+
     operation promoteToCommitter()
-    precondition { ?User#current() and User#current().committer }; 
+        precondition { ? User#current() and User#current().committer };
     begin
         self.kind := UserKind#Committer;
     end;
-    
+
     static query current() : User;
     begin
         return (System#user() as User);
     end;
-    
-        
+
     query isVoter(toCheck : Issue) : Boolean;
     begin
-    	return self<-VotedIssues->voted.includes(toCheck);
+        return self<-VotedIssues->voted.includes(toCheck);
     end;
-        
+
     operation voteOn(issue : Issue)
-        precondition NotVotedYet (issue) {
-            !self.isVoter(issue)
-        };
+        precondition NotVotedYet(issue) { ! self.isVoter(issue) };
     begin
         link VotedIssues(voted := issue, voters := self);
     end;
 
     operation withdrawVoteFrom(issue : Issue)
-        precondition votedOnAnyIssues { !self<-VotedIssues->voted.isEmpty() }
-        precondition IsAVoterOfIssue (issue) {
-            self.isVoter(issue)
-        };
+        precondition votedOnAnyIssues {
+            ! self<-VotedIssues->voted.isEmpty()
+        }
+        precondition IsAVoterOfIssue(issue) { self.isVoter(issue) };
     begin
         unlink VotedIssues(voted := issue, voters := self);
     end;
-
-
 end;
 
 enumeration UserKind
+
     Reporter;
+
     Committer;
 end;
 
 enumeration Severity
+
     Minor;
-    Normal; 
+
+    Normal;
+
     Major;
-    Blocker; 
+
+    Blocker;
+
     Enhancement;
 end;
 
@@ -125,8 +126,11 @@ signal CommentAdded specializes UserNotification
 end;
 
 enumeration Resolution
+
     Fixed;
-    WorksForMe; 
+
+    WorksForMe;
+
     WontFix;
 end;
 
@@ -265,7 +269,7 @@ class Issue
     private derived attribute mine : Boolean := {
         User#current == self.assignee
     };
-    
+
     private derived attribute free : Boolean := { self.assignee == null };
 
     private query referenceDate() : Date;
@@ -291,9 +295,9 @@ class Issue
             description := description, 
             userEmail := newIssue.reporter.email) to newIssue.userNotifier;
     end;
-    
-    static operation createIssue(reporter : User, project : Project, summary : String, description : Memo, 
-            severity : Severity := Normal) : Issue;
+
+    static operation createIssue(reporter : User, project : Project, summary : String, 
+            description : Memo, severity : Severity := Normal) : Issue;
     begin
         var newIssue;
         newIssue := new Issue;
@@ -309,6 +313,13 @@ class Issue
     begin
         return Issue extent.select((i : Issue) : Boolean {
             i.severity == toMatch
+        });
+    end;
+
+    static query byProject(toMatch : Project) : Issue[*];
+    begin
+        return Issue extent.select((i : Issue) : Boolean {
+            i.project == toMatch
         });
     end;
 
@@ -343,7 +354,7 @@ class Issue
     end;
 
     (* Reopen the issue. *)
-    operation reopen(reason : Memo[0,1]);
+    operation reopen(reason : Memo[0, 1] := { ("" as Memo) });
     begin
         self.resolvedOn := null;
         self.resolution := null;
@@ -377,7 +388,7 @@ class Issue
     begin
         link WatchedIssues(issuesWatched := self, watchers := userToAdd);
     end;
-    
+
     operation vote()
         precondition MustLogIn { not (User#current == null) };
     begin
@@ -385,10 +396,10 @@ class Issue
     end;
 
     operation withdrawVote()
-        precondition MustLogIn{ not (User#current == null) };    
+        precondition MustLogIn { not (User#current == null) };
     begin
         User#current.withdrawVoteFrom(self);
-    end;        
+    end;
 
     (* Take over an issue currently available. *)
     operation assignToMe()
@@ -432,7 +443,7 @@ class Issue
 
         state Resolved
             transition on call(verify) to Verified;
-            transition on call(reopen) to Open;            
+            transition on call(reopen) to Open;
         end;
 
         state Verified
