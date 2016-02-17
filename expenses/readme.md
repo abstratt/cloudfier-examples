@@ -11,6 +11,12 @@ and later be resubmitted. One must be able to find:
 * all expenses for a category
 * all expenses for a given period
 
+### Live app
+
+http://develop.cloudfier.com/kirra-api/kirra-ng/?app-path=/services/api-v2/test-cloudfier-examples-expenses/ (UI)
+
+http://develop.cloudfier.com/services/api-v2/test-cloudfier-examples-expenses/ (REST API)
+
 ### Diagrams
 
 #### Class diagram
