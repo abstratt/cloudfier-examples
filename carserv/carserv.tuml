@@ -250,7 +250,13 @@ class Service
     access {
         (System#user() == self.car.owner) or (System#user() is AutoMechanic)
     };
+    
+    derived attribute serviceNumber : String := {
+        "" + self.bookedOn.year() + "." + self.sequence
+    };
 
+    private derived id attribute sequence : Integer;
+    
     attribute description : Memo;
 
     attribute car : Car;
@@ -289,6 +295,13 @@ class Service
     begin
         return Service extent.select((s : Service) : Boolean {
             s.status == Status#Booked
+        });
+    end;
+    
+    static query findByOwner(owner : Customer) : Service[*];
+    begin
+        return Service extent.select((s : Service) : Boolean {
+            s.car.owner == owner
         });
     end;
 

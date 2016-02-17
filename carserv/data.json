@@ -114,44 +114,51 @@
       "bookedOn" : "2011/08/12",
       "estimatedReady" : "2011/08/14",
       "status" : "Booked",
-      "car" : "Car@3"
+      "car" : "Car@3",
+      "sequence": 7
     }, {
       "description" : "Install regular tires",
       "bookedOn" : "2011/02/14",
       "estimatedReady" : "2011/02/14",
       "status" : "Booked",
-      "car" : "Car@5"
+      "car" : "Car@5",
+      "sequence": 6
     }, {
       "description" : "Install winter tires",
       "bookedOn" : "2010/12/12",
       "estimatedReady" : "2010/12/13",
       "status" : "Booked",
-      "car" : "Car@5"
+      "car" : "Car@5",
+      "sequence": 5
     }, {
       "description" : "Check oil pressure",
       "bookedOn" : "2011/11/30",
       "estimatedReady" : "2011/11/30",
       "status" : "Booked",
-      "car" : "Car@4"
+      "car" : "Car@4",
+      "sequence": 4
     }, {
       "description" : "Replace all tires",
       "bookedOn" : "2011/07/15",
       "estimatedReady" : "2011/07/15",
       "status" : "Completed",
       "car" : "Car@4",
-      "technician" : "AutoMechanic@1"
+      "technician" : "AutoMechanic@1",
+      "sequence": 3
     }, {
       "description" : "Fuel injection needs inspection",
       "bookedOn" : "2011/07/04",
       "estimatedReady" : "2011/07/05",
       "status" : "Booked",
-      "car" : "Car@6"
+      "car" : "Car@6",
+      "sequence": 2
     }, {
       "description" : "Put winter tires",
       "bookedOn" : "2011/12/15",
       "estimatedReady" : "2011/12/15",
       "status" : "Booked",
-      "car" : "Car@9"
+      "car" : "Car@9",
+      "sequence": 1
     } ]
   }
 }
