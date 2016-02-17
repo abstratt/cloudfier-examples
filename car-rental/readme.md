@@ -5,10 +5,16 @@ Includes a bunch of tests (run with 'cloudfier run-tests').
 
 Live app at:
 
-http://develop.cloudfier.com/services/ui/demo-cloudfier-examples-car-rental/ (desktop UI)
+develop.cloudfier.com/kirra-api/kirra-ng/?app-path=/services/api-v2/test-cloudfier-examples-car-rental/ (UI)
 
-http://develop.cloudfier.com/services/api/demo-cloudfier-examples-car-rental/ (REST API)
+http://develop.cloudfier.com/services/api-v2/test-cloudfier-examples-car-rental/ (REST API)
 
-http://develop.cloudfier.com/services/api-v2/demo-cloudfier-examples-car-rental/ (REST API v2)
+### Diagrams
 
-http://develop.cloudfier.com/kirra-api/kirra_qooxdoo/build/?app-path=/services/api-v2/demo-cloudfier-examples-car-rental/ (mobile UI, in progress)
+#### Class diagram
+
+![Class diagram for the application](https://develop.cloudfier.com/services/diagram/test-cloudfier-examples-car-rental/package/carserv.uml?showClassifierCompartments=Always&showStaticFeatures=true&showClasses=true&showAssociationEndName=true&showAttributes=true&showOperations=true&showComments=true&showParameters=true&showAssociationEndMultiplicity=true&showMinimumVisibility=Protected&showFeatureVisibility=true&showParameterNames=false&showDerivedElements=false)
+
+#### Statechart diagram
+
+![Statechart diagram for the application](https://develop.cloudfier.com/services/diagram/test-cloudfier-examples-car-rental/package/car_rental.uml?showStateMachines=true)
