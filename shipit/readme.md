@@ -14,6 +14,17 @@ service when issues are reported, commented on or resolved.
 See the sibling project shipit-plus for how those notifications are eventually
 sent as email notifications.
 
+### Diagrams
+
+#### Class diagram
+
+![Class diagram for the application](https://develop.cloudfier.com/services/diagram/test-cloudfier-examples-shipit/package/shipit.uml?showClassifierCompartments=Always&showStaticFeatures=true&showClasses=true&showAssociationEndName=true&showAttributes=true&showOperations=true&showComments=true&showParameters=true&showAssociationEndMultiplicity=true&showMinimumVisibility=Protected&showFeatureVisibility=true&showParameterNames=false&showDerivedElements=false)
+
+#### Statechart diagram
+
+![Statechart diagram for the application](https://develop.cloudfier.com/services/diagram/test-cloudfier-examples-shipit/package/shipit.uml?showStateMachines=true)
+
+
 #### Email notifications
 
 This application has the ability of sending email notifications 
