@@ -301,7 +301,7 @@ class Employee
     
     readonly id attribute username : String;
 
-    attribute expenses : Expense[*];
+    reference expenses : Expense[*] opposite employee;
 
     derived attribute recordedExpenses : Expense[*] := {
         self.expensesByStatus(Expense::Status#Draft)
@@ -350,7 +350,7 @@ class Employee
 
     private query expensesByStatus(status : Expense::Status) : Expense[*]{ordered, unique};
     begin
-        return self->expenses.select((e : Expense) : Boolean {
+        return self.expenses.select((e : Expense) : Boolean {
             e.status == status
         });
     end;
@@ -367,14 +367,6 @@ class Employee
         self.expenses.forEach((e : Expense) { destroy e; });
         destroy self;
     end;
-
-end;
-
-association EmployeeExpenses
-
-    role Employee.expenses;
-
-    role Expense.employee;
 
 end;
 
