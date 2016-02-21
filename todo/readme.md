@@ -14,3 +14,9 @@ http://develop.cloudfier.com/services/api-v2/test-cloudfier-examples-todo/ (REST
 #### Statechart diagram
 
 ![Statechart diagram for the application](https://develop.cloudfier.com/services/diagram/test-cloudfier-examples-todo/package/todo.uml?showStateMachines=true)
+
+### Generated code
+
+* Java
+  * [Domain/Persistence](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/todo/gen/src/main/java/todo/)
+  * [REST API](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/todo/gen/src/main/java/resource/todo/)

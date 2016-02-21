@@ -14,3 +14,9 @@ http://develop.cloudfier.com/services/api-v2/test-cloudfier-examples-timetracker
 #### Statechart diagram
 
 ![Statechart diagram for the application](https://develop.cloudfier.com/services/diagram/test-cloudfier-examples-timetracker/package/timetracker.uml?showStateMachines=true)
+
+### Generated code
+
+* Java
+  * [Domain/Persistence](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/timetracker/gen/src/main/java/timetracker/)
+  * [REST API](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/timetracker/gen/src/main/java/resource/timetracker/)

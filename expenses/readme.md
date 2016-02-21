@@ -35,3 +35,10 @@ This application includes an integration with an external system that records ap
 
 * external system [database](https://docs.google.com/spreadsheet/ccc?key=0ApWq_saU5c8DdENHN0FlSGl4Tm9rdVhpVFlRcE9hVEE) (a Google sheet)
 * external system [code](https://script.google.com/d/1Rxmsbr6wvdRIksSO1JIu6LSVHmG5lN5SxYOCapvgcLUB6w1i6vqHsuiv/edit)  (a Google App script, login required)
+
+### Generated code
+
+* Java
+  * [Domain/Persistence](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/expenses/gen/src/main/java/expenses/)
+  * [REST API](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/expenses/gen/src/main/java/resource/expenses/)
+

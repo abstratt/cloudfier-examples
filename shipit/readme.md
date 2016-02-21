@@ -32,6 +32,8 @@ http://develop.cloudfier.com/services/api-v2/test-cloudfier-examples-shipit/ (RE
 ![Statechart diagram for the application](https://develop.cloudfier.com/services/diagram/test-cloudfier-examples-shipit/package/shipit.uml?showStateMachines=true)
 
 
+### Integrations
+
 #### Email notifications
 
 This application has the ability of sending email notifications 
@@ -40,3 +42,9 @@ do that, this application includes an integration with an external service
 that can send email notications:
 
 * external service [code](https://script.google.com/d/1d54TavITWQNgGjgsF8CA_KboYe1ySszVSt_tpPHSpGDrsg7BJ9lsCJGM/edit?usp=sharing>)  (Google login required)
+
+### Generated code
+
+* Java
+  * [Domain/Persistence](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/shipit/gen/src/main/java/shipit/)
+  * [REST API](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/shipit/gen/src/main/java/resource/shipit/)

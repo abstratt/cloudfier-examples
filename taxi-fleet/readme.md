@@ -27,3 +27,10 @@ http://develop.cloudfier.com/services/api-v2/test-cloudfier-examples-taxi-fleet/
 #### Statechart diagram
 
 ![Statechart diagram for the application](https://develop.cloudfier.com/services/diagram/test-cloudfier-examples-taxi-fleet/package/taxi_fleet.uml?showStateMachines=true)
+
+
+### Generated code
+
+* Java
+  * [Domain/Persistence](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/taxi-fleet/gen/src/main/java/taxi_fleet/)
+  * [REST API](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/taxi-fleet/gen/src/main/java/resource/taxi_fleet/)

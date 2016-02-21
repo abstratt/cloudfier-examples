@@ -13,3 +13,11 @@ http://develop.cloudfier.com/services/api-v2/test-cloudfier-examples-carserv/ (R
 #### Statechart diagram
 
 ![Statechart diagram for the application](https://develop.cloudfier.com/services/diagram/test-cloudfier-examples-carserv/package/carserv.uml?showStateMachines=true)
+
+### Generated code
+
+* Java
+  * [Domain/Persistence](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/carserv/gen/src/main/java/carserv/)
+  * [REST API](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/carserv/gen/src/main/java/resource/carserv/)
+
+

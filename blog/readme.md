@@ -13,3 +13,9 @@ http://develop.cloudfier.com/services/api-v2/test-cloudfier-examples-blog/ (REST
 #### Statechart diagram
 
 ![Statechart diagram for the application](https://develop.cloudfier.com/services/diagram/test-cloudfier-examples-blog/package/blog.uml?showStateMachines=true)
+
+### Generated code
+
+* Java
+  * [Domain/Persistence](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/blog/gen/src/main/java/blog/)
+  * [REST API](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/blog/gen/src/main/java/resource/blog/)

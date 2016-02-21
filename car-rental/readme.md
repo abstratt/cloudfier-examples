@@ -16,3 +16,10 @@ http://develop.cloudfier.com/services/api-v2/test-cloudfier-examples-car-rental/
 #### Statechart diagram
 
 ![Statechart diagram for the application](https://develop.cloudfier.com/services/diagram/test-cloudfier-examples-car-rental/package/car_rental.uml?showStateMachines=true)
+
+
+### Generated code
+
+* Java
+  * [Domain/Persistence](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/car-rental/gen/src/main/java/car_rental/)
+  * [REST API](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/car-rental/gen/src/main/java/resource/car_rental/)

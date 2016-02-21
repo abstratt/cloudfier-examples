@@ -14,3 +14,9 @@ http://develop.cloudfier.com/services/api-v2/test-cloudfier-examples-petstore/ (
 #### Statechart diagram
 
 ![Statechart diagram for the application](https://develop.cloudfier.com/services/diagram/test-cloudfier-examples-petstore/package/petstore.uml?showStateMachines=true)
+
+### Generated code
+
+* Java
+  * [Domain/Persistence](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/petstore/gen/src/main/java/petstore/)
+  * [REST API](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/petstore/gen/src/main/java/resource/petstore/)
