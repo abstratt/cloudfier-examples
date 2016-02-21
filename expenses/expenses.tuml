@@ -10,9 +10,25 @@ datatype CategoryTotal
     attribute total : Double;
 end;
 
+/*
+usecase SubmitExpense
+    actors Employee;
+    uses Employee::submit, Employee::declareExpense, Employee::reconsider;
+end;
+
+usecase ProcessExpense
+    actors Approver;
+    uses Expense::approve, Expense::reject, Expense::review;
+end;
+
+usecase RejectExpense
+    actors Approver;
+    uses ;
+end;
+
+*/
 (* The category for an expense. *)
 class Category
-
     attribute name : String;
 
     static operation newCategory(name : String) : Category;
@@ -84,6 +100,8 @@ class Expense
     readonly reference category : Category;
 
     readonly attribute status : Status;
+    
+    private derived attribute approved : Boolean := { self.status == Status#Approved };
 
     readonly attribute amount : Double;
 
@@ -95,7 +113,7 @@ class Expense
 
     readonly attribute rejectionReason : Memo[0, 1];
 
-    readonly reference approver : Employee[0, 1];
+    readonly attribute approver : Employee[0, 1];
 
     port expensePayer : ExpensePayer;
 
@@ -350,7 +368,7 @@ class Employee
 
     private query expensesByStatus(status : Expense::Status) : Expense[*]{ordered, unique};
     begin
-        return self.expenses.select((e : Expense) : Boolean {
+        return self->expenses.select((e : Expense) : Boolean {
             e.status == status
         });
     end;
