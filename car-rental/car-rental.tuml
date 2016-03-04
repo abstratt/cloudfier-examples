@@ -6,7 +6,7 @@ import mdd_types;
 class Car
 
     derived attribute description : String := {
-        self.carModel.description + " - " + self.plate
+        self.carModel.description + " (" + self.color + ") - " + self.plate
     };
 
     attribute plate : String;
@@ -105,10 +105,13 @@ signal RepairFinished
 end;
 
 class Rental
-
     derived attribute description : String := {
-        self.car.carModel.description + " on " + self.started
+        self.number + " - " + self.car.carModel.description
     };
+
+    derived attribute number : String := { "" + self.started.year() + "-" + self.internalId};
+        
+    private derived id attribute internalId : Integer; 
 
     readonly attribute started : Date := { Date#today() };
 
