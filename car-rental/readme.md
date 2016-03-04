@@ -1,6 +1,11 @@
 Car Rental example
 ------------------------
 
+A simple application for a car rental company.
+
+* cars can be rented by customers
+* cars can be sent to maintenance
+
 ### Live app
 
 http://develop.cloudfier.com/kirra-api/kirra-ng/?app-path=/services/api-v2/test-cloudfier-examples-car-rental/ (UI)
