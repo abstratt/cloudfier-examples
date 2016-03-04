@@ -5,6 +5,9 @@ A simple application for a car rental company.
 
 * cars can be rented by customers
 * cars can be sent to maintenance
+* customers can rent at most one car at a time
+* a car cannot be rented by two different customers
+* a car cannot be rented while on maintenance
 
 ### Live app
 
