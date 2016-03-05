@@ -56,7 +56,12 @@ class Car
     begin
         return Car extent.select((c : Car) : Boolean { c.carModel.make == make });
     end;
-
+    
+    static query available() : Car[*];
+    begin
+        return Car extent.select((c : Car) : Boolean { c.status == Status#Available });
+    end;    
+    
     statemachine Status
 
         initial state Available
@@ -198,6 +203,8 @@ class Customer
     private derived attribute hasCurrentRental : Boolean := {
         not (self.currentRental == null)
     };   
+   
+    private derived attribute renting : Boolean := { self.currentRental == null };
 
     operation rent(car : Car)
         precondition CarMustBeAvailable(car) { car.available }
