@@ -1,3 +1,14 @@
+Model initially reverse engineered from the CarServ 
+  sample application that appears in the book
+  book Domain-Driven Design Using Naked Objects
+  by Dan Haywood.
+  
+  http://pragprog.com/book/dhnako/domain-driven-design-using-naked-objects
+  
+See Example Applications in the documentation for more information:
+
+    https://doc.cloudfier.com/creating/examples/
+
 ### Live app
 
 http://develop.cloudfier.com/kirra-api/kirra-ng/?app-path=/services/api-v2/test-cloudfier-examples-carserv/ (UI)
