@@ -1,9 +1,7 @@
 Model initially reverse engineered from the CarServ 
   sample application that appears in the book
-  book Domain-Driven Design Using Naked Objects
+  book [Domain-Driven Design Using Naked Objects](http://pragprog.com/book/dhnako/domain-driven-design-using-naked-objects)
   by Dan Haywood.
-  
-  http://pragprog.com/book/dhnako/domain-driven-design-using-naked-objects
   
 See [Example Applications](https://doc.cloudfier.com/creating/examples/) in the documentation for more information.
 
