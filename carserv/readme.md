@@ -1,9 +1,16 @@
+# Carserv - A management application for an auto repair shop
+
 Model initially reverse engineered from the CarServ 
   sample application that appears in the book
   book [Domain-Driven Design Using Naked Objects](http://pragprog.com/book/dhnako/domain-driven-design-using-naked-objects)
   by Dan Haywood.
   
-See [Example Applications](https://doc.cloudfier.com/creating/examples/) in the documentation for more information.
+- can book services on cars
+- services can be assigned to auto-mechanics that are working
+- services can be transferred between auto-mechanics
+- services can be cancelled before started
+- auto-mechanics can go on vacation, or retire
+- customers with 2 or more cars serviced at the garage are VIP customers
 
 ### Live app
 
