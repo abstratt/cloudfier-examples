@@ -10,23 +10,6 @@ datatype CategoryTotal
     attribute total : Double;
 end;
 
-/*
-usecase SubmitExpense
-    actors Employee;
-    uses Employee::submit, Employee::declareExpense, Employee::reconsider;
-end;
-
-usecase ProcessExpense
-    actors Approver;
-    uses Expense::approve, Expense::reject, Expense::review;
-end;
-
-usecase RejectExpense
-    actors Approver;
-    uses ;
-end;
-
-*/
 (* The category for an expense. *)
 class Category
     attribute name : String;
