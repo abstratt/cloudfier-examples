@@ -78,8 +78,7 @@ class Presentation
     attribute meeting : Meeting;
 end;
 
-[kirra::User]
-class User
+role class User
 
     attribute name : String;
 
@@ -97,7 +96,7 @@ class User
         newMeeting.addParticipant(newMeeting.organizer);
     end;
 
-    private static derived attribute current : User := { System#user() };
+    private static derived attribute current : User := { (System#user() as User) };
 end;
 
 end.

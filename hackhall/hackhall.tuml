@@ -3,7 +3,7 @@ package hackhall;
 apply kirra;
 import mdd_types;
 
-[kirra::User]
+[kirra::Role]
 class User
     readonly id attribute email : String;
     attribute name : String;

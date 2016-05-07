@@ -1,69 +1,100 @@
 {
   "expenses" : {
+    "userprofile.Profile" : [ {
+      "username" : "admin",
+      "email" : "admin@abstratt.com",
+      "password" : "pass"
+    }, {
+      "username" : "john.ford",
+      "email" : "john@abstratt.com",
+      "password" : "pass"
+    }, {
+      "username" : "peter.jones",
+      "email" : "peter@abstratt.com",
+      "password" : "pass"
+    }, {
+      "username" : "wanda.hoyt",
+      "email" : "wanda@abstratt.com",
+      "password" : "pass"
+    } ],
+    "Employee" : [ {
+      "name" : "Peter Jones",
+      "user" : "userprofile.Profile@3"
+    }, {
+      "name" : "Camille Jouel"
+    }, {
+      "name" : "John Ford",
+      "user" : "userprofile.Profile@2"
+    }
+    ],
     "Category" : [ {
-      "name" : "Meal"
+      "name" : "Transportation"
     }, {
       "name" : "Airfare"
     }, {
+      "name" : "Meal"
+    }, {
       "name" : "Lodging"
-    }, {
-      "name" : "Transportation"
     } ],
-    "Employee" : [ {
-      "name" : "John Ford",
-      "username" : "john@abstratt.com"
-    }, {
-      "name" : "Camille Jouel",
-      "username" : "camille@abstratt.com"
-    }, {
-      "name" : "Peter Jones",
-      "username" : "peter@abstratt.com"
+    "Approver" : [ {
+      "name" : "Wanda Hoyt",
+      "user" : "userprofile.Profile@4"
     } ],
     "Expense" : [ {
       "description" : "Cab airport->downtown",
       "status" : "Approved",
       "amount" : 40.5,
       "date" : "2012/07/13",
+      "processed" : null,
       "rejectionReason" : null,
-      "expenseId" : 20,
-      "category" : "Category@4",
-      "employee" : "Employee@3"
+      "expenseId" : 21,
+      "category" : "Category@1",
+      "employee" : "Employee@1"
     }, {
       "description" : "Lunch in LA",
       "status" : "Submitted",
       "amount" : 35.75,
       "date" : "2012/09/14",
+      "processed" : null,
       "rejectionReason" : null,
-      "expenseId" : 23,
-      "category" : "Category@1",
+      "expenseId" : 24,
+      "category" : "Category@3",
       "employee" : "Employee@2"
     }, {
       "description" : "YVR/LAX",
       "status" : "Draft",
       "amount" : 190.5,
       "date" : "2012/09/13",
+      "processed" : null,
       "rejectionReason" : null,
-      "expenseId" : 29,
+      "expenseId" : 27,
       "category" : "Category@2",
-      "employee" : "Employee@1"
+      "employee" : "Employee@3"
     }, {
       "description" : "Lunch at subway",
       "status" : "Rejected",
       "amount" : 20.5,
       "date" : "2012/09/13",
+      "processed" : null,
       "rejectionReason" : null,
-      "expenseId" : 26,
-      "category" : "Category@1",
-      "employee" : "Employee@1"
+      "expenseId" : 30,
+      "category" : "Category@3",
+      "employee" : "Employee@3"
     }, {
       "description" : "Hilton LA downtown",
       "status" : "Approved",
       "amount" : 304.5,
       "date" : "2012/09/13",
+      "processed" : null,
       "rejectionReason" : null,
-      "expenseId" : 17,
-      "category" : "Category@3",
-      "employee" : "Employee@1"
-    } ]
+      "expenseId" : 33,
+      "category" : "Category@4",
+      "employee" : "Employee@3"
+    } ],
+    "Admin" : [ {
+      "name" : "root",
+      "master" : true,
+      "user" : "userprofile.Profile@1"
+    }]
   }
 }

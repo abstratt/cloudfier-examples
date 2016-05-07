@@ -1,109 +1,116 @@
-package expenses;
-
+package expenses;	
 
 apply kirra;
+
 import mdd_types;
 import payment;
 
 datatype CategoryTotal
+
     attribute category : Category;
+
     attribute total : Double;
 end;
 
 (* The category for an expense. *)
 class Category
+
+    allow extent;
+    allow Admin, Approver extent, call, update;
+    
     attribute name : String;
 
-    static operation newCategory(name : String) : Category;
-    begin 
+    static operation newCategory(name : String) : Category
+        allow Admin
+        allow Approver
+        allow Employee none;        
+    begin
         var newCategory;
         newCategory := new Category;
         newCategory.name := name;
         return newCategory;
-    end; 
+    end;
 
     derived attribute expensesInThisCategory : Expense[*] := {
         Expense#findExpensesByCategory(self)
     };
-    
+
     static query totalExpensesPerCategory() : CategoryTotal[*];
     begin
-        return Expense extent.groupBy((e : Expense) : Category {
-            e.category
-        }).groupCollect((expenses : Expense[*]) : CategoryTotal {
+        return Expense extent.groupBy((e : Expense) : Category { e.category }).groupCollect((expenses : Expense[*]) : CategoryTotal {
             {
                 category := expenses.one().category, 
                 total := expenses.sum((e : Expense) : Double { e.amount })
             }
         });
     end;
-    
+
     static query totalApprovedExpensesPerCategory() : CategoryTotal[*];
     begin
-        return Expense extent
-        .select((e : Expense) : Boolean {
-            e.status == Expense::Status#Approved 
-        }).groupBy((e : Expense) : Category {
-            e.category
-        }).groupCollect((expenses : Expense[*]) : CategoryTotal {
+        return Expense extent.select((e : Expense) : Boolean {
+            e.status == Expense::Status#Approved
+        }).groupBy((e : Expense) : Category { e.category }).groupCollect((expenses : Expense[*]) : CategoryTotal {
             {
                 category := expenses.one().category, 
                 total := expenses.sum((e : Expense) : Double { e.amount })
             }
         });
-    end;    
-    
+    end;
+
     static query mostExpensedCategories(threshold : Double) : CategoryTotal[*];
     begin
         return Expense extent.select((e : Expense) : Boolean {
             e.status == Expense::Status#Submitted
-        }).groupBy((e : Expense) : Category {
-            e.category
-        }).groupCollect((expenses : Expense[*]) : CategoryTotal {
+        }).groupBy((e : Expense) : Category { e.category }).groupCollect((expenses : Expense[*]) : CategoryTotal {
             {
                 category := expenses.one().category, 
                 total := expenses.sum((e : Expense) : Double { e.amount })
             }
-        }).select((total : CategoryTotal) : Boolean {
-            total.total > threshold
-        });
-    end;    
-
+        }).select((total : CategoryTotal) : Boolean { total.total > threshold });
+    end;
 end;
 
 (* The expense as reported by an employee. *)
-class Expense 
+class Expense
+    allow Admin;
+    allow Approver extent, call, static call;
+    allow Employee read { self.employee == System#user() };
+    allow Employee update { self.employee == System#user() and (self.status == Status#Draft) };
 
     derived attribute moniker : String := {
         self.description + " on " + self.date
     };
 
-    readonly attribute description : String;
+    attribute description : String;
 
-    readonly reference category : Category;
+    reference category : Category;
 
-    readonly attribute status : Status;
-    
-    private derived attribute approved : Boolean := { self.status == Status#Approved };
+    attribute status : Status;
 
-    readonly attribute amount : Double;
+    private derived attribute approved : Boolean := {
+        self.status == Status#Approved
+    };
 
-    readonly attribute date : Date := { Date#today() };
+    attribute amount : Double;
 
-    readonly attribute processed : Date[0,1];
+    attribute date : Date := { Date#today() };
+
+    readonly attribute processed : Date[0, 1];
 
     readonly attribute employee : Employee;
 
     readonly attribute rejectionReason : Memo[0, 1];
 
-    readonly attribute approver : Employee[0, 1];
+    readonly attribute approver : Approver[0, 1];
 
     port expensePayer : ExpensePayer;
 
     derived id attribute expenseId : Integer;
 
-    static operation newExpense(description : String, amount : Double, date : Date := { Date#today() }, 
-            category : Category, employee : Employee) : Expense;
+    static operation newExpense(description : String, amount : Double, date : Date := {
+        Date#today()
+    }, category : Category, employee : Employee) : Expense
+        allow Employee call;
     begin
         var newExpense;
         newExpense := new Expense;
@@ -116,10 +123,8 @@ class Expense
     end;
 
     (* Whether this expense qualifies for automatic approval. *)
-    derived attribute automaticApproval : Boolean := {
-        self.amount < 50
-    };
-    
+    derived attribute automaticApproval : Boolean := { self.amount < 50 };
+
     derived attribute daysProcessed : Integer := {
         if (self.processed == null) then
             return 0
@@ -129,31 +134,35 @@ class Expense
 
     operation approve()
         (* Cannot approve own expenses. *)
-        precondition { not (System#user() == self.employee) };
+        allow Approver { not (System#user() == self.employee) };
     begin
-        self.approver := System#user();
+        self.approver := (System#user() as Approver);
     end;
-    
 
     (* Reject this expense. Please provide a reason. *)
     operation reject(reason : Memo)
         (* Cannot reject an expense under the auto-approval limit. *)
-        precondition { not self.automaticApproval };
+        precondition { not self.automaticApproval }
+        allow Approver call;
     begin
         self.rejectionReason := reason;
-        self.approver := System#user();
+        self.approver := (System#user() as Approver);
     end;
-    
+
     (* Reconsider this expense. *)
     operation reconsider()
         (* Cannot reconsider after a week. *)
-        precondition { self.daysProcessed < 7 };
-    
+        precondition { self.daysProcessed < 7 }
+        allow Employee { self.employee == System#user() };
+
     (* Sends this expense back to Draft state. *)
-    operation review();
+    operation review()
+        allow Employee { self.employee == System#user() }
+        allow Approver;
 
     (* Submit this expense. *)
-    operation submit();
+    operation submit()
+        allow Employee{ self.employee == System#user() };
 
     private operation reportApproved();
     begin
@@ -171,49 +180,56 @@ class Expense
         });
     end;
 
-    static query findExpensesInPeriod(start : Date[0, 1], end_ : Date[0, 1]) : Expense[*];
+    static query findExpensesInPeriod(start : Date[0, 1], end_ : Date[0, 1]) : Expense[*]
+        allow Approver, Admin;
     begin
         return Expense extent.select((e : Expense) : Boolean {
             ((start == null) or (e.date >= start)) and ((end_ == null) or (e.date <= end_))
         });
     end;
 
-    static query findByStatus(status : Status) : Expense[*];
+    static query findByStatus(status : Status) : Expense[*]
+        allow Approver, Admin;
     begin
         return Expense extent.select((e : Expense) : Boolean {
             e.status == status
         });
     end;
-    
+
     static query pendingExpenses() : Expense[*];
     begin
         return Expense#findByStatus(Status#Submitted);
     end;
     
+    static query myExpenses() : Expense[*]
+        allow Admin none
+        allow Employee;
+    begin
+        return (System#user() as Employee).expenses;
+    end;
+
     static query approvedExpenses() : Expense[*];
     begin
         return Expense#findByStatus(Status#Approved);
-    end; 
-    
+    end;
+
     static query rejectedExpenses() : Expense[*];
     begin
-        return Expense#findByStatus(Status#Rejected);    
+        return Expense#findByStatus(Status#Rejected);
     end;
-    
-    static query openExpenseCountPerCategory() : { category : Category, count : Integer }[*];
+
+    static query openExpenseCountPerCategory() : {category : Category, count : Integer}[*];
     begin
         return Expense extent.select((e : Expense) : Boolean {
             e.status == Status#Submitted
-        }).groupBy(
-            (e : Expense) : Category { e.category }
-        ).groupCollect((group : Expense[*]) : { category : Category, count : Integer } {
+        }).groupBy((e : Expense) : Category { e.category }).groupCollect((group : Expense[*]) : {category : Category, count : Integer} {
             {
-                category := group.one().category,
+                category := group.one().category, 
                 count := group.size()
             }
         });
     end;
-    
+
     static query anyPendingExpenses() : Boolean;
     begin
         return Expense extent.exists((e : Expense) : Boolean {
@@ -227,30 +243,27 @@ class Expense
             e.status == Status#Submitted
         });
     end;
-    
-    static query expenseCountPerEmployee() : { employee : Employee, expenseCount : Integer }[*];
+
+    static query expenseCountPerEmployee() : {employee : Employee, expenseCount : Integer}[*];
     begin
-        return Expense extent.groupBy(
-            (e : Expense) : Employee { e.employee }
-        ).groupCollect((group : Expense[*]) : { employee : Employee, expenseCount : Integer } {
+        return Expense extent.groupBy((e : Expense) : Employee { e.employee }).groupCollect((group : Expense[*]) : {employee : Employee, expenseCount : Integer} {
             {
-                employee := group.one().employee,
+                employee := group.one().employee, 
                 expenseCount := group.size()
             }
         });
     end;
-    
-    static query expenseDetails() : { reporter : Employee, category: String, expenseAmount : Double }[*];
+
+    static query expenseDetails() : {reporter : Employee, category : String, expenseAmount : Double}[*];
     begin
-        return Expense extent.collect((e : Expense) : { reporter : Employee, category : String, expenseAmount : Double } {
+        return Expense extent.collect((e : Expense) : {reporter : Employee, category : String, expenseAmount : Double} {
             {
-                reporter := e.employee,
-                category := e.category.name,
+                reporter := e.employee, 
+                category := e.category.name, 
                 expenseAmount := e.amount
             }
         });
     end;
-
 
     (* 
         The different statuses an expense can go through. 
@@ -287,6 +300,7 @@ class Expense
             entry {
                 self.processed := Date#today();
             };
+
             transition on call(reconsider) to Submitted;
         end;
 
@@ -294,15 +308,32 @@ class Expense
 
 end;
 
-(* An employee reports expenses. *)
-[kirra::User]
-class Employee
-
+abstract role class Person
     attribute name : String;
-    
-    readonly id attribute username : String;
+end;
 
-    reference expenses : Expense[*] opposite employee;
+class Approver specializes Employee
+    allow Admin;
+    allow Approver update { System#user() == self };
+    attribute specialty : Category[0,1];
+end;
+
+class Admin specializes Person
+    allow Admin { (System#user() as Admin).master };
+    allow Admin read { self == System#user() };
+    
+    attribute master : Boolean[0,1] := false;
+
+end;
+
+(* An employee reports expenses. *)
+class Employee specializes Person
+
+    allow Admin;
+    allow Employee create, extent, read;
+    allow Employee update { System#user() == self };
+
+    reference expenses : Expense[*]opposite employee;
 
     derived attribute recordedExpenses : Expense[*] := {
         self.expensesByStatus(Expense::Status#Draft)
@@ -325,19 +356,20 @@ class Employee
     };
 
     derived attribute totalSubmitted : Double := {
-        self.submittedExpenses.sum((e : Expense) : Double { e.amount })        
+        self.submittedExpenses.sum((e : Expense) : Double { e.amount })
     };
 
     derived attribute totalApproved : Double := {
-        self.approvedExpenses.sum((e : Expense) : Double { e.amount })        
+        self.approvedExpenses.sum((e : Expense) : Double { e.amount })
     };
 
     derived attribute totalRejected : Double := {
-        self.rejectedExpenses.sum((e : Expense) : Double { e.amount })                
+        self.rejectedExpenses.sum((e : Expense) : Double { e.amount })
     };
 
     operation declareExpense(description : String, amount : Double, date : Date, 
-            category : Category) : Expense;
+            category : Category) : Expense
+        allow Employee { self == System#user() };
     begin
         return Expense#newExpense(description, amount, date, category, self);
     end;
@@ -355,20 +387,22 @@ class Employee
             e.status == status
         });
     end;
-    
+
     static query employeesWithNoExpenses() : Employee[*];
     begin
         return Employee extent.select((e : Employee) : Boolean {
             e.expenses.isEmpty()
         });
     end;
-    
-    operation deleteEmployee();
+
+    operation deleteEmployee()
+        allow Admin;
     begin
-        self.expenses.forEach((e : Expense) { destroy e; });
+        self.expenses.forEach((e : Expense) {
+            destroy e;
+        });
         destroy self;
     end;
-
 end;
 
 end.

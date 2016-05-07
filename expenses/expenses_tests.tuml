@@ -38,7 +38,6 @@ class Tests
         var employee;
         employee := new Employee;
         employee.name := name;
-        employee.username := name;        
         return employee;
     end;
 

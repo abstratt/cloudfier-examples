@@ -6,8 +6,7 @@ apply kirra;
 
 import mdd_types;
 
-[kirra::User]
-abstract class Person
+abstract role class Person
 
     derived id attribute fullName : String := {
         self.firstName + " " + self.lastName
@@ -29,7 +28,7 @@ end;
 
 class AutoMechanic specializes Person
 
-    access { System#user() is AutoMechanic };
+    allow AutoMechanic;
 
     attribute status : WorkingStatus;
 
@@ -130,9 +129,8 @@ end;
 
 class Customer specializes Person
 
-    access {
-        (System#user() == self) or (System#user() is AutoMechanic)
-    };
+    allow AutoMechanic;
+    allow Customer { System#user() == self };
 
     attribute cars : Car[0, *];
 
@@ -185,9 +183,8 @@ end;
 
 class Car
 
-    access {
-        (System#user() == self.owner) or (System#user() is AutoMechanic)
-    };
+    allow AutoMechanic;
+    allow Customer { System#user() == self.owner };
 
     attribute registrationNumber : String;
 
@@ -235,9 +232,8 @@ end;
 
 class Service
 
-    access {
-        (System#user() == self.car.owner) or (System#user() is AutoMechanic)
-    };
+    allow AutoMechanic;
+    allow Customer { System#user() == self.car.owner };
     
     derived attribute serviceNumber : String := {
         "" + self.bookedOn.year() + "." + self.sequence

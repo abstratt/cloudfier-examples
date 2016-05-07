@@ -4,7 +4,7 @@ package ats;
 apply kirra;
 import mdd_types;
 
-[kirra::User]
+[kirra::Role]
 class User
 
     id attribute email : String;

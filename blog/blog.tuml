@@ -3,8 +3,7 @@ package blog;
 apply kirra;
 import mdd_types;
 
-[kirra::User]
-class User
+role class User
     readonly id attribute name : String;
     static query guest() : User;
     begin
@@ -19,7 +18,7 @@ end;
 class Article
     attribute title : String;
     attribute body : Memo;    
-    readonly attribute user : User := { System#user() };
+    readonly attribute user : User := { (System#user() as User) };
     attribute comments : Comment[*];
     derived attribute commentCount : Integer := { self.comments.size() };    
     readonly attribute createdAt : Date := { Date#now() };    
@@ -51,7 +50,7 @@ end;
 class Comment
     readonly attribute article : Article;
     attribute body : Memo;        
-    attribute user : User := { System#user() };
+    attribute user : User := { (System#user() as User) };
     readonly attribute createdAt : Date := { Date#now() };
 end;
 

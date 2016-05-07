@@ -3,8 +3,7 @@ package todo;
 apply kirra;
 import mdd_types;
 
-[kirra::User]
-class User
+role class User
 
     readonly id attribute email : String;
 
