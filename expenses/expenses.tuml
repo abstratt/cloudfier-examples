@@ -90,6 +90,8 @@ class Expense
     private derived attribute approved : Boolean := {
         self.status == Status#Approved
     };
+    
+    private readonly attribute rejections : Integer[0,1] := 0;
 
     attribute amount : Double;
 
@@ -152,7 +154,9 @@ class Expense
     (* Reconsider this expense. *)
     operation reconsider()
         (* Cannot reconsider after a week. *)
-        precondition { self.daysProcessed < 7 }
+        precondition WithinReconsiderationPeriod { self.daysProcessed < 7 }
+        (* Cannot reconsider after rejected twice *)
+        precondition UnderRejectionThreshold { self.rejections <= 2 }        
         allow Employee { self.employee == System#user() };
 
     (* Sends this expense back to Draft state. *)
@@ -298,6 +302,7 @@ class Expense
 
         state Rejected
             entry {
+            	self.rejections := self.rejections + 1;
                 self.processed := Date#today();
             };
 

@@ -105,6 +105,63 @@ class Tests
             Assert#areEqual(Expense::Status#Rejected, expense.status);
         end;
     end;    
+    
+    operation reconsiderExpense();
+    begin
+        var expense : Expense;
+        begin
+            expense := Tests#declare(100.0);
+        end;
+        begin
+            expense.submit();
+        end;
+        begin
+            Assert#areEqual(0, expense.rejections);
+            expense.reject(Memo#fromString("Non-reimbursable"));
+        end;
+        begin
+            Assert#areEqual(1, expense.rejections);
+            expense.reconsider();
+        end;
+        begin
+            expense.reject(Memo#fromString("Non-reimbursable"));
+        end;
+        begin
+            Assert#areEqual(2, expense.rejections);
+        end;
+    end;        
+
+    [Failure(constraint="UnderRejectionThreshold")]    
+    operation reconsiderExpenseTooManyTimes();
+    begin
+        var expense : Expense;
+        begin
+            expense := Tests#declare(100.0);
+        end;
+        begin
+            expense.submit();
+        end;
+        begin
+            expense.reject(Memo#fromString("rejection #1"));
+        end;
+        begin
+            expense.reconsider();
+        end;
+        begin
+            expense.reject(Memo#fromString("rejection #2"));
+        end;
+        begin
+            expense.reconsider();
+        end;
+        begin
+            expense.reject(Memo#fromString("rejection #3"));
+        end;
+        begin
+            /* Will fail */
+            expense.reconsider();
+        end;
+    end;        
+    
 
     operation expenseByCategoryTotals();
     begin
