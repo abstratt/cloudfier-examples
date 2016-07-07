@@ -13,41 +13,6 @@ When running these applications, it is usually possible to login as user 'guest'
 the mdd.properties file). The descriptions below include some examples of credentials
 that can be used to log in.
 
-
-Expenses
---------------------------------------------------------------------------------
-
-See Expenses example application [own documentation](expenses/) for more information.
-
-CarRental
---------------------------------------------------------------------------------
-Simple app, but shows how to write test suites (run them with run-tests).
-
-ShipIt
---------------------------------------------------------------------------------
-
-Users can be either committers or reporters. Anyone can report and comment on issues. 
-Committers can take over issues, resolve, assign them to other committers.
-
-ShipIt Custom UI
---------------------------------------------------------------------------------
-
-A custom UI for the ShipIt application above. Relies on the same back-end (API/business logic/persistence) as the generated UI.
-
-Same users apply.
-
-PetStore
---------------------------------------------------------------------------------
-
-The traditional Pet Store application.
-
-CarServ
---------------------------------------------------------------------------------
-
-Application reverse engineered from the CarServ sample application that appears in the book 
-[Domain-Driven Design Using Naked Objects](http://pragprog.com/book/dhnako/domain-driven-design-using-naked-objects) by Dan Haywood.
-
-
 ### Taking the examples through the JavaEE generator
 
 You can play with the JavaEE-based code generation on your own machine.
@@ -109,6 +74,8 @@ http://develop.cloudfier.com/kirra-api/kirra-ng/?app-uri=http://localhost:8888
 
 
 ### Loading the examples into the TextUML Toolkit
+
+If you are a TextUML Toolkit user, you can load these examples into the TextUML Toolkit as well.
 
 1. clone the entire repository as a single MDD project in the TextUML Toolkit (you will need Git support in Eclipse)
 2. create a second MDD project called kirra
