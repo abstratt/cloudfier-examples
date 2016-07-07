@@ -17,7 +17,7 @@ that can be used to log in.
 Expenses
 --------------------------------------------------------------------------------
 
-See Expenses example application own documentation for more information.
+See Expenses example application [own documentation](expenses/) for more information.
 
 CarRental
 --------------------------------------------------------------------------------
