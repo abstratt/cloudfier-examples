@@ -1,25 +1,17 @@
 Example Cloudfier apps
 ================================================================================
 
-This repository contains simple examples of [Cloudfier](http://cloudfier.com) ([git repository](http://github.com/abstratt/cloudfier)) applications.
+This repository contains simple examples of Cloudfier applications.
 
 ### Loading the examples into Cloudfier
 
-For instructions on how to get these example apps into Cloudfier, 
+For instructions on how to get these example apps into [Cloudfier](http://cloudfier.com), 
 [read this](http://cloudfier.com/doc/creating/examples/).
 
 When running these applications, it is usually possible to login as user 'guest' 
 (no password), except if the application does not support anonymous login (check 
 the mdd.properties file). The descriptions below include some examples of credentials
 that can be used to log in.
-
-### Loading the examples into the TextUML Toolkit
-
-1. clone the entire repository as a single MDD project in the TextUML Toolkit (you will need Git support in Eclipse)
-2. create a second MDD project called kirra
-3. add the contents of [kirra.tuml](https://github.com/abstratt/cloudfier/blob/master/kirra-mdd/com.abstratt.kirra.mdd.core/models/kirra.tuml) there
-
-Note that in this setup, all .uml files (the actual UML models) are created at the root, and you can only visualize diagrams (if you are into that sort of stuff) by opening the .uml files, not the source.tuml files (which is possible when the source files are side-by-side with the .uml files).
 
 
 Expenses
@@ -115,4 +107,12 @@ If you would rather play through a (generic) UI, you can use this URL instead:
 
 http://develop.cloudfier.com/kirra-api/kirra-ng/?app-uri=http://localhost:8888
 
+
+### Loading the examples into the TextUML Toolkit
+
+1. clone the entire repository as a single MDD project in the TextUML Toolkit (you will need Git support in Eclipse)
+2. create a second MDD project called kirra
+3. add the contents of [kirra.tuml](https://github.com/abstratt/cloudfier/blob/master/kirra-mdd/com.abstratt.kirra.mdd.core/models/kirra.tuml) there
+
+Note that in this setup, all .uml files (the actual UML models) are created at the root, and you can only visualize diagrams (if you are into that sort of stuff) by opening the .uml files, not the source.tuml files (which is possible when the source files are side-by-side with the .uml files).
 
