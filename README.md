@@ -41,4 +41,4 @@ For instance (for a Cloudfier user named 'johndoe', an application named 'crm', 
 
 Note this requires your Cloudfier application not to be directly under the root path, but at least a level below (such as my-projects/crm in the case above).
 
-Finally, see at the top of this document the status for all target platforms supported. Note that a platform is likely to have additional environmental requirements (JavaSE requires Java 8 and Maven, JavaEE requires additionally a PostgreSQL database, Mean requires a MongoDB database and npm to be installed etc).
+Finally, see at the top of this document the status for all target platforms supported. Note that a platform is likely to have additional environmental requirements (JavaSE/JavaEE requires Java 8 and Maven, Mean requires a MongoDB database and npm to be installed etc).
