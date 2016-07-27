@@ -8,8 +8,9 @@ fi
 
 APPLICATION=$1
 CLOUDFIER_USER=${2:-test}
+BASE_APPLICATION_PATH=${4:-/cloudfier-examples/}
 
 echo
 echo 
 echo "*** Compiling the application $APPLICATION"
-curl -X POST $CLOUDFIER_URL/services/deployer/?path=$CLOUDFIER_USER/cloudfier-examples/$APPLICATION
+curl -X POST $CLOUDFIER_URL/services/deployer/?path=$CLOUDFIER_USER${BASE_APPLICATION_PATH}$APPLICATION

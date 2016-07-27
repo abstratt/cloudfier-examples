@@ -5,7 +5,7 @@ set -o pipefail
 CLOUDFIER_URL=${CLOUDFIER_URL:-http://develop.cloudfier.com}
 
 CLOUDFIER_USER=${1:-test}
-BASE_APPLICATION_PATH=${2:-cloudfier-examples}
+BASE_APPLICATION_PATH=${2:-/cloudfier-examples/}
 PLATFORM=${3:-jee}
 for app_path in ${PLATFORM}/* ; do
 
