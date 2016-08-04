@@ -9,23 +9,23 @@ class Tests
     private static operation declareOn(date : Date, employee : Employee) : Expense;
     begin
         var cat; 
-        cat := Tests#category("Sample category");
+        cat := Tests#createCategory("Sample category");
         return employee.declareExpense("just a test expense", 10, date, cat);
     end;
 
     private static operation declareFor(amount : Double, employee : Employee) : Expense;
     begin
         var cat; 
-        cat := Tests#category("Sample category");
+        cat := Tests#createCategory("Sample category");
         return employee.declareExpense("just a test expense", amount, Date#today(), cat);
     end;
 
     private static operation declare(amount : Double) : Expense;
     begin
-        return Tests#declareFor(amount, Tests#employee("John Doe"));
+        return Tests#declareFor(amount, Tests#createEmployee("John Doe"));
     end;
     
-    private static operation category(name : String) : Category;
+    private static operation createCategory(name : String) : Category;
     begin
         var cat;
         cat := new Category;
@@ -33,7 +33,7 @@ class Tests
         return cat;
     end;
     
-    static operation employee(name : String) : Employee;
+    static operation createEmployee(name : String) : Employee;
     begin
         var employee;
         employee := new Employee;
@@ -55,7 +55,7 @@ class Tests
     operation automaticApproval();
     begin
         var employee;
-        employee := Tests#employee("Jane Doe");
+        employee := Tests#createEmployee("Jane Doe");
         Assert#isTrue(Tests#declareFor(49.9, employee).automaticApproval);
         Assert#isTrue(not Tests#declareFor(50.0, employee).automaticApproval);
     end;
@@ -103,6 +103,7 @@ class Tests
         end;
         begin
             Assert#areEqual(Expense::Status#Rejected, expense.status);
+            Assert#areEqual("Non-reimbursable", expense.rejectionReason);
         end;
     end;    
     
@@ -167,10 +168,10 @@ class Tests
     begin
         var employee, cat1, cat2, cat3;
         begin
-            employee := Tests#employee("Jane Doe");
-            cat1 := Tests#category("category 1");
-            cat2 := Tests#category("category 2");
-            cat3 := Tests#category("category 3");            
+            employee := Tests#createEmployee("Jane Doe");
+            cat1 := Tests#createCategory("category 1");
+            cat2 := Tests#createCategory("category 2");
+            cat3 := Tests#createCategory("category 3");            
         end; 
         begin        
             employee.declareExpense("expense 1", 100, Date#today(), cat1).submit();
@@ -204,10 +205,10 @@ class Tests
     begin
         var employee, cat1, cat2, cat3;
         begin
-            employee := Tests#employee("Jane Doe");
-            cat1 := Tests#category("category 1");
-            cat2 := Tests#category("category 2");
-            cat3 := Tests#category("category 3");            
+            employee := Tests#createEmployee("Jane Doe");
+            cat1 := Tests#createCategory("category 1");
+            cat2 := Tests#createCategory("category 2");
+            cat3 := Tests#createCategory("category 3");            
         end; 
         begin        
             employee.declareExpense("expense 1", 100, Date#today(), cat1).submit();
@@ -244,10 +245,10 @@ class Tests
     begin
         var employee, cat1, cat2, cat3;
         begin
-            employee := Tests#employee("Jane Doe");
-            cat1 := Tests#category("category 1");
-            cat2 := Tests#category("category 2");
-            cat3 := Tests#category("category 3");            
+            employee := Tests#createEmployee("Jane Doe");
+            cat1 := Tests#createCategory("category 1");
+            cat2 := Tests#createCategory("category 2");
+            cat3 := Tests#createCategory("category 3");            
         end; 
         begin        
             employee.declareExpense("expense 1", 100, Date#today(), cat1).submit();
@@ -283,10 +284,10 @@ class Tests
     begin
         var employee, cat1, cat2, cat3;
         begin
-            employee := Tests#employee("Jane Doe");
-            cat1 := Tests#category("category 1");
-            cat2 := Tests#category("category 2");
-            cat3 := Tests#category("category 2");            
+            employee := Tests#createEmployee("Jane Doe");
+            cat1 := Tests#createCategory("category 1");
+            cat2 := Tests#createCategory("category 2");
+            cat3 := Tests#createCategory("category 2");            
         end; 
         begin        
             employee.declareExpense("expense 1", 100, Date#today(), cat1).submit();
@@ -312,8 +313,8 @@ class Tests
     begin
         var employee1, employee2, expense1, expense2;
         begin
-            employee1 := Tests#employee("An employee");
-            employee2 := Tests#employee("Another employee");    
+            employee1 := Tests#createEmployee("An employee");
+            employee2 := Tests#createEmployee("Another employee");    
             /* approve any existing expenses */
             Expense extent.forEach((e : Expense) { e.approve(); });
         end; 
@@ -343,28 +344,62 @@ class Tests
     begin
         var employee, expense1, expense2;
         begin
-            employee := Tests#employee("An employee");
+            employee := Tests#createEmployee("Some employee");
         end; 
         begin        
-            expense1 := Tests#declareOn(Date#make(1900,9,10), employee);                        
-            expense2 := Tests#declareOn(Date#make(1900,10,1), employee);
+            expense1 := Tests#declareOn(Date#make(2016,9,10), employee);                        
+            expense2 := Tests#declareOn(Date#make(2016,10,1), employee);
         end;
         begin
-            Assert#areSame(expense2, Expense#findExpensesInPeriod(Date#make(1900,9,30), Date#make(1900,10,2)).one());
-            Assert#areSame(expense2, Expense#findExpensesInPeriod(Date#make(1900,10,1), Date#make(1900,10,1)).one());
-            Assert#areSame(expense1, Expense#findExpensesInPeriod(null, Date#make(1900,9,30)).one());
-            Assert#isNull(Expense#findExpensesInPeriod(Date#make(1900,10,2), Date#make(1900,10,2)).one());
+            Assert#areSame(expense2, Expense#findExpensesInPeriod(Date#make(2016,9,30), Date#make(2016,10,2)).one());
+            Assert#areSame(expense2, Expense#findExpensesInPeriod(Date#make(2016,10,1), Date#make(2016,10,1)).one());
+            Assert#isNull(Expense#findExpensesInPeriod(Date#make(2016,10,2), Date#make(2016,10,2)).one());
         end;
     end;
+    
+    operation expensesBeforeOrAfterADate();
+    begin
+        var employee, expense1, expense2;
+        begin
+            employee := Tests#createEmployee("Some employee");
+        end; 
+        begin        
+            expense1 := Tests#declareOn(Date#make(2016,9,29), employee);                        
+            expense2 := Tests#declareOn(Date#make(2016,10,1), employee);
+        end;
+        begin
+            /* using #includes() to handle test data that we may find with such a broad criteria */
+            Assert#isTrue(Expense#findExpensesInPeriod(null, Date#make(2016,9,30)).includes(expense1));
+            Assert#isTrue(not (Expense#findExpensesInPeriod(null, Date#make(2016,9,30)).includes(expense2)));
+            /* for searching after a date that is not a concern (unless we have data created on this date) */
+            Assert#areSame(expense2, Expense#findExpensesInPeriod(Date#make(2016,9,30), null).one());
+        end;
+    end;
+    
+    operation expensesOnASpecificDate();
+    begin
+        var employee, expense1, expense2;
+        begin
+            employee := Tests#createEmployee("Some employee");
+        end; 
+        begin        
+            expense1 := Tests#declareOn(Date#make(2016,9,30), employee);                        
+            expense2 := Tests#declareOn(Date#make(2016,10,1), employee);
+        end;
+        begin
+            Assert#areSame(expense2, Expense#findExpensesInPeriod(Date#make(2016,10,1), Date#make(2016,10,1)).one());
+        end;
+    end;
+    
     
     operation employeesWithNoExpenses();
     begin
         var employee1, employee2, employee3, baseline;
         begin
             baseline := Employee#employeesWithNoExpenses().size();
-            employee1 := Tests#employee("An employee");
-            employee2 := Tests#employee("Another employee");    
-            employee3 := Tests#employee("Employee without expenses");                
+            employee1 := Tests#createEmployee("An employee");
+            employee2 := Tests#createEmployee("Another employee");    
+            employee3 := Tests#createEmployee("Employee without expenses");                
         end; 
         begin        
             Assert#areEqual(baseline + 3, Employee#employeesWithNoExpenses().size());            
@@ -386,9 +421,9 @@ class Tests
     begin
         var ceo, salesGuy, programmer;
         begin
-            ceo := Tests#employee("The CEO");
-            salesGuy := Tests#employee("A sales guy");            
-            programmer := Tests#employee("A programmer that never expenses anything");                        
+            ceo := Tests#createEmployee("The CEO");
+            salesGuy := Tests#createEmployee("A sales guy");            
+            programmer := Tests#createEmployee("A programmer that never expenses anything");                        
         end; 
         begin        
             Tests#declareFor(800, ceo);
@@ -423,11 +458,11 @@ class Tests
         var ceo, salesGuy,
         	cat1, cat2, cat3;
         begin
-            cat1 := Tests#category("category 1");
-            cat2 := Tests#category("category 2");
-            cat3 := Tests#category("category 2");            
-            ceo := Tests#employee("The CEO");
-            salesGuy := Tests#employee("A sales guy");            
+            cat1 := Tests#createCategory("category 1");
+            cat2 := Tests#createCategory("category 2");
+            cat3 := Tests#createCategory("category 2");            
+            ceo := Tests#createEmployee("The CEO");
+            salesGuy := Tests#createEmployee("A sales guy");            
         end; 
         begin        
             ceo.declareExpense("expense 1", 100, Date#today(), cat1);
@@ -457,13 +492,30 @@ class Tests
         end;
     end;        
     
+    (* Once an employee is deleted, it can no longer be found. *)
     operation deleteEmployee();
     begin
-        var employee1, expense1, expense2, employeeBaseline, expenseBaseline;
+        var employee1, employeeBaseline;
         begin
             employeeBaseline := Employee extent.size();
+            employee1 := Tests#createEmployee("An employee");
+        end; 
+        begin
+            Assert#areEqual(employeeBaseline + 1, Employee extent.size());                        
+            employee1.deleteEmployee();
+        end;
+        begin
+            Assert#areEqual(employeeBaseline, Employee extent.size());                        
+        end;
+    end;
+
+    (* Once an employee is deleted, its expenses can no longer be found. *)
+    operation deleteEmployeeAlsoDeletesExpenses();
+    begin
+        var employee1, expense1, expense2, expenseBaseline;
+        begin
             expenseBaseline := Expense extent.size();            
-            employee1 := Tests#employee("An employee");
+            employee1 := Tests#createEmployee("An employee");
         end; 
         begin        
             expense1 := Tests#declareFor(800, employee1);
@@ -471,15 +523,12 @@ class Tests
         end;
         begin
             Assert#areEqual(expenseBaseline + 2, Expense extent.size());            
-            Assert#areEqual(employeeBaseline + 1, Employee extent.size());                        
             employee1.deleteEmployee();
         end;
         begin
             Assert#areEqual(expenseBaseline, Expense extent.size());            
-            Assert#areEqual(employeeBaseline, Employee extent.size());                        
         end;
     end;
-
 end;
 
 end.

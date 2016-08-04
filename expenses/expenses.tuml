@@ -73,42 +73,54 @@ end;
 (* The expense as reported by an employee. *)
 class Expense
     allow Admin;
-    allow Approver extent, call, static call;
+    allow Approver extent;
     allow Employee read { self.employee == System#user() };
-    allow Employee update { self.employee == System#user() and (self.status == Status#Draft) };
+    allow Employee update { self.employee == System#user() and self.status == Status#Draft };
 
+    (* A moniker for this expense. *)
     derived attribute moniker : String := {
         self.description + " on " + self.date
     };
 
+    (* The description of the expense. *)
     attribute description : String;
 
+    (* The category for this expense. *)
     reference category : Category;
+    
+    (* The employee that declared this expense. *)
+    readonly attribute employee : Employee;    
+    
+    (* The approver for this expense (once approved). *)
+    readonly attribute approver : Approver[0, 1];
 
+    (* The current status of this expense. *)
     attribute status : Status;
 
+    (* Has this expense been approved yet? *)
     private derived attribute approved : Boolean := {
         self.status == Status#Approved
     };
     
     private readonly attribute rejections : Integer[0,1] := 0;
 
-    attribute amount : Double;
+    (* The amount of the expense. *)
+    readonly attribute amount : Double;
 
+    (* The date the expense was declared. *)
     attribute date : Date := { Date#today() };
 
+    (* The date the expense was processed (once processed). *)
     readonly attribute processed : Date[0, 1];
 
-    readonly attribute employee : Employee;
-
+    (* The reason this expense was rejected (once rejected). *)
     readonly attribute rejectionReason : Memo[0, 1];
-
-    readonly attribute approver : Approver[0, 1];
 
     port expensePayer : ExpensePayer;
 
     derived id attribute expenseId : Integer;
 
+    (* Create a new expense for the given employee. *)
     static operation newExpense(description : String, amount : Double, date : Date := {
         Date#today()
     }, category : Category, employee : Employee) : Expense
@@ -127,6 +139,7 @@ class Expense
     (* Whether this expense qualifies for automatic approval. *)
     derived attribute automaticApproval : Boolean := { self.amount < 50 };
 
+    (* The number of days since this expense was processed. *)
     derived attribute daysProcessed : Integer := {
         if (self.processed == null) then
             return 0
@@ -134,14 +147,15 @@ class Expense
             return Date#today().difference(self.processed).toDays();
     };
 
+    (* Approves this expense. *)
     operation approve()
         (* Cannot approve own expenses. *)
-        allow Approver { not (System#user() == self.employee) };
+        allow Approver { not System#user() == self.employee };
     begin
         self.approver := (System#user() as Approver);
     end;
 
-    (* Reject this expense. Please provide a reason. *)
+    (* Reject this expense. A reason must be provided. *)
     operation reject(reason : Memo)
         (* Cannot reject an expense under the auto-approval limit. *)
         precondition { not self.automaticApproval }
@@ -166,7 +180,7 @@ class Expense
 
     (* Submit this expense. *)
     operation submit()
-        allow Employee{ self.employee == System#user() };
+        allow Employee { self.employee == System#user() };
 
     private operation reportApproved();
     begin
@@ -177,6 +191,7 @@ class Expense
             expenseId := self.expenseId) to self.expensePayer;
     end;
 
+    (* Finds all expenses declared for the given category. *)
     static query findExpensesByCategory(category : Category) : Expense[*];
     begin
         return Expense extent.select((e : Expense) : Boolean {
@@ -184,14 +199,16 @@ class Expense
         });
     end;
 
+    (* Finds all expenses in the given period. *)
     static query findExpensesInPeriod(start : Date[0, 1], end_ : Date[0, 1]) : Expense[*]
         allow Approver, Admin;
     begin
         return Expense extent.select((e : Expense) : Boolean {
-            ((start == null) or (e.date >= start)) and ((end_ == null) or (e.date <= end_))
-        });
+            (start == null or e.date >= start) and (end_ == null or e.date <= end_)
+        }); 
     end;
 
+    (* Finds all expenses currently in the given status. *)
     static query findByStatus(status : Status) : Expense[*]
         allow Approver, Admin;
     begin
@@ -200,11 +217,13 @@ class Expense
         });
     end;
 
+    (* Lists all pending expenses. *)
     static query pendingExpenses() : Expense[*];
     begin
         return Expense#findByStatus(Status#Submitted);
     end;
     
+    (* Lists all expenses for the current user. *)
     static query myExpenses() : Expense[*]
         allow Admin none
         allow Employee;
@@ -212,16 +231,19 @@ class Expense
         return (System#user() as Employee).expenses;
     end;
 
+    (* Lists all expenses that are approved. *)
     static query approvedExpenses() : Expense[*];
     begin
         return Expense#findByStatus(Status#Approved);
     end;
 
+    (* Lists all expenses that are rejected. *)
     static query rejectedExpenses() : Expense[*];
     begin
         return Expense#findByStatus(Status#Rejected);
     end;
 
+    (* Calculates counts of open expenses per category. *)
     static query openExpenseCountPerCategory() : {category : Category, count : Integer}[*];
     begin
         return Expense extent.select((e : Expense) : Boolean {
@@ -234,6 +256,7 @@ class Expense
         });
     end;
 
+    (* Are there any pending expenses? *)
     static query anyPendingExpenses() : Boolean;
     begin
         return Expense extent.exists((e : Expense) : Boolean {
@@ -241,6 +264,7 @@ class Expense
         });
     end;
 
+    (* The count of pending expenses. *)
     static query pendingExpenseCount() : Integer;
     begin
         return Expense extent.count((e : Expense) : Boolean {
@@ -248,6 +272,7 @@ class Expense
         });
     end;
 
+    (* The number of expenses declared per employee. *)
     static query expenseCountPerEmployee() : {employee : Employee, expenseCount : Integer}[*];
     begin
         return Expense extent.groupBy((e : Expense) : Employee { e.employee }).groupCollect((group : Expense[*]) : {employee : Employee, expenseCount : Integer} {
@@ -258,6 +283,7 @@ class Expense
         });
     end;
 
+    (* Details for expenses. *)
     static query expenseDetails() : {reporter : Employee, category : String, expenseAmount : Double}[*];
     begin
         return Expense extent.collect((e : Expense) : {reporter : Employee, category : String, expenseAmount : Double} {
@@ -273,7 +299,6 @@ class Expense
         The different statuses an expense can go through. 
     *)
     statemachine Status
-
         initial state Draft
             (*
                 If amount is under automatic approval limit,
@@ -305,10 +330,8 @@ class Expense
             	self.rejections := self.rejections + 1;
                 self.processed := Date#today();
             };
-
             transition on call(reconsider) to Submitted;
         end;
-
     end;
 
 end;
@@ -317,6 +340,7 @@ abstract role class Person
     attribute name : String;
 end;
 
+(* An employee that can approve other employees' expenses. *)
 class Approver specializes Employee
     allow Admin;
     allow Approver update { System#user() == self };
@@ -334,11 +358,11 @@ end;
 (* An employee reports expenses. *)
 class Employee specializes Person
 
-    allow Admin;
-    allow Employee create, extent, read;
     allow Employee update { System#user() == self };
+    allow Employee create, extent, read;
+    allow Admin;
 
-    reference expenses : Expense[*]opposite employee;
+    reference expenses : Expense[*] opposite employee;
 
     derived attribute recordedExpenses : Expense[*] := {
         self.expensesByStatus(Expense::Status#Draft)
