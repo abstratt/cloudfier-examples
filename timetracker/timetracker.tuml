@@ -92,7 +92,7 @@ class Invoice
     };
 
     derived attribute number : String := {
-        "" + self.issueDate.year() + "." + self.invoiceInternalNumber
+        ("" + self.issueDate.year()) + "." + self.invoiceInternalNumber
     };
 
     private derived id attribute invoiceInternalNumber : Integer;

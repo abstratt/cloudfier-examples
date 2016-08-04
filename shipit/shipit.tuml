@@ -44,7 +44,7 @@ role class User
     };
 
     operation promoteToCommitter()
-        precondition { ? User#current() and User#current().committer };
+        precondition { not (User#current() == null) and User#current().committer };
     begin
         self.kind := UserKind#Committer;
     end;
@@ -262,7 +262,7 @@ class Issue
     derived attribute commentCount : Integer := { self.comments.size() };
 
     derived attribute waitingFor : String := {
-        "" + self.reportedOn.difference(self.referenceDate()).toDays() + " day(s)"
+        ("" + self.reportedOn.difference(self.referenceDate()).toDays()) + " day(s)"
     };
 
     private derived attribute mine : Boolean := {
