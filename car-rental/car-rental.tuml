@@ -114,7 +114,7 @@ class Rental
         self.number + " - " + self.car.carModel.description
     };
 
-    derived attribute number : String := { "" + self.started.year() + "-" + self.internalId};
+    derived attribute number : String := { ("" + self.started.year()) + "-" + self.internalId};
         
     private derived id attribute internalId : Integer; 
 
