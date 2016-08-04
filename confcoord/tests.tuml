@@ -1,0 +1,12 @@
+package tests;
+
+class Tests
+
+    operation operation_name(param1 : String, param2 : Integer) : Boolean;
+    begin
+        /* IMPLEMENT ME */
+        return false;
+    end;
+end;
+
+end.

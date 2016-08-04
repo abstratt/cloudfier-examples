@@ -1,0 +1,131 @@
+package confcoord;
+
+role class Organizer specializes CommunityMember
+end;
+
+abstract class Person
+    attribute name : String;
+end;
+
+role class CommunityMember specializes Person
+    attribute twitterHandle : String[0,1];
+    attribute linkedInProfile : String[0,1];    
+    readonly attribute talksLiked : Talk[*];
+    readonly attribute talksProposed : Talk[*];
+    readonly attribute talksCoProposed : Talk[*];    
+    operation propose(title : String, description : Memo) : Talk
+        allow CommunityMember { self == System#user() };
+    begin
+        return Talk#newTalk(title, description, self);
+    end;
+    
+    
+end;
+
+role class Admin specializes Person
+    
+end;
+
+class Talk
+    allow read, extent, static call;
+    allow CommunityMember update { self.speaker == System#user() and (self.status == TalkStatus#Draft) };
+
+    attribute title : String;
+    attribute description : Memo;
+    attribute speaker : CommunityMember;
+    attribute coSpeaker : CommunityMember[0,1];    
+    attribute fans : CommunityMember[*];
+    attribute status : TalkStatus;
+    derived attribute likes : Integer := { self.fans.size() };
+    
+    static operation newTalk(title : String, description : Memo, speaker : CommunityMember) : Talk;
+    begin
+        var newTalk;
+        newTalk := new Talk;
+        newTalk.title := title;
+        newTalk.description := description;        
+        newTalk.speaker := speaker;
+        return newTalk;
+    end;
+    
+    static query myTalks() : Talk[*];
+    begin
+        return Talk extent.select((t : Talk) : Boolean { t.speaker == (System#user() as CommunityMember) or (t.coSpeaker == (System#user() as CommunityMember) ) });
+    end;
+    
+    operation like()
+        precondition CanOnlyLikeOnce { not ((System#user() as CommunityMember).talksLiked.includes(self)) };
+    begin
+        link UserLikesTalks(talksLiked := self, fans := (System#user() as CommunityMember));
+    end;
+    operation unlike()
+        precondition CanOnlyUnlikeIfLiked { ((System#user() as CommunityMember).talksLiked.includes(self)) };
+    begin
+        unlink UserLikesTalks(talksLiked := self, fans := (System#user() as CommunityMember));
+    end;
+    
+    operation submit()
+        allow CommunityMember { (System#user() == self.speaker)};
+        
+    operation takeBack()
+        allow CommunityMember { (System#user() == self.speaker)};
+    
+    operation accept()
+        allow Organizer;
+    
+    operation reject()
+        allow Organizer;
+    
+    operation withdraw()
+        allow CommunityMember { (System#user() == self.speaker)};
+    
+    operation abandon()
+        allow CommunityMember { (System#user() == self.speaker)};
+    
+    operation confirm()
+        allow CommunityMember { (System#user() == self.speaker)};
+        
+	statemachine TalkStatus
+		initial state Draft
+			transition on call(submit) to Submitted;
+			transition on call(abandon) to Abandoned;
+		end;
+		state Submitted
+			transition on call(reject) to Rejected;
+			transition on call(accept) to Accepted;
+			transition on call(withdraw) to Withdrawn;
+			transition on call(takeBack) to Draft;			
+		end;
+		state Rejected
+		end;
+		state Accepted
+			transition on call(confirm) to Confirmed;
+			transition on call(withdraw) to Withdrawn;
+		end;
+		state Confirmed
+			transition on call(withdraw) to Withdrawn;		
+		end;
+		state Withdrawn
+		end;
+		terminate state Abandoned
+		end;
+	end;
+
+end;
+
+association UserLikesTalks
+    role Talk.fans;
+    role CommunityMember.talksLiked;
+end;
+
+association UserProposesTalks
+    role Talk.speaker;
+    role CommunityMember.talksProposed;
+end;
+
+association UserPresentsTalks
+    role Talk.coSpeaker;
+    role CommunityMember.talksCoProposed;
+end;
+
+end.

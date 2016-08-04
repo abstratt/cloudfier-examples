@@ -41,12 +41,14 @@ class Product
     attribute productWeight : Double[0, 1] := 0.0
         invariant { self.productWeight >= 0 };
 
-    reference category : Category;
+    reference category : Category opposite products;
 end;
 
 class Category
 
     attribute name : String;
+    
+    attribute products : Product[*];
 end;
 
 class OrderDetail
@@ -71,6 +73,8 @@ class OrderDetail
 end;
 
 class Order
+
+    derived attribute orderKey : String := { "O-" + self.orderId };
 
     derived id attribute orderId : String;
     

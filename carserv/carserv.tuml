@@ -158,7 +158,7 @@ class Customer specializes Person
         };
     begin
         return Customer extent.select((c : Customer) : Boolean {
-            (c.firstName = firstName) or (c.lastName = lastName)
+            c.firstName = firstName or c.lastName = lastName
         });
     end;
 
@@ -236,7 +236,7 @@ class Service
     allow Customer { System#user() == self.car.owner };
     
     derived attribute serviceNumber : String := {
-        "" + self.bookedOn.year() + "." + self.sequence
+        "" + self.bookedOn.year().toString() + "." + self.sequence
     };
 
     private derived id attribute sequence : Integer;
@@ -251,11 +251,11 @@ class Service
         Date#today().transpose(Duration#days(1))
     }
         invariant DeliveryDateMustBeAfterBookDate {
-            ((self.estimatedReady == null) or (self.bookedOn == null)) or (self.estimatedDays >= 0)
+            self.estimatedReady == null or self.bookedOn == null or self.estimatedDays >= 0
         };
 
     derived attribute pending : Boolean := {
-        (self.status == Status#Booked) or (self.status == Status#InProgress)
+        self.status == Status#Booked or self.status == Status#InProgress
     };
 
     readonly attribute technician : AutoMechanic[0, 1];

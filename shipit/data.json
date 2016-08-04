@@ -56,7 +56,7 @@
       "project" : "Project@1",
       "reporter" : "User@1",
       "watchers" : [ ],
-      "voters" : [ "User@1" ]
+      "voter" : [ "User@1" ]
     }, {
       "summary" : "you have been taking too long to finish this",
       "issueId" : 37,
@@ -70,7 +70,7 @@
       "project" : "Project@1",
       "reporter" : "User@5",
       "watchers" : [ ],
-      "voters" : [ ]
+      "voter" : [ ]
     }, {
       "summary" : "When I have a collection of references, I want to associate/dissociate, not create/delete from the peer",
       "issueId" : 40,
@@ -85,7 +85,7 @@
       "reporter" : "User@1",
       "assignee" : "User@1",
       "watchers" : [ "User@1", "User@4" ],
-      "voters" : [ "User@2" ]
+      "voter" : [ "User@2" ]
     }, {
       "summary" : "Cannot launch two instances of the application",
       "issueId" : 43,
@@ -100,7 +100,7 @@
       "reporter" : "User@2",
       "assignee" : "User@5",
       "watchers" : [ ],
-      "voters" : [ ]
+      "voter" : [ ]
     }, {
       "summary" : "Why am I forced to assign values before linking a new object with another object?",
       "issueId" : 31,
@@ -115,7 +115,7 @@
       "reporter" : "User@1",
       "assignee" : "User@1",
       "watchers" : [ ],
-      "voters" : [ ]
+      "voter" : [ ]
     } ],
     "Comment" : [ {
       "text" : "Glad to hear that!",

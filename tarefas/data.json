@@ -1,0 +1,55 @@
+{
+  "userprofile" : {
+    "Profile" : [ {
+      "username" : "john.ford",
+      "email" : "john@abstratt.com",
+      "password" : "pass"
+    }, {
+      "username" : "peter.jones",
+      "email" : "peter@abstratt.com",
+      "password" : "pass"
+    }, {
+      "username" : "wanda.hoyt",
+      "email" : "wanda@abstratt.com",
+      "password" : "pass"
+    }, {
+      "username" : "joanna.davis",
+      "email" : "joanna@abstratt.com",
+      "password" : "pass"
+    } ]
+  },
+  "tarefas" : {
+    "Colaborador" : [ {
+      "nome" : "Peter",
+      "user" : "userprofile.Profile@2"
+    }, {
+      "nome" : "Francisco"
+    }, {
+      "nome" : "John",
+      "user" : "userprofile.Profile@1"
+    } ],
+    "Tarefa" : [ {
+      "descricao" : "levar o cachorro para passear",
+      "estado" : "EmAberto",
+      "abertaEm" : "2016/07/03",
+      "responsavel" : "tarefas.Colaborador@1"
+    }, {
+      "descricao" : "lavar o tapete da sala",
+      "estado" : "EmAberto",
+      "abertaEm" : "2016/07/03",
+      "responsavel" : "tarefas.Colaborador@1"
+    }, {
+      "descricao" : "lavar o carro",
+      "estado" : "EmAberto",
+      "abertaEm" : "2016/07/04",
+      "completadaEm" : null,
+      "responsavel" : "tarefas.Colaborador@2"
+    }, {
+      "descricao" : "fazer a barba",
+      "estado" : "Completada",
+      "abertaEm" : "2016/07/04",
+      "completadaEm" : "2016/07/04",
+      "responsavel" : "tarefas.Colaborador@3"
+    } ]
+  }
+}

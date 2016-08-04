@@ -1,0 +1,46 @@
+{
+  "userprofile" : {
+    "Profile" : [ {
+      "username" : "admin",
+      "email" : "admin@abstratt.com",
+      "password" : "pass"
+    }, {
+      "username" : "leibniz",
+      "email" : "leibniz@abstratt.com",
+      "password" : "pass"
+    }, {
+      "username" : "armstrong",
+      "email" : "armstrong@abstratt.com",
+      "password" : "pass"
+    } ]
+  },
+  "confcoord" : {
+    "CommunityMember" : [ {
+      "name" : "Neil Armstrong",
+      "twitterHandle" : null,
+      "linkedInProfile" : null,
+      "user" : "userprofile.Profile@3"
+    }, {
+      "name" : "Buzz Aldrin",
+      "twitterHandle" : "buzz",
+      "linkedInProfile" : null
+    }],
+    "Talk" : [ {
+      "title" : "Construindo um microserviço Java 100% funcional em 15 minutos",
+      "description" : "Aprenda como um gerador de código construído com Eclipse Xtend pode produzir aplicações e microserviços Java 100% funcionais, com camada de persistência, lógica de negócios, API REST, segurança e uma GUI de administração. Durante a apresentação serão revistos padrões e idiomas em JPA e JAX-RS.",
+      "status" : "Submitted",
+      "speaker" : "confcoord.CommunityMember@1",
+      "fans" : [ ]
+    } ],
+    "Organizer" : [ {
+      "name" : "Gottfried Leibniz",
+      "twitterHandle" : null,
+      "linkedInProfile" : null,
+      "user" : "userprofile.Profile@2"
+    } ],
+    "Admin" : [ {
+      "name" : "Administrator",
+      "user" : "userprofile.Profile@1"
+    } ]
+  }
+}

@@ -1,0 +1,113 @@
+package testes_tarefas;
+
+apply mdd_extensions;
+
+import tarefas;
+
+[Test]
+class CenariosTarefas
+
+    operation fecharTarefa();
+    begin
+        var colaborador, tarefa;
+        begin
+            colaborador := Exemplos#colaborador("filho 1");
+	        tarefa := Exemplos#tarefaPara(colaborador, "lavar carro");
+        end;
+        begin
+            Assert#areEqual(Tarefa::Estado#EmAberto, tarefa.estado);
+            tarefa.completar();
+        end;
+        begin        
+            Assert#areEqual(Tarefa::Estado#Completada, tarefa.estado);
+        end;        
+    end;
+
+
+    operation todasAsTarefas();
+    begin
+        var colaborador, baseline;
+        begin
+            baseline := Tarefa extent.size();
+            colaborador := Exemplos#colaborador("auser");
+	        Exemplos#tarefaPara(colaborador, "");
+	        Exemplos#tarefaPara(colaborador, "");        
+            Exemplos#tarefaPara(colaborador, "");                
+        end;
+        begin        
+            Assert#areEqual(baseline + 3, Tarefa extent.size());
+        end;        
+    end;
+
+    operation tarefasAbertas();
+    begin
+        var tarefa, colaborador, baseline;
+        begin
+            baseline := Tarefa#abertas().size();
+            colaborador := Exemplos#colaborador("um colaborador");
+	        Exemplos#tarefaPara(colaborador, "");
+	        Exemplos#tarefaPara(colaborador, "");        
+            tarefa := Exemplos#tarefaPara(colaborador, "");                
+        end;
+        begin        
+            Assert#areEqual(baseline + 3, Tarefa#abertas().size());
+            tarefa.completar();
+        end;
+        begin        
+            Assert#areEqual(baseline + 2, Tarefa#abertas().size());
+        end;        
+    end;
+
+    operation tarefasAbertasHoje();
+    begin
+        var tarefa, today, yesterday, colaborador, baselineToday, baselineYesterday;
+        begin
+            today := Date#today();
+            yesterday := today.transpose(Duration#days(-1));            
+            baselineToday := Tarefa#abertasEm(today).size();
+            baselineYesterday := Tarefa#abertasEm(yesterday).size();
+            colaborador := Exemplos#colaborador("auser");
+	        Exemplos#tarefaPara(colaborador, "");
+	        Exemplos#tarefaPara(colaborador, "");        
+            tarefa := Exemplos#tarefaPara(colaborador, "");
+        end;
+        begin        
+            Assert#areEqual(baselineToday + 3, Tarefa#abertasEm(today).size());
+            Assert#areEqual(baselineYesterday + 0, Tarefa#abertasEm(yesterday).size());            
+            tarefa.abertaEm := yesterday;
+        end;
+        begin        
+            Assert#areEqual(baselineToday + 2, Tarefa#abertasEm(today).size());
+            Assert#areEqual(baselineYesterday + 1, Tarefa#abertasEm(yesterday).size());            
+        end;        
+    end;
+end;
+
+class Exemplos
+
+    private static operation colaborador(nome : String) : Colaborador;
+    begin
+        var colaborador;
+        colaborador := new Colaborador;
+        colaborador.nome := nome;
+        return colaborador;
+    end;
+
+    private static operation tarefaPara(colaborador : Colaborador, descricao : String) : Tarefa;
+    begin
+        var novaTarefa;
+        novaTarefa := new Tarefa;
+        novaTarefa.descricao := descricao;
+        /*novaTarefa.detalhes := Memo#fromString(descricao + " detalhes");*/
+        novaTarefa.responsavel := colaborador;        
+        return novaTarefa;
+    end;
+    
+    private static operation tarefa(tarefa : String) : Tarefa;
+    begin
+        return Exemplos#tarefaPara(Exemplos#colaborador("a colaborador"), tarefa);
+    end;
+    
+end;
+
+end.

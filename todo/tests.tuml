@@ -71,7 +71,6 @@ class Examples
         var user;
         user := new User;
         user.name := name;
-        user.email := name + "@compuserve.com";
         return user;
     end;
 

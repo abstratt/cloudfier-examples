@@ -1,28 +1,29 @@
 package todo;
 
 apply kirra;
+
 import mdd_types;
 
 role class User
 
-    readonly id attribute email : String;
-
     attribute name : String;
-    
-    attribute tasks : Task[*];
+
+    reference tasks : Task[*] opposite assignee;
 
     derived attribute openTasks : Task[*] := {
         self.tasks.select((t : Task) : Boolean {
             t.status == Task::Status#Open
         })
     };
-    
-    private static derived attribute me : User := { (System#user() as User) };
+
+    private static derived attribute me : User := {
+        (System#user() as User)
+    };
 end;
 
 class Task
 
-    private readonly attribute creator : User := { (System#user() as User) };
+    readonly attribute creator : User := { (System#user() as User) };
 
     attribute assignee : User[0, 1] := { (System#user() as User) };
 
@@ -34,9 +35,17 @@ class Task
 
     readonly attribute openedOn : Date := { Date#today() };
 
-    readonly attribute completedOn : Date[0,1];
+    readonly attribute completedOn : Date[0, 1];
+    
+    composition comments : Comment[*] opposite task;
 
     operation complete();
+
+    operation reassign(newUser : User)
+    precondition (newUser) { not (newUser == self.assignee) };
+    begin
+        self.assignee := newUser;
+    end;
 
     operation cancel();
 
@@ -46,31 +55,36 @@ class Task
             t.status == Status#Open
         });
     end;
-    
-    static query mine() : Task[*];
+
+    static query createdByMe() : Task[*];
     begin
         return User#me.tasks;
     end;
-    
-    static query mineOpen() : Task[*];
+
+    static query mine() : Task[*];
     begin
-        return User#me.tasks.select((t : Task) : Boolean {
-            t.status == Status#Open
+        return Task extent.select((t : Task) : Boolean {
+            t.assignee == User#me
         });
     end;
-    
+
+    static query mineOpen() : Task[*];
+    begin
+        return Task extent.select((t : Task) : Boolean {
+            t.assignee == User#me and t.status == Status#Open
+        });
+    end;
+
     static query openedToday() : Task[*];
     begin
         return Task#openedOn(Date#today());
     end;
-    
+
     static query openedOn(date : Date) : Task[*];
     begin
-        return Task extent.select((t : Task) : Boolean {
-            t.openedOn = date
-        });
+        return Task extent.select((t : Task) : Boolean { t.openedOn = date });
     end;
-    
+
     static query completedToday() : Task[*];
     begin
         return Task extent.select((t : Task) : Boolean {
@@ -79,40 +93,26 @@ class Task
     end;
 
     statemachine Status
-
         initial state Open
             transition on call(complete) to Completed;
             transition on call(cancel) to Cancelled;
         end;
-
         state Completed
             entry {
                 self.completedOn := Date#now();
             };
         end;
-
         terminate state Cancelled end;
-
     end;
 
 end;
 
 class Comment
+
     attribute text : Memo;
+    attribute task : Task;
+
     readonly attribute author : User := { (System#user() as User) };
-end;
-
-composition
-
-    navigable role comments : Comment[*];
-
-    navigable role task : Task;
-
-end;
-
-association
-    role User.tasks;
-    role Task.assignee;
 end;
 
 end.

@@ -1,0 +1,58 @@
+package polls;
+
+    class Poll
+        allow Voter;
+        attribute author : Voter;
+        attribute question : String;
+        derived attribute totalVotes : Integer := { self.votes.size() };
+        derived attribute totalAgreed : Integer := {
+        	self.votes.count((v : Vote) : Boolean { v.choice == Choice#Agree })
+        };
+        derived attribute totalDisagreed : Integer := {
+        	self.totalVotes - self.totalAgreed
+        };        
+        private reference votes : Vote[*] opposite poll;
+        static operation newPoll(questionToAsk : String) : Poll;
+        begin
+            var newPoll;
+            newPoll := new Poll;
+            newPoll.question := questionToAsk;
+            newPoll.author := (System#user() as Voter);
+            return newPoll;
+        end;
+        operation vote(choice : Choice)
+            precondition {
+            	not (self.votes.exists(
+            	    (v : Vote) : Boolean {
+            	        v.voter == (System#user() as Voter)
+        	        }
+        	    ))
+        	};
+        begin
+            var voteToAdd;
+            voteToAdd := new Vote;
+            voteToAdd.choice := choice;
+            voteToAdd.poll := self;
+            voteToAdd.voter := (System#user() as Voter);
+        end;
+    end;
+    
+    role class Voter
+        attribute name : String;
+        private reference votes : Vote[*] opposite voter;
+        reference myPolls : Poll[*] opposite author;
+    end;
+    
+    class Vote
+        allow Voter read { self.voter == (System#user() as Voter) };
+        attribute choice : Choice;
+        attribute voter : Voter;
+        attribute poll : Poll;
+    end;
+    
+    enumeration Choice
+        Agree;
+        Disagree;
+    end;
+
+end.

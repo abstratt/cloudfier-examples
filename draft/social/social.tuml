@@ -4,8 +4,7 @@ package social;
 apply kirra;
 import mdd_types;
 
-[kirra::Role]
-class User
+role class User
 
     readonly id attribute username : String;
     

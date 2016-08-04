@@ -1,0 +1,90 @@
+package tarefas;
+
+role class Colaborador
+
+    attribute nome : String;
+
+    reference tarefas : Tarefa[*] opposite responsavel;
+
+    private static derived attribute atual : Colaborador := {
+        (System#user() as Colaborador)
+    };
+end;
+
+class Tarefa
+    attribute responsavel : Colaborador [0,1] := { Colaborador#atual };
+
+    attribute descricao : String;
+    
+    attribute detalhes : Memo[0,1];
+
+    attribute estado : Estado;
+
+    readonly attribute abertaEm : Date := { Date#today() };
+
+    readonly attribute completadaEm : Date[0, 1];
+
+    operation completar()
+        allow Colaborador { System#user() == self.responsavel };
+    
+    operation reabrir();    
+
+    operation repassar(novoResponsavel : Colaborador)
+        precondition (novoResponsavel) {
+            not (novoResponsavel == self.responsavel)
+        };
+    begin
+        self.responsavel := novoResponsavel;
+    end;
+    
+    static query abertas() : Tarefa[*];
+    begin
+        return Tarefa extent.select((t : Tarefa) : Boolean {
+            t.estado == Estado#EmAberto
+        });
+    end;
+
+    static query minhas() : Tarefa[*];
+    begin
+        return Colaborador#atual.tarefas;
+    end;
+
+    static query emAbertoPara(colaborador : Colaborador) : Tarefa[*];
+    begin
+        return Tarefa extent.select((t : Tarefa) : Boolean {
+            t.responsavel == colaborador and t.estado == Estado#EmAberto
+        });
+    end;
+   
+    static query abertasHoje() : Tarefa[*];
+    begin
+        return Tarefa#abertasEm(Date#today());
+    end;
+
+    static query abertasEm(data : Date) : Tarefa[*];
+    begin
+        return Tarefa extent.select((t : Tarefa) : Boolean { t.abertaEm = data });
+    end;
+
+    static query completadasHoje() : Tarefa[*];
+    begin
+        return Tarefa extent.select((t : Tarefa) : Boolean {
+            t.estado == Estado#Completada and (t.completadaEm = Date#today())
+        });
+    end;
+
+    statemachine Estado
+
+        initial state EmAberto
+            transition on call(completar) to Completada;
+        end;
+        state Completada
+            entry {
+                self.completadaEm := Date#today();
+            };
+            transition on call(reabrir) to EmAberto;            
+        end;
+    end;
+end;
+
+end.

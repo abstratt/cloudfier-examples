@@ -134,7 +134,7 @@ class Invoice
     end;
 
     operation cancel()
-        precondition MustBeOpenOrIssued { self.open or (self.issued) };
+        precondition MustBeOpenOrIssued { self.open or self.issued };
 
     private operation sendInvoice();
     begin

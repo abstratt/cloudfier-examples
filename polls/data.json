@@ -1,0 +1,58 @@
+{
+  "userprofile" : {
+    "Profile" : [ {
+      "username" : "john.ford",
+      "email" : "john@abstratt.com",
+      "password" : "pass"
+    }, {
+      "username" : "peter.jones",
+      "email" : "peter@abstratt.com",
+      "password" : "pass"
+    }, {
+      "username" : "wanda.hoyt",
+      "email" : "wanda@abstratt.com",
+      "password" : "pass"
+    }, {
+      "username" : "joanna.davis",
+      "email" : "joanna@abstratt.com",
+      "password" : "pass"
+    } ]
+  },
+  "polls" : {
+    "Voter" : [ {
+      "name" : "Peter Jones",
+      "user" : "userprofile.Profile@2"
+    }, {
+      "name" : "John Ford",
+      "user" : "userprofile.Profile@1"
+    }, {
+      "name" : "Wanda Hoyt",
+      "user" : "userprofile.Profile@3"
+    }, {
+      "name" : "Joanna Davis",
+      "user" : "userprofile.Profile@4"
+    } ],
+    "Poll" : [ {
+      "question" : "Spring is the best season of the year.",
+      "author" : "polls.Voter@1"
+    }, {
+      "question" : "The best music was made in the 70s.",
+      "author" : "polls.Voter@1"
+    }, {
+      "question" : "Drinking milk before going to bed helps against insomnia.",
+      "author" : "polls.Voter@2"
+    }, {
+      "question" : "The best soccer team ever was the Netherlands 1974",
+      "author" : "polls.Voter@2"
+    } ],
+    "Vote" : [ {
+      "choice" : "Agree",
+      "voter" : "polls.Voter@2",
+      "poll" : "polls.Poll@3"
+    }, {
+      "choice" : "Agree",
+      "voter" : "polls.Voter@2",
+      "poll" : "polls.Poll@4"
+    } ]
+  }
+}

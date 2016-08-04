@@ -1,0 +1,59 @@
+{
+  "userprofile" : {
+    "Profile" : [ {
+      "username" : "john.ford",
+      "email" : "john@abstratt.com",
+      "password" : "pass"
+    }, {
+      "username" : "peter.jones",
+      "email" : "peter@abstratt.com",
+      "password" : "pass"
+    }, {
+      "username" : "wanda.hoyt",
+      "email" : "wanda@abstratt.com",
+      "password" : "pass"
+    }, {
+      "username" : "joanna.davis",
+      "email" : "joanna@abstratt.com",
+      "password" : "pass"
+    } ]
+  },
+  "todo" : {
+    "User" : [ {
+      "name" : "Peter",
+      "user" : "userprofile.Profile@2"
+    }, {
+      "name" : "Francisco"
+    } ],
+    "Task" : [ {
+      "description" : "walk Pepa",
+      "details" : "Monday at 10am",
+      "status" : "Completed",
+      "openedOn" : "2016/07/03",
+      "completedOn" : "2016/07/03",
+      "creator" : "todo.User@1",
+      "assignee" : "todo.User@1"
+    }, {
+      "description" : "shower",
+      "details" : "every two days",
+      "status" : "Cancelled",
+      "openedOn" : "2016/07/03",
+      "completedOn" : null,
+      "creator" : "todo.User@1",
+      "assignee" : "todo.User@2"
+    }, {
+      "description" : "play soccer with son",
+      "details" : "when it is daytime",
+      "status" : "Completed",
+      "openedOn" : "2016/07/03",
+      "completedOn" : "2016/07/03",
+      "creator" : "todo.User@1",
+      "assignee" : "todo.User@1"
+    } ],
+    "Comment" : [ {
+      "text" : "SSS",
+      "task" : "todo.Task@2",
+      "author" : "todo.User@1"
+    } ]
+  }
+}

@@ -62,7 +62,7 @@ role class User
     operation voteOn(issue : Issue)
         precondition NotVotedYet(issue) { ! self.isVoter(issue) };
     begin
-        link VotedIssues(voted := issue, voters := self);
+        link VotedIssues(voted := issue, voter := self);
     end;
 
     operation withdrawVoteFrom(issue : Issue)
@@ -71,7 +71,7 @@ role class User
         }
         precondition IsAVoterOfIssue(issue) { self.isVoter(issue) };
     begin
-        unlink VotedIssues(voted := issue, voters := self);
+        unlink VotedIssues(voted := issue, voter := self);
     end;
 end;
 
@@ -206,7 +206,7 @@ end;
 
 association VotedIssues
 
-    navigable role voters : User[*];
+    navigable role voter : User[*];
 
     navigable role voted : Issue[*];
 
@@ -256,7 +256,7 @@ class Issue
     attribute watchers : User[*];
 
     derived attribute votes : Integer := {
-        self<-VotedIssues->voters.size()
+        self<-VotedIssues->voter.size()
     };
 
     derived attribute commentCount : Integer := { self.comments.size() };
