@@ -1,0 +1,100 @@
+{
+  "userprofile" : {
+    "Profile" : [ {
+      "username" : "admin",
+      "email" : "admin@abstratt.com",
+      "password" : "pass"
+    }, {
+      "username" : "john.ford",
+      "email" : "john@abstratt.com",
+      "password" : "pass"
+    }, {
+      "username" : "peter.jones",
+      "email" : "peter@abstratt.com",
+      "password" : "pass"
+    }, {
+      "username" : "wanda.hoyt",
+      "email" : "wanda@abstratt.com",
+      "password" : "pass"
+    } ]
+  },
+  "minicrm" : {
+    "Campanha" : [ {
+      "nome" : "Especial feira FerramentasExpo",
+      "dataDeInicio" : "2016/08/04"
+    }, {
+      "nome" : "Especial peças semi-novas",
+      "dataDeInicio" : null
+    } ],
+    "Cliente" : [ {
+      "nome" : "Eduardo",
+      "email" : "carlos@abstratt.com"
+    }, {
+      "nome" : "Rafael",
+      "email" : "rafael@abstratt.com"
+    }, {
+      "nome" : "Gabriel",
+      "email" : "gabriel@abstratt.com"
+    }, {
+      "nome" : "Francisco",
+      "email" : "francisco@abstratt.com"
+    } ],
+    "Oportunidade" : [ {
+      "identificador" : 1,
+      "etapa" : "Demonstracao",
+      "potencial" : "Alto",
+      "valor" : 2000.0,
+      "motivoDeclinar" : null,
+      "cliente" : "minicrm.Cliente@1",
+      "campanha" : "minicrm.Campanha@1"
+    }, {
+      "identificador" : 2,
+      "etapa" : "Declinado",
+      "potencial" : "Medio",
+      "valor" : 1000.0,
+      "motivoDeclinar" : "nao tenho dinheiro agora",
+      "cliente" : "minicrm.Cliente@2",
+      "campanha" : "minicrm.Campanha@2"
+    }, {
+      "identificador" : 3,  
+      "etapa" : "Declinado",
+      "potencial" : "Baixo",
+      "valor" : 3000.0,
+      "motivoDeclinar" : "no reason",
+      "cliente" : "minicrm.Cliente@3",
+      "campanha" : "minicrm.Campanha@1"
+    }, {
+      "identificador" : 4, 
+      "etapa" : "LeadQualificado",
+      "potencial" : "Medio",
+      "valor" : 5000.0,
+      "motivoDeclinar" : null,
+      "cliente" : "minicrm.Cliente@3",
+      "campanha" : "minicrm.Campanha@1"
+    }, {
+      "identificador" : 5, 
+      "etapa" : "Lead",
+      "potencial" : "Baixo",
+      "valor" : 200.0,
+      "motivoDeclinar" : null,
+      "cliente" : "minicrm.Cliente@1",
+      "campanha" : "minicrm.Campanha@2"
+    }, {
+      "identificador" : 6,	
+      "etapa" : "Lead",
+      "potencial" : "Medio",
+      "valor" : 100.0,
+      "motivoDeclinar" : null,
+      "cliente" : "minicrm.Cliente@3",
+      "campanha" : "minicrm.Campanha@2"
+    }, {
+      "identificador" : 7,  
+      "etapa" : "Demonstracao",
+      "potencial" : "Alto",
+      "valor" : 250.0,
+      "motivoDeclinar" : null,
+      "cliente" : "minicrm.Cliente@4",
+      "campanha" : "minicrm.Campanha@1"
+    } ]
+  }
+}

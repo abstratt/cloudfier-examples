@@ -1,0 +1,124 @@
+package minicrm;
+
+class Cliente
+    attribute nome : String;
+    attribute email : String[0, 1];
+    reference oportunidades : Oportunidade[*] opposite cliente;
+    operation novaOportunidade(campanha : Campanha, valor : Double := 100.0, potencial : Potencial := { Potencial#Medio })
+        (* Cliente só pode ser colocado em campanha no máximo uma vez. *) 
+        precondition (campanha) { not self.oportunidades.exists((o:Oportunidade) : Boolean { o.campanha == campanha })};
+    begin
+        var novaOportunidade;
+        novaOportunidade := new Oportunidade;
+        novaOportunidade.cliente := self;
+        novaOportunidade.campanha := campanha;        
+        novaOportunidade.valor := valor;
+        novaOportunidade.potencial := potencial;        
+    end;
+end;
+
+class Campanha
+    attribute nome : String;
+    attribute dataDeInicio : Date[0,1];
+    private reference oportunidades : Oportunidade[*] opposite campanha;
+    derived attribute numeroDeLeadsQualificados : Integer := { self.numeroDeOportunidadesPorEtapa(Oportunidade::Etapa#LeadQualificado) };
+    
+    private query oportunidadesPorEtapa(etapa : Oportunidade::Etapa) : Oportunidade[*];
+    begin
+        return self.oportunidades.select((o : Oportunidade) : Boolean { o.etapa = etapa });
+    end;    
+    
+    private query numeroDeOportunidadesPorEtapa(etapa : Oportunidade::Etapa) : Integer;
+    begin
+        return self.oportunidadesPorEtapa(etapa).size();
+    end;
+    
+    derived attribute leads : Oportunidade[*] := {
+    	self.oportunidadesPorEtapa(Oportunidade::Etapa#Lead)
+    };  
+    
+    derived attribute leadsQualificados : Oportunidade[*] := {
+    	self.oportunidadesPorEtapa(Oportunidade::Etapa#LeadQualificado)
+    };  
+
+end;
+
+enumeration Potencial
+    Nenhum; Baixo; Medio; Alto;
+end;
+
+class Oportunidade
+    derived attribute chave : String := { "O-" + self.identificador };
+    private derived id attribute identificador : Integer;
+    attribute cliente : Cliente;
+    attribute campanha : Campanha;    
+    attribute etapa : Etapa;
+    attribute potencial : Potencial;
+    attribute valor : Double;        
+    attribute motivoDeclinar : Memo[0,1];
+    
+    operation qualificar();
+    operation prospectar();    
+    operation demonstrar();    
+    operation negociar();        
+    operation declinar(motivo : Memo);
+    begin
+        self.motivoDeclinar := motivo;
+    end;
+    operation fechar();    
+    
+    static query porPotencial(potencial : Potencial) : Oportunidade[*];
+    begin
+        return Oportunidade extent.select((o : Oportunidade) : Boolean {
+        	o.potencial >= potencial
+        });
+    end;
+    
+    static query porEtapa(etapa : Etapa) : Oportunidade[*];
+    begin
+        return Oportunidade extent.select((o : Oportunidade) : Boolean {
+        	o.etapa >= etapa
+        });
+    end;    
+    
+    static query porCampanha(campanha : Campanha) : Oportunidade[*];
+    begin
+        return campanha.oportunidades;
+    end;    
+    
+    statemachine Etapa
+		initial state Lead
+			transition on call(qualificar) to LeadQualificado;
+			transition on call(prospectar) to Prospeccao;			
+			transition on call(declinar) to Declinado;						
+		end;
+		state LeadQualificado
+			transition on call(prospectar) to Prospeccao;
+			transition on call(declinar) to Declinado;						
+		end;
+		(*
+		    Cliente é abordado (ativamente, por email ou telefone)
+		    para apresentar solução.
+		*)
+		state Prospeccao
+			transition on call(demonstrar) to Demonstracao;		
+			transition on call(negociar) to Negociacao;					
+			transition on call(declinar) to Declinado;									
+		end;
+		state Demonstracao
+			transition on call(negociar) to Negociacao;
+			transition on call(declinar) to Declinado;									
+		end;
+		state Negociacao
+			transition on call(fechar) to Fechamento;
+			transition on call(declinar) to Declinado;									
+		end;		
+		state Fechamento
+		end;
+		state Declinado
+		end;
+	end;
+
+end;
+
+end.
