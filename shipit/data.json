@@ -1,25 +1,51 @@
 {
   "shipit" : {
+    "userprofile.Profile" : [ {
+      "username" : "user1",
+      "email" : "user1@abstratt.com",
+      "password" : "pass"
+    }, {
+      "username" : "user2",
+      "email" : "user2@abstratt.com",
+      "password" : "pass"
+    }, {
+      "username" : "user3",
+      "email" : "user3@abstratt.com",
+      "password" : "pass"
+    }, {
+      "username" : "user4",
+      "email" : "user4@abstratt.com",
+      "password" : "pass"
+    }, {
+      "username" : "user5",
+      "email" : "user5@abstratt.com",
+      "password" : "pass"
+    } ],	
     "User" : [ {
       "email" : "ssimon@cloudfier.com",
       "fullName" : "Saulo Simon",
-      "kind" : "Committer"
+      "kind" : "Committer",
+      "user" : "userprofile.Profile@1"      
     }, {
       "email" : "rperez@cloudfier.com",
       "fullName" : "Ricardo Perez",
-      "kind" : "Committer"
+      "kind" : "Committer",
+      "user" : "userprofile.Profile@2"
     }, {
       "email" : "gtorres@abstratt.com",
       "fullName" : "Gina Torres",
-      "kind" : "Reporter"
+      "kind" : "Reporter",
+      "user" : "userprofile.Profile@3"
     }, {
       "email" : "fsilveira@abstratt.com",
       "fullName" : "Felix Silveira",
-      "kind" : "Reporter"
+      "kind" : "Reporter",
+      "user" : "userprofile.Profile@4"
     }, {
       "email" : "rafael@abstratt.com",
       "fullName" : "AAA",
-      "kind" : "Reporter"
+      "kind" : "Reporter",
+      "user" : "userprofile.Profile@5"
     } ],
     "Project" : [ {
       "description" : "Cloudfier issues",

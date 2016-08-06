@@ -1,9 +1,8 @@
 package shipit_plus;
 
-load<<http://develop.cloudfier.com/services/publisher/demo-cloudfier-examples-email/email.uml>>;
-load<<http://develop.cloudfier.com/services/publisher/demo-cloudfier-examples-shipit/shipit.uml>>;
-
 import mdd_types;
+import shipit;
+import email;
 
 external class EmailService implements Emailer
 end;
