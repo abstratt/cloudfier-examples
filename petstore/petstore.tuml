@@ -29,17 +29,17 @@ class Product
 
     attribute productName : String;
 
-    attribute productPrice : Double[0, 1]
+    attribute productPrice : Double
         (* Price must be greater than zero *)
         invariant { (self.productPrice > 0) };
 
-    attribute unitCost : Double[0, 1]
+    attribute unitCost : Double
         invariant { (self.unitCost > 0) };
 
     attribute productDescription : Memo[0, 1];
 
     attribute productWeight : Double[0, 1] := 0.0
-        invariant { self.productWeight >= 0 };
+        invariant { self.productWeight == null or self.productWeight >= 0 };
 
     reference category : Category opposite products;
 end;
