@@ -63,9 +63,7 @@ class Task
 
     static query mine() : Task[*];
     begin
-        return Task extent.select((t : Task) : Boolean {
-            t.assignee == User#me
-        });
+        return User#me.tasks;
     end;
 
     static query mineOpen() : Task[*];
