@@ -25,6 +25,12 @@ class City
     begin
         return City extent.maxElement((c : City) : Integer { c.population } );
     end;
+    
+    operation makeCapital()
+        precondition { self.cityState.capital == null or not(self.cityState.capital == self) };
+    begin
+        self.cityState.capital := self;
+    end;
 end;
 
 datatype StatePopulation
@@ -41,8 +47,11 @@ class State
     attribute abbreviation : String;
 
     attribute cities : City[*];
+    
+    attribute capital : City[0,1]
+        invariant CapitalMustBeInState { self.capital == null or self.cities.includes(self.capital) }; 
 
-    derived attribute population : Integer := {
+    derived attribute recordedPopulation : Integer := {
         self.cities.sum((c : City) : Integer { c.population })
     };
 
@@ -139,7 +148,7 @@ class State
         return State extent.collect((cityState : State) : StatePopulation {
             ({
                 abbreviation := cityState.abbreviation, 
-                population := cityState.population
+                population := cityState.recordedPopulation
             } as StatePopulation)
         });
     end;

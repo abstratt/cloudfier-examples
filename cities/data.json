@@ -1,0 +1,41 @@
+{
+  "userprofile" : {
+    "Profile" : [ ]
+  },
+  "cities" : {
+    "State" : [ {
+      "name" : "Santa Catarina",
+      "abbreviation" : "SC",
+      "capital" : "cities.City@1"
+    }, {
+      "name" : "Rio Grande do Sul",
+      "abbreviation" : "RS",
+      "capital" : "cities.City@3"
+    } ],
+    "City" : [ {
+      "name" : "Florianopolis",
+      "population" : 210000,
+      "cityState" : "cities.State@1"
+    }, {
+      "name" : "Blumenau",
+      "population" : 310000,
+      "cityState" : "cities.State@1"
+    }, {
+      "name" : "Porto Alegre",
+      "population" : 1400000,
+      "cityState" : "cities.State@2"
+    }, {
+      "name" : "Rio Grande",
+      "population" : 178000,
+      "cityState" : "cities.State@2"
+    }, {
+      "name" : "Joinville",
+      "population" : 486000,
+      "cityState" : "cities.State@1"
+    }, {
+      "name" : "Sao José",
+      "population" : 210000,
+      "cityState" : "cities.State@1"
+    } ]
+  }
+}

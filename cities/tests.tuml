@@ -30,9 +30,9 @@ class Tests
         var oregon, expected;
         TestData#build();
         oregon := State#byAbbreviation("OR");
-        Assert#isTrue(oregon.population > 0);
+        Assert#isTrue(oregon.recordedPopulation > 0);
         expected := oregon.city("Portland").population + oregon.city("Eugene").population;
-        Assert#areEqual(expected, oregon.population);
+        Assert#areEqual(expected, oregon.recordedPopulation);
     end; 
 
     operation populousStates_Abbreviations();
@@ -56,7 +56,7 @@ class Tests
         found := populations.\any((s : { \state: State, : Integer}) : Boolean {
         	s.\state.abbreviation = "OR" 
     	});
-        Assert#areEqual(oregon.population, found.statePopulation);
+        Assert#areEqual(oregon.recordedPopulation, found.statePopulation);
     end;
 
     operation maximumPopulation();
@@ -110,8 +110,8 @@ class Tests
         wyoming := State#byAbbreviation("WY");
         populations := State#statePopulations();
         Assert#areEqual(State extent.size(), populations.size());
-        Assert#areEqual(wyoming.population, populations.\any((stat : StatePopulation) : Boolean { stat.abbreviation = "WY" }).population);
-        Assert#areEqual(oregon.population, populations.\any((stat : StatePopulation) : Boolean { stat.abbreviation = "OR" }).population);
+        Assert#areEqual(wyoming.recordedPopulation, populations.\any((stat : StatePopulation) : Boolean { stat.abbreviation = "WY" }).population);
+        Assert#areEqual(oregon.recordedPopulation, populations.\any((stat : StatePopulation) : Boolean { stat.abbreviation = "OR" }).population);
     end;
     
     operation statePopulationsViaCities();
@@ -122,8 +122,8 @@ class Tests
         wyoming := State#byAbbreviation("WY");
         populations := State#statePopulationsViaCities();
         Assert#areEqual(State extent.size(), populations.size());
-        Assert#areEqual(wyoming.population, populations.\any((stat : StatePopulation) : Boolean { stat.abbreviation = "WY" }).population);
-        Assert#areEqual(oregon.population, populations.\any((stat : StatePopulation) : Boolean { stat.abbreviation = "OR" }).population);
+        Assert#areEqual(wyoming.recordedPopulation, populations.\any((stat : StatePopulation) : Boolean { stat.abbreviation = "WY" }).population);
+        Assert#areEqual(oregon.recordedPopulation, populations.\any((stat : StatePopulation) : Boolean { stat.abbreviation = "OR" }).population);
     end;
 
 end;
