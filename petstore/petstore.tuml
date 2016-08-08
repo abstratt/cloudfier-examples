@@ -31,10 +31,10 @@ class Product
 
     attribute productPrice : Double
         (* Price must be greater than zero *)
-        invariant { (self.productPrice > 0) };
+        invariant { (self.productPrice >= 0) };
 
     attribute unitCost : Double
-        invariant { (self.unitCost > 0) };
+        invariant { (self.unitCost >= 0) };
 
     attribute productDescription : Memo[0, 1];
 
