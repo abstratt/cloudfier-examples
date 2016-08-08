@@ -70,10 +70,16 @@ class Task
 
     static query mineOpen() : Task[*];
     begin
+        return Task#openForUser(User#me);
+    end;
+    
+    static query openForUser(user : User) : Task[*];
+    begin
         return Task extent.select((t : Task) : Boolean {
-            t.assignee == User#me and t.status == Status#Open
+            t.assignee == user and t.status == Status#Open
         });
     end;
+
 
     static query openedToday() : Task[*];
     begin
