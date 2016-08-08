@@ -10,34 +10,35 @@ class TaskScenarios
 
     operation allTasks();
     begin
-        var user;
+        var user, baseline;
         begin
-            Assert#areEqual(0, Task extent.size());
+            baseline := Task extent.size();
             user := Examples#userWithName("auser");
 	        Examples#taskFor(user, "");
 	        Examples#taskFor(user, "");        
             Examples#taskFor(user, "");                
         end;
         begin        
-            Assert#areEqual(3, Task extent.size());
+            Assert#areEqual(baseline + 3, Task extent.size());
         end;        
     end;
 
     operation openTasks();
     begin
-        var task, user;
+        var task, user, baseline;
         begin
+            baseline := Task#open().size();
             user := Examples#userWithName("auser");
 	        Examples#taskFor(user, "");
 	        Examples#taskFor(user, "");        
             task := Examples#taskFor(user, "");                
         end;
         begin        
-            Assert#areEqual(3, Task#open().size());
+            Assert#areEqual(3 + baseline, Task#open().size());
             task.complete();
         end;
         begin        
-            Assert#areEqual(2, Task#open().size());
+            Assert#areEqual(2 + baseline, Task#open().size());
         end;        
     end;
 
