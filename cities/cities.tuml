@@ -4,29 +4,33 @@ apply kirra;
 import mdd_types;
 
 class City
-
+    derived attribute token : String := { self.name + "-" + self.cityState.abbreviation };
     attribute name : String;
-
+    attribute cityState : State[0,1];
     attribute population : Integer;
-
-    attribute cityState : State;
-    
+    derived attribute isCapital : Boolean := { self == self.cityState.capital };
     static query citiesMorePopulousThan(threshold : Integer) : Integer;
     begin
         return City extent.select((c : City) : Boolean { c.population >= threshold } ).size();
     end;
-
     static query maximumPopulation() : Integer;
     begin
         return City extent.max((c : City) : Integer { c.population } );
     end;
-    
     static query mostPopulousCity() : City;
     begin
         return City extent.maxElement((c : City) : Integer { c.population } );
     end;
-    
+    static query stateCapitals() : City[*];
+    begin
+        return State extent.collect((s : State) : City { s.capital }).select((c : City) : Boolean { !(c == null) });
+    end;
+    static query byState(cityState : State) : City[*];
+    begin
+        return cityState.cities;
+    end;
     operation makeCapital()
+        precondition { !(self.cityState == null) }
         precondition { self.cityState.capital == null or not(self.cityState.capital == self) };
     begin
         self.cityState.capital := self;
@@ -34,32 +38,30 @@ class City
 end;
 
 datatype StatePopulation
-
     attribute abbreviation : String;
-
     attribute population : Integer;
 end;
 
 class State
-
     attribute name : String;
-
-    attribute abbreviation : String;
-
+    attribute abbreviation : String[0,1] := "N/D";
     attribute cities : City[*];
-    
     attribute capital : City[0,1]
-        invariant CapitalMustBeInState { self.capital == null or self.cities.includes(self.capital) }; 
-
+        (* Capital must be in state *)
+        invariant { self.capital == null or self.cities.includes(self.capital) }; 
+    operation chooseCapital(newCapital : City)
+        (* New capital must be different from existing capital *)
+        precondition (newCapital) { !(newCapital == self.capital) };
+    begin
+        self.capital := newCapital;
+    end;
     derived attribute recordedPopulation : Integer := {
         self.cities.sum((c : City) : Integer { c.population })
     };
-
     query city(name : String) : City[0, 1];
     begin
         return self.cities.\any((c : City) : Boolean { c.name = name });
     end;
-    
     static query citiesByState() : { stateAcronym : String, cities : City[*] }[*];
     begin
         return City extent.groupBy((c : City) : State {
@@ -71,14 +73,12 @@ class State
             }
         });
     end;
-
     static query byAbbreviation(abbreviation : String) : State[0, 1];
     begin
         return State extent.\any((s : State) : Boolean {
             s.abbreviation = abbreviation
         });
     end;
-
     static query statePopulationsAbove(threshold : Integer) : { \state : State, statePopulation : Integer}[*];
     begin
         return City extent.groupBy((c : City) : State {
@@ -94,8 +94,6 @@ class State
             aggregated.statePopulation > threshold
         });
     end;
-
-
     static query statesMorePopulousThan(threshold : Integer) : State[*];
     begin
         return City extent.groupBy((c : City) : State {
@@ -124,7 +122,6 @@ class State
             stats.theState
         });
     end;
-
     static query abbreviationsOfStatesMorePopulousThan(threshold : Integer) : String[*];
     begin
         return City extent.groupBy((c : City) : State {
@@ -142,7 +139,6 @@ class State
         	aggregated.cityState
         });
     end;
-
     static query statePopulations() : StatePopulation[*];
     begin
         return State extent.collect((cityState : State) : StatePopulation {
@@ -166,12 +162,9 @@ class State
     end;
 end;
 
-aggregation CityStates
-
+association CityStates
     role City.cityState;
-
     role State.cities;
-
 end;
 
 end.

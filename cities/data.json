@@ -6,14 +6,22 @@
     "State" : [ {
       "name" : "Santa Catarina",
       "abbreviation" : "SC",
-      "capital" : "cities.City@1"
+      "capital" : "cities.City@2"
     }, {
       "name" : "Rio Grande do Sul",
       "abbreviation" : "RS",
-      "capital" : "cities.City@3"
+      "capital" : "cities.City@4"
+    }, {
+      "name" : "Paraná",
+      "abbreviation" : "PR",
+      "capital" : "cities.City@7"
+    }, {
+      "name" : "Distrito Federal",
+      "abbreviation" : "DF",
+      "capital" : "cities.City@9"
     } ],
     "City" : [ {
-      "name" : "Florianopolis",
+      "name" : "Florianópolis",
       "population" : 210000,
       "cityState" : "cities.State@1"
     }, {
@@ -36,6 +44,22 @@
       "name" : "Sao José",
       "population" : 210000,
       "cityState" : "cities.State@1"
+    }, {
+      "name" : "Curitiba",
+      "population" : 1752000,
+      "cityState" : "cities.State@3"
+    }, {
+      "name" : "Cascavel",
+      "population" : 266835,
+      "cityState" : "cities.State@3"
+    }, {
+      "name" : "Brasilia",
+      "population" : 2480000,
+      "cityState" : "cities.State@4"
+    }, {
+      "name" : "Santa Maria",
+      "population" : 246544,
+      "cityState" : "cities.State@2"
     } ]
   }
 }

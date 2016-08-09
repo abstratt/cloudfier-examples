@@ -9,6 +9,20 @@ import cities;
 [Test]
 class Tests
 
+    operation findCapitals();
+    begin
+        var capitals, oregon, cities;
+        TestData#build();
+        capitals := City#stateCapitals();
+        cities := City extent;
+        /*Assert#areEqual(cities.collect((c : City) : String {c.name}), capitals.collect((c : City) : String {c.name}));*/
+        Assert#areEqual(3, capitals.size());
+        oregon := State#byAbbreviation("OR");       
+        Assert#isNotNull(oregon.capital);
+        Assert#areEqual("Salem", oregon.capital.name);        
+        Assert#isTrue(capitals.includes(oregon.capital));
+    end;
+
     operation stateByAbbreviation();
     begin
         TestData#build();
@@ -31,7 +45,8 @@ class Tests
         TestData#build();
         oregon := State#byAbbreviation("OR");
         Assert#isTrue(oregon.recordedPopulation > 0);
-        expected := oregon.city("Portland").population + oregon.city("Eugene").population;
+        Assert#areEqual(3, oregon.cities.size());        
+        expected := oregon.city("Portland").population + oregon.city("Eugene").population + oregon.city("Salem").population;
         Assert#areEqual(expected, oregon.recordedPopulation);
     end; 
 
@@ -91,7 +106,7 @@ class Tests
     operation citiesMorePopulousThan();
     begin
         TestData#build();
-        Assert#areEqual(3, City#citiesMorePopulousThan(500000));
+        Assert#areEqual(4, City#citiesMorePopulousThan(500000));
         Assert#areEqual(1, City#citiesMorePopulousThan(1000000));
         Assert#areEqual(0, City#citiesMorePopulousThan(2000000));        
     end;
@@ -137,11 +152,14 @@ class TestData
         TestData#newCity("San Francisco", 1356000, california);
         TestData#newCity("San Mateo", 101128, california);
         TestData#newCity("San Diego", 837442, california);
+        TestData#newCity("Sacramento", 837442, california).makeCapital();
+
         oregon := TestData#newState("Oregon", "OR");
         TestData#newCity("Portland", 609456, oregon);
         TestData#newCity("Eugene", 159190, oregon);
+        TestData#newCity("Salem", 160000, oregon).makeCapital();        
         wyoming := TestData#newState("Wyoming", "WY");
-        TestData#newCity("Cheyenne", 62448, wyoming);
+        TestData#newCity("Cheyenne", 62448, wyoming).makeCapital();
     end;
 
     static operation newCity(name : String, population : Integer, cityState : State) : City;
