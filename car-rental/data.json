@@ -1,4 +1,7 @@
 {
+  "userprofile" : {
+    "Profile" : [ ]
+  },
   "car_rental" : {
     "Customer" : [ {
       "name" : "Silvia Bosch"
@@ -28,186 +31,224 @@
     } ],
     "CarModel" : [ {
       "name" : "Avalon",
-      "make" : "Make@5"
+      "make" : "car_rental.Make@5"
     }, {
       "name" : "CR-V",
-      "make" : "Make@3"
+      "make" : "car_rental.Make@3"
     }, {
       "name" : "Fit",
-      "make" : "Make@3"
+      "make" : "car_rental.Make@3"
     }, {
       "name" : "Caravan",
-      "make" : "Make@4"
+      "make" : "car_rental.Make@4"
     }, {
       "name" : "Outback",
-      "make" : "Make@2"
+      "make" : "car_rental.Make@2"
     }, {
       "name" : "Accord",
-      "make" : "Make@3"
+      "make" : "car_rental.Make@3"
     }, {
       "name" : "Stratus",
-      "make" : "Make@4"
+      "make" : "car_rental.Make@4"
     }, {
       "name" : "Camry",
-      "make" : "Make@5"
+      "make" : "car_rental.Make@5"
     }, {
       "name" : "Civic",
-      "make" : "Make@3"
+      "make" : "car_rental.Make@3"
     }, {
       "name" : "Corolla",
-      "make" : "Make@5"
+      "make" : "car_rental.Make@5"
     }, {
       "name" : "Prius",
-      "make" : "Make@5"
+      "make" : "car_rental.Make@5"
+    }, {
+      "name" : "Sienna",
+      "make" : "car_rental.Make@5"
     } ],
     "Car" : [ {
       "plate" : "ABC-123",
       "price" : 70.0,
       "year" : 2010,
       "color" : "White",
-      "status" : "Available",
-      "carModel" : "CarModel@5"
+      "status" : "Rented",
+      "carModel" : "car_rental.CarModel@5"
     }, {
       "plate" : "FFG-8911",
       "price" : 220.0,
       "year" : 2012,
       "color" : "Silver",
       "status" : "UnderRepair",
-      "carModel" : "CarModel@7"
+      "carModel" : "car_rental.CarModel@7"
     }, {
       "plate" : "GHI-789",
       "price" : 100.0,
       "year" : 2013,
       "color" : "Black",
-      "status" : "Rented",
-      "carModel" : "CarModel@8"
+      "status" : "Decomissioned",
+      "carModel" : "car_rental.CarModel@8"
     }, {
       "plate" : "YHH-6677",
       "price" : 300.0,
       "year" : 2015,
       "color" : "silver",
-      "status" : "Rented",
-      "carModel" : "CarModel@11"
+      "status" : "Available",
+      "carModel" : "car_rental.CarModel@11"
     }, {
       "plate" : "GGY-9887",
       "price" : 250.0,
       "year" : 2015,
       "color" : "silver",
-      "status" : "Rented",
-      "carModel" : "CarModel@6"
+      "status" : "Available",
+      "carModel" : "car_rental.CarModel@6"
     }, {
       "plate" : "DEF-456",
       "price" : 85.0,
       "year" : 2012,
       "color" : "Beige",
       "status" : "Rented",
-      "carModel" : "CarModel@9"
+      "carModel" : "car_rental.CarModel@9"
     }, {
       "plate" : "XYZ-987",
       "price" : 89.0,
       "year" : 2014,
       "color" : "Silver",
-      "status" : "Rented",
-      "carModel" : "CarModel@10"
+      "status" : "Available",
+      "carModel" : "car_rental.CarModel@10"
     }, {
       "plate" : "AABB-11223",
       "price" : 260.0,
       "year" : 2015,
       "color" : "silver",
-      "status" : "Rented",
-      "carModel" : "CarModel@11"
+      "status" : "Available",
+      "carModel" : "car_rental.CarModel@11"
     }, {
       "plate" : "bbg-1190",
       "price" : 220.0,
       "year" : 2015,
       "color" : "Green",
-      "status" : "Available",
-      "carModel" : "CarModel@5"
+      "status" : "UnderRepair",
+      "carModel" : "car_rental.CarModel@5"
+    }, {
+      "plate" : "HGJ-8809",
+      "price" : 340.0,
+      "year" : 2016,
+      "color" : "beige",
+      "status" : "Rented",
+      "carModel" : "car_rental.CarModel@12"
     } ],
     "Rental" : [ {
       "internalId" : 67,
       "started" : "2014/05/28",
-      "returned" : null,
-      "status" : "InProgress",
-      "car" : "Car@7",
-      "customer" : "Customer@4"
+      "returned" : "2016/08/09",
+      "status" : "Finished",
+      "car" : "car_rental.Car@7",
+      "customer" : "car_rental.Customer@4"
     }, {
       "internalId" : 70,
       "started" : "2014/08/08",
       "returned" : "2014/08/08",
       "status" : "Finished",
-      "car" : "Car@7",
-      "customer" : "Customer@2"
+      "car" : "car_rental.Car@7",
+      "customer" : "car_rental.Customer@2"
     }, {
       "internalId" : 73,
       "started" : "2014/08/08",
-      "returned" : null,
-      "status" : "InProgress",
-      "car" : "Car@3",
-      "customer" : "Customer@4"
+      "returned" : "2016/08/09",
+      "status" : "Finished",
+      "car" : "car_rental.Car@3",
+      "customer" : "car_rental.Customer@4"
     }, {
       "internalId" : 76,
       "started" : "2014/08/08",
       "returned" : "2015/09/15",
       "status" : "Finished",
-      "car" : "Car@3",
-      "customer" : "Customer@6"
+      "car" : "car_rental.Car@3",
+      "customer" : "car_rental.Customer@6"
     }, {
       "internalId" : 79,
       "started" : "2014/08/08",
       "returned" : "2015/09/15",
       "status" : "Finished",
-      "car" : "Car@7",
-      "customer" : "Customer@7"
+      "car" : "car_rental.Car@7",
+      "customer" : "car_rental.Customer@7"
     }, {
       "internalId" : 82,
       "started" : "2014/08/08",
       "returned" : "2014/08/08",
       "status" : "Finished",
-      "car" : "Car@3",
-      "customer" : "Customer@3"
+      "car" : "car_rental.Car@3",
+      "customer" : "car_rental.Customer@3"
     }, {
       "internalId" : 85,
       "started" : "2014/08/08",
       "returned" : "2014/08/08",
       "status" : "Finished",
-      "car" : "Car@7",
-      "customer" : "Customer@3"
+      "car" : "car_rental.Car@7",
+      "customer" : "car_rental.Customer@3"
     }, {
       "internalId" : 88,
       "started" : "2014/05/28",
-      "returned" : null,
-      "status" : "InProgress",
-      "car" : "Car@4",
-      "customer" : "Customer@4"
+      "returned" : "2016/08/09",
+      "status" : "Finished",
+      "car" : "car_rental.Car@4",
+      "customer" : "car_rental.Customer@4"
     }, {
       "internalId" : 91,
       "started" : "2014/05/28",
-      "returned" : null,
-      "status" : "InProgress",
-      "car" : "Car@5",
-      "customer" : "Customer@5"
+      "returned" : "2016/08/09",
+      "status" : "Finished",
+      "car" : "car_rental.Car@5",
+      "customer" : "car_rental.Customer@5"
     }, {
       "internalId" : 94,
       "started" : "2014/08/08",
       "returned" : null,
       "status" : "InProgress",
-      "car" : "Car@6",
-      "customer" : "Customer@6"
+      "car" : "car_rental.Car@6",
+      "customer" : "car_rental.Customer@6"
     }, {
       "internalId" : 97,
       "started" : "2014/05/28",
       "returned" : "2014/08/08",
       "status" : "Finished",
-      "car" : "Car@7",
-      "customer" : "Customer@6"
+      "car" : "car_rental.Car@7",
+      "customer" : "car_rental.Customer@6"
     }, {
       "internalId" : 100,
       "started" : "2015/09/20",
+      "returned" : "2016/08/09",
+      "status" : "Finished",
+      "car" : "car_rental.Car@8",
+      "customer" : "car_rental.Customer@7"
+    }, {
+      "internalId" : 26,
+      "started" : "2016/08/09",
+      "returned" : "2016/08/09",
+      "status" : "Finished",
+      "car" : "car_rental.Car@7",
+      "customer" : "car_rental.Customer@1"
+    }, {
+      "internalId" : 28,
+      "started" : "2016/08/09",
+      "returned" : "2016/08/09",
+      "status" : "Finished",
+      "car" : "car_rental.Car@9",
+      "customer" : "car_rental.Customer@2"
+    }, {
+      "internalId" : 30,
+      "started" : "2016/08/09",
       "returned" : null,
       "status" : "InProgress",
-      "car" : "Car@8",
-      "customer" : "Customer@7"
+      "car" : "car_rental.Car@1",
+      "customer" : "car_rental.Customer@3"
+    }, {
+      "internalId" : 32,
+      "started" : "2016/08/09",
+      "returned" : null,
+      "status" : "InProgress",
+      "car" : "car_rental.Car@10",
+      "customer" : "car_rental.Customer@2"
     } ]
   }
 }
