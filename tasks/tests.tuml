@@ -1,0 +1,113 @@
+package tests;
+
+apply mdd_extensions;
+
+import tasks;
+
+[Test]
+class Tasks
+
+    operation closedTasks();
+    begin
+        var contributor, task;
+        begin
+            contributor := Examples#contributor("filho 1");
+	        task := Examples#taskFor(contributor, "lavar carro");
+        end;
+        begin
+            Assert#areEqual(Task::Status#Open, task.status); 
+            task.complete();
+        end;
+        begin      
+            Assert#areEqual(Task::Status#Completed, task.status);
+        end;        
+    end;
+
+
+    operation allTasks();
+    begin
+        var contributor, baseline;
+        begin
+            baseline := Task extent.size();
+            contributor := Examples#contributor("auser");
+	        Examples#taskFor(contributor, "");
+	        Examples#taskFor(contributor, "");        
+            Examples#taskFor(contributor, "");                
+        end;
+        begin        
+            Assert#areEqual(baseline + 3, Task extent.size());
+        end;        
+    end;
+
+    operation openTasks();
+    begin
+        var task, contributor, baseline;
+        begin
+            baseline := Task#openTasks().size();
+            contributor := Examples#contributor("um contributor");
+	        Examples#taskFor(contributor, "");
+	        Examples#taskFor(contributor, "");        
+            task := Examples#taskFor(contributor, "");                
+        end;
+        begin        
+            Assert#areEqual(baseline + 3, Task#openTasks().size());
+            task.complete();
+        end;
+        begin        
+            Assert#areEqual(baseline + 2, Task#openTasks().size());
+        end;        
+    end;
+
+    operation taksOpenedToday();
+    begin
+        var task, today, yesterday, contributor, baselineToday, baselineYesterday;
+        begin
+            today := Date#today();
+            yesterday := today.transpose(Duration#days(-1));            
+            baselineToday := Task#tasksOpenedOn(today).size();
+            baselineYesterday := Task#tasksOpenedOn(yesterday).size();
+            contributor := Examples#contributor("auser");
+	        Examples#taskFor(contributor, "");
+	        Examples#taskFor(contributor, "");        
+            task := Examples#taskFor(contributor, "");
+        end;
+        begin        
+            Assert#areEqual(baselineToday + 3, Task#tasksOpenedOn(today).size());
+            Assert#areEqual(baselineYesterday + 0, Task#tasksOpenedOn(yesterday).size());            
+            task.openingDate := yesterday;
+        end;
+        begin        
+            Assert#areEqual(baselineToday + 2, Task#tasksOpenedOn(today).size());
+            Assert#areEqual(baselineYesterday + 1, Task#tasksOpenedOn(yesterday).size());            
+        end;        
+    end;
+end;
+
+class Examples
+
+    private static operation contributor(name : String) : Contributor;
+    begin
+        var contributor;
+        contributor := new Contributor;
+        contributor.name := name;
+        return contributor;
+    end;
+
+    private static operation taskFor(contributor : Contributor, description : String) : Task;
+    begin
+        var novaTask;
+        novaTask := new Task;
+        novaTask.description := description;
+        /*novaTask.detalhes := Memo#fromString(description + " detalhes");*/
+        novaTask.assignee := contributor;        
+        return novaTask;
+    end;
+    
+    private static operation task(task : String) : Task;
+    begin
+        return Examples#taskFor(Examples#contributor("a contributor"), task);
+    end;
+    
+end;
+
+end.

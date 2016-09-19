@@ -1,0 +1,90 @@
+package tasks;
+
+role class Contributor
+
+    attribute name : String;
+
+    reference tasks : Task[*] opposite assignee;
+
+    private static derived attribute current : Contributor := {
+        (System#user() as Contributor)
+    };
+end;
+
+class Task
+    attribute description : String;
+
+    attribute assignee : Contributor [0,1] := { Contributor#current };
+    
+    attribute details : Memo[0,1];
+
+    attribute status : Status;
+
+    readonly attribute openingDate : Date := { Date#today() };
+
+    readonly attribute completionDate : Date[0, 1];
+
+    operation complete()
+        allow Contributor { System#user() == self.assignee };
+    
+    operation reopen();    
+
+    operation reassign(newAssignee : Contributor)
+        precondition (newAssignee) {
+            not (newAssignee == self.assignee)
+        };
+    begin
+        self.assignee := newAssignee;
+    end;
+    
+    static query openTasks() : Task[*];
+    begin
+        return Task extent.select((t : Task) : Boolean {
+            t.status == Status#Open
+        });
+    end;
+
+    static query myTasks() : Task[*];
+    begin
+        return Contributor#current.tasks;
+    end;
+
+    static query openTasksFor(contributor : Contributor) : Task[*];
+    begin
+        return Task extent.select((t : Task) : Boolean {
+            t.assignee == contributor and t.status == Status#Open
+        });
+    end;
+   
+    static query tasksOpenedToday() : Task[*];
+    begin
+        return Task#tasksOpenedOn(Date#today());
+    end;
+ 
+    static query tasksOpenedOn(date : Date) : Task[*];
+    begin
+        return Task extent.select((t : Task) : Boolean { t.openingDate = date });
+    end;
+
+    static query tasksCompletedToday() : Task[*];
+    begin
+        return Task extent.select((t : Task) : Boolean {
+            t.status == Status#Completed and (t.completionDate = Date#today())
+        });
+    end;
+
+    statemachine Status
+
+        initial state Open
+            transition on call(complete) to Completed;
+        end;
+        state Completed
+            entry {
+                self.completionDate := Date#today();
+            };
+            transition on call(reopen) to Open;            
+        end;
+    end;
+end;
+
+end.
