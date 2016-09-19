@@ -1,0 +1,68 @@
+{
+  "userprofile" : {
+    "Profile" : [ {
+      "username" : "john.ford",
+      "email" : "john@abstratt.com",
+      "password" : "pass"
+    }, {
+      "username" : "peter.jones",
+      "email" : "peter@abstratt.com",
+      "password" : "pass"
+    }, {
+      "username" : "wanda.hoyt",
+      "email" : "wanda@abstratt.com",
+      "password" : "pass"
+    }, {
+      "username" : "joanna.davis",
+      "email" : "joanna@abstratt.com",
+      "password" : "pass"
+    } ]
+  },
+  "tasks" : {
+    "Contributor" : [ {
+      "name" : "Pytr"
+    }, {
+      "name" : "Francisco"
+    }, {
+      "name" : "John"
+    }, {
+      "name" : "Dimitri"
+    } ],
+    "Task" : [ {
+      "description" : "levar o cachorro para passear",
+      "details" : null,
+      "status" : "Completed",
+      "openingDate" : "2016/07/03",
+      "completionDate" : "2016/09/18",
+      "assignee" : "tasks.Contributor@2"
+    }, {
+      "description" : "lavar o tapete da sala",
+      "details" : null,
+      "status" : "Open",
+      "openingDate" : "2016/07/03",
+      "completionDate" : null,
+      "assignee" : "tasks.Contributor@1"
+    }, {
+      "description" : "lavar o carro",
+      "details" : null,
+      "status" : "Open",
+      "openingDate" : "2016/07/04",
+      "completionDate" : null,
+      "assignee" : "tasks.Contributor@2"
+    }, {
+      "description" : "fazer a barba",
+      "details" : null,
+      "status" : "Completed",
+      "openingDate" : "2016/07/04",
+      "completionDate" : "2016/07/04",
+      "assignee" : "tasks.Contributor@1"
+    }, {
+      "description" : "Mop the deck",
+      "details" : null,
+      "status" : "Completed",
+      "openingDate" : "2016/09/18",
+      "completionDate" : "2016/09/18",
+      "assignee" : "tasks.Contributor@3"
+    } ]
+  }
+}
