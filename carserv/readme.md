@@ -31,7 +31,7 @@ http://develop.cloudfier.com/services/api-v2/test-cloudfier-examples-carserv/ (R
 ### Generated code
 
 * Java
-  * [Domain/Persistence](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/carserv/gen/src/main/java/carserv/)
-  * [REST API](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/carserv/gen/src/main/java/resource/carserv/)
+  * [Domain/Persistence](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE-carserv/lastSuccessfulBuild/artifact/jee/carserv/gen/src/main/java/carserv/)
+  * [REST API](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE-carserv/lastSuccessfulBuild/artifact/jee/carserv/gen/src/main/java/resource/carserv/)
 
 

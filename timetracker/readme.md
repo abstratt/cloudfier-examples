@@ -18,5 +18,5 @@ http://develop.cloudfier.com/services/api-v2/test-cloudfier-examples-timetracker
 ### Generated code
 
 * Java
-  * [Domain/Persistence](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/timetracker/gen/src/main/java/timetracker/)
-  * [REST API](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/timetracker/gen/src/main/java/resource/timetracker/)
+  * [Domain/Persistence](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE-timetracker/lastSuccessfulBuild/artifact/jee/timetracker/gen/src/main/java/timetracker/)
+  * [REST API](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE-timetracker/lastSuccessfulBuild/artifact/jee/timetracker/gen/src/main/java/resource/timetracker/)

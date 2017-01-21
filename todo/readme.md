@@ -18,5 +18,5 @@ http://develop.cloudfier.com/services/api-v2/test-cloudfier-examples-todo/ (REST
 ### Generated code
 
 * Java
-  * [Domain/Persistence](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/todo/gen/src/main/java/todo/)
-  * [REST API](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/todo/gen/src/main/java/resource/todo/)
+  * [Domain/Persistence](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE-todo/lastSuccessfulBuild/artifact/jee/todo/gen/src/main/java/todo/)
+  * [REST API](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE-todo/lastSuccessfulBuild/artifact/jee/todo/gen/src/main/java/resource/todo/)

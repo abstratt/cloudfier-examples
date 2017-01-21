@@ -18,5 +18,5 @@ http://develop.cloudfier.com/services/api-v2/test-cloudfier-examples-petstore/ (
 ### Generated code
 
 * Java
-  * [Domain/Persistence](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/petstore/gen/src/main/java/petstore/)
-  * [REST API](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/petstore/gen/src/main/java/resource/petstore/)
+  * [Domain/Persistence](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE-petstore/lastSuccessfulBuild/artifact/jee/petstore/gen/src/main/java/petstore/)
+  * [REST API](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE-petstore/lastSuccessfulBuild/artifact//jee/petstore/gen/src/main/java/resource/petstore/)

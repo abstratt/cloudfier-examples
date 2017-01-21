@@ -39,6 +39,6 @@ This application includes an integration with an external system that records ap
 ### Generated code
 
 * Java
-  * [Domain/Persistence](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/expenses/gen/src/main/java/expenses/)
-  * [REST API](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/expenses/gen/src/main/java/resource/expenses/)
+  * [Domain/Persistence](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE-expenses/lastSuccessfulBuild/artifact/jee/expenses/gen/src/main/java/expenses/)
+  * [REST API](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE-expenses/lastSuccessfulBuild/artifact/jee/expenses/gen/src/main/java/resource/expenses/)
 

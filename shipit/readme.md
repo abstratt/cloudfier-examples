@@ -46,5 +46,5 @@ that can send email notications:
 ### Generated code
 
 * Java
-  * [Domain/Persistence](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/shipit/gen/src/main/java/shipit/)
-  * [REST API](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/shipit/gen/src/main/java/resource/shipit/)
+  * [Domain/Persistence](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE-shipit/lastSuccessfulBuild/artifact/jee/shipit/gen/src/main/java/shipit/)
+  * [REST API](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE-shipit/lastSuccessfulBuild/artifact/jee/shipit/gen/src/main/java/resource/shipit/)
