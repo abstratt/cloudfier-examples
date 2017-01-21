@@ -17,5 +17,5 @@ http://develop.cloudfier.com/services/api-v2/test-cloudfier-examples-blog/ (REST
 ### Generated code
 
 * Java
-  * [Domain/Persistence](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/blog/gen/src/main/java/blog/)
-  * [REST API](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/ws/jee/blog/gen/src/main/java/resource/blog/)
+  * [Domain/Persistence](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/lastSuccessfulBuild/artifact/jee/expenses/gen/src/main/java/blog/)
+  * [REST API](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE/lastSuccessfulBuild/artifact/jee/blog/gen/src/main/java/resource/blog/)
