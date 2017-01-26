@@ -29,5 +29,5 @@ http://develop.cloudfier.com/services/api-v2/test-cloudfier-examples-car-rental/
 ### Generated code
 
 * Java
-  * [Domain/Persistence](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE-car-rental/lastSuccessfulBuild/artifact/jee/car-rental/gen/src/main/java/car_rental/)
+  * [Domain/Persistence](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE-car-rental/lastBuild/artifact/jee/car-rental/gen/src/main/java/car_rental/)
   * [REST API](https://textuml.ci.cloudbees.com/job/codegen-examples-JEE-car-rental/lastBuild/artifact/jee/car-rental/gen/src/main/java/resource/car_rental/)
