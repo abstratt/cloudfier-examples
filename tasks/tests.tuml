@@ -11,8 +11,8 @@ class Tasks
     begin
         var contributor, task;
         begin
-            contributor := Examples#contributor("filho 1");
-	        task := Examples#taskFor(contributor, "lavar carro");
+            contributor := Examples#contributor("son #1");
+	    task := Examples#taskFor(contributor, "wash car");
         end;
         begin
             Assert#areEqual(Task::Status#Open, task.status); 
@@ -29,9 +29,9 @@ class Tasks
         var contributor, baseline;
         begin
             baseline := Task extent.size();
-            contributor := Examples#contributor("auser");
-	        Examples#taskFor(contributor, "");
-	        Examples#taskFor(contributor, "");        
+            contributor := Examples#contributor("a user");
+	    Examples#taskFor(contributor, "");
+	    Examples#taskFor(contributor, "");        
             Examples#taskFor(contributor, "");                
         end;
         begin        
@@ -44,9 +44,9 @@ class Tasks
         var task, contributor, baseline;
         begin
             baseline := Task#openTasks().size();
-            contributor := Examples#contributor("um contributor");
-	        Examples#taskFor(contributor, "");
-	        Examples#taskFor(contributor, "");        
+            contributor := Examples#contributor("a contributor");
+	    Examples#taskFor(contributor, "");
+	    Examples#taskFor(contributor, "");        
             task := Examples#taskFor(contributor, "");                
         end;
         begin        
@@ -67,8 +67,8 @@ class Tasks
             baselineToday := Task#tasksOpenedOn(today).size();
             baselineYesterday := Task#tasksOpenedOn(yesterday).size();
             contributor := Examples#contributor("auser");
-	        Examples#taskFor(contributor, "");
-	        Examples#taskFor(contributor, "");        
+	    Examples#taskFor(contributor, "");
+	    Examples#taskFor(contributor, "");        
             task := Examples#taskFor(contributor, "");
         end;
         begin        
@@ -95,12 +95,11 @@ class Examples
 
     private static operation taskFor(contributor : Contributor, description : String) : Task;
     begin
-        var novaTask;
-        novaTask := new Task;
-        novaTask.description := description;
-        /*novaTask.detalhes := Memo#fromString(description + " detalhes");*/
-        novaTask.assignee := contributor;        
-        return novaTask;
+        var newTask;
+        newTask := new Task;
+        newTask.description := description;
+        newTask.assignee := contributor;        
+        return newTask;
     end;
     
     private static operation task(task : String) : Task;
