@@ -1,5 +1,24 @@
 package minicrm;
 
+class EmpresaVendedora
+    attribute nome : String;
+    attribute representantes : RepresentanteDeEmpresa[*];
+end;
+
+role class RepresentanteDeEmpresa
+    attribute nome : String;
+    attribute empresas : EmpresaVendedora[*];
+end;
+
+association
+    role RepresentanteDeEmpresa.empresas;
+    role EmpresaVendedora.representantes;
+end;
+
+role class Vendedor
+    attribute nome : String;
+end;
+
 class Cliente
     attribute nome : String;
     attribute email : String[0, 1];
