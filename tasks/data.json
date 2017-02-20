@@ -22,47 +22,37 @@
     "Contributor" : [ {
       "name" : "Pytr"
     }, {
-      "name" : "Francisco"
-    }, {
       "name" : "John"
     }, {
       "name" : "Dimitri"
     } ],
     "Task" : [ {
-      "description" : "levar o cachorro para passear",
+      "description" : "walk the dog",
       "details" : null,
       "status" : "Completed",
       "openingDate" : "2016/07/03",
       "completionDate" : "2016/09/18",
       "assignee" : "tasks.Contributor@2"
     }, {
-      "description" : "lavar o tapete da sala",
+      "description" : "wash the living room rug",
       "details" : null,
       "status" : "Open",
       "openingDate" : "2016/07/03",
       "completionDate" : null,
       "assignee" : "tasks.Contributor@1"
     }, {
-      "description" : "lavar o carro",
+      "description" : "wash the car",
       "details" : null,
       "status" : "Open",
       "openingDate" : "2016/07/04",
       "completionDate" : null,
       "assignee" : "tasks.Contributor@2"
-    }, {
-      "description" : "fazer a barba",
-      "details" : null,
-      "status" : "Completed",
-      "openingDate" : "2016/07/04",
-      "completionDate" : "2016/07/04",
-      "assignee" : "tasks.Contributor@1"
     }, {
       "description" : "Mop the deck",
       "details" : null,
-      "status" : "Completed",
+      "status" : "Open",
       "openingDate" : "2016/09/18",
-      "completionDate" : "2016/09/18",
-      "assignee" : "tasks.Contributor@3"
+      "completionDate" : null
     } ]
   }
 }

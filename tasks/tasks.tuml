@@ -5,6 +5,8 @@ role class Contributor
     attribute name : String;
 
     reference tasks : Task[*] opposite assignee;
+    
+    derived attribute openTaskCount : Integer := { self.tasks.count((t : Task) : Boolean { t.open } ) };
 
     private static derived attribute current : Contributor := {
         (System#user() as Contributor)
@@ -19,6 +21,8 @@ class Task
     attribute details : Memo[0,1];
 
     attribute status : Status;
+    
+    private derived attribute open : Boolean := { self.status == Status#Open };
 
     readonly attribute openingDate : Date := { Date#today() };
 
@@ -44,12 +48,14 @@ class Task
         });
     end;
 
+/*
     static query myTasks() : Task[*];
     begin
         return Contributor#current.tasks;
     end;
-
-    static query openTasksFor(contributor : Contributor) : Task[*];
+*/
+    static query openTasksFor(contributor : Contributor) : Task[*]
+        precondition (contributor) { contributor.openTaskCount > 0 };
     begin
         return Task extent.select((t : Task) : Boolean {
             t.assignee == contributor and t.status == Status#Open
