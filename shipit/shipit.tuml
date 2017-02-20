@@ -20,7 +20,7 @@ role class User
     private derived static attribute current : User[0, 1] := { (System#user() as User) };
 
     private derived attribute committer : Boolean := {
-        self.kind = UserKind#Committer
+        self.kind == UserKind#Committer
     };
 
     private attribute issuesAssignedToUser : Issue[*];
