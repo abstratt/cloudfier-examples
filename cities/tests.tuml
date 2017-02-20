@@ -1,10 +1,10 @@
 package cities_tests;
 
 apply mdd_extensions;
-import mdd_types;
 
 import cities::State;
 import cities;
+import mdd_types;
 
 [Test]
 class Tests
@@ -17,9 +17,9 @@ class Tests
         cities := City extent;
         /*Assert#areEqual(cities.collect((c : City) : String {c.name}), capitals.collect((c : City) : String {c.name}));*/
         Assert#areEqual(3, capitals.size());
-        oregon := State#byAbbreviation("OR");       
+        oregon := State#byAbbreviation("OR");
         Assert#isNotNull(oregon.capital);
-        Assert#areEqual("Salem", oregon.capital.name);        
+        Assert#areEqual("Salem", oregon.capital.name);
         Assert#isTrue(capitals.includes(oregon.capital));
     end;
 
@@ -45,10 +45,10 @@ class Tests
         TestData#build();
         oregon := State#byAbbreviation("OR");
         Assert#isTrue(oregon.recordedPopulation > 0);
-        Assert#areEqual(3, oregon.cities.size());        
+        Assert#areEqual(3, oregon.cities.size());
         expected := oregon.city("Portland").population + oregon.city("Eugene").population + oregon.city("Salem").population;
         Assert#areEqual(expected, oregon.recordedPopulation);
-    end; 
+    end;
 
     operation populousStates_Abbreviations();
     begin
@@ -60,17 +60,17 @@ class Tests
         Assert#isTrue(populousStateAbbreviations.includes("OR"));
         Assert#isTrue(! populousStateAbbreviations.includes("WY"));
     end;
-    
+
     operation statePopulationsAbove();
     begin
         var populations, oregon, found;
         TestData#build();
-        oregon := State#byAbbreviation("OR");        
+        oregon := State#byAbbreviation("OR");
         populations := State#statePopulationsAbove(500000);
         Assert#areEqual(2, populations.size());
-        found := populations.\any((s : { \state: State, : Integer}) : Boolean {
-        	s.\state.abbreviation = "OR" 
-    	});
+        found := populations.\any((s : {\state : State,  : Integer}) : Boolean {
+            s.\state.abbreviation = "OR"
+        });
         Assert#areEqual(oregon.recordedPopulation, found.statePopulation);
     end;
 
@@ -78,11 +78,13 @@ class Tests
     begin
         var san_francisco, maxPopulation;
         TestData#build();
-        san_francisco := City extent.\any((c : City) : Boolean {c.name = "San Francisco"});
+        san_francisco := City extent.\any((c : City) : Boolean {
+            c.name = "San Francisco"
+        });
         maxPopulation := City#maximumPopulation();
         Assert#areEqual(san_francisco.population, maxPopulation);
-    end;    
-    
+    end;
+
     operation mostPopulousCity();
     begin
         var actual;
@@ -90,31 +92,32 @@ class Tests
         actual := City#mostPopulousCity();
         Assert#isNotNull(actual);
         Assert#areEqual("San Francisco", actual.name);
-    end;    
-    
+    end;
+
     operation populousStates();
     begin
         var populousStates;
         TestData#build();
         populousStates := State#statesMorePopulousThan(500000);
         Assert#areEqual(2, populousStates.size());
-        Assert#isTrue(populousStates.includes(State#byAbbreviation("CA")));        
+        Assert#isTrue(populousStates.includes(State#byAbbreviation("CA")));
         Assert#isTrue(populousStates.includes(State#byAbbreviation("OR")));
-        Assert#isTrue(!populousStates.includes(State#byAbbreviation("WY")));
+        Assert#isTrue(! populousStates.includes(State#byAbbreviation("WY")));
     end;
-    
+
     operation citiesMorePopulousThan();
     begin
         TestData#build();
         Assert#areEqual(4, City#citiesMorePopulousThan(500000));
         Assert#areEqual(1, City#citiesMorePopulousThan(1000000));
-        Assert#areEqual(0, City#citiesMorePopulousThan(2000000));        
+        Assert#areEqual(0, City#citiesMorePopulousThan(2000000));
     end;
-    
-    
-    static operation statsFinder(abbreviation : String) : {(: StatePopulation) : Boolean};
+
+    static operation statsFinder(abbreviation : String) : {( : StatePopulation) : Boolean};
     begin
-        return (stat : StatePopulation) : Boolean { stat.abbreviation == abbreviation };
+        return (stat : StatePopulation) : Boolean {
+            stat.abbreviation == abbreviation
+        };
     end;
 
     operation statePopulations();
@@ -125,10 +128,14 @@ class Tests
         wyoming := State#byAbbreviation("WY");
         populations := State#statePopulations();
         Assert#areEqual(State extent.size(), populations.size());
-        Assert#areEqual(wyoming.recordedPopulation, populations.\any((stat : StatePopulation) : Boolean { stat.abbreviation = "WY" }).population);
-        Assert#areEqual(oregon.recordedPopulation, populations.\any((stat : StatePopulation) : Boolean { stat.abbreviation = "OR" }).population);
+        Assert#areEqual(wyoming.recordedPopulation, populations.\any((stat : StatePopulation) : Boolean {
+            stat.abbreviation = "WY"
+        }).population);
+        Assert#areEqual(oregon.recordedPopulation, populations.\any((stat : StatePopulation) : Boolean {
+            stat.abbreviation = "OR"
+        }).population);
     end;
-    
+
     operation statePopulationsViaCities();
     begin
         var populations, oregon, wyoming;
@@ -137,10 +144,13 @@ class Tests
         wyoming := State#byAbbreviation("WY");
         populations := State#statePopulationsViaCities();
         Assert#areEqual(State extent.size(), populations.size());
-        Assert#areEqual(wyoming.recordedPopulation, populations.\any((stat : StatePopulation) : Boolean { stat.abbreviation = "WY" }).population);
-        Assert#areEqual(oregon.recordedPopulation, populations.\any((stat : StatePopulation) : Boolean { stat.abbreviation = "OR" }).population);
+        Assert#areEqual(wyoming.recordedPopulation, populations.\any((stat : StatePopulation) : Boolean {
+            stat.abbreviation = "WY"
+        }).population);
+        Assert#areEqual(oregon.recordedPopulation, populations.\any((stat : StatePopulation) : Boolean {
+            stat.abbreviation = "OR"
+        }).population);
     end;
-
 end;
 
 class TestData
@@ -153,11 +163,10 @@ class TestData
         TestData#newCity("San Mateo", 101128, california);
         TestData#newCity("San Diego", 837442, california);
         TestData#newCity("Sacramento", 837442, california).makeCapital();
-
         oregon := TestData#newState("Oregon", "OR");
         TestData#newCity("Portland", 609456, oregon);
         TestData#newCity("Eugene", 159190, oregon);
-        TestData#newCity("Salem", 160000, oregon).makeCapital();        
+        TestData#newCity("Salem", 160000, oregon).makeCapital();
         wyoming := TestData#newState("Wyoming", "WY");
         TestData#newCity("Cheyenne", 62448, wyoming).makeCapital();
     end;
