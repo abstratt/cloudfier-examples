@@ -35,7 +35,7 @@ class Category
         Expense#findExpensesByCategory(self)
     };
 
-    static query totalExpensesPerCategory() : CategoryTotal[*];
+    static query totalExpensesPerCategory() : CategoryTotal[*] allow all;
     begin
         return Expense extent.groupBy((e : Expense) : Category { e.category }).groupCollect((expenses : Expense[*]) : CategoryTotal {
             {
@@ -45,7 +45,7 @@ class Category
         });
     end;
 
-    static query totalApprovedExpensesPerCategory() : CategoryTotal[*];
+    static query totalApprovedExpensesPerCategory() : CategoryTotal[*] allow all;
     begin
         return Expense extent.select((e : Expense) : Boolean {
             e.status == Expense::Status#Approved
@@ -244,7 +244,7 @@ class Expense
     end;
 
     (* Calculates counts of open expenses per category. *)
-    static query openExpenseCountPerCategory() : {category : Category, count : Integer}[*];
+    static query openExpenseCountPerCategory() : {category : Category, count : Integer}[*] allow all;
     begin
         return Expense extent.select((e : Expense) : Boolean {
             e.status == Status#Submitted
