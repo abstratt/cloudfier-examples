@@ -10,10 +10,19 @@ datatype NoDefinitionFound
 end;
 
 class Term
-    attribute name : String;
-    attribute definition : Memo[0,1];
+    id attribute name : String;
+    attribute definition : Memo;
+    
+    static operation researchTerm(toResearch : String) : Term;
+    begin
+        var term;
+        term := new Term;
+        term.name := toResearch;
+        term.defineThisTerm();
+        return term;
+    end;
 
-    operation researchRelatedTerms();
+    operation researchRelatedTerms() raises NoRelatedTermFound;
     begin
         var retrieved : RetrievedTerm;
         begin
@@ -26,37 +35,67 @@ class Term
         end;
     end;
     
-    operation researchDefinition();
+    operation defineThisTerm();
+    begin
+        begin
+            Term#researchDefinition(self);
+        end;
+    end;
+    
+    static operation researchDefinition(term : Term);
     begin
         var retrieved : RetrievedTerm;
         begin
-            retrieved := self.definer.define(self.name);
-            if (retrieved.definition == null) then
+            retrieved := term.definer.define(term.name);
+            if (retrieved.related.isEmpty()) then
                 raise new NoDefinitionFound;
-            self.definition := retrieved.definition;
+            term.definition := Memo#fromString(retrieved.related.one().definition);
         end;
+    end;
+
+    static query findByName(termName : String) : Term[*];
+    begin
+        return Term extent.select((t : Term) : Boolean { t.name = termName });
     end;
 
     private operation addRelatedTerm(r : RetrievedTerm);
     begin
-        var newTerm : Term;
+        var newTerm, existingTerm : Term;
         begin
             begin
-	            newTerm := new Term;
-	            newTerm.name := r.term;
-	            newTerm.definition := r.definition;
+                existingTerm := Term#findByName(r.term).one();
+                if (existingTerm == null) then
+                begin
+		            newTerm := new Term;
+		            newTerm.name := r.term;
+		            newTerm.definition := r.definition;
+		        end;
 	        end;
 	        begin
-                link TermRelationship(term := self, relatedTerms := newTerm);
+	            var toLink : Term;
+	            if (existingTerm == null) then
+	                toLink := newTerm
+	            else
+	            begin
+	                if (!(existingTerm == self)) then
+	                    toLink := existingTerm;
+	            end;
+	            if (!(toLink == null)) then
+                    link TermRelationship(parentTerm := self, relatedTerms := toLink);
             end;
         end;
     end;
     
     required port definer : Definer;
+    
+    static query numberOfTerms() : Integer;
+    begin
+        return Term extent.size();
+    end;
 end;
 
 association TermRelationship
-    role term : Term;
+    role parentTerm : Term[0,1];
     navigable role relatedTerms : Term[*];
 end;
 
