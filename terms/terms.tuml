@@ -26,7 +26,7 @@ class Term
     begin
         var retrieved : RetrievedTerm;
         begin
-            retrieved := self.definer.define(self.name);
+            retrieved := Term#definer.define(self.name);
             if (retrieved.related.isEmpty()) then
                 raise new NoRelatedTermFound;
             retrieved.related.forEach((r : RetrievedTerm) {
@@ -38,18 +38,19 @@ class Term
     operation defineThisTerm();
     begin
         begin
-            Term#researchDefinition(self);
+            self.definition := Term#researchDefinition(self.name);
         end;
     end;
     
-    static operation researchDefinition(term : Term);
+    
+    static query researchDefinition(term : String) : Memo;
     begin
         var retrieved : RetrievedTerm;
         begin
-            retrieved := term.definer.define(term.name);
+            retrieved := Term#definer.define(term);
             if (retrieved.related.isEmpty()) then
                 raise new NoDefinitionFound;
-            term.definition := Memo#fromString(retrieved.related.one().definition);
+            return Memo#fromString(retrieved.related.one().definition);
         end;
     end;
 
@@ -86,7 +87,7 @@ class Term
         end;
     end;
     
-    required port definer : Definer;
+    static required port definer : Definer;
     
     static query numberOfTerms() : Integer;
     begin
