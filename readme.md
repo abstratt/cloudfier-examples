@@ -8,11 +8,6 @@ This repository contains simple examples of Cloudfier applications.
 For instructions on how to get these example apps into [Cloudfier](http://cloudfier.com), 
 [read this](http://cloudfier.com/doc/creating/examples/).
 
-When running these applications, it is usually possible to login as user 'guest' 
-(no password), except if the application does not support anonymous login (check 
-the mdd.properties file). The descriptions below include some examples of credentials
-that can be used to log in.
-
 ### Taking the examples through the JavaEE generator
 
 You can play with the JavaEE-based code generation on your own machine.
