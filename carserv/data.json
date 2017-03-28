@@ -1,5 +1,42 @@
 {
   "carserv": {
+    "userprofile.Profile" : [ {
+      "username" : "admin",
+      "password" : "pass"
+    }, {
+      "username" : "mechanic1",
+      "password" : "pass"
+    }, {
+      "username" : "mechanic2",
+	  "password" : "pass"
+    }, {
+      "username" : "mechanic3",
+	  "password" : "pass"
+    }, {
+      "username" : "mechanic4",
+	  "password" : "pass"
+    }, {
+      "username" : "mechanic5",
+	  "password" : "pass"
+    }, {
+      "username" : "customer1",
+	  "password" : "pass"
+    }, {
+      "username" : "customer2",
+	  "password" : "pass"
+    }, {
+      "username" : "customer3",
+	  "password" : "pass"
+    }, {
+      "username" : "customer4",
+	  "password" : "pass"
+    }, {
+      "username" : "customer5",
+	  "password" : "pass"
+    }, {
+      "username" : "customer6",
+	  "password" : "pass"
+    }],
     "Make": [ {
       "name" : "Ford"
     }, {
@@ -29,27 +66,33 @@
     "Customer" : [ {
       "firstName" : "Sarah",
       "lastName" : "Connor",
-      "title" : "Ms"
+      "title" : "Ms",
+      "userProfile" : "userprofile.Profile@6"
     }, {
       "firstName" : "John",
       "lastName" : "Connor",
-      "title" : "Mr"
+      "title" : "Mr",
+      "userProfile" : "userprofile.Profile@7"
     }, {
       "firstName" : "Zelda",
       "lastName" : "Scott",
-      "title" : "Mrs"
+      "title" : "Mrs",
+      "userProfile" : "userprofile.Profile@8"
     }, {
       "firstName" : "Boris",
       "lastName" : "Frederikson",
-      "title" : "Mr"
+      "title" : "Mr",
+      "userProfile" : "userprofile.Profile@9"
     }, {
       "firstName" : "Joe",
       "lastName" : "Bloggs",
-      "title" : "Mr"
+      "title" : "Mr",
+      "userProfile" : "userprofile.Profile@10"
     }, {
       "firstName" : "Mary",
       "lastName" : "Bloggs",
-      "title" : "Mrs"
+      "title" : "Mrs",
+      "userProfile" : "userprofile.Profile@11"
     } ],
     "Car" : [ {
       "registrationNumber" : "KLP346P",
@@ -91,23 +134,28 @@
     "AutoMechanic" : [ {
       "firstName" : "John",
       "lastName" : "Smith",
-      "status" : "Working"
+      "status" : "Working",
+      "userProfile" : "userprofile.Profile@1"
     }, {
       "firstName" : "Teresa",
       "lastName" : "Perkins",
-      "status" : "Working"
+      "status" : "Working",
+      "userProfile" : "userprofile.Profile@2"
     }, {
       "firstName" : "Blake",
       "lastName" : "Gomez",
-      "status" : "Apprentice"
+      "status" : "Apprentice",
+      "userProfile" : "userprofile.Profile@3"
     }, {
       "firstName" : "Hank",
       "lastName" : "Goodman",
-      "status" : "Working"
+      "status" : "Working",
+      "userProfile" : "userprofile.Profile@4"
     }, {
       "firstName" : "Mark",
       "lastName" : "Parsons",
-      "status" : "Apprentice"
+      "status" : "Apprentice",
+      "userProfile" : "userprofile.Profile@5"
     } ],
     "Service" : [ {
       "description" : "Bumper needs repair",

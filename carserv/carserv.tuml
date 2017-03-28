@@ -28,7 +28,7 @@ end;
 
 class AutoMechanic specializes Person
 
-    allow AutoMechanic;
+    allow AutoMechanic all;
 
     attribute status : WorkingStatus;
 
@@ -129,8 +129,8 @@ end;
 
 class Customer specializes Person
 
-    allow AutoMechanic;
-    allow Customer { System#user() == self };
+    allow AutoMechanic all;
+    allow Customer all { System#user() == self };
 
     attribute cars : Car[0, *];
 
@@ -183,8 +183,8 @@ end;
 
 class Car
 
-    allow AutoMechanic;
-    allow Customer { System#user() == self.owner };
+    allow AutoMechanic all;
+    allow Customer all { System#user() == self.owner };
 
     attribute registrationNumber : String;
 
@@ -232,8 +232,8 @@ end;
 
 class Service
 
-    allow AutoMechanic;
-    allow Customer { System#user() == self.car.owner };
+    allow AutoMechanic all;
+    allow Customer all { System#user() == self.car.owner };
     
     derived attribute serviceNumber : String := {
         "" + self.bookedOn.year().toString() + "." + self.sequence

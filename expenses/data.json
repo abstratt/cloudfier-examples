@@ -2,29 +2,25 @@
   "expenses" : {
     "userprofile.Profile" : [ {
       "username" : "admin",
-      "email" : "admin@abstratt.com",
       "password" : "pass"
     }, {
-      "username" : "john.ford",
-      "email" : "john@abstratt.com",
+      "username" : "employee1",
       "password" : "pass"
     }, {
-      "username" : "peter.jones",
-      "email" : "peter@abstratt.com",
+      "username" : "employee2",
       "password" : "pass"
     }, {
-      "username" : "wanda.hoyt",
-      "email" : "wanda@abstratt.com",
+      "username" : "approver1",
       "password" : "pass"
     } ],
     "Employee" : [ {
       "name" : "Peter Jones",
-      "user" : "userprofile.Profile@3"
+      "userProfile" : "userprofile.Profile@3"
     }, {
       "name" : "Camille Jouel"
     }, {
       "name" : "John Ford",
-      "user" : "userprofile.Profile@2"
+      "userProfile" : "userprofile.Profile@2"
     }
     ],
     "Category" : [ {
@@ -38,7 +34,7 @@
     } ],
     "Approver" : [ {
       "name" : "Wanda Hoyt",
-      "user" : "userprofile.Profile@4"
+      "userProfile" : "userprofile.Profile@4"
     } ],
     "Expense" : [ {
       "description" : "Cab airport->downtown",
@@ -94,7 +90,7 @@
     "Admin" : [ {
       "name" : "root",
       "master" : true,
-      "user" : "userprofile.Profile@1"
+      "userProfile" : "userprofile.Profile@1"
     }]
   }
 }

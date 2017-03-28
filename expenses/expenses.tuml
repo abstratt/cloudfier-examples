@@ -21,8 +21,8 @@ class Category
     attribute name : String;
 
     static operation newCategory(name : String) : Category
-        allow Admin
-        allow Approver
+        allow Admin all
+        allow Approver all
         allow Employee none;        
     begin
         var newCategory;
@@ -72,10 +72,10 @@ end;
 
 (* The expense as reported by an employee. *)
 class Expense
-    allow Admin;
+    allow Admin all;
     allow Approver extent;
-    allow Employee read { self.employee == System#user() };
-    allow Employee update { self.employee == System#user() and self.status == Status#Draft };
+    allow Employee read { self.employee == (System#user() as Employee) };
+    allow Employee update { self.employee == (System#user() as Employee) and self.status == Status#Draft };
 
     (* A moniker for this expense. *)
     derived attribute moniker : String := {
@@ -124,7 +124,7 @@ class Expense
     static operation newExpense(description : String, amount : Double, date : Date := {
         Date#today()
     }, category : Category, employee : Employee) : Expense
-        allow Employee call;
+        allow Employee all;
     begin
         var newExpense;
         newExpense := new Expense;
@@ -150,7 +150,7 @@ class Expense
     (* Approves this expense. *)
     operation approve()
         (* Cannot approve own expenses. *)
-        allow Approver { not System#user() == self.employee };
+        allow Approver all { not (System#user() as Employee) == self.employee };
     begin
         self.approver := (System#user() as Approver);
     end;
@@ -171,16 +171,16 @@ class Expense
         precondition WithinReconsiderationPeriod { self.daysProcessed < 7 }
         (* Cannot reconsider after rejected twice *)
         precondition UnderRejectionThreshold { self.rejections <= 2 }        
-        allow Employee { self.employee == System#user() };
+        allow Employee all { self.employee == (System#user() as Employee) };
 
     (* Sends this expense back to Draft state. *)
     operation review()
-        allow Employee { self.employee == System#user() }
-        allow Approver;
+        allow Employee all { self.employee == (System#user() as Employee) }
+        allow Approver all;
 
     (* Submit this expense. *)
     operation submit()
-        allow Employee { self.employee == System#user() };
+        allow Employee all { self.employee == (System#user() as Employee) };
 
     private operation reportApproved();
     begin
@@ -201,7 +201,7 @@ class Expense
 
     (* Finds all expenses in the given period. *)
     static query findExpensesInPeriod(start : Date[0, 1], end_ : Date[0, 1]) : Expense[*]
-        allow Approver, Admin;
+        allow Approver, Admin all;
     begin
         return Expense extent.select((e : Expense) : Boolean {
             (start == null or e.date >= start) and (end_ == null or e.date <= end_)
@@ -210,7 +210,7 @@ class Expense
 
     (* Finds all expenses currently in the given status. *)
     static query findByStatus(status : Status) : Expense[*]
-        allow Approver, Admin;
+        allow Approver, Admin all;
     begin
         return Expense extent.select((e : Expense) : Boolean {
             e.status == status
@@ -226,7 +226,7 @@ class Expense
     (* Lists all expenses for the current user. *)
     static query myExpenses() : Expense[*]
         allow Admin none
-        allow Employee;
+        allow Employee static call;
     begin
         return (System#user() as Employee).expenses;
     end;
@@ -342,14 +342,14 @@ end;
 
 (* An employee that can approve other employees' expenses. *)
 class Approver specializes Employee
-    allow Admin;
-    allow Approver update { System#user() == self };
+    allow Admin all;
+    allow Approver update { (System#user() as Approver) == self };
     attribute specialty : Category[0,1];
 end;
 
 class Admin specializes Person
-    allow Admin { (System#user() as Admin).master };
-    allow Admin read { self == System#user() };
+    allow Admin all { (System#user() as Admin).master };
+    allow Admin read { self == (System#user() as Admin) };
     
     attribute master : Boolean[0,1] := false;
 
@@ -358,9 +358,9 @@ end;
 (* An employee reports expenses. *)
 class Employee specializes Person
 
-    allow Employee update { System#user() == self };
+    allow Employee update { (System#user() as Employee) == self };
     allow Employee create, extent, read;
-    allow Admin;
+    allow Admin all;
 
     reference expenses : Expense[*] opposite employee;
 
@@ -398,7 +398,7 @@ class Employee specializes Person
 
     operation declareExpense(description : String, amount : Double, date : Date, 
             category : Category) : Expense
-        allow Employee { self == System#user() };
+        allow Employee all { self == (System#user() as Employee) };
     begin
         return Expense#newExpense(description, amount, date, category, self);
     end;
@@ -425,7 +425,7 @@ class Employee specializes Person
     end;
 
     operation deleteEmployee()
-        allow Admin;
+        allow Admin all;
     begin
         self.expenses.forEach((e : Expense) {
             destroy e;
