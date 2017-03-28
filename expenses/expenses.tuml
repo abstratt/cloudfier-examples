@@ -3,6 +3,7 @@ package expenses;
 apply kirra;
 
 import mdd_types;
+import mdd_media;
 import payment;
 
 datatype CategoryTotal
@@ -96,6 +97,9 @@ class Expense
 
     (* The current status of this expense. *)
     attribute status : Status;
+    
+    
+    attribute receipt : Picture[0,1];
 
     (* Has this expense been approved yet? *)
     private derived attribute approved : Boolean := {
