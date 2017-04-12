@@ -17,7 +17,7 @@ role class User
 
     readonly attribute kind : UserKind := Reporter;
 
-    private derived static attribute current : User[0, 1] := { (System#user() as User) };
+    private derived static attribute current : User[0, 1] := { User#current() };
 
     private derived attribute committer : Boolean := {
         self.kind == UserKind#Committer

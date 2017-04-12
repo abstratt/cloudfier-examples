@@ -25,27 +25,27 @@
       "email" : "ssimon@cloudfier.com",
       "fullName" : "Saulo Simon",
       "kind" : "Committer",
-      "user" : "userprofile.Profile@1"      
+      "userProfile" : "userprofile.Profile@1"      
     }, {
       "email" : "rperez@cloudfier.com",
       "fullName" : "Ricardo Perez",
       "kind" : "Committer",
-      "user" : "userprofile.Profile@2"
+      "userProfile" : "userprofile.Profile@2"
     }, {
       "email" : "gtorres@abstratt.com",
       "fullName" : "Gina Torres",
       "kind" : "Reporter",
-      "user" : "userprofile.Profile@3"
+      "userProfile" : "userprofile.Profile@3"
     }, {
       "email" : "fsilveira@abstratt.com",
       "fullName" : "Felix Silveira",
       "kind" : "Reporter",
-      "user" : "userprofile.Profile@4"
+      "userProfile" : "userprofile.Profile@4"
     }, {
       "email" : "rafael@abstratt.com",
       "fullName" : "AAA",
       "kind" : "Reporter",
-      "user" : "userprofile.Profile@5"
+      "userProfile" : "userprofile.Profile@5"
     } ],
     "Project" : [ {
       "description" : "Cloudfier issues",
