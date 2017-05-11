@@ -365,6 +365,7 @@ class Employee specializes Person
     allow Employee update { (System#user() as Employee) == self };
     allow Employee create, extent, read;
     allow Admin all;
+    allow create;
 
     reference expenses : Expense[*] opposite employee;
 

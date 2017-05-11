@@ -1,7 +1,5 @@
 package payment;
 
-import mdd_types;
-
 signal ExpenseApproved
 
     attribute employeeName : String;

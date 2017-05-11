@@ -2,29 +2,34 @@
   "userprofile" : {
     "Profile" : [ {
       "username" : "john.ford",
-      "email" : "john@abstratt.com",
       "password" : "pass"
     }, {
       "username" : "peter.jones",
-      "email" : "peter@abstratt.com",
       "password" : "pass"
     }, {
       "username" : "wanda.hoyt",
-      "email" : "wanda@abstratt.com",
       "password" : "pass"
     }, {
       "username" : "joanna.davis",
-      "email" : "joanna@abstratt.com",
       "password" : "pass"
     } ]
   },
   "tasks" : {
-    "Contributor" : [ {
-      "name" : "Pytr"
+    "Contributor" : [ 
+    {
+      "name" : "John",
+      "userProfile" : "userprofile.Profile@2"      
     }, {
-      "name" : "John"
+      "name" : "Pytr",
+	  "userProfile" : "userprofile.Profile@1"      
+      
     }, {
-      "name" : "Dimitri"
+      "name" : "Wanda",
+      "userProfile" : "userprofile.Profile@3"      
+
+    }, {
+      "name" : "Joanna",
+      "userProfile" : "userprofile.Profile@4"      
     } ],
     "Task" : [ {
       "description" : "walk the dog",

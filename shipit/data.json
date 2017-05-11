@@ -2,23 +2,18 @@
   "shipit" : {
     "userprofile.Profile" : [ {
       "username" : "user1",
-      "email" : "user1@abstratt.com",
       "password" : "pass"
     }, {
       "username" : "user2",
-      "email" : "user2@abstratt.com",
       "password" : "pass"
     }, {
       "username" : "user3",
-      "email" : "user3@abstratt.com",
       "password" : "pass"
     }, {
       "username" : "user4",
-      "email" : "user4@abstratt.com",
       "password" : "pass"
     }, {
       "username" : "user5",
-      "email" : "user5@abstratt.com",
       "password" : "pass"
     } ],	
     "User" : [ {

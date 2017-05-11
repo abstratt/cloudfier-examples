@@ -140,7 +140,7 @@ class Comment
 
     readonly attribute user : User := { User#current };
 
-    readonly attribute commentedOn : Date := { Date#now() };
+    readonly attribute commentedOn : DateTime := { DateTime#now() };
 
     readonly attribute inReplyTo : Comment[0, 1];
 
@@ -192,9 +192,14 @@ end;
 (* Issues are reported against a specific project. *)
 class Project
 
-    id attribute description : String;
+id attribute description : String;
 
     id attribute token : String;
+    
+    static query projects() : Project[*];
+    begin
+        return Project extent;
+    end;
 end;
 
 association ProjectIssues
@@ -207,9 +212,9 @@ end;
 
 association VotedIssues
 
-    navigable role voter : User[*];
+    readonly navigable role voter : User[*];
 
-    navigable role voted : Issue[*];
+    readonly navigable role voted : Issue[*];
 
 end;
 
@@ -219,6 +224,8 @@ end;
     they are opened until they are resolved and eventually closed.
 *)
 class Issue
+
+    allow User read, extent, update, static call;
 
     derived id attribute mnemonic : String := {
         self.issueKey + " - " + self.summary
@@ -238,7 +245,7 @@ class Issue
 
     port userNotifier : UserNotifier;
 
-    readonly attribute reportedOn : Date := { Date#today() };
+    readonly attribute reportedOn : DateTime := { DateTime#now() };
 
     readonly attribute reporter : User;
 
@@ -263,7 +270,7 @@ class Issue
     derived attribute commentCount : Integer := { self.comments.size() };
 
     derived attribute waitingFor : String := {
-        ("" + self.reportedOn.difference(self.referenceDate()).toDays()) + " day(s)"
+        ("" + self.reportedOn.date().difference(self.referenceDate()).toDays()) + " day(s)"
     };
 
     private derived attribute mine : Boolean := {
@@ -296,7 +303,7 @@ class Issue
             userEmail := newIssue.reporter.email) to newIssue.userNotifier;
     end;
 
-    static operation createIssue(reporter : User, project : Project, summary : String, 
+    private static operation createIssue(reporter : User , project : Project, summary : String, 
             description : Memo, severity : Severity := Normal) : Issue;
     begin
         var newIssue;
@@ -320,6 +327,27 @@ class Issue
     begin
         return Issue extent.select((i : Issue) : Boolean {
             i.project == toMatch
+        });
+    end;
+    
+    static query openIssues() : Issue[*];
+    begin
+        return Issue extent.select((i : Issue) : Boolean {
+            i.status <= Status#Assigned
+        });
+    end;
+    
+    static query issuesInProgress() : Issue[*];
+    begin
+        return Issue extent.select((i : Issue) : Boolean {
+            i.status == Status#InProgress
+        });
+    end;
+    
+    static query closedIssues() : Issue[*];
+    begin
+        return Issue extent.select((i : Issue) : Boolean {
+            i.status >= Status#Resolved
         });
     end;
 
@@ -372,7 +400,7 @@ class Issue
     begin
         var comment;
         comment := new Comment;
-        comment.commentedOn := Date#today();
+        comment.commentedOn := DateTime#now();
         comment.text := text;
         comment.user := User#current;
         comment.inReplyTo := inReplyTo;
@@ -396,7 +424,7 @@ class Issue
     end;
 
     operation withdrawVote()
-        precondition MustLogIn { not (User#current == null) };
+        precondition { User#current.isVoter(self) };
     begin
         User#current.withdrawVoteFrom(self);
     end;
@@ -430,15 +458,15 @@ class Issue
             transition on call(assign) to Assigned;
         end;
 
-        state InProgress
-            transition on call(suspend) to Assigned;
-        end;
-
         state Assigned
             transition on call(release) to Open;
             transition on call(resolve) to Resolved;
             transition on call(steal) to Assigned;
             transition on call(start) to InProgress;
+        end;
+
+        state InProgress
+            transition on call(suspend) to Assigned;
         end;
 
         state Resolved
