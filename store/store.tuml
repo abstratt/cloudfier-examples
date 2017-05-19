@@ -1,0 +1,242 @@
+[Application]
+package store;
+
+apply kirra;
+import mdd_media;
+
+abstract role class Person
+    readonly id attribute name : String;
+end;
+
+class Customer specializes Person
+    allow Customer read,update { (System#user() as Customer) == self };
+    allow Administrator read,delete;
+    attribute orders : Order[*];
+end;
+
+class Administrator specializes Person
+    allow Administrator read,delete { (System#user() as Administrator) == self };
+end;
+
+association
+
+    role Customer.orders;
+
+    navigable role Order.customer;
+
+end;
+
+class Product
+
+    allow Customer read, extent;
+    
+    allow Administrator all;
+
+    attribute productName : String;
+
+    attribute productPrice : Double
+        (* Price must be greater than zero *)
+        invariant { (self.productPrice >= 0) };
+
+    attribute unitCost : Double
+        invariant { (self.unitCost >= 0) };
+
+    attribute productDescription : Memo[0, 1];
+
+    attribute productWeight : Double[0, 1] := 0.0
+        invariant { self.productWeight == null or self.productWeight >= 0 };
+
+    attribute image : Picture;
+ 
+    reference category : Category opposite products;
+    
+    operation addToOrder()
+    allow Customer
+    precondition { not (Order#openOrder() == null) };
+    begin
+        Order#openOrder().addItem(self, 1);
+    end;
+
+end;
+
+class Category
+
+    allow Customer read, extent;
+    
+    allow Administrator all;
+
+    attribute name : String;
+    
+    attribute products : Product[*];
+end;
+
+class OrderDetail
+
+    allow Customer read { (System#user() as Customer) == self.order.customer };
+    
+    allow Administrator all;
+
+    attribute order : Order;
+    
+    readonly reference product : Product[0, 1];
+
+    attribute quantity : Integer := 1
+        (* Quantity must be a positive number. *)
+        invariant { self.quantity > 0 };
+
+    derived attribute weight : Double := {
+        self.product.productWeight * self.quantity
+    };
+
+    derived attribute price : Double := {
+        self.unitPrice * self.quantity
+    };
+    
+    derived attribute unitPrice : Double := { self.product.productPrice };
+end;
+
+class Order
+
+    allow Customer read { (System#user() as Customer) == self.customer };
+    
+    allow Administrator read, update, delete, extent, call;
+
+    derived attribute orderKey : String := { "O-" + self.orderId };
+
+    derived id attribute orderId : String;
+    
+    readonly attribute orderDate : Date := { Date#today() };
+
+    attribute orderStatus : Status;
+    
+    readonly attribute customer : Customer;    
+
+    attribute items : OrderDetail[*]
+        allow Customer update { ((System#user() as Customer) == self.customer) and (self.orderStatus == Status#New) };
+
+    derived attribute orderWeightTotal : Double := {
+        self.computeWeightTotal()
+    };
+
+    derived attribute orderTotal : Double := { self.computeOrderTotal() };
+
+    operation newItem(product : Product, quantity : Integer := 1)
+    allow Customer
+    precondition { self.orderStatus == Status#New }
+    precondition (product) { not self.items.exists((d : OrderDetail) : Boolean { d.product == product }) };
+    begin
+        self.addItem(product, quantity);
+    end;
+    
+    operation addItem(product : Product, quantity : Integer);
+    begin
+        var detail;
+        detail := self.findOrCreateItem(product);
+        detail.quantity := detail.quantity + quantity;
+    end;
+    
+    private operation findOrCreateItem(product : Product) : OrderDetail;
+    begin
+        var newItem, existingItem;
+        existingItem := self.items.\any((i : OrderDetail) : Boolean { i.product == product });
+        if (not(existingItem == null)) then
+            return existingItem;
+        newItem := new OrderDetail;
+        newItem.order := self;
+        newItem.product := product;
+        newItem.quantity := 0;
+        return newItem;
+    end;
+
+
+    (* Cancel this order, destroying all the information in it *)
+    operation cancel()
+        allow Customer;
+
+    (* Submits the order, to be processed by the vendor. *)
+    operation submit()
+    	allow Customer;
+
+    (* Marks this order as completed (usually means delivered to customer). *)
+    operation complete()
+        allow Administrator
+        precondition { not self.items.isEmpty() };
+
+    statemachine Status
+
+        initial state New
+            transition on call(submit) to Submitted;
+            transition on call(cancel) to Canceled;
+        end;
+
+        state Submitted
+            transition on call(complete) to Completed;
+        end;
+        
+        terminate state Canceled
+        end;
+
+        state Completed end;
+
+    end;
+
+
+    private query computeOrderTotal() : Double;
+    begin
+        return self.items.reduce((d : OrderDetail, base : Double) : Double {
+            d.price + base
+        }, 0.0);
+    end;
+
+    private query computeWeightTotal() : Double;
+    begin
+        return self.items.reduce((d : OrderDetail, base : Double) : Double {
+            d.weight + base
+        }, 0.0);
+    end;
+
+    static query myOrders() : Order[*]
+        allow Customer;
+    begin
+        return (System#user() as Customer).orders;
+    end;
+    
+    static query openOrder() : Order
+        allow Customer;
+    begin
+        return (System#user() as Customer).orders.\any((o : Order) : Boolean { o.orderStatus == Status#New });
+    end;
+
+    static query myOpenOrders() : Order[*]
+        allow Customer;
+    begin
+        return (System#user() as Customer).orders.\select((o : Order) : Boolean { o.orderStatus == Status#New });
+    end;
+
+    static query openOrders() : Order[*]
+        allow Administrator static call;
+    begin
+		return Order extent.select((o : Order) : Boolean { o.orderStatus == Status#Submitted });        
+    end;
+
+    static operation createOrder() : Order
+        allow Customer
+        (* An open order must not already exist. *)
+        precondition { Order#openOrder() == null };
+    begin
+        var order;
+        order := new Order;
+        order.customer := (System#user() as Customer);
+        return order;
+    end;
+end;
+
+composition
+
+    role Order.items;
+
+    role OrderDetail.order;
+
+end;
+
+end.
