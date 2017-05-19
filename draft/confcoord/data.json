@@ -2,15 +2,12 @@
   "userprofile" : {
     "Profile" : [ {
       "username" : "admin",
-      "email" : "admin@abstratt.com",
       "password" : "pass"
     }, {
       "username" : "leibniz",
-      "email" : "leibniz@abstratt.com",
       "password" : "pass"
     }, {
       "username" : "armstrong",
-      "email" : "armstrong@abstratt.com",
       "password" : "pass"
     } ]
   },

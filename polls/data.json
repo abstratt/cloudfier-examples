@@ -2,19 +2,15 @@
   "userprofile" : {
     "Profile" : [ {
       "username" : "john.ford",
-      "email" : "john@abstratt.com",
       "password" : "pass"
     }, {
       "username" : "peter.jones",
-      "email" : "peter@abstratt.com",
       "password" : "pass"
     }, {
       "username" : "wanda.hoyt",
-      "email" : "wanda@abstratt.com",
       "password" : "pass"
     }, {
       "username" : "joanna.davis",
-      "email" : "joanna@abstratt.com",
       "password" : "pass"
     } ]
   },

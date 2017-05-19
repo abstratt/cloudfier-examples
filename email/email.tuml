@@ -1,3 +1,4 @@
+[Library]
 package email;
 
 import mdd_types;

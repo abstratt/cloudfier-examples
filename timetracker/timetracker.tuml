@@ -1,9 +1,8 @@
+[Application]
 package timetracker;
 
-apply kirra;
 
 import invoicer;
-import mdd_types;
 
 (* A person or organization work can be done for. *)
 class Client

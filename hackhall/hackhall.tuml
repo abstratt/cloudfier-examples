@@ -1,10 +1,10 @@
+[Application]
 package hackhall;
 
 apply kirra;
 import mdd_types;
 
-[kirra::Role]
-class User
+role class User
     readonly id attribute email : String;
     attribute name : String;
 end;
@@ -12,17 +12,17 @@ end;
 class Article
     attribute title : String;
     attribute body : Memo;    
-    readonly attribute user : User := { System#user() };
+    readonly attribute user : User := { (System#user() as User) };
     attribute comments : Comment[*];
     attribute tags : String[*];
-    readonly attribute createdAt : Date := { Date#now() };    
+    readonly attribute createdAt : DateTime := { DateTime#now() };    
 end;
 
 class Comment
     readonly attribute article : Article;
     attribute body : Memo;        
-    readonly attribute user : User := { System#user() };
-    readonly attribute createdAt : Date := { Date#now() };
+    readonly attribute user : User := { (System#user() as User) };
+    readonly attribute createdAt : DateTime := { DateTime#now() };
 end;
 
 composition 

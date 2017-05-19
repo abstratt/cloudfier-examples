@@ -1,3 +1,4 @@
+[Application]
 package confcoord;
 
 role class Organizer specializes CommunityMember

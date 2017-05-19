@@ -1,3 +1,4 @@
+[Library]
 package carserv_tests;
 
 apply mdd_extensions;

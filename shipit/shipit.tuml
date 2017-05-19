@@ -3,11 +3,8 @@
  *
  * http://cloudfier.com/doc/
  */
+[Application]
 package shipit;
-
-apply kirra;
-
-import mdd_types;
 
 role class User
 

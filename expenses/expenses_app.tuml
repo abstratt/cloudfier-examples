@@ -1,3 +1,4 @@
+[Library]
 package expenses_app;
 
 import expenses;

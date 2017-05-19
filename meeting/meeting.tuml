@@ -1,8 +1,5 @@
+[Application]
 package meeting;
-
-
-apply kirra;
-import mdd_types;
 
 class Meeting
 

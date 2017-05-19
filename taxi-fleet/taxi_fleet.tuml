@@ -1,3 +1,4 @@
+[Application]
 package taxi_fleet;
 
 import mdd_collections::Grouping;

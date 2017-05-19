@@ -1,3 +1,4 @@
+[Application]
 package tasks;
 
 role class Contributor
@@ -29,7 +30,10 @@ class Task
     readonly attribute completionDate : Date[0, 1];
 
     operation complete()
-        allow Contributor { System#user() == self.assignee };
+        precondition {
+            not (self.assignee == null)
+        }
+        allow Contributor { Contributor#current == self.assignee };
     
     operation reopen();    
 

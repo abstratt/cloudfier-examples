@@ -35,7 +35,7 @@ class Task
 
     readonly attribute openedOn : Date := { Date#today() };
 
-    readonly attribute completedOn : Date[0, 1];
+    readonly attribute completedOn : DateTime[0, 1];
     
     composition comments : Comment[*] opposite task;
 
@@ -103,7 +103,7 @@ class Task
         end;
         state Completed
             entry {
-                self.completedOn := Date#now();
+                self.completedOn := DateTime#now();
             };
         end;
         terminate state Cancelled end;

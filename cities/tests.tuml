@@ -1,3 +1,4 @@
+[Library]
 package cities_tests;
 
 apply mdd_extensions;

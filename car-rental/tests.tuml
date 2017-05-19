@@ -1,3 +1,4 @@
+[Library]
 package car_rental_tests;
 
 apply mdd_extensions;

@@ -1,3 +1,4 @@
+[Library]
 package tests;
 
 import shipit::User;
