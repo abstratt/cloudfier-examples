@@ -17,16 +17,16 @@
   "polls" : {
     "Voter" : [ {
       "name" : "Peter Jones",
-      "user" : "userprofile.Profile@2"
+      "userProfile" : "userprofile.Profile@2"
     }, {
       "name" : "John Ford",
-      "user" : "userprofile.Profile@1"
+      "userProfile" : "userprofile.Profile@1"
     }, {
       "name" : "Wanda Hoyt",
-      "user" : "userprofile.Profile@3"
+      "userProfile" : "userprofile.Profile@3"
     }, {
       "name" : "Joanna Davis",
-      "user" : "userprofile.Profile@4"
+      "userProfile" : "userprofile.Profile@4"
     } ],
     "Poll" : [ {
       "question" : "Spring is the best season of the year.",
