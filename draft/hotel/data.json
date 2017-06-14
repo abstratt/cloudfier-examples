@@ -94,7 +94,7 @@
       {
         "bookingNumber": "1",
         "from": "2017-06-21",
-        "to": "2017-06-21",
+        "to": "2017-06-22",
         "status": "Booked",
         "paymentAmount": 0.0,
         "room": "hotel.Room@1",
