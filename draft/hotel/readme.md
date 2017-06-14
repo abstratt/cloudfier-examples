@@ -7,6 +7,8 @@ Based on [database design](http://www.databaseanswers.org/data_models/hotels_pla
 
 ### Live app
 
+User/password: admin/pass
+
 http://develop.cloudfier.com/kirra-api/kirra-ng/?app-path=/services/api-v2/test-cloudfier-examples-draft-hotel/ (UI)
 
 http://develop.cloudfier.com/services/api-v2/test-cloudfier-examples-draft-hotel/ (REST API)
