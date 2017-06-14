@@ -5,6 +5,10 @@ Based on database design by Barry Williams:
 
 http://www.databaseanswers.org/data_models/hotels_platform2020/index.htm
 
+### Demo video
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/6XK2SW4JjTk" frameborder="0" allowfullscreen></iframe>
+
 ### Live app
 
 http://develop.cloudfier.com/kirra-api/kirra-ng/?app-path=/services/api-v2/test-cloudfier-examples-draft-hotel/ (UI)
