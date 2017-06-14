@@ -1,13 +1,9 @@
 Hotel Management example
 ------------------------
 
-Based on database design by Barry Williams:
+Based on [database design](http://www.databaseanswers.org/data_models/hotels_platform2020/index.htm) by Barry Williams:
 
-http://www.databaseanswers.org/data_models/hotels_platform2020/index.htm
-
-### Demo video
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/6XK2SW4JjTk" frameborder="0" allowfullscreen></iframe>
+[![Click to play video](http://img.youtube.com/vi/6XK2SW4JjTk/0.jpg)](http://www.youtube.com/watch?v=6XK2SW4JjTk "Demo video")
 
 ### Live app
 
