@@ -130,10 +130,17 @@ class Booking
         );
     end;
     
-    static query pastRoomBookings(hotel : Hotel, roomNumber : String) : Booking[*];
+    static query pastRoomBookings(hotel : Hotel[0,1], guest : Guest[0,1], roomNumber : String[0,1]) : Booking[*]
+        (* At least one of the parameters must be provided *)
+    	precondition (hotel, guest, roomNumber) {
+    		not (roomNumber == null) or not (guest == null) or not (hotel == null) 
+    	};
     begin
     	return Booking extent.select((b : Booking) : Boolean {
-    	    b.status = Booking::Status#CheckedOut and b.room.roomNumber == roomNumber
+    	    b.status = Booking::Status#CheckedOut
+    	        and (roomNumber == null or b.room.roomNumber == roomNumber)
+    	        and (guest == null or b.guest == guest)
+    	        and (hotel == null or b.room.hotel == hotel)    	        
     	});
     end;
     
