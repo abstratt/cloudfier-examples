@@ -1,0 +1,132 @@
+{
+  "userprofile": {
+    "Profile": [
+      {
+        "username": "admin",
+        "password": "pass"
+      },
+      {
+        "username": "front01",
+        "password": "pass"
+      },
+      {
+        "username": "front02",
+        "password": "pass"
+      }  
+    ]
+  },
+  "hotel": {
+    "Hotel": [
+      {
+        "name": "Bates\u0027 Motel"
+      },
+      {
+        "name": "Hotel California"
+      }
+    ],
+    "Room": [
+      {
+        "roomNumber": "101",
+        "rate": 100.0,
+        "smoking": false,
+        "hotel": "hotel.Hotel@2"
+      },
+      {
+        "roomNumber": "201",
+        "rate": 150.0,
+        "smoking": false,
+        "hotel": "hotel.Hotel@2"
+      },
+      {
+        "roomNumber": "103",
+        "rate": 50.0,
+        "smoking": true,
+        "hotel": "hotel.Hotel@1"
+      }
+    ],
+    "User": [
+      {
+        "firstName": "System",
+        "lastName": "Administrator",
+        "userProfile": "userprofile.Profile@1"
+      },
+      {
+        "firstName": "Front",
+        "lastName": "Desk 01",
+        "userProfile": "userprofile.Profile@2"
+      },
+      {
+        "firstName": "Front",
+        "lastName": "Desk 02",
+        "userProfile": "userprofile.Profile@3"
+      }
+    ],
+    "Guest": [
+      {
+        "firstName": "John",
+        "lastName": "Locke"
+      },
+      {
+        "firstName": "Immanuel",
+        "lastName": "Kant"
+      },
+      {
+        "firstName": "René",
+        "lastName": "Descartes"
+      },
+      {
+        "firstName": "Simone",
+        "lastName": "de Beauvoir"
+      },
+      {
+        "firstName": "Ayn",
+        "lastName": "Rand"
+      }
+    ],
+    "Admin": [
+      {
+        "firstName": "system",
+        "lastName": "admin",
+        "userProfile": "userprofile.Profile@1"
+      }
+    ],
+    "Booking": [
+      {
+        "bookingNumber": "1",
+        "from": "2017-06-21",
+        "to": "2017-06-21",
+        "status": "Booked",
+        "paymentAmount": 0.0,
+        "room": "hotel.Room@1",
+        "guest": "hotel.Guest@1"
+      },
+      {
+        "bookingNumber": "3",
+        "from": "2017-09-21",
+        "to": "2017-09-29",
+        "status": "Booked",
+        "paymentAmount": 0.0,
+        "room": "hotel.Room@2",
+        "guest": "hotel.Guest@2"
+      },
+      {
+        "bookingNumber": "4",
+        "from": "2017-06-29",
+        "to": "2017-06-30",
+        "status": "CheckedOut",
+        "paymentAmount": 150.0,
+        "room": "hotel.Room@2",
+        "guest": "hotel.Guest@3"
+      },
+      {
+        "bookingNumber": "7",
+        "from": "2017-06-14",
+        "to": "2017-06-15",
+        "status": "CheckedIn",
+        "paymentAmount": 0.0,
+        "room": "hotel.Room@2",
+        "guest": "hotel.Guest@5"
+      }
+    ]
+  }
+}

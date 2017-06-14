@@ -1,0 +1,162 @@
+package hotel;
+
+abstract class Person
+
+    derived attribute fullName : String := { self.lastName + ", " + self.firstName };
+
+    attribute firstName : String;
+
+    attribute lastName : String;
+
+    attribute email : String[0, 1];
+end;
+
+role class User specializes Person
+
+    allow Admin all;
+
+    allow User read, update{ (System#user() as User) == self };
+end;
+
+role class Admin specializes User
+
+    allow Admin read, update;
+end;
+
+class Hotel
+
+    allow User all;
+
+    allow Admin create;
+
+    attribute name : String;
+
+    attribute rooms : Room[*];
+end;
+
+class Guest specializes Person
+    reference bookings : Booking[0, *] opposite guest;
+end;
+
+class Room
+
+    allow User all;
+
+    attribute roomNumber : String
+        invariant RoomNumberIsUnique {
+            self.hotel.rooms.count((r : Room) : Boolean {
+                self.roomNumber = r.roomNumber
+            }) <= 1
+        };
+
+    reference hotel : Hotel opposite rooms;
+    
+    private attribute bookings : Booking[*];
+    
+    derived attribute activeBookings : Booking[*] := {
+    	self.bookings.select((b : Booking) : Boolean {
+    	    b.status = Booking::Status#Booked
+    	})
+    };
+
+    derived attribute checkedInBookings : Booking[*] := {
+    	self.bookings.select((b : Booking) : Boolean {
+    	    b.status = Booking::Status#CheckedIn
+    	})
+    };
+
+    attribute floor : String[0, 1];
+
+    attribute rate : Double[0, 1];
+
+    attribute smoking : Boolean[0, 1] := false;
+
+    attribute otherDetails : Memo[0, 1];
+        
+    operation book(
+    	guest : Guest, 
+    	from: Date := { Date#today() }, 
+    	\to: Date := { Date#today().transpose(Duration#days(1)) }
+	) : Booking;
+    begin
+        var newBooking;
+        newBooking := new Booking;
+        newBooking.from := from;
+        newBooking.\to := \to;
+        newBooking.room := self;
+        newBooking.guest := guest;
+        return newBooking;
+    end;
+    
+end;
+
+class Booking
+
+    allow User all;
+
+    derived id attribute shorthand : String := { (self.bookingNumber + " - " + self.from) + " -> " + self.\to };
+
+    derived id attribute bookingNumber : String;
+
+    attribute from : Date;
+
+    attribute \to : Date;
+
+    attribute status : Status;
+
+    reference room : Room opposite bookings;
+
+    attribute guest : Guest;
+
+    attribute paymentAmount : Double := 0.0;
+
+    operation checkIn();
+
+    operation checkOut();
+
+    operation cancel();
+    
+    static query unpaidBookings() : Booking[*];
+    begin
+        return Booking extent.select(
+        	(b : Booking) : Boolean  {
+        		b.status == Status#Booked and (b.paymentAmount < 0.001)
+        	}
+        );
+    end;
+    
+    static query pastRoomBookings(hotel : Hotel, roomNumber : String) : Booking[*];
+    begin
+    	return Booking extent.select((b : Booking) : Boolean {
+    	    b.status = Booking::Status#CheckedOut and b.room.roomNumber == roomNumber
+    	});
+    end;
+    
+    
+    (* Report payment as received. *)
+    operation paymentReceived(amount : Double := { self.room.rate });
+    begin
+        self.paymentAmount := self.paymentAmount + amount;
+    end;
+
+    statemachine Status
+
+        initial state Booked
+            transition on call(checkIn) to CheckedIn;
+            transition on call(cancel) to Cancelled;
+        end;
+
+        state CheckedIn
+            transition on call(checkOut) to CheckedOut;
+            transition on call(cancel) to Cancelled;
+        end;
+
+        state CheckedOut end;
+
+        state Cancelled end;
+
+    end;
+
+end;
+
+end.
