@@ -30,6 +30,8 @@ You can play with the JavaEE-based code generation on your own machine.
 
 ##### 2 Run the generator
 
+Via [Cloudfier Maven plugin](https://github.com/abstratt/cloudfier-maven-plugin). 
+
 ```
 # change into any of the application directories
 cd cloudfier-examples/expenses
