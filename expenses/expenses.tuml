@@ -335,7 +335,9 @@ class Expense
             	self.rejections := self.rejections + 1;
                 self.processed := Date#today();
             };
-            transition on call(reconsider) to Submitted;
+            transition on call(reconsider) to Submitted do {
+            	self.rejectionReason := null;
+        	};
         end;
     end;
 
