@@ -1,6 +1,6 @@
 {
   "userprofile" : {
-    "Profile" : [ {
+    "UserProfile" : [ {
       "username" : "john.ford",
       "email" : "john@abstratt.com",
       "password" : "pass"
@@ -21,12 +21,12 @@
   "tarefas" : {
     "Colaborador" : [ {
       "nome" : "Peter",
-      "user" : "userprofile.Profile@2"
+      "user" : "userprofile.UserProfile@2"
     }, {
       "nome" : "Francisco"
     }, {
       "nome" : "John",
-      "user" : "userprofile.Profile@1"
+      "user" : "userprofile.UserProfile@1"
     } ],
     "Tarefa" : [ {
       "descricao" : "levar o cachorro para passear",

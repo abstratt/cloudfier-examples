@@ -1,19 +1,17 @@
 {
   "blog" : {
     "User" : [ {
-      "name" : "guest"
+      "name" : "john@abstratt.com"
     }, {
-      "name" : "john"
-    }, {
-      "name" : "mary"
+      "name" : "mary@abstratt.com"
     } ],
     "Article" : [ {
-      "title" : "A guest post",
+      "title" : "John's post",
       "body" : "Just a guest post",
       "createdAt" : "2015/09/13",
       "user" : "User@1"
     }, {
-      "title" : "John's post",
+      "title" : "Mary's post",
       "body" : "This is John's post.",
       "createdAt" : "2015/09/13",
       "user" : "User@2"

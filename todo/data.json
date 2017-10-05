@@ -1,6 +1,6 @@
 {
   "userprofile" : {
-    "Profile" : [ {
+    "UserProfile" : [ {
       "username" : "john.ford",
       "email" : "john@abstratt.com",
       "password" : "pass"
@@ -21,7 +21,7 @@
   "todo" : {
     "User" : [ {
       "name" : "Peter",
-      "user" : "userprofile.Profile@2"
+      "user" : "userprofile.UserProfile@2"
     }, {
       "name" : "Francisco"
     } ],

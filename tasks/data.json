@@ -1,16 +1,16 @@
 {
   "userprofile" : {
-    "Profile" : [ {
-      "username" : "john.ford",
+    "UserProfile" : [ {
+      "username" : "john.ford@abstratt.com",
       "password" : "pass"
     }, {
-      "username" : "peter.jones",
+      "username" : "peter.jones@abstratt.com",
       "password" : "pass"
     }, {
-      "username" : "wanda.hoyt",
+      "username" : "wanda.hoyt@abstratt.com",
       "password" : "pass"
     }, {
-      "username" : "joanna.davis",
+      "username" : "joanna.davis@abstratt.com",
       "password" : "pass"
     } ]
   },
@@ -18,18 +18,18 @@
     "Contributor" : [ 
     {
       "name" : "John",
-      "userProfile" : "userprofile.Profile@2"      
+      "userProfile" : "userprofile.UserProfile@2"      
     }, {
       "name" : "Pytr",
-	  "userProfile" : "userprofile.Profile@1"      
+	  "userProfile" : "userprofile.UserProfile@1"      
       
     }, {
       "name" : "Wanda",
-      "userProfile" : "userprofile.Profile@3"      
+      "userProfile" : "userprofile.UserProfile@3"      
 
     }, {
       "name" : "Joanna",
-      "userProfile" : "userprofile.Profile@4"      
+      "userProfile" : "userprofile.UserProfile@4"      
     } ],
     "Task" : [ {
       "description" : "walk the dog",

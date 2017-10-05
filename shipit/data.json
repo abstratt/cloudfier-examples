@@ -1,46 +1,46 @@
 {
   "shipit" : {
-    "userprofile.Profile" : [ {
-      "username" : "user1",
+    "userprofile.UserProfile" : [ {
+      "username" : "user1@abstratt.com",
       "password" : "pass"
     }, {
-      "username" : "user2",
+      "username" : "user2@abstratt.com",
       "password" : "pass"
     }, {
-      "username" : "user3",
+      "username" : "user3@abstratt.com",
       "password" : "pass"
     }, {
-      "username" : "user4",
+      "username" : "user4@abstratt.com",
       "password" : "pass"
     }, {
-      "username" : "user5",
+      "username" : "user5@abstratt.com",
       "password" : "pass"
     } ],	
     "User" : [ {
       "email" : "ssimon@cloudfier.com",
       "fullName" : "Saulo Simon",
       "kind" : "Committer",
-      "userProfile" : "userprofile.Profile@1"      
+      "userProfile" : "userprofile.UserProfile@1"      
     }, {
       "email" : "rperez@cloudfier.com",
       "fullName" : "Ricardo Perez",
       "kind" : "Committer",
-      "userProfile" : "userprofile.Profile@2"
+      "userProfile" : "userprofile.UserProfile@2"
     }, {
       "email" : "gtorres@abstratt.com",
       "fullName" : "Gina Torres",
       "kind" : "Reporter",
-      "userProfile" : "userprofile.Profile@3"
+      "userProfile" : "userprofile.UserProfile@3"
     }, {
       "email" : "fsilveira@abstratt.com",
       "fullName" : "Felix Silveira",
       "kind" : "Reporter",
-      "userProfile" : "userprofile.Profile@4"
+      "userProfile" : "userprofile.UserProfile@4"
     }, {
       "email" : "rafael@abstratt.com",
       "fullName" : "AAA",
       "kind" : "Reporter",
-      "userProfile" : "userprofile.Profile@5"
+      "userProfile" : "userprofile.UserProfile@5"
     } ],
     "Project" : [ {
       "description" : "Cloudfier issues",

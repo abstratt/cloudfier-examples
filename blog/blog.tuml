@@ -22,7 +22,7 @@ class Article
     readonly attribute user : User := { (System#user() as User) };
     attribute comments : Comment[*];
     derived attribute commentCount : Integer := { self.comments.size() };    
-    readonly attribute createdAt : Date := { Date#now() };    
+    readonly attribute createdAt : DateTime := { DateTime#now() };    
     
     static operation guestPost(title : String, text : Memo);
     begin
@@ -52,7 +52,7 @@ class Comment
     readonly attribute article : Article;
     attribute body : Memo;        
     attribute user : User := { (System#user() as User) };
-    readonly attribute createdAt : Date := { Date#now() };
+    readonly attribute createdAt : DateTime := { DateTime#now() };
 end;
 
 composition ArticleComments

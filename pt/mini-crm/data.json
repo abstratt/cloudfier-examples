@@ -1,6 +1,6 @@
 {
   "userprofile" : {
-    "Profile" : [ {
+    "UserProfile" : [ {
       "username" : "admin",
       "email" : "admin@abstratt.com",
       "password" : "pass"

@@ -1,32 +1,32 @@
 {
   "userprofile": {
-    "Profile": [
+    "UserProfile": [
       {
-        "username": "admin",
+        "username": "admin@abstratt.com",
         "password": "pass"
       },
       {
-        "username": "customer1",
+        "username": "customer1@abstratt.com",
         "password": "pass"
       },
       {
-        "username": "customer2",
+        "username": "customer2@abstratt.com",
         "password": "pass"
       },
       {
-        "username": "customer3",
+        "username": "customer3@abstratt.com",
         "password": "pass"
       },
       {
-        "username": "customer4",
+        "username": "customer4@abstratt.com",
         "password": "pass"
       },
       {
-        "username": "customer5",
+        "username": "customer5@abstratt.com",
         "password": "pass"
       },
       {
-        "username": "customer6",
+        "username": "customer6@abstratt.com",
         "password": "pass"
       }
     ]
@@ -35,27 +35,27 @@
     "Customer": [
       {
         "name": "Pamela Beck",
-        "userProfile": "userprofile.Profile@2"
+        "userProfile": "userprofile.UserProfile@2"
       },
       {
         "name": "Tania Olsen",
-        "userProfile": "userprofile.Profile@3"
+        "userProfile": "userprofile.UserProfile@3"
       },
       {
         "name": "Steven Ackberg",
-        "userProfile": "userprofile.Profile@4"
+        "userProfile": "userprofile.UserProfile@4"
       },
       {
         "name": "Tony Dahl",
-        "userProfile": "userprofile.Profile@5"
+        "userProfile": "userprofile.UserProfile@5"
       },
       {
         "name": "Angela Thompson",
-        "userProfile": "userprofile.Profile@6"
+        "userProfile": "userprofile.UserProfile@6"
       },
       {
         "name": "Jeremy Peters",
-        "userProfile": "userprofile.Profile@7"
+        "userProfile": "userprofile.UserProfile@7"
       }
     ],
     "Order": [
@@ -393,7 +393,7 @@
     "Administrator": [
       {
         "name": "Administrator",
-        "userProfile": "userprofile.Profile@1"
+        "userProfile": "userprofile.UserProfile@1"
       }
     ]
   }

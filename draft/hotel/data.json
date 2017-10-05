@@ -1,6 +1,6 @@
 {
   "userprofile": {
-    "Profile": [
+    "UserProfile": [
       {
         "username": "admin",
         "password": "pass"
@@ -48,17 +48,17 @@
       {
         "firstName": "System",
         "lastName": "Administrator",
-        "userProfile": "userprofile.Profile@1"
+        "userProfile": "userprofile.UserProfile@1"
       },
       {
         "firstName": "Front",
         "lastName": "Desk 01",
-        "userProfile": "userprofile.Profile@2"
+        "userProfile": "userprofile.UserProfile@2"
       },
       {
         "firstName": "Front",
         "lastName": "Desk 02",
-        "userProfile": "userprofile.Profile@3"
+        "userProfile": "userprofile.UserProfile@3"
       }
     ],
     "Guest": [
@@ -87,7 +87,7 @@
       {
         "firstName": "system",
         "lastName": "admin",
-        "userProfile": "userprofile.Profile@1"
+        "userProfile": "userprofile.UserProfile@1"
       }
     ],
     "Booking": [

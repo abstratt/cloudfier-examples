@@ -1,6 +1,6 @@
 {
   "userprofile" : {
-    "Profile" : [ {
+    "UserProfile" : [ {
       "username" : "admin",
       "password" : "pass"
     }, {
@@ -16,7 +16,7 @@
       "name" : "Neil Armstrong",
       "twitterHandle" : null,
       "linkedInProfile" : null,
-      "user" : "userprofile.Profile@3"
+      "user" : "userprofile.UserProfile@3"
     }, {
       "name" : "Buzz Aldrin",
       "twitterHandle" : "buzz",
@@ -33,11 +33,11 @@
       "name" : "Gottfried Leibniz",
       "twitterHandle" : null,
       "linkedInProfile" : null,
-      "user" : "userprofile.Profile@2"
+      "user" : "userprofile.UserProfile@2"
     } ],
     "Admin" : [ {
       "name" : "Administrator",
-      "user" : "userprofile.Profile@1"
+      "user" : "userprofile.UserProfile@1"
     } ]
   }
 }
