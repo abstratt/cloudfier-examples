@@ -1,40 +1,40 @@
 {
   "carserv": {
-    "userprofile.Profile" : [ {
-      "username" : "admin",
+    "userprofile.UserProfile" : [ {
+      "username" : "admin@abstratt.com",
       "password" : "pass"
     }, {
-      "username" : "mechanic1",
+      "username" : "mechanic1@abstratt.com",
       "password" : "pass"
     }, {
-      "username" : "mechanic2",
+      "username" : "mechanic2@abstratt.com",
 	  "password" : "pass"
     }, {
-      "username" : "mechanic3",
+      "username" : "mechanic3@abstratt.com",
 	  "password" : "pass"
     }, {
-      "username" : "mechanic4",
+      "username" : "mechanic4@abstratt.com",
 	  "password" : "pass"
     }, {
-      "username" : "mechanic5",
+      "username" : "mechanic5@abstratt.com",
 	  "password" : "pass"
     }, {
-      "username" : "customer1",
+      "username" : "customer1@abstratt.com",
 	  "password" : "pass"
     }, {
-      "username" : "customer2",
+      "username" : "customer2@abstratt.com",
 	  "password" : "pass"
     }, {
-      "username" : "customer3",
+      "username" : "customer3@abstratt.com",
 	  "password" : "pass"
     }, {
-      "username" : "customer4",
+      "username" : "customer4@abstratt.com",
 	  "password" : "pass"
     }, {
-      "username" : "customer5",
+      "username" : "customer5@abstratt.com",
 	  "password" : "pass"
     }, {
-      "username" : "customer6",
+      "username" : "customer6@abstratt.com",
 	  "password" : "pass"
     }],
     "Make": [ {
@@ -67,32 +67,32 @@
       "firstName" : "Sarah",
       "lastName" : "Connor",
       "title" : "Ms",
-      "userProfile" : "userprofile.Profile@6"
+      "userProfile" : "userprofile.UserProfile@6"
     }, {
       "firstName" : "John",
       "lastName" : "Connor",
       "title" : "Mr",
-      "userProfile" : "userprofile.Profile@7"
+      "userProfile" : "userprofile.UserProfile@7"
     }, {
       "firstName" : "Zelda",
       "lastName" : "Scott",
       "title" : "Mrs",
-      "userProfile" : "userprofile.Profile@8"
+      "userProfile" : "userprofile.UserProfile@8"
     }, {
       "firstName" : "Boris",
       "lastName" : "Frederikson",
       "title" : "Mr",
-      "userProfile" : "userprofile.Profile@9"
+      "userProfile" : "userprofile.UserProfile@9"
     }, {
       "firstName" : "Joe",
       "lastName" : "Bloggs",
       "title" : "Mr",
-      "userProfile" : "userprofile.Profile@10"
+      "userProfile" : "userprofile.UserProfile@10"
     }, {
       "firstName" : "Mary",
       "lastName" : "Bloggs",
       "title" : "Mrs",
-      "userProfile" : "userprofile.Profile@11"
+      "userProfile" : "userprofile.UserProfile@11"
     } ],
     "Car" : [ {
       "registrationNumber" : "KLP346P",
@@ -135,27 +135,27 @@
       "firstName" : "John",
       "lastName" : "Smith",
       "status" : "Working",
-      "userProfile" : "userprofile.Profile@1"
+      "userProfile" : "userprofile.UserProfile@1"
     }, {
       "firstName" : "Teresa",
       "lastName" : "Perkins",
       "status" : "Working",
-      "userProfile" : "userprofile.Profile@2"
+      "userProfile" : "userprofile.UserProfile@2"
     }, {
       "firstName" : "Blake",
       "lastName" : "Gomez",
       "status" : "Apprentice",
-      "userProfile" : "userprofile.Profile@3"
+      "userProfile" : "userprofile.UserProfile@3"
     }, {
       "firstName" : "Hank",
       "lastName" : "Goodman",
       "status" : "Working",
-      "userProfile" : "userprofile.Profile@4"
+      "userProfile" : "userprofile.UserProfile@4"
     }, {
       "firstName" : "Mark",
       "lastName" : "Parsons",
       "status" : "Apprentice",
-      "userProfile" : "userprofile.Profile@5"
+      "userProfile" : "userprofile.UserProfile@5"
     } ],
     "Service" : [ {
       "description" : "Bumper needs repair",

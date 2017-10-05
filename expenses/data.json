@@ -1,20 +1,20 @@
 {
   "userprofile": {
-    "Profile": [
+    "UserProfile": [
       {
-        "username": "admin",
+        "username": "admin@abstratt.com",
         "password": "pass"
       },
       {
-        "username": "employee1",
+        "username": "employee1@abstratt.com",
         "password": "pass"
       },
       {
-        "username": "employee2",
+        "username": "employee2@abstratt.com",
         "password": "pass"
       },
       {
-        "username": "approver1",
+        "username": "approver1@abstratt.com",
         "password": "pass"
       }
     ]
@@ -23,18 +23,18 @@
     "Employee": [
       {
         "name": "Peter Jones",
-        "userProfile": "userprofile.Profile@3"
+        "userProfile": "userprofile.UserProfile@3"
       },
       {
         "name": "Camille Jouel"
       },
       {
         "name": "John Ford",
-        "userProfile": "userprofile.Profile@2"
+        "userProfile": "userprofile.UserProfile@2"
       },
       {
         "name": "Wanda Hoyt",
-        "userProfile": "userprofile.Profile@4"
+        "userProfile": "userprofile.UserProfile@4"
       }
     ],
     "Category": [
@@ -54,7 +54,7 @@
     "Approver": [
       {
         "name": "Wanda Hoyt",
-        "userProfile": "userprofile.Profile@4"
+        "userProfile": "userprofile.UserProfile@4"
       }
     ],
     "Expense": [
@@ -120,7 +120,7 @@
       {
         "name": "root",
         "master": true,
-        "userProfile": "userprofile.Profile@1"
+        "userProfile": "userprofile.UserProfile@1"
       }
     ]
   },
