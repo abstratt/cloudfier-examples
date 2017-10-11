@@ -31,10 +31,6 @@
       {
         "name": "John Ford",
         "userProfile": "userprofile.UserProfile@2"
-      },
-      {
-        "name": "Wanda Hoyt",
-        "userProfile": "userprofile.UserProfile@4"
       }
     ],
     "Category": [
