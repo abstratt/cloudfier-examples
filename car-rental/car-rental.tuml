@@ -13,7 +13,7 @@ class Car
     attribute plate : String;
 
     attribute price : Double := 500.0
-        (* Price mustbe $50 at least. *)
+        (* Price must be $50 at least. *)
         invariant PriceAboveMinimum { self.price >= 50.0 }
         (* Price cannot be above $500. *)
         invariant PriceBelowMaximum { self.price <= 500.0 };
