@@ -2,7 +2,7 @@
   "userprofile": {
     "UserProfile": [
       {
-        "username": "admin@abstratt.com",
+        "username": "admin1@abstratt.com",
         "password": "pass"
       },
       {
@@ -112,7 +112,7 @@
         "employee": "expenses.Employee@3"
       }
     ],
-    "Admin": [
+    "Administrator": [
       {
         "name": "root",
         "master": true,
