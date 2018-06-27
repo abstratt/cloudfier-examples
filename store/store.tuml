@@ -214,7 +214,7 @@ class Order
     end;
 
     static query openOrders() : Order[*]
-        allow Administrator static call;
+        allow Administrator call;
     begin
 		return Order extent.select((o : Order) : Boolean { o.orderStatus == Status#Submitted });        
     end;

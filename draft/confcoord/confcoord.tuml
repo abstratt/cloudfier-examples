@@ -28,7 +28,7 @@ role class Admin specializes Person
 end;
 
 class Talk
-    allow read, extent, static call;
+    allow read, extent, call;
     allow CommunityMember update { self.speaker == System#user() and (self.status == TalkStatus#Draft) };
 
     attribute title : String;

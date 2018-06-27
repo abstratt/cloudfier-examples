@@ -222,7 +222,7 @@ end;
 *)
 class Issue
 
-    allow User read, extent, update, static call;
+    allow User read, extent, update, call;
 
     derived id attribute mnemonic : String := {
         self.issueKey + " - " + self.summary

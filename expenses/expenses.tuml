@@ -21,7 +21,7 @@ class Category
     allow Approver extent, call, update;
     allow Administrator all;
     
-    id attribute name : String;
+    attribute name : String;
 
     static operation newCategory(name : String) : Category
         allow Administrator all
@@ -232,7 +232,7 @@ class Expense
     (* Lists all expenses for the current user. *)
     static query myExpenses() : Expense[*]
         allow Administrator none
-        allow Employee static call;
+        allow Employee call;
     begin
         return (System#user() as Employee).expenses;
     end;
