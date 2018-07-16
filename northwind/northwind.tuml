@@ -1,0 +1,117 @@
+/* Generated from a reverse engineered database */
+package northwind;
+
+import mdd_types;
+import mdd_media;
+
+class Categories
+	attribute categoryName : String;
+	attribute description : String[0,1];
+	attribute picture : Blob[0,1];
+end;
+class CustomerDemographics
+	attribute customerDesc : String[0,1];
+end;
+class Customers
+	attribute companyName : String;
+	attribute contactName : String[0,1];
+	attribute contactTitle : String[0,1];
+	attribute address : String[0,1];
+	attribute city : String[0,1];
+	attribute region : String[0,1];
+	attribute postalCode : String[0,1];
+	attribute country : String[0,1];
+	attribute phone : String[0,1];
+	attribute fax : String[0,1];
+end;
+class Employees
+	attribute lastName : String;
+	attribute firstName : String;
+	attribute title : String[0,1];
+	attribute titleOfCourtesy : String[0,1];
+	attribute birthDate : Date[0,1];
+	attribute hireDate : Date[0,1];
+	attribute address : String[0,1];
+	attribute city : String[0,1];
+	attribute region : String[0,1];
+	attribute postalCode : String[0,1];
+	attribute country : String[0,1];
+	attribute homePhone : String[0,1];
+	attribute extension : String[0,1];
+	attribute photo : Blob[0,1];
+	attribute notes : String[0,1];
+	attribute photoPath : String[0,1];
+	reference reportsTo : Employees[0,1];
+end;
+class Region
+	attribute regionDescription : String;
+end;
+class Shippers
+	attribute companyName : String;
+	attribute phone : String[0,1];
+end;
+class Suppliers
+	attribute companyName : String;
+	attribute contactName : String[0,1];
+	attribute contactTitle : String[0,1];
+	attribute address : String[0,1];
+	attribute city : String[0,1];
+	attribute region : String[0,1];
+	attribute postalCode : String[0,1];
+	attribute country : String[0,1];
+	attribute phone : String[0,1];
+	attribute fax : String[0,1];
+	attribute homepage : String[0,1];
+end;
+class UsStates
+	attribute stateName : String[0,1];
+	attribute stateAbbr : String[0,1];
+	attribute stateRegion : String[0,1];
+end;
+class Orders
+	attribute orderDate : Date[0,1];
+	attribute requiredDate : Date[0,1];
+	attribute shippedDate : Date[0,1];
+	attribute freight : Double[0,1];
+	attribute shipName : String[0,1];
+	attribute shipAddress : String[0,1];
+	attribute shipCity : String[0,1];
+	attribute shipRegion : String[0,1];
+	attribute shipPostalCode : String[0,1];
+	attribute shipCountry : String[0,1];
+	reference customer : Customers[0,1];
+	reference employee : Employees[0,1];
+	reference shipVia : Shippers[0,1];
+end;
+class Products
+	attribute productName : String;
+	attribute quantityPerUnit : String[0,1];
+	attribute unitPrice : Double[0,1];
+	attribute unitsInStock : Integer[0,1];
+	attribute unitsOnOrder : Integer[0,1];
+	attribute reorderLevel : Integer[0,1];
+	attribute discontinued : Integer;
+	reference category : Categories[0,1];
+	reference supplier : Suppliers[0,1];
+end;
+class Territories
+	attribute territoryDescription : String;
+	reference region : Region;
+end;
+class OrderDetails
+	attribute unitPrice : Double;
+	attribute quantity : Integer;
+	attribute discount : Double;
+	reference order : Orders;
+	reference product : Products;
+end;
+association CustomerCustomerDemo
+	navigable role customerType : CustomerDemographics;
+	navigable role customer : Customers;
+end;
+association EmployeeTerritories
+	navigable role employee : Employees;
+	navigable role territory : Territories;
+end;
+
+end.
