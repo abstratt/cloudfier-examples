@@ -1,0 +1,70 @@
+/* Generated from a reverse engineered database */
+package dvdstore;
+
+import mdd_types;
+
+class Categories
+	attribute categoryname : String;
+end;
+class Customers
+	attribute firstname : String;
+	attribute lastname : String;
+	attribute address1 : String;
+	attribute address2 : String[0,1];
+	attribute city : String;
+	attribute \state : String[0,1];
+	attribute zip : String[0,1];
+	attribute country : String;
+	attribute region : Integer;
+	attribute email : String[0,1];
+	attribute phone : String[0,1];
+	attribute creditcardtype : Integer;
+	attribute creditcard : String;
+	attribute creditcardexpiration : String;
+	id attribute username : String;
+	id attribute password : String;
+	attribute age : Integer[0,1];
+	attribute income : Integer[0,1];
+	attribute gender : String[0,1];
+end;
+class Inventory
+	attribute quanInStock : Integer;
+	attribute sales : Integer;
+end;
+class Products
+	attribute category : Integer;
+	attribute title : String;
+	attribute \actor : String;
+	attribute price : Double;
+	attribute special : Integer[0,1];
+	attribute commonProdId : Integer;
+end;
+class Reorder
+	attribute prodId : Integer;
+	attribute dateLow : Date;
+	attribute quanLow : Integer;
+	attribute dateReordered : Date[0,1];
+	attribute quanReordered : Integer[0,1];
+	attribute dateExpected : Date[0,1];
+end;
+class CustHist
+	attribute orderid : Integer;
+	attribute prodId : Integer;
+	reference customer : Customers;
+end;
+class Orders
+	attribute orderdate : Date;
+	attribute netamount : Double;
+	attribute tax : Double;
+	attribute totalamount : Double;
+	reference customer : Customers[0,1];
+end;
+class Orderlines
+	id attribute orderlineid : Integer;
+	attribute prodId : Integer;
+	attribute quantity : Integer;
+	attribute orderdate : Date;
+	reference order : Orders;
+end;
+
+end.
