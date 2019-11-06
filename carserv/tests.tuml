@@ -92,7 +92,7 @@ class MechanicScenarios
             mechanic.beginVacation();
         end;
         begin
-            Assert#isTrue(! mechanic.working);
+            Assert#isTrue(!mechanic.working);
         end;
         begin
             mechanic.endVacation();
@@ -107,7 +107,7 @@ class MechanicScenarios
         var mechanic, service;
         begin
             mechanic := TestData#getAMechanicWithWorkScheduled();
-            service := mechanic.upcomingServices.one();
+            service := !!mechanic.upcomingServices.one();
             Assert#isTrue(mechanic.workScheduled);
             Assert#isTrue(! mechanic.workInProgress);
             service.start();
@@ -153,7 +153,7 @@ class MechanicScenarios
             mechanic := TestData#getAMechanicWithWorkScheduled();
         end;
         begin
-            service := mechanic.upcomingServices.one();
+            service := !!mechanic.upcomingServices.one();
             service.start();
         end;
         begin

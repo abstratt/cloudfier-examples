@@ -190,7 +190,7 @@ class Tests
         		}
         	);
             Assert#isNotNull(cat1Stats);
-            Assert#areEqual(400, cat1Stats.total);            
+            Assert#areEqual(400, cat1Stats?.total);
             
             cat2Stats := stats.\any(
             	(group : CategoryTotal) : Boolean {
@@ -198,7 +198,7 @@ class Tests
         		}
         	);
             Assert#isNotNull(cat2Stats);
-            Assert#areEqual(750, cat2Stats.total);            
+            Assert#areEqual(750, cat2Stats?.total);            
         end;
     end;    
     
@@ -230,7 +230,7 @@ class Tests
         		}
         	);
             Assert#isNotNull(cat2Stats);
-            Assert#areEqual(12, cat2Stats.total);            
+            Assert#areEqual(12, cat2Stats?.total);            
             
             cat3Stats := stats.\any(
             	(group : CategoryTotal) : Boolean {
@@ -238,7 +238,7 @@ class Tests
         		}
         	);
             Assert#isNotNull(cat3Stats);
-            Assert#areEqual(13, cat3Stats.total);            
+            Assert#areEqual(13, cat3Stats?.total);            
         end;
     end;    
     
@@ -269,7 +269,7 @@ class Tests
         		}
         	);
             Assert#isNotNull(cat1Stats);
-            Assert#areEqual(1100, cat1Stats.total);            
+            Assert#areEqual(1100, cat1Stats?.total);            
             
             cat2Stats := stats.\any(
             	(group : CategoryTotal) : Boolean {
@@ -277,7 +277,7 @@ class Tests
         		}
         	);
             Assert#isNotNull(cat2Stats);
-            Assert#areEqual(1500, cat2Stats.total);            
+            Assert#areEqual(1500, cat2Stats?.total);            
         end;
     end;        
     
@@ -306,7 +306,7 @@ class Tests
         		}
         	);
             Assert#isNotNull(cat1Stats);
-            Assert#areEqual(2, cat1Stats.count);            
+            Assert#areEqual(2, cat1Stats?.count);            
         end;
     end;        
     
@@ -448,9 +448,9 @@ class Tests
         		}
         	);        	
             Assert#isNotNull(ceoStats);
-            Assert#areEqual(3, ceoStats.expenseCount);            
+            Assert#areEqual(3, ceoStats?.expenseCount);            
             Assert#isNotNull(salesGuyStats);
-            Assert#areEqual(1, salesGuyStats.expenseCount);            
+            Assert#areEqual(1, salesGuyStats?.expenseCount);            
         end;
     end;        
     
@@ -485,11 +485,11 @@ class Tests
         		}
         	);        	
             Assert#isNotNull(ceoDetails);
-            Assert#areEqual(100, ceoDetails.expenseAmount);            
-            Assert#areEqual(cat1.name, ceoDetails.category);               
+            Assert#areEqual(100, ceoDetails?.expenseAmount);            
+            Assert#areEqual(cat1.name, ceoDetails?.category);               
             Assert#isNotNull(salesGuyDetails);
-            Assert#areEqual(200, salesGuyDetails.expenseAmount);             
-            Assert#areEqual(cat2.name, salesGuyDetails.category);                           
+            Assert#areEqual(200, salesGuyDetails?.expenseAmount);             
+            Assert#areEqual(cat2.name, salesGuyDetails?.category);                           
         end;
     end;        
     

@@ -52,9 +52,9 @@ class Product
     
     operation addToOrder()
     allow Customer
-    precondition { not (Order#openOrder() == null) };
+    precondition { not (Order#currentOrder() == null) };
     begin
-        Order#openOrder().addItem(self, 1);
+        Order#currentOrder().addItem(self, 1);
     end;
 
 end;
@@ -201,7 +201,7 @@ class Order
         return (System#user() as Customer).orders;
     end;
     
-    static query openOrder() : Order
+    private static query currentOrder() : Order
         allow Customer;
     begin
         return (System#user() as Customer).orders.\any((o : Order) : Boolean { o.orderStatus == Status#New });
@@ -222,7 +222,7 @@ class Order
     static operation createOrder() : Order
         allow Customer
         (* An open order must not already exist. *)
-        precondition { Order#openOrder() == null };
+        precondition { Order#currentOrder() == null };
     begin
         var order;
         order := new Order;

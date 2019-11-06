@@ -42,7 +42,7 @@ class Category
     begin
         return Expense extent.groupBy((e : Expense) : Category { e.category }).groupCollect((expenses : Expense[*]) : CategoryTotal {
             {
-                category := expenses.one().category, 
+                category := (!!expenses.one()).category, 
                 total := expenses.sum((e : Expense) : Double { e.amount })
             }
         });
@@ -54,7 +54,7 @@ class Category
             e.status == Expense::Status#Approved
         }).groupBy((e : Expense) : Category { e.category }).groupCollect((expenses : Expense[*]) : CategoryTotal {
             {
-                category := expenses.one().category, 
+                category := (!!expenses.one()).category, 
                 total := expenses.sum((e : Expense) : Double { e.amount })
             }
         });
@@ -64,9 +64,9 @@ class Category
     begin
         return Expense extent.select((e : Expense) : Boolean {
             e.status == Expense::Status#Submitted
-        }).groupBy((e : Expense) : Category { e.category }).groupCollect((expenses : Expense[*]) : CategoryTotal {
+        }).groupBy((e : Expense) : Category { e.category }).groupCollect((expenses : Expense[1, *]) : CategoryTotal {
             {
-                category := expenses.one().category, 
+                category := (!!expenses.one()).category, 
                 total := expenses.sum((e : Expense) : Double { e.amount })
             }
         }).select((total : CategoryTotal) : Boolean { total.total > threshold });
@@ -108,7 +108,7 @@ class Expense
         self.status == Status#Approved
     };
     
-    private readonly attribute rejections : Integer[0,1] := 0;
+    private readonly attribute rejections : Integer[1] := 0;
 
     (* The amount of the expense. *)
     readonly attribute amount : Double;
@@ -150,13 +150,13 @@ class Expense
         if (self.processed == null) then
             return 0
         else
-            return Date#today().difference(self.processed).toDays();
+            return Date#today().difference(!!self.processed).toDays();
     };
 
     (* Approves this expense. *)
     operation approve()
         (* Cannot approve own expenses. *)
-        allow Approver all { not (System#user() as Employee) == self.employee };
+        allow Approver all { not ((System#user() as Employee) == self.employee) };
     begin
         self.approver := (System#user() as Approver);
     end;
@@ -210,7 +210,7 @@ class Expense
         allow Approver, Administrator all;
     begin
         return Expense extent.select((e : Expense) : Boolean {
-            (start == null or e.date >= start) and (end_ == null or e.date <= end_)
+            (start == null or e.date >= !!start) and (end_ == null or e.date <= !!end_)
         }); 
     end;
 
@@ -254,9 +254,9 @@ class Expense
     begin
         return Expense extent.select((e : Expense) : Boolean {
             e.status == Status#Submitted
-        }).groupBy((e : Expense) : Category { e.category }).groupCollect((group : Expense[*]) : {category : Category, count : Integer} {
+        }).groupBy((e : Expense) : Category { e.category }).groupCollect((group : Expense[1,*]) : {category : Category, count : Integer} {
             {
-                category := group.one().category, 
+                category := (!!group.one()).category, 
                 count := group.size()
             }
         });
@@ -281,9 +281,9 @@ class Expense
     (* The number of expenses declared per employee. *)
     static query expenseCountPerEmployee() : {employee : Employee, expenseCount : Integer}[*];
     begin
-        return Expense extent.groupBy((e : Expense) : Employee { e.employee }).groupCollect((group : Expense[*]) : {employee : Employee, expenseCount : Integer} {
+        return Expense extent.groupBy((e : Expense) : Employee { e.employee }).groupCollect((group : Expense[1,*]) : {employee : Employee, expenseCount : Integer} {
             {
-                employee := group.one().employee, 
+                employee := (!!group.one()).employee, 
                 expenseCount := group.size()
             }
         });
@@ -356,10 +356,10 @@ class Approver specializes Employee
 end;
 
 class Administrator specializes Person
-    allow Administrator all { (System#user() as Administrator).master };
+    allow Administrator all { (System#user() as Administrator).master}; 
     allow Administrator read { self == (System#user() as Administrator) };
     
-    attribute master : Boolean[0,1] := false;
+    attribute master : Boolean[1] := false;
 
 end;
 
