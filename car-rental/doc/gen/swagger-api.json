@@ -1,0 +1,1181 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Simple Car Rental Application"
+    },
+    "paths": {
+        "/car" : {
+            "get" : {
+                "operationId": "car_rental__Car_List",
+                "summary": "List endpoint for Car",
+                "tags": ["car_rental::Car"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/car_rental.car"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "car_rental__Car_Creation",
+                "tags": ["car_rental::Car"],
+                "summary": "Creation endpoint for Car",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/car_rental.car"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/car_rental.car"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/car/{id}" : {
+            "get" : {
+                "operationId": "car_rental__Car_Get",
+                "summary": "Single object GET endpoint for Car",
+                "tags": ["car_rental::Car"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/car_rental.car"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "car_rental__Car_Put",
+                "summary": "Single object PUT endpoint for Car",
+                "tags": ["car_rental::Car"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/car_rental.car"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "car_rental__Car_Put",
+                "summary": "Single object DELETE endpoint for Car",
+                "tags": ["car_rental::Car"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        }
+        ,
+        "/car/byModel" : {
+            "post" : {
+                "operationId": "car_rental__Car__byModel",
+                "tags": ["car_rental::Car"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "",
+                                        "type": "object",
+                                        "properties": {
+                                            "description": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "plate": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "price": {
+                                            	"description": "",
+                                            }
+                                            ,
+                                            "available": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "year": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "color": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "underRepair": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "rented": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "status": {
+                                                "$ref": "#/components/schemas/car_rental.car.status"
+                                            }
+                                            ,
+                                            "currentRental": {
+                                                "$ref": "#/components/schemas/car_rental.rental"
+                                            }
+                                            ,
+                                            "carModel": {
+                                                "$ref": "#/components/schemas/car_rental.carModel"
+                                            }
+                                            ,
+                                            "rentals": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/car_rental.rental"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/car/byMake" : {
+            "post" : {
+                "operationId": "car_rental__Car__byMake",
+                "tags": ["car_rental::Car"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "",
+                                        "type": "object",
+                                        "properties": {
+                                            "description": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "plate": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "price": {
+                                            	"description": "",
+                                            }
+                                            ,
+                                            "available": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "year": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "color": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "underRepair": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "rented": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "status": {
+                                                "$ref": "#/components/schemas/car_rental.car.status"
+                                            }
+                                            ,
+                                            "currentRental": {
+                                                "$ref": "#/components/schemas/car_rental.rental"
+                                            }
+                                            ,
+                                            "carModel": {
+                                                "$ref": "#/components/schemas/car_rental.carModel"
+                                            }
+                                            ,
+                                            "rentals": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/car_rental.rental"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/car/available" : {
+            "post" : {
+                "operationId": "car_rental__Car__available",
+                "tags": ["car_rental::Car"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "",
+                                        "type": "object",
+                                        "properties": {
+                                            "description": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "plate": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "price": {
+                                            	"description": "",
+                                            }
+                                            ,
+                                            "available": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "year": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "color": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "underRepair": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "rented": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "status": {
+                                                "$ref": "#/components/schemas/car_rental.car.status"
+                                            }
+                                            ,
+                                            "currentRental": {
+                                                "$ref": "#/components/schemas/car_rental.rental"
+                                            }
+                                            ,
+                                            "carModel": {
+                                                "$ref": "#/components/schemas/car_rental.carModel"
+                                            }
+                                            ,
+                                            "rentals": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/car_rental.rental"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/car/{id}/decomission" : {
+            "post" : {
+                "operationId": "car_rental__Car__decomission",
+                "tags": ["car_rental::Car"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for decomission"
+                    }
+                }
+            }
+        }
+        ,
+        "/car/{id}/startRepair" : {
+            "post" : {
+                "operationId": "car_rental__Car__startRepair",
+                "tags": ["car_rental::Car"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for startRepair"
+                    }
+                }
+            }
+        }
+        ,
+        "/car/{id}/finishRepair" : {
+            "post" : {
+                "operationId": "car_rental__Car__finishRepair",
+                "tags": ["car_rental::Car"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for finishRepair"
+                    }
+                }
+            }
+        },
+        "/rental" : {
+            "get" : {
+                "operationId": "car_rental__Rental_List",
+                "summary": "List endpoint for Rental",
+                "tags": ["car_rental::Rental"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/car_rental.rental"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "car_rental__Rental_Creation",
+                "tags": ["car_rental::Rental"],
+                "summary": "Creation endpoint for Rental",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/car_rental.rental"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/car_rental.rental"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rental/{id}" : {
+            "get" : {
+                "operationId": "car_rental__Rental_Get",
+                "summary": "Single object GET endpoint for Rental",
+                "tags": ["car_rental::Rental"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/car_rental.rental"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "car_rental__Rental_Put",
+                "summary": "Single object PUT endpoint for Rental",
+                "tags": ["car_rental::Rental"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/car_rental.rental"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "car_rental__Rental_Put",
+                "summary": "Single object DELETE endpoint for Rental",
+                "tags": ["car_rental::Rental"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        }
+        ,
+        "/rental/{id}/complete" : {
+            "post" : {
+                "operationId": "car_rental__Rental__complete",
+                "tags": ["car_rental::Rental"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for complete"
+                    }
+                }
+            }
+        }
+        ,
+        "/rental/{id}/finish" : {
+            "post" : {
+                "operationId": "car_rental__Rental__finish",
+                "tags": ["car_rental::Rental"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for finish"
+                    }
+                }
+            }
+        }
+        ,
+        "/rental/inProgress" : {
+            "post" : {
+                "operationId": "car_rental__Rental__inProgress",
+                "tags": ["car_rental::Rental"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "",
+                                        "type": "object",
+                                        "properties": {
+                                            "description": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "number": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "internalId": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "started": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "returned": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "status": {
+                                                "$ref": "#/components/schemas/car_rental.rental.status"
+                                            }
+                                            ,
+                                            "inProgress": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "car": {
+                                                "$ref": "#/components/schemas/car_rental.car"
+                                            }
+                                            ,
+                                            "customer": {
+                                                "$ref": "#/components/schemas/car_rental.customer"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/rental/countOfRentalsInProgress" : {
+            "post" : {
+                "operationId": "car_rental__Rental__countOfRentalsInProgress",
+                "tags": ["car_rental::Rental"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                	"description": "",
+                                    "type": "integer",
+                                    "format": "int64"
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/carModel" : {
+            "get" : {
+                "operationId": "car_rental__CarModel_List",
+                "summary": "List endpoint for CarModel",
+                "tags": ["car_rental::CarModel"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/car_rental.carModel"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "car_rental__CarModel_Creation",
+                "tags": ["car_rental::CarModel"],
+                "summary": "Creation endpoint for CarModel",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/car_rental.carModel"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/car_rental.carModel"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/carModel/{id}" : {
+            "get" : {
+                "operationId": "car_rental__CarModel_Get",
+                "summary": "Single object GET endpoint for CarModel",
+                "tags": ["car_rental::CarModel"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/car_rental.carModel"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "car_rental__CarModel_Put",
+                "summary": "Single object PUT endpoint for CarModel",
+                "tags": ["car_rental::CarModel"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/car_rental.carModel"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "car_rental__CarModel_Put",
+                "summary": "Single object DELETE endpoint for CarModel",
+                "tags": ["car_rental::CarModel"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        },
+        "/make" : {
+            "get" : {
+                "operationId": "car_rental__Make_List",
+                "summary": "List endpoint for Make",
+                "tags": ["car_rental::Make"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/car_rental.make"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "car_rental__Make_Creation",
+                "tags": ["car_rental::Make"],
+                "summary": "Creation endpoint for Make",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/car_rental.make"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/car_rental.make"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/make/{id}" : {
+            "get" : {
+                "operationId": "car_rental__Make_Get",
+                "summary": "Single object GET endpoint for Make",
+                "tags": ["car_rental::Make"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/car_rental.make"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "car_rental__Make_Put",
+                "summary": "Single object PUT endpoint for Make",
+                "tags": ["car_rental::Make"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/car_rental.make"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "car_rental__Make_Put",
+                "summary": "Single object DELETE endpoint for Make",
+                "tags": ["car_rental::Make"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        },
+        "/customer" : {
+            "get" : {
+                "operationId": "car_rental__Customer_List",
+                "summary": "List endpoint for Customer",
+                "tags": ["car_rental::Customer"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/car_rental.customer"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "car_rental__Customer_Creation",
+                "tags": ["car_rental::Customer"],
+                "summary": "Creation endpoint for Customer",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/car_rental.customer"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/car_rental.customer"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/{id}" : {
+            "get" : {
+                "operationId": "car_rental__Customer_Get",
+                "summary": "Single object GET endpoint for Customer",
+                "tags": ["car_rental::Customer"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/car_rental.customer"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "car_rental__Customer_Put",
+                "summary": "Single object PUT endpoint for Customer",
+                "tags": ["car_rental::Customer"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/car_rental.customer"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "car_rental__Customer_Put",
+                "summary": "Single object DELETE endpoint for Customer",
+                "tags": ["car_rental::Customer"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        }
+        ,
+        "/customer/{id}/rent" : {
+            "post" : {
+                "operationId": "car_rental__Customer__rent",
+                "tags": ["car_rental::Customer"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for rent"
+                    }
+                }
+            }
+        }
+        ,
+        "/customer/{id}/finishRental" : {
+            "post" : {
+                "operationId": "car_rental__Customer__finishRental",
+                "tags": ["car_rental::Customer"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for finishRental"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "car_rental.car.status" : {
+            	"description": "",
+                "type": "string",
+                "enum": [
+                    "Available",
+                    "Rented",
+                    "UnderRepair",
+                    "Decomissioned"
+                ]
+            }
+            ,
+            "car_rental.rental.status" : {
+            	"description": "",
+                "type": "string",
+                "enum": [
+                    "InProgress",
+                    "Finished"
+                ]
+            }
+            ,
+            "car_rental.car" : {
+            	"description": "",
+                "type": "object",
+                "properties": {
+                    "description": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "plate": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "price": {
+                    	"description": "",
+                    }
+                    ,
+                    "available": {
+                    	"description": "",
+                        "type": "boolean"
+                    }
+                    ,
+                    "year": {
+                    	"description": "",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                    ,
+                    "color": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "underRepair": {
+                    	"description": "",
+                        "type": "boolean"
+                    }
+                    ,
+                    "rented": {
+                    	"description": "",
+                        "type": "boolean"
+                    }
+                    ,
+                    "status": {
+                        "$ref": "#/components/schemas/car_rental.car.status"
+                    }
+                    ,
+                    "currentRental": {
+                        "$ref": "#/components/schemas/car_rental.rental"
+                    }
+                    ,
+                    "carModel": {
+                        "$ref": "#/components/schemas/car_rental.carModel"
+                    }
+                    ,
+                    "rentals": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/car_rental.rental"
+                        }
+                    }
+                }
+            }
+            ,
+            "car_rental.rental" : {
+            	"description": "",
+                "type": "object",
+                "properties": {
+                    "description": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "number": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "internalId": {
+                    	"description": "",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                    ,
+                    "started": {
+                    	"description": "",
+                        "type": "string",
+                        "format": "date"
+                    }
+                    ,
+                    "returned": {
+                    	"description": "",
+                        "type": "string",
+                        "format": "date"
+                    }
+                    ,
+                    "status": {
+                        "$ref": "#/components/schemas/car_rental.rental.status"
+                    }
+                    ,
+                    "inProgress": {
+                    	"description": "",
+                        "type": "boolean"
+                    }
+                    ,
+                    "car": {
+                        "$ref": "#/components/schemas/car_rental.car"
+                    }
+                    ,
+                    "customer": {
+                        "$ref": "#/components/schemas/car_rental.customer"
+                    }
+                }
+            }
+            ,
+            "car_rental.carModel" : {
+            	"description": "",
+                "type": "object",
+                "properties": {
+                    "description": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "name": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "make": {
+                        "$ref": "#/components/schemas/car_rental.make"
+                    }
+                    ,
+                    "cars": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/car_rental.car"
+                        }
+                    }
+                }
+            }
+            ,
+            "car_rental.make" : {
+            	"description": "",
+                "type": "object",
+                "properties": {
+                    "name": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "models": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/car_rental.carModel"
+                        }
+                    }
+                }
+            }
+            ,
+            "car_rental.customer" : {
+            	"description": "",
+                "type": "object",
+                "properties": {
+                    "name": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "hasCurrentRental": {
+                    	"description": "",
+                        "type": "boolean"
+                    }
+                    ,
+                    "renting": {
+                    	"description": "",
+                        "type": "boolean"
+                    }
+                    ,
+                    "rentals": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/car_rental.rental"
+                        }
+                    }
+                    ,
+                    "currentRental": {
+                        "$ref": "#/components/schemas/car_rental.rental"
+                    }
+                }
+            }
+        }
+    }
+}

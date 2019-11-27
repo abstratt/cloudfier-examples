@@ -1,0 +1,2142 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script   src="https://code.jquery.com/jquery-1.12.3.min.js"   integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ="   crossorigin="anonymous"></script>  
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <title>Package: Car rental - Data Dictionary</title>
+</head>
+<body>
+    <div class="container-fluid">
+    <h1>Package: Car rental</h1>
+    (<a href="data-dictionary.html">Back to Simple Car Rental Application</a>)
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <div>
+    <a name="car_rental"></a>
+    <h5>(car_rental)</h5>
+    
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Entity</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a href="car_rental.html#car_rental::Car">Car</a></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><a href="car_rental.html#car_rental::Rental">Rental</a></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><a href="car_rental.html#car_rental::CarModel">CarModel</a></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><a href="car_rental.html#car_rental::Make">Make</a></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><a href="car_rental.html#car_rental::Customer">Customer</a></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Class diagram</h4>
+    <img src="car_rental-classes.png"></img>
+    <h4>State diagram</h4>
+    <img src="car_rental-state.png"></img>
+    </div>
+    </div>
+    </div>
+    <h2>Entities</h2>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="car_rental::Car"></a>
+    <h3>Car</h3>
+    <h5>Entity from <strong><a href="#car_rental">Car rental</a></strong></h5>
+    <hr>
+    <h4>Properties</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Property</th>
+                <th width="10%">Type</th>
+                <th width="10%">Required</th>
+                <th width="10%">Initializable</th>
+                <th width="10%">Editable</th>
+                <th width="50%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="car_rental::Car::description"></a>Description</a></td>
+                <td>String</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="347d1ef3-e2f6-4b2b-872a-bdb861bbc2ee-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="347d1ef3-e2f6-4b2b-872a-bdb861bbc2ee-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#347d1ef3-e2f6-4b2b-872a-bdb861bbc2ee-accordion" href="#347d1ef3-e2f6-4b2b-872a-bdb861bbc2ee-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="347d1ef3-e2f6-4b2b-872a-bdb861bbc2ee-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="car_rental.html#car_rental::Car::carModel">carModel</a>.<a href="car_rental.html#car_rental::CarModel::description">description</a> + (" (" + (self.<a href="car_rental.html#car_rental::Car::color">color</a> + (") - " + self.<a href="car_rental.html#car_rental::Car::plate">plate</a>)))
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="347d1ef3-e2f6-4b2b-872a-bdb861bbc2ee-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#347d1ef3-e2f6-4b2b-872a-bdb861bbc2ee-accordion" href="#347d1ef3-e2f6-4b2b-872a-bdb861bbc2ee-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="347d1ef3-e2f6-4b2b-872a-bdb861bbc2ee-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Property 'name' in property 'make' in this CarModel + " " + property 'name' in this CarModel
+                   + " (" + property 'color' in this Car + ") - " + property 'plate' in this Car
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Car::plate"></a>Plate</a></td>
+                <td>String</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Car::price"></a>Price</a></td>
+                <td>Double</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Invariants
+                </th></tr>
+                <tr><td>
+                Price must be $50 at least.
+                <div class="panel-group" id="4020ac28-0675-42c9-b583-6c0688a6f60a-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="4020ac28-0675-42c9-b583-6c0688a6f60a-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#4020ac28-0675-42c9-b583-6c0688a6f60a-accordion" href="#4020ac28-0675-42c9-b583-6c0688a6f60a-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="4020ac28-0675-42c9-b583-6c0688a6f60a-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="car_rental.html#car_rental::Car::price">price</a> >= 50.0
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="4020ac28-0675-42c9-b583-6c0688a6f60a-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#4020ac28-0675-42c9-b583-6c0688a6f60a-accordion" href="#4020ac28-0675-42c9-b583-6c0688a6f60a-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="4020ac28-0675-42c9-b583-6c0688a6f60a-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Property 'price' in this Car >= 50.0
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Invariants
+                </th></tr>
+                <tr><td>
+                Price cannot be above $500.
+                <div class="panel-group" id="11a84a66-654e-47ff-8770-fceb8f910b61-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="11a84a66-654e-47ff-8770-fceb8f910b61-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#11a84a66-654e-47ff-8770-fceb8f910b61-accordion" href="#11a84a66-654e-47ff-8770-fceb8f910b61-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="11a84a66-654e-47ff-8770-fceb8f910b61-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="car_rental.html#car_rental::Car::price">price</a> <= 500.0
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="11a84a66-654e-47ff-8770-fceb8f910b61-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#11a84a66-654e-47ff-8770-fceb8f910b61-accordion" href="#11a84a66-654e-47ff-8770-fceb8f910b61-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="11a84a66-654e-47ff-8770-fceb8f910b61-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Property 'price' in this Car <= 500.0
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Car::available"></a>Available</a></td>
+                <td>Boolean</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="2b8a055c-140a-47d8-92a8-b1fb30102803-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="2b8a055c-140a-47d8-92a8-b1fb30102803-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#2b8a055c-140a-47d8-92a8-b1fb30102803-accordion" href="#2b8a055c-140a-47d8-92a8-b1fb30102803-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="2b8a055c-140a-47d8-92a8-b1fb30102803-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="car_rental.html#car_rental::Car::status">status</a> == Status#Available
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="2b8a055c-140a-47d8-92a8-b1fb30102803-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#2b8a055c-140a-47d8-92a8-b1fb30102803-accordion" href="#2b8a055c-140a-47d8-92a8-b1fb30102803-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="2b8a055c-140a-47d8-92a8-b1fb30102803-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The value of property 'status' in this Car is equal to "Available"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Car::year"></a>Year</a></td>
+                <td>Integer</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Invariants
+                </th></tr>
+                <tr><td>
+                Year must be later than 1990
+                <div class="panel-group" id="9792f590-df85-464c-81d5-7f3b2bd59a77-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="9792f590-df85-464c-81d5-7f3b2bd59a77-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#9792f590-df85-464c-81d5-7f3b2bd59a77-accordion" href="#9792f590-df85-464c-81d5-7f3b2bd59a77-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="9792f590-df85-464c-81d5-7f3b2bd59a77-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="car_rental.html#car_rental::Car::year">year</a> > 1990
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="9792f590-df85-464c-81d5-7f3b2bd59a77-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#9792f590-df85-464c-81d5-7f3b2bd59a77-accordion" href="#9792f590-df85-464c-81d5-7f3b2bd59a77-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="9792f590-df85-464c-81d5-7f3b2bd59a77-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Property 'year' in this Car > 1990
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Invariants
+                </th></tr>
+                <tr><td>
+                Year cannot be in the future
+                <div class="panel-group" id="7eb4d525-0f09-44ed-91d7-a40cf47d5fd3-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="7eb4d525-0f09-44ed-91d7-a40cf47d5fd3-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#7eb4d525-0f09-44ed-91d7-a40cf47d5fd3-accordion" href="#7eb4d525-0f09-44ed-91d7-a40cf47d5fd3-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="7eb4d525-0f09-44ed-91d7-a40cf47d5fd3-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="car_rental.html#car_rental::Car::year">year</a> <= Date#today().year()
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="7eb4d525-0f09-44ed-91d7-a40cf47d5fd3-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#7eb4d525-0f09-44ed-91d7-a40cf47d5fd3-accordion" href="#7eb4d525-0f09-44ed-91d7-a40cf47d5fd3-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="7eb4d525-0f09-44ed-91d7-a40cf47d5fd3-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Property 'year' in this Car <= TBD: year
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Car::color"></a>Color</a></td>
+                <td>String</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Car::underRepair"></a>Under Repair</a></td>
+                <td>Boolean</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="997674e8-8e16-4188-82ee-e51ecd195f7a-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="997674e8-8e16-4188-82ee-e51ecd195f7a-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#997674e8-8e16-4188-82ee-e51ecd195f7a-accordion" href="#997674e8-8e16-4188-82ee-e51ecd195f7a-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="997674e8-8e16-4188-82ee-e51ecd195f7a-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="car_rental.html#car_rental::Car::status">status</a> == Status#UnderRepair
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="997674e8-8e16-4188-82ee-e51ecd195f7a-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#997674e8-8e16-4188-82ee-e51ecd195f7a-accordion" href="#997674e8-8e16-4188-82ee-e51ecd195f7a-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="997674e8-8e16-4188-82ee-e51ecd195f7a-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The value of property 'status' in this Car is equal to "UnderRepair"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Car::rented"></a>Rented</a></td>
+                <td>Boolean</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="1d5b5de8-5017-4bd0-8214-458f9bc51e7c-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="1d5b5de8-5017-4bd0-8214-458f9bc51e7c-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#1d5b5de8-5017-4bd0-8214-458f9bc51e7c-accordion" href="#1d5b5de8-5017-4bd0-8214-458f9bc51e7c-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="1d5b5de8-5017-4bd0-8214-458f9bc51e7c-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="car_rental.html#car_rental::Car::status">status</a> == Status#Rented
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="1d5b5de8-5017-4bd0-8214-458f9bc51e7c-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#1d5b5de8-5017-4bd0-8214-458f9bc51e7c-accordion" href="#1d5b5de8-5017-4bd0-8214-458f9bc51e7c-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="1d5b5de8-5017-4bd0-8214-458f9bc51e7c-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The value of property 'status' in this Car is equal to "Rented"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Car::status"></a>Status</a></td>
+                <td><a href="car_rental.html#car_rental::Car::Status">Status</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Relationships</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Relationship</th>
+                <th width="20%">Related Entity</th>
+                <th width="5%">Required</th>
+                <th width="5%">Multiple</th>
+                <th width="5%">Navigable</th>
+                <th width="55%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="car_rental::Car::currentRental"></a>Current Rental</td>
+                <td><a href="car_rental.html#car_rental::Rental">Rental</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Car::carModel"></a>Car Model</td>
+                <td><a href="car_rental.html#car_rental::CarModel">CarModel</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Car::rentals"></a>Rentals</td>
+                <td><a href="car_rental.html#car_rental::Rental">Rental</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Actions</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Action</th>
+                <th width="20%">Parameters</th>
+                <th width="70%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="car_rental::Car::decomission"></a>Decomission (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Valid state(s)
+                </th></tr>
+                <tr><td>
+                UnderRepair
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Car::finishRepair"></a>Finish Repair (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="cc9d2fcd-21a4-4ae5-b767-6885584b6fdc-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="cc9d2fcd-21a4-4ae5-b767-6885584b6fdc-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#cc9d2fcd-21a4-4ae5-b767-6885584b6fdc-accordion" href="#cc9d2fcd-21a4-4ae5-b767-6885584b6fdc-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="cc9d2fcd-21a4-4ae5-b767-6885584b6fdc-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                send <a href="car_rental.html#car_rental::RepairFinished">RepairFinished</a>() to self;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="cc9d2fcd-21a4-4ae5-b767-6885584b6fdc-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#cc9d2fcd-21a4-4ae5-b767-6885584b6fdc-accordion" href="#cc9d2fcd-21a4-4ae5-b767-6885584b6fdc-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="cc9d2fcd-21a4-4ae5-b767-6885584b6fdc-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Send a RepairFinished event to this Car
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="9811b992-daf3-49a8-8c15-63f5f3306b9a-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="9811b992-daf3-49a8-8c15-63f5f3306b9a-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#9811b992-daf3-49a8-8c15-63f5f3306b9a-accordion" href="#9811b992-daf3-49a8-8c15-63f5f3306b9a-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="9811b992-daf3-49a8-8c15-63f5f3306b9a-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="car_rental.html#car_rental::Car::status">status</a> == Status#UnderRepair
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="9811b992-daf3-49a8-8c15-63f5f3306b9a-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#9811b992-daf3-49a8-8c15-63f5f3306b9a-accordion" href="#9811b992-daf3-49a8-8c15-63f5f3306b9a-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="9811b992-daf3-49a8-8c15-63f5f3306b9a-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The value of property 'status' in this Car is equal to "UnderRepair"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Car::startRepair"></a>Start Repair (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="72116cd6-e103-4753-8c97-15ca0325e538-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="72116cd6-e103-4753-8c97-15ca0325e538-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#72116cd6-e103-4753-8c97-15ca0325e538-accordion" href="#72116cd6-e103-4753-8c97-15ca0325e538-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="72116cd6-e103-4753-8c97-15ca0325e538-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                send <a href="car_rental.html#car_rental::RepairStarted">RepairStarted</a>() to self;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="72116cd6-e103-4753-8c97-15ca0325e538-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#72116cd6-e103-4753-8c97-15ca0325e538-accordion" href="#72116cd6-e103-4753-8c97-15ca0325e538-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="72116cd6-e103-4753-8c97-15ca0325e538-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Send a RepairStarted event to this Car
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="4d32a2bf-cbf4-4a5e-988a-bb96a4dc48d4-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="4d32a2bf-cbf4-4a5e-988a-bb96a4dc48d4-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#4d32a2bf-cbf4-4a5e-988a-bb96a4dc48d4-accordion" href="#4d32a2bf-cbf4-4a5e-988a-bb96a4dc48d4-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="4d32a2bf-cbf4-4a5e-988a-bb96a4dc48d4-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="car_rental.html#car_rental::Car::status">status</a> == Status#Available
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="4d32a2bf-cbf4-4a5e-988a-bb96a4dc48d4-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#4d32a2bf-cbf4-4a5e-988a-bb96a4dc48d4-accordion" href="#4d32a2bf-cbf4-4a5e-988a-bb96a4dc48d4-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="4d32a2bf-cbf4-4a5e-988a-bb96a4dc48d4-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The value of property 'status' in this Car is equal to "Available"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Queries</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Query</th>
+                <th width="20%">Parameters</th>
+                <th width="70%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="car_rental::Car::available"></a>Available (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="63152134-e868-496b-9041-5e6b98318363-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="63152134-e868-496b-9041-5e6b98318363-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#63152134-e868-496b-9041-5e6b98318363-accordion" href="#63152134-e868-496b-9041-5e6b98318363-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="63152134-e868-496b-9041-5e6b98318363-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                return <a href="car_rental.html#car_rental::Car">Car</a> extent.select((c) {
+                	c.<a href="car_rental.html#car_rental::Car::status">status</a> == Status#Available
+                });
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="63152134-e868-496b-9041-5e6b98318363-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#63152134-e868-496b-9041-5e6b98318363-accordion" href="#63152134-e868-496b-9041-5e6b98318363-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="63152134-e868-496b-9041-5e6b98318363-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Select from all records for Car 'c'
+                      where the value of property 'status' in 'c' is equal to "Available"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Car::byMake"></a>By Make (public)</td>
+                <td><p>make (Make)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="0dfe6135-a252-4510-8a40-15cac48d139b-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="0dfe6135-a252-4510-8a40-15cac48d139b-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#0dfe6135-a252-4510-8a40-15cac48d139b-accordion" href="#0dfe6135-a252-4510-8a40-15cac48d139b-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="0dfe6135-a252-4510-8a40-15cac48d139b-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                return <a href="car_rental.html#car_rental::Car">Car</a> extent.select((c) {
+                	c.<a href="car_rental.html#car_rental::Car::carModel">carModel</a>.<a href="car_rental.html#car_rental::CarModel::make">make</a> == make
+                });
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="0dfe6135-a252-4510-8a40-15cac48d139b-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#0dfe6135-a252-4510-8a40-15cac48d139b-accordion" href="#0dfe6135-a252-4510-8a40-15cac48d139b-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="0dfe6135-a252-4510-8a40-15cac48d139b-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Select from all records for Car 'c'
+                      where the value of property 'make' in property 'carModel' in 'c' is equal to the given 'make'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Car::byModel"></a>By Model (public)</td>
+                <td><p>carModel (CarModel)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="f01f32ce-17ea-49e7-bf43-bb7e7ac43209-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="f01f32ce-17ea-49e7-bf43-bb7e7ac43209-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#f01f32ce-17ea-49e7-bf43-bb7e7ac43209-accordion" href="#f01f32ce-17ea-49e7-bf43-bb7e7ac43209-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="f01f32ce-17ea-49e7-bf43-bb7e7ac43209-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                return <a href="car_rental.html#car_rental::Car">Car</a> extent.select((c) {
+                	c.<a href="car_rental.html#car_rental::Car::carModel">carModel</a> == carModel
+                });
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="f01f32ce-17ea-49e7-bf43-bb7e7ac43209-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#f01f32ce-17ea-49e7-bf43-bb7e7ac43209-accordion" href="#f01f32ce-17ea-49e7-bf43-bb7e7ac43209-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="f01f32ce-17ea-49e7-bf43-bb7e7ac43209-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Select from all records for Car 'c'
+                      where the value of property 'carModel' in 'c' is equal to the given 'carModel'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="car_rental::Rental"></a>
+    <h3>Rental</h3>
+    <h5>Entity from <strong><a href="#car_rental">Car rental</a></strong></h5>
+    <hr>
+    <h4>Properties</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Property</th>
+                <th width="10%">Type</th>
+                <th width="10%">Required</th>
+                <th width="10%">Initializable</th>
+                <th width="10%">Editable</th>
+                <th width="50%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="car_rental::Rental::description"></a>Description</a></td>
+                <td>String</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="70539afb-15a0-4b4c-8d2d-af164512f7c1-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="70539afb-15a0-4b4c-8d2d-af164512f7c1-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#70539afb-15a0-4b4c-8d2d-af164512f7c1-accordion" href="#70539afb-15a0-4b4c-8d2d-af164512f7c1-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="70539afb-15a0-4b4c-8d2d-af164512f7c1-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="car_rental.html#car_rental::Rental::number">number</a> + (" - " + self.<a href="car_rental.html#car_rental::Rental::car">car</a>.<a href="car_rental.html#car_rental::Car::carModel">carModel</a>.<a href="car_rental.html#car_rental::CarModel::description">description</a>)
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="70539afb-15a0-4b4c-8d2d-af164512f7c1-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#70539afb-15a0-4b4c-8d2d-af164512f7c1-accordion" href="#70539afb-15a0-4b4c-8d2d-af164512f7c1-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="70539afb-15a0-4b4c-8d2d-af164512f7c1-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  "" + TBD: year + "-" + property 'internalId' in this Rental
+                   + " - " + Property 'name' in property 'make' in this CarModel + " " + property 'name' in this CarModel
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Rental::number"></a>Number</a></td>
+                <td>String</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="4e0e84cc-c875-418e-a829-93add6b42896-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="4e0e84cc-c875-418e-a829-93add6b42896-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#4e0e84cc-c875-418e-a829-93add6b42896-accordion" href="#4e0e84cc-c875-418e-a829-93add6b42896-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="4e0e84cc-c875-418e-a829-93add6b42896-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                ("" + self.<a href="car_rental.html#car_rental::Rental::started">started</a>.year()) + ("-" + self.<a href="car_rental.html#car_rental::Rental::internalId">internalId</a>)
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="4e0e84cc-c875-418e-a829-93add6b42896-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#4e0e84cc-c875-418e-a829-93add6b42896-accordion" href="#4e0e84cc-c875-418e-a829-93add6b42896-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="4e0e84cc-c875-418e-a829-93add6b42896-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  "" + TBD: year + "-" + property 'internalId' in this Rental
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Rental::started"></a>Started</a></td>
+                <td>Date</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Rental::returned"></a>Returned</a></td>
+                <td>Date</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Rental::status"></a>Status</a></td>
+                <td><a href="car_rental.html#car_rental::Rental::Status">Status</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Rental::inProgress"></a>In Progress</a></td>
+                <td>Boolean</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="5fd2a44f-68a5-4184-8568-4e657cf4aebe-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="5fd2a44f-68a5-4184-8568-4e657cf4aebe-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#5fd2a44f-68a5-4184-8568-4e657cf4aebe-accordion" href="#5fd2a44f-68a5-4184-8568-4e657cf4aebe-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="5fd2a44f-68a5-4184-8568-4e657cf4aebe-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="car_rental.html#car_rental::Rental::status">status</a> == Status#InProgress
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="5fd2a44f-68a5-4184-8568-4e657cf4aebe-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#5fd2a44f-68a5-4184-8568-4e657cf4aebe-accordion" href="#5fd2a44f-68a5-4184-8568-4e657cf4aebe-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="5fd2a44f-68a5-4184-8568-4e657cf4aebe-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The value of property 'status' in this Rental is equal to "InProgress"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Relationships</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Relationship</th>
+                <th width="20%">Related Entity</th>
+                <th width="5%">Required</th>
+                <th width="5%">Multiple</th>
+                <th width="5%">Navigable</th>
+                <th width="55%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="car_rental::Rental::car"></a>Car</td>
+                <td><a href="car_rental.html#car_rental::Car">Car</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Rental::customer"></a>Customer</td>
+                <td><a href="car_rental.html#car_rental::Customer">Customer</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Actions</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Action</th>
+                <th width="20%">Parameters</th>
+                <th width="70%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="car_rental::Rental::complete"></a>Complete (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="3fe77146-1e7a-46e8-8d25-c72f5ce832e8-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="3fe77146-1e7a-46e8-8d25-c72f5ce832e8-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#3fe77146-1e7a-46e8-8d25-c72f5ce832e8-accordion" href="#3fe77146-1e7a-46e8-8d25-c72f5ce832e8-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="3fe77146-1e7a-46e8-8d25-c72f5ce832e8-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="car_rental.html#car_rental::Rental::customer">customer</a>.<a href="car_rental.html#car_rental::Customer::finishRental">finishRental</a>();
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="3fe77146-1e7a-46e8-8d25-c72f5ce832e8-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#3fe77146-1e7a-46e8-8d25-c72f5ce832e8-accordion" href="#3fe77146-1e7a-46e8-8d25-c72f5ce832e8-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="3fe77146-1e7a-46e8-8d25-c72f5ce832e8-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Call operation 'finishRental' on property 'customer' in this Rental
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="1a21396d-05b5-46cb-87da-c2d8c253c9fb-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="1a21396d-05b5-46cb-87da-c2d8c253c9fb-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#1a21396d-05b5-46cb-87da-c2d8c253c9fb-accordion" href="#1a21396d-05b5-46cb-87da-c2d8c253c9fb-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="1a21396d-05b5-46cb-87da-c2d8c253c9fb-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="car_rental.html#car_rental::Rental::inProgress">inProgress</a>
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="1a21396d-05b5-46cb-87da-c2d8c253c9fb-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#1a21396d-05b5-46cb-87da-c2d8c253c9fb-accordion" href="#1a21396d-05b5-46cb-87da-c2d8c253c9fb-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="1a21396d-05b5-46cb-87da-c2d8c253c9fb-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The value of property 'status' in this Rental is equal to "InProgress"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Queries</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Query</th>
+                <th width="20%">Parameters</th>
+                <th width="70%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="car_rental::Rental::countOfRentalsInProgress"></a>Count Of Rentals In Progress (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="fdf3eb3e-8e5f-41c4-8e79-ec84a2e7f2e5-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="fdf3eb3e-8e5f-41c4-8e79-ec84a2e7f2e5-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#fdf3eb3e-8e5f-41c4-8e79-ec84a2e7f2e5-accordion" href="#fdf3eb3e-8e5f-41c4-8e79-ec84a2e7f2e5-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="fdf3eb3e-8e5f-41c4-8e79-ec84a2e7f2e5-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                return <a href="car_rental.html#car_rental::Rental">Rental</a> extent.select((l) {
+                	l.<a href="car_rental.html#car_rental::Rental::inProgress">inProgress</a>
+                }).size();
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="fdf3eb3e-8e5f-41c4-8e79-ec84a2e7f2e5-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#fdf3eb3e-8e5f-41c4-8e79-ec84a2e7f2e5-accordion" href="#fdf3eb3e-8e5f-41c4-8e79-ec84a2e7f2e5-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="fdf3eb3e-8e5f-41c4-8e79-ec84a2e7f2e5-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The count of all records for Rental 'l'
+                      where the value of property 'status' in this Rental is equal to "InProgress"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Rental::inProgress"></a>In Progress (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="4cc076cc-d815-479a-8dc1-d9fed683e632-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="4cc076cc-d815-479a-8dc1-d9fed683e632-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#4cc076cc-d815-479a-8dc1-d9fed683e632-accordion" href="#4cc076cc-d815-479a-8dc1-d9fed683e632-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="4cc076cc-d815-479a-8dc1-d9fed683e632-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                return <a href="car_rental.html#car_rental::Rental">Rental</a> extent.select((l) {
+                	l.<a href="car_rental.html#car_rental::Rental::inProgress">inProgress</a>
+                });
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="4cc076cc-d815-479a-8dc1-d9fed683e632-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#4cc076cc-d815-479a-8dc1-d9fed683e632-accordion" href="#4cc076cc-d815-479a-8dc1-d9fed683e632-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="4cc076cc-d815-479a-8dc1-d9fed683e632-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Select from all records for Rental 'l'
+                      where the value of property 'status' in this Rental is equal to "InProgress"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="car_rental::CarModel"></a>
+    <h3>Car Model</h3>
+    <h5>Entity from <strong><a href="#car_rental">Car rental</a></strong></h5>
+    <hr>
+    <h4>Properties</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Property</th>
+                <th width="10%">Type</th>
+                <th width="10%">Required</th>
+                <th width="10%">Initializable</th>
+                <th width="10%">Editable</th>
+                <th width="50%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="car_rental::CarModel::description"></a>Description</a></td>
+                <td>String</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="23eb7233-6af7-43c8-bb3f-776463efaf9c-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="23eb7233-6af7-43c8-bb3f-776463efaf9c-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#23eb7233-6af7-43c8-bb3f-776463efaf9c-accordion" href="#23eb7233-6af7-43c8-bb3f-776463efaf9c-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="23eb7233-6af7-43c8-bb3f-776463efaf9c-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="car_rental.html#car_rental::CarModel::make">make</a>.<a href="car_rental.html#car_rental::Make::name">name</a> + (" " + self.<a href="car_rental.html#car_rental::CarModel::name">name</a>)
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="23eb7233-6af7-43c8-bb3f-776463efaf9c-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#23eb7233-6af7-43c8-bb3f-776463efaf9c-accordion" href="#23eb7233-6af7-43c8-bb3f-776463efaf9c-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="23eb7233-6af7-43c8-bb3f-776463efaf9c-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Property 'name' in property 'make' in this CarModel + " " + property 'name' in this CarModel
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::CarModel::name"></a>Name</a></td>
+                <td>String</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Relationships</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Relationship</th>
+                <th width="20%">Related Entity</th>
+                <th width="5%">Required</th>
+                <th width="5%">Multiple</th>
+                <th width="5%">Navigable</th>
+                <th width="55%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="car_rental::CarModel::make"></a>Make</td>
+                <td><a href="car_rental.html#car_rental::Make">Make</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::CarModel::cars"></a>Cars</td>
+                <td><a href="car_rental.html#car_rental::Car">Car</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="car_rental::Make"></a>
+    <h3>Make</h3>
+    <h5>Entity from <strong><a href="#car_rental">Car rental</a></strong></h5>
+    <hr>
+    <h4>Properties</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Property</th>
+                <th width="10%">Type</th>
+                <th width="10%">Required</th>
+                <th width="10%">Initializable</th>
+                <th width="10%">Editable</th>
+                <th width="50%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="car_rental::Make::name"></a>Name</a></td>
+                <td>String</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Relationships</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Relationship</th>
+                <th width="20%">Related Entity</th>
+                <th width="5%">Required</th>
+                <th width="5%">Multiple</th>
+                <th width="5%">Navigable</th>
+                <th width="55%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="car_rental::Make::models"></a>Models</td>
+                <td><a href="car_rental.html#car_rental::CarModel">CarModel</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="car_rental::Customer"></a>
+    <h3>Customer</h3>
+    <h5>Entity from <strong><a href="#car_rental">Car rental</a></strong></h5>
+    <hr>
+    <h4>Properties</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Property</th>
+                <th width="10%">Type</th>
+                <th width="10%">Required</th>
+                <th width="10%">Initializable</th>
+                <th width="10%">Editable</th>
+                <th width="50%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="car_rental::Customer::name"></a>Name</a></td>
+                <td>String</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Relationships</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Relationship</th>
+                <th width="20%">Related Entity</th>
+                <th width="5%">Required</th>
+                <th width="5%">Multiple</th>
+                <th width="5%">Navigable</th>
+                <th width="55%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="car_rental::Customer::rentals"></a>Rentals</td>
+                <td><a href="car_rental.html#car_rental::Rental">Rental</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Customer::currentRental"></a>Current Rental</td>
+                <td><a href="car_rental.html#car_rental::Rental">Rental</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Actions</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Action</th>
+                <th width="20%">Parameters</th>
+                <th width="70%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="car_rental::Customer::finishRental"></a>Finish Rental (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="1a343b5a-0589-4266-beb0-fef61aabda41-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="1a343b5a-0589-4266-beb0-fef61aabda41-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#1a343b5a-0589-4266-beb0-fef61aabda41-accordion" href="#1a343b5a-0589-4266-beb0-fef61aabda41-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="1a343b5a-0589-4266-beb0-fef61aabda41-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                send <a href="car_rental.html#car_rental::CarReturned">CarReturned</a>() to self.<a href="car_rental.html#car_rental::Customer::currentRental">currentRental</a>.<a href="car_rental.html#car_rental::Rental::car">car</a>;
+                self.<a href="car_rental.html#car_rental::Customer::currentRental">currentRental</a>.<a href="car_rental.html#car_rental::Rental::finish">finish</a>();
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="1a343b5a-0589-4266-beb0-fef61aabda41-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#1a343b5a-0589-4266-beb0-fef61aabda41-accordion" href="#1a343b5a-0589-4266-beb0-fef61aabda41-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="1a343b5a-0589-4266-beb0-fef61aabda41-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Send a CarReturned event to property 'car' in Any all records for Rental 'l'
+                      where (the value of property 'customer' in 'l' is equal to this Customer)
+                      and
+                      (The value of property 'status' in this Rental is equal to "InProgress")
+                  Call operation 'finish' on Any all records for Rental 'l'
+                      where (the value of property 'customer' in 'l' is equal to this Customer)
+                      and
+                      (The value of property 'status' in this Rental is equal to "InProgress")
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="d3daf94f-ca02-481d-a0b5-67e7935d9c75-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="d3daf94f-ca02-481d-a0b5-67e7935d9c75-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#d3daf94f-ca02-481d-a0b5-67e7935d9c75-accordion" href="#d3daf94f-ca02-481d-a0b5-67e7935d9c75-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="d3daf94f-ca02-481d-a0b5-67e7935d9c75-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="car_rental.html#car_rental::Customer::hasCurrentRental">hasCurrentRental</a>
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="d3daf94f-ca02-481d-a0b5-67e7935d9c75-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#d3daf94f-ca02-481d-a0b5-67e7935d9c75-accordion" href="#d3daf94f-ca02-481d-a0b5-67e7935d9c75-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="d3daf94f-ca02-481d-a0b5-67e7935d9c75-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  (the value of Any all records for Rental 'l'
+                      where (the value of property 'customer' in 'l' is equal to this Customer)
+                      and
+                      (The value of property 'status' in this Rental is equal to "InProgress")
+                   is equal to null) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Customer::rent"></a>Rent (public)</td>
+                <td><p>Car (Car)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="5b09f35a-c613-40ad-bf18-9b36342809e6-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="5b09f35a-c613-40ad-bf18-9b36342809e6-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#5b09f35a-c613-40ad-bf18-9b36342809e6-accordion" href="#5b09f35a-c613-40ad-bf18-9b36342809e6-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="5b09f35a-c613-40ad-bf18-9b36342809e6-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                rental := new <a href="car_rental.html#car_rental::Rental">Rental</a>;
+                link <a href="car_rental.html#car_rental::RentalsCustomer">RentalsCustomer</a>(customer := self, rentals := rental);
+                link <a href="car_rental.html#car_rental::RentalsCar">RentalsCar</a>(car := car, rentals := rental);
+                send <a href="car_rental.html#car_rental::CarRented">CarRented</a>() to car;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="5b09f35a-c613-40ad-bf18-9b36342809e6-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#5b09f35a-c613-40ad-bf18-9b36342809e6-accordion" href="#5b09f35a-c613-40ad-bf18-9b36342809e6-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="5b09f35a-c613-40ad-bf18-9b36342809e6-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'rental' a new instance of Rental
+                  Link this Customer and variable 'rental' having:
+                      - this Customer as 'customer'
+                      - variable 'rental' as 'rentals'
+                  Link the given 'car' and variable 'rental' having:
+                      - the given 'car' as 'car'
+                      - variable 'rental' as 'rentals'
+                  Send a CarRented event to the given 'car'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="fb509169-dbdf-42fb-aeaa-fc1a97da6a6b-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="fb509169-dbdf-42fb-aeaa-fc1a97da6a6b-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#fb509169-dbdf-42fb-aeaa-fc1a97da6a6b-accordion" href="#fb509169-dbdf-42fb-aeaa-fc1a97da6a6b-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="fb509169-dbdf-42fb-aeaa-fc1a97da6a6b-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                car.<a href="car_rental.html#car_rental::Car::available">available</a>
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="fb509169-dbdf-42fb-aeaa-fc1a97da6a6b-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#fb509169-dbdf-42fb-aeaa-fc1a97da6a6b-accordion" href="#fb509169-dbdf-42fb-aeaa-fc1a97da6a6b-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="fb509169-dbdf-42fb-aeaa-fc1a97da6a6b-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The value of property 'status' in this Car is equal to "Available"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="07da588a-d1ba-48f7-9ff2-64cc9148206d-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="07da588a-d1ba-48f7-9ff2-64cc9148206d-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#07da588a-d1ba-48f7-9ff2-64cc9148206d-accordion" href="#07da588a-d1ba-48f7-9ff2-64cc9148206d-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="07da588a-d1ba-48f7-9ff2-64cc9148206d-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="car_rental.html#car_rental::Customer::currentRental">currentRental</a> == null
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="07da588a-d1ba-48f7-9ff2-64cc9148206d-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#07da588a-d1ba-48f7-9ff2-64cc9148206d-accordion" href="#07da588a-d1ba-48f7-9ff2-64cc9148206d-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="07da588a-d1ba-48f7-9ff2-64cc9148206d-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The value of Any all records for Rental 'l'
+                      where (the value of property 'customer' in 'l' is equal to this Customer)
+                      and
+                      (The value of property 'status' in this Rental is equal to "InProgress")
+                   is equal to null
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <h2>State machines</h2>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="car_rental::Car::Status"></a>
+    <h3>Status</h3>
+    <h5>State machine in <b>Car</b> from <strong><a href="#car_rental">Car rental</a></strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Name</th>
+                <th width="40%">Description</th>
+                <th width="50%">Transitions</th>                    
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Available</td>
+                <td>-</td>
+                <td>
+                    <ul>
+                <li>
+                <p><em>To:</em> <strong>Rented</strong></p>
+                <p>
+                <em>When: </em>signal 'Car Rented' is received
+                </p>
+                <li>
+                <p><em>To:</em> <strong>Under Repair</strong></p>
+                <p>
+                <em>When: </em>signal 'Repair Started' is received
+                </p>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Rented</td>
+                <td>-</td>
+                <td>
+                    <ul>
+                <li>
+                <p><em>To:</em> <strong>Available</strong></p>
+                <p>
+                <em>When: </em>signal 'Car Returned' is received
+                </p>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Under Repair</td>
+                <td>-</td>
+                <td>
+                    <ul>
+                <li>
+                <p><em>To:</em> <strong>Available</strong></p>
+                <p>
+                <em>When: </em>signal 'Repair Finished' is received
+                </p>
+                <li>
+                <p><em>To:</em> <strong>Decomissioned</strong></p>
+                <p>
+                <em>When: </em>action 'Decomission' is called
+                </p>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Decomissioned</td>
+                <td>-</td>
+                <td>
+                    <ul>
+                <li>
+                <p><em>To:</em> <strong></strong></p>
+                <p>
+                <em>When: </em>
+                </p>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="car_rental::Rental::Status"></a>
+    <h3>Status</h3>
+    <h5>State machine in <b>Rental</b> from <strong><a href="#car_rental">Car rental</a></strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Name</th>
+                <th width="40%">Description</th>
+                <th width="50%">Transitions</th>                    
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>In Progress</td>
+                <td>-</td>
+                <td>
+                    <ul>
+                <li>
+                <p><em>To:</em> <strong>Finished</strong></p>
+                <p>
+                <em>When: </em>action 'Finish' is called
+                </p>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Finished</td>
+                <td>-</td>
+                <td>
+                    <ul>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <h2>Enumerations</h2>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="car_rental::Car::Status"></a>
+    <h3>Status</h3>
+    <h5>Enumeration from <strong><a href="#car_rental">Car rental</a></strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="20%">Name</th>
+                <th width="80%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="car_rental::Car::Status::Status::Available"></a>Available</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Car::Status::Status::Rented"></a>Rented</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Car::Status::Status::UnderRepair"></a>Under Repair</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Car::Status::Status::Decomissioned"></a>Decomissioned</td>
+                <td>-</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="car_rental::Rental::Status"></a>
+    <h3>Status</h3>
+    <h5>Enumeration from <strong><a href="#car_rental">Car rental</a></strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="20%">Name</th>
+                <th width="80%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="car_rental::Rental::Status::Status::InProgress"></a>In Progress</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td><a name="car_rental::Rental::Status::Status::Finished"></a>Finished</td>
+                <td>-</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    
+</body>
+</html>
+
