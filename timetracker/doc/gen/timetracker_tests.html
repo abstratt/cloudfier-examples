@@ -1,0 +1,1413 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script   src="https://code.jquery.com/jquery-1.12.3.min.js"   integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ="   crossorigin="anonymous"></script>  
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <title>Package: Timetracker tests - Data Dictionary</title>
+</head>
+<body>
+    <div class="container-fluid">
+    <h1>Package: Timetracker tests</h1>
+    (<a href="data-dictionary.html">Back to Time Tracker</a>)
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <div>
+    <a name="timetracker_tests"></a>
+    <h5>(timetracker_tests)</h5>
+    
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Entity</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <h4>Class diagram</h4>
+    <img src="timetracker_tests-classes.png"></img>
+    <h4>State diagram</h4>
+    <img src="timetracker_tests-state.png"></img>
+    </div>
+    </div>
+    </div>
+    
+    <h2>Scenarios</h2>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="timetracker_tests::ProjectScenarios"></a>
+    <h3>Project Scenarios</h3>
+    <h5>Test class from <strong>Timetracker tests</strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="25%">Test case</th>
+                <th width="75%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Time Reported</td>
+                <td>
+                <table>
+                <tr><td>
+                The time reported for a project is the sum of the time of all entries for that project.
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="65b90a6b-547c-4099-accf-7e0d8f9bb956-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="65b90a6b-547c-4099-accf-7e0d8f9bb956-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#65b90a6b-547c-4099-accf-7e0d8f9bb956-accordion" href="#65b90a6b-547c-4099-accf-7e0d8f9bb956-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="65b90a6b-547c-4099-accf-7e0d8f9bb956-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    project := Examples#project();
+                end
+                ;
+                begin
+                    project.<a href="timetracker.html#timetracker::Project::addEntry">addEntry</a>(4, null);
+                    project.<a href="timetracker.html#timetracker::Project::addEntry">addEntry</a>(3, null);
+                end
+                ;
+                begin
+                    Assert#areEqual(7, project.<a href="timetracker.html#timetracker::Project::unitsReported">unitsReported</a>);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="65b90a6b-547c-4099-accf-7e0d8f9bb956-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#65b90a6b-547c-4099-accf-7e0d8f9bb956-accordion" href="#65b90a6b-547c-4099-accf-7e0d8f9bb956-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="65b90a6b-547c-4099-accf-7e0d8f9bb956-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'project' the result of calling operation 'project' on class Examples
+                  Call operation 'addEntry' on variable 'project' with:
+                      - 4 as an argument for 'units'
+                      - null as an argument for 'description'
+                  Call operation 'addEntry' on variable 'project' with:
+                      - 3 as an argument for 'units'
+                      - null as an argument for 'description'
+                  Ensure that The sum of Property 'units' in 'e'
+                  	where Entry 'e' is property 'reported' in this Project
+                   is equal to: 7
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Items Reported</td>
+                <td>
+                <table>
+                <tr><td>
+                Reported entries are collected as discrete objects.
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="ddab64ca-c20f-420a-b72b-f2fd88247416-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="ddab64ca-c20f-420a-b72b-f2fd88247416-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#ddab64ca-c20f-420a-b72b-f2fd88247416-accordion" href="#ddab64ca-c20f-420a-b72b-f2fd88247416-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="ddab64ca-c20f-420a-b72b-f2fd88247416-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    project1 := Examples#project();
+                    project2 := Examples#project();
+                    project1.<a href="timetracker.html#timetracker::Project::addEntry">addEntry</a>(4, null);
+                    project1.<a href="timetracker.html#timetracker::Project::addEntry">addEntry</a>(3, null);
+                end
+                ;
+                begin
+                    Assert#areEqual(2, project1.<a href="timetracker.html#timetracker::Project::reported">reported</a>.size());
+                    Assert#areEqual(0, project2.<a href="timetracker.html#timetracker::Project::reported">reported</a>.size());
+                    project1.<a href="timetracker.html#timetracker::Project::addEntry">addEntry</a>(5, null);
+                    project2.<a href="timetracker.html#timetracker::Project::addEntry">addEntry</a>(1, null);
+                end
+                ;
+                begin
+                    Assert#areEqual(3, project1.<a href="timetracker.html#timetracker::Project::reported">reported</a>.size());
+                    Assert#areEqual(1, project2.<a href="timetracker.html#timetracker::Project::reported">reported</a>.size());
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="ddab64ca-c20f-420a-b72b-f2fd88247416-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#ddab64ca-c20f-420a-b72b-f2fd88247416-accordion" href="#ddab64ca-c20f-420a-b72b-f2fd88247416-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="ddab64ca-c20f-420a-b72b-f2fd88247416-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'project1' the result of calling operation 'project' on class Examples
+                  Assign to variable 'project2' the result of calling operation 'project' on class Examples
+                  Call operation 'addEntry' on variable 'project1' with:
+                      - 4 as an argument for 'units'
+                      - null as an argument for 'description'
+                  Call operation 'addEntry' on variable 'project1' with:
+                      - 3 as an argument for 'units'
+                      - null as an argument for 'description'
+                  Ensure that the count of property 'reported' in variable 'project1' is equal to: 2
+                  Ensure that the count of property 'reported' in variable 'project2' is equal to: 0
+                  Call operation 'addEntry' on variable 'project1' with:
+                      - 5 as an argument for 'units'
+                      - null as an argument for 'description'
+                  Call operation 'addEntry' on variable 'project2' with:
+                      - 1 as an argument for 'units'
+                      - null as an argument for 'description'
+                  Ensure that the count of property 'reported' in variable 'project1' is equal to: 3
+                  Ensure that the count of property 'reported' in variable 'project2' is equal to: 1
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Time To Invoice</td>
+                <td>
+                <table>
+                <tr><td>
+                A project's time to submit is the sum of all units reported but yet to be added to an invoice.
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="fe8bd083-1cf9-466c-aaf6-23f9706c77f1-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="fe8bd083-1cf9-466c-aaf6-23f9706c77f1-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#fe8bd083-1cf9-466c-aaf6-23f9706c77f1-accordion" href="#fe8bd083-1cf9-466c-aaf6-23f9706c77f1-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="fe8bd083-1cf9-466c-aaf6-23f9706c77f1-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    project := Examples#project();
+                    entry1 := project.<a href="timetracker.html#timetracker::Project::addEntry">addEntry</a>(4, null);
+                    entry2 := project.<a href="timetracker.html#timetracker::Project::addEntry">addEntry</a>(3, null);
+                    invoice := project.<a href="timetracker.html#timetracker::Project::client">client</a>.<a href="timetracker.html#timetracker::Client::openInvoice">openInvoice</a>();
+                    entry1.<a href="timetracker.html#timetracker::Entry::submit">submit</a>(invoice);
+                end
+                ;
+                begin
+                    Assert#areEqual(1, project.<a href="timetracker.html#timetracker::Project::toSubmit">toSubmit</a>.size());
+                    Assert#areEqual(3, project.<a href="timetracker.html#timetracker::Project::unitsToSubmit">unitsToSubmit</a>);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="fe8bd083-1cf9-466c-aaf6-23f9706c77f1-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#fe8bd083-1cf9-466c-aaf6-23f9706c77f1-accordion" href="#fe8bd083-1cf9-466c-aaf6-23f9706c77f1-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="fe8bd083-1cf9-466c-aaf6-23f9706c77f1-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'project' the result of calling operation 'project' on class Examples
+                  Assign to variable 'entry1' the result of calling operation 'addEntry' on variable 'project' with:
+                      - 4 as an argument for 'units'
+                      - null as an argument for 'description'
+                  Assign to variable 'entry2' the result of calling operation 'addEntry' on variable 'project' with:
+                      - 3 as an argument for 'units'
+                      - null as an argument for 'description'
+                  Assign to variable 'invoice' the result of calling operation 'openInvoice' on property 'client' in variable 'project'
+                  Call operation 'submit' on variable 'entry1'  with variable 'invoice' as argument
+                  Ensure that the count of Select from property 'reported' in this Project 'e'
+                      where ((the value of property 'invoice' in this Entry is equal to null) is false
+                      ) is false
+                   is equal to: 1
+                  Ensure that The sum of Property 'units' in 'e'
+                  	where Entry 'e' is Select from property 'reported' in this Project 'e'
+                  	    where ((the value of property 'invoice' in this Entry is equal to null) is false
+                  	    ) is false
+                   is equal to: 3
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="timetracker_tests::EntryScenarios"></a>
+    <h3>Entry Scenarios</h3>
+    <h5>Test class from <strong>Timetracker tests</strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="25%">Test case</th>
+                <th width="75%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Entry Date Defaults To Today</td>
+                <td>
+                <table>
+                <tr><td>
+                The date for a new entry is today's date.
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="4c09b27e-f339-443c-b897-f6728d6431a9-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="4c09b27e-f339-443c-b897-f6728d6431a9-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#4c09b27e-f339-443c-b897-f6728d6431a9-accordion" href="#4c09b27e-f339-443c-b897-f6728d6431a9-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="4c09b27e-f339-443c-b897-f6728d6431a9-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                anEntry := Examples#project().<a href="timetracker.html#timetracker::Project::addEntry">addEntry</a>(1, null);
+                Assert#areEqual(Date#today(), anEntry.<a href="timetracker.html#timetracker::Entry::date">date</a>);
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="4c09b27e-f339-443c-b897-f6728d6431a9-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#4c09b27e-f339-443c-b897-f6728d6431a9-accordion" href="#4c09b27e-f339-443c-b897-f6728d6431a9-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="4c09b27e-f339-443c-b897-f6728d6431a9-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'anEntry' the result of calling operation 'addEntry' on the result of calling operation 'project' on class Examples  with:
+                      - 1 as an argument for 'units'
+                      - null as an argument for 'description'
+                  Ensure that property 'date' in variable 'anEntry' is equal to: today's date
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Cannot Assign Entry To Invoice From Another Client</td>
+                <td>
+                <table>
+                <tr><td>
+                Entries submitted to an invoice must belong to a project of the same client.
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="4c0bd305-2a0b-4e84-9d0c-29a29e8801fb-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="4c0bd305-2a0b-4e84-9d0c-29a29e8801fb-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#4c0bd305-2a0b-4e84-9d0c-29a29e8801fb-accordion" href="#4c0bd305-2a0b-4e84-9d0c-29a29e8801fb-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="4c0bd305-2a0b-4e84-9d0c-29a29e8801fb-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                client1 := Examples#client();
+                client2 := Examples#client();
+                anEntry := client1.<a href="timetracker.html#timetracker::Client::newProject">newProject</a>("Some project").<a href="timetracker.html#timetracker::Project::addEntry">addEntry</a>(1, null);
+                anEntry.<a href="timetracker.html#timetracker::Entry::submit">submit</a>(client2.<a href="timetracker.html#timetracker::Client::openInvoice">openInvoice</a>());
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="4c0bd305-2a0b-4e84-9d0c-29a29e8801fb-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#4c0bd305-2a0b-4e84-9d0c-29a29e8801fb-accordion" href="#4c0bd305-2a0b-4e84-9d0c-29a29e8801fb-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="4c0bd305-2a0b-4e84-9d0c-29a29e8801fb-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'client1' the result of calling operation 'client' on class Examples
+                  Assign to variable 'client2' the result of calling operation 'client' on class Examples
+                  Assign to variable 'anEntry' the result of calling operation 'addEntry' on the result of calling operation 'newProject' on variable 'client1'  with "Some project" as argument with:
+                      - 1 as an argument for 'units'
+                      - null as an argument for 'description'
+                  Call operation 'submit' on variable 'anEntry'  with the result of calling operation 'openInvoice' on variable 'client2'  as argument
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Cannot Submit Entry To Two Invoices</td>
+                <td>
+                <table>
+                <tr><td>
+                Once an entry has been submitted to an invoice, it cannot be resubmitted to another invoice.
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="f17760b1-3870-48c2-8c8a-62dbb03feb94-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="f17760b1-3870-48c2-8c8a-62dbb03feb94-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#f17760b1-3870-48c2-8c8a-62dbb03feb94-accordion" href="#f17760b1-3870-48c2-8c8a-62dbb03feb94-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="f17760b1-3870-48c2-8c8a-62dbb03feb94-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                project := Examples#project();
+                invoice1 := project.<a href="timetracker.html#timetracker::Project::client">client</a>.<a href="timetracker.html#timetracker::Client::openInvoice">openInvoice</a>();
+                invoice2 := project.<a href="timetracker.html#timetracker::Project::client">client</a>.<a href="timetracker.html#timetracker::Client::openInvoice">openInvoice</a>();
+                anEntry := project.<a href="timetracker.html#timetracker::Project::addEntry">addEntry</a>(1, null);
+                anEntry.<a href="timetracker.html#timetracker::Entry::submit">submit</a>(invoice1);
+                anEntry.<a href="timetracker.html#timetracker::Entry::submit">submit</a>(invoice2);
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="f17760b1-3870-48c2-8c8a-62dbb03feb94-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#f17760b1-3870-48c2-8c8a-62dbb03feb94-accordion" href="#f17760b1-3870-48c2-8c8a-62dbb03feb94-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="f17760b1-3870-48c2-8c8a-62dbb03feb94-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'project' the result of calling operation 'project' on class Examples
+                  Assign to variable 'invoice1' the result of calling operation 'openInvoice' on property 'client' in variable 'project'
+                  Assign to variable 'invoice2' the result of calling operation 'openInvoice' on property 'client' in variable 'project'
+                  Assign to variable 'anEntry' the result of calling operation 'addEntry' on variable 'project' with:
+                      - 1 as an argument for 'units'
+                      - null as an argument for 'description'
+                  Call operation 'submit' on variable 'anEntry'  with variable 'invoice1' as argument
+                  Call operation 'submit' on variable 'anEntry'  with variable 'invoice2' as argument
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Units May Not Be Negative</td>
+                <td>
+                <table>
+                <tr><td>
+                The number of units of work logged must be positive.
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="6dfc8cd6-cd99-4978-9c78-4005c4e01f23-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="6dfc8cd6-cd99-4978-9c78-4005c4e01f23-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#6dfc8cd6-cd99-4978-9c78-4005c4e01f23-accordion" href="#6dfc8cd6-cd99-4978-9c78-4005c4e01f23-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="6dfc8cd6-cd99-4978-9c78-4005c4e01f23-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                Examples#project().<a href="timetracker.html#timetracker::Project::addEntry">addEntry</a>(- 1, null);
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="6dfc8cd6-cd99-4978-9c78-4005c4e01f23-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#6dfc8cd6-cd99-4978-9c78-4005c4e01f23-accordion" href="#6dfc8cd6-cd99-4978-9c78-4005c4e01f23-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="6dfc8cd6-cd99-4978-9c78-4005c4e01f23-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Call operation 'addEntry' on the result of calling operation 'project' on class Examples  with:
+                      - - 1 as an argument for 'units'
+                      - null as an argument for 'description'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Units May Not Be Zero</td>
+                <td>
+                <table>
+                <tr><td>
+                The number of units of work logged must be positive.
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="693dbb4f-c7c4-40df-a1cf-181ba4aa5486-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="693dbb4f-c7c4-40df-a1cf-181ba4aa5486-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#693dbb4f-c7c4-40df-a1cf-181ba4aa5486-accordion" href="#693dbb4f-c7c4-40df-a1cf-181ba4aa5486-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="693dbb4f-c7c4-40df-a1cf-181ba4aa5486-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                Examples#project().<a href="timetracker.html#timetracker::Project::addEntry">addEntry</a>(0, null);
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="693dbb4f-c7c4-40df-a1cf-181ba4aa5486-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#693dbb4f-c7c4-40df-a1cf-181ba4aa5486-accordion" href="#693dbb4f-c7c4-40df-a1cf-181ba4aa5486-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="693dbb4f-c7c4-40df-a1cf-181ba4aa5486-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Call operation 'addEntry' on the result of calling operation 'project' on class Examples  with:
+                      - 0 as an argument for 'units'
+                      - null as an argument for 'description'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="timetracker_tests::InvoiceScenarios"></a>
+    <h3>Invoice Scenarios</h3>
+    <h5>Test class from <strong>Timetracker tests</strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="25%">Test case</th>
+                <th width="75%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Prepare Invoice</td>
+                <td>
+                <table>
+                <tr><td>
+                An invoice begins in the state of Preparation.
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="8e1553f1-1124-46ed-8bf4-e999788ee6fa-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="8e1553f1-1124-46ed-8bf4-e999788ee6fa-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#8e1553f1-1124-46ed-8bf4-e999788ee6fa-accordion" href="#8e1553f1-1124-46ed-8bf4-e999788ee6fa-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="8e1553f1-1124-46ed-8bf4-e999788ee6fa-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    invoice := Examples#client().<a href="timetracker.html#timetracker::Client::openInvoice">openInvoice</a>();
+                end
+                ;
+                begin
+                    Assert#areEqual(Status#Open, invoice.<a href="timetracker.html#timetracker::Invoice::status">status</a>);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="8e1553f1-1124-46ed-8bf4-e999788ee6fa-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#8e1553f1-1124-46ed-8bf4-e999788ee6fa-accordion" href="#8e1553f1-1124-46ed-8bf4-e999788ee6fa-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="8e1553f1-1124-46ed-8bf4-e999788ee6fa-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'invoice' the result of calling operation 'openInvoice' on the result of calling operation 'client' on class Examples
+                  Ensure that property 'status' in variable 'invoice' is equal to: "Open"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Issue Invoice</td>
+                <td>
+                <table>
+                <tr><td>
+                An invoice once issued goes to the state of Issued.
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="bfc4f2ae-d4de-47f3-9f8c-7e75626b84b1-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="bfc4f2ae-d4de-47f3-9f8c-7e75626b84b1-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#bfc4f2ae-d4de-47f3-9f8c-7e75626b84b1-accordion" href="#bfc4f2ae-d4de-47f3-9f8c-7e75626b84b1-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="bfc4f2ae-d4de-47f3-9f8c-7e75626b84b1-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    client := Examples#client();
+                    anEntry := client.<a href="timetracker.html#timetracker::Client::newProject">newProject</a>("Some project").<a href="timetracker.html#timetracker::Project::addEntry">addEntry</a>(1, null);
+                    invoice := client.<a href="timetracker.html#timetracker::Client::openInvoice">openInvoice</a>();
+                    anEntry.<a href="timetracker.html#timetracker::Entry::submit">submit</a>(invoice);
+                    invoice.<a href="timetracker.html#timetracker::Invoice::issue">issue</a>();
+                end
+                ;
+                begin
+                    Assert#areEqual(Status#Issued, invoice.<a href="timetracker.html#timetracker::Invoice::status">status</a>);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="bfc4f2ae-d4de-47f3-9f8c-7e75626b84b1-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#bfc4f2ae-d4de-47f3-9f8c-7e75626b84b1-accordion" href="#bfc4f2ae-d4de-47f3-9f8c-7e75626b84b1-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="bfc4f2ae-d4de-47f3-9f8c-7e75626b84b1-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'client' the result of calling operation 'client' on class Examples
+                  Assign to variable 'anEntry' the result of calling operation 'addEntry' on the result of calling operation 'newProject' on variable 'client'  with "Some project" as argument with:
+                      - 1 as an argument for 'units'
+                      - null as an argument for 'description'
+                  Assign to variable 'invoice' the result of calling operation 'openInvoice' on variable 'client'
+                  Call operation 'submit' on variable 'anEntry'  with variable 'invoice' as argument
+                  Call operation 'issue' on variable 'invoice'
+                  Ensure that property 'status' in variable 'invoice' is equal to: "Issued"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Cancel Invoice In Preparation</td>
+                <td>
+                <table>
+                <tr><td>
+                An invoice can be cancelled while under preparation.
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="4e8ea4c4-3dfd-4a60-9f00-2817a7fe380a-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="4e8ea4c4-3dfd-4a60-9f00-2817a7fe380a-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#4e8ea4c4-3dfd-4a60-9f00-2817a7fe380a-accordion" href="#4e8ea4c4-3dfd-4a60-9f00-2817a7fe380a-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="4e8ea4c4-3dfd-4a60-9f00-2817a7fe380a-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    invoice := Examples#client().<a href="timetracker.html#timetracker::Client::openInvoice">openInvoice</a>();
+                end
+                ;
+                begin
+                    invoice.<a href="timetracker.html#timetracker::Invoice::cancel">cancel</a>();
+                end
+                ;
+                begin
+                    Assert#areEqual(Status#Cancelled, invoice.<a href="timetracker.html#timetracker::Invoice::status">status</a>);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="4e8ea4c4-3dfd-4a60-9f00-2817a7fe380a-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#4e8ea4c4-3dfd-4a60-9f00-2817a7fe380a-accordion" href="#4e8ea4c4-3dfd-4a60-9f00-2817a7fe380a-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="4e8ea4c4-3dfd-4a60-9f00-2817a7fe380a-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'invoice' the result of calling operation 'openInvoice' on the result of calling operation 'client' on class Examples
+                  Call operation 'cancel' on variable 'invoice'
+                  Ensure that property 'status' in variable 'invoice' is equal to: "Cancelled"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Cancel Invoice Before Payment</td>
+                <td>
+                <table>
+                <tr><td>
+                An invoice can be cancelled while pending payment.
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="c3e3b0a0-170e-438c-bdf7-161a62d81cfa-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="c3e3b0a0-170e-438c-bdf7-161a62d81cfa-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#c3e3b0a0-170e-438c-bdf7-161a62d81cfa-accordion" href="#c3e3b0a0-170e-438c-bdf7-161a62d81cfa-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="c3e3b0a0-170e-438c-bdf7-161a62d81cfa-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    project := Examples#project();
+                    invoice := project.<a href="timetracker.html#timetracker::Project::client">client</a>.<a href="timetracker.html#timetracker::Client::openInvoice">openInvoice</a>();
+                    project.<a href="timetracker.html#timetracker::Project::addEntry">addEntry</a>(1, null).<a href="timetracker.html#timetracker::Entry::submit">submit</a>(invoice);
+                    invoice.<a href="timetracker.html#timetracker::Invoice::issue">issue</a>();
+                end
+                ;
+                begin
+                    invoice.<a href="timetracker.html#timetracker::Invoice::cancel">cancel</a>();
+                end
+                ;
+                begin
+                    Assert#areEqual(Status#Cancelled, invoice.<a href="timetracker.html#timetracker::Invoice::status">status</a>);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="c3e3b0a0-170e-438c-bdf7-161a62d81cfa-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#c3e3b0a0-170e-438c-bdf7-161a62d81cfa-accordion" href="#c3e3b0a0-170e-438c-bdf7-161a62d81cfa-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="c3e3b0a0-170e-438c-bdf7-161a62d81cfa-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'project' the result of calling operation 'project' on class Examples
+                  Assign to variable 'invoice' the result of calling operation 'openInvoice' on property 'client' in variable 'project'
+                  Call operation 'submit' on the result of calling operation 'addEntry' on variable 'project' with:
+                      - 1 as an argument for 'units'
+                      - null as an argument for 'description'
+                    with variable 'invoice' as argument
+                  Call operation 'issue' on variable 'invoice'
+                  Call operation 'cancel' on variable 'invoice'
+                  Ensure that property 'status' in variable 'invoice' is equal to: "Cancelled"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Cannot Cancel Invoice</td>
+                <td>
+                <table>
+                <tr><td>
+                An invoice cannot be cancelled after payment is received.
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="28511ce4-4600-45ad-99a4-9542bde86001-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="28511ce4-4600-45ad-99a4-9542bde86001-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#28511ce4-4600-45ad-99a4-9542bde86001-accordion" href="#28511ce4-4600-45ad-99a4-9542bde86001-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="28511ce4-4600-45ad-99a4-9542bde86001-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    invoice := Examples#client().<a href="timetracker.html#timetracker::Client::openInvoice">openInvoice</a>();
+                    invoice.<a href="timetracker.html#timetracker::Invoice::client">client</a>.<a href="timetracker.html#timetracker::Client::newProject">newProject</a>("Some project").<a href="timetracker.html#timetracker::Project::addEntry">addEntry</a>(1, null).<a href="timetracker.html#timetracker::Entry::submit">submit</a>(invoice);
+                    invoice.<a href="timetracker.html#timetracker::Invoice::issue">issue</a>();
+                    send <a href="timetracker.html#timetracker::PaymentReceived">PaymentReceived</a>() to invoice;
+                end
+                ;
+                begin
+                    invoice.<a href="timetracker.html#timetracker::Invoice::cancel">cancel</a>();
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="28511ce4-4600-45ad-99a4-9542bde86001-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#28511ce4-4600-45ad-99a4-9542bde86001-accordion" href="#28511ce4-4600-45ad-99a4-9542bde86001-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="28511ce4-4600-45ad-99a4-9542bde86001-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'invoice' the result of calling operation 'openInvoice' on the result of calling operation 'client' on class Examples
+                  Call operation 'submit' on the result of calling operation 'addEntry' on the result of calling operation 'newProject' on property 'client' in variable 'invoice'  with "Some project" as argument with:
+                      - 1 as an argument for 'units'
+                      - null as an argument for 'description'
+                    with variable 'invoice' as argument
+                  Call operation 'issue' on variable 'invoice'
+                  Send a PaymentReceived event to variable 'invoice'
+                  Call operation 'cancel' on variable 'invoice'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Cannot Issue Cancelled Invoice</td>
+                <td>
+                <table>
+                <tr><td>
+                An invoice cannot be issued after it has been cancelled.
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="fcc8306d-e4f9-4196-a9ed-e12139247ea7-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="fcc8306d-e4f9-4196-a9ed-e12139247ea7-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#fcc8306d-e4f9-4196-a9ed-e12139247ea7-accordion" href="#fcc8306d-e4f9-4196-a9ed-e12139247ea7-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="fcc8306d-e4f9-4196-a9ed-e12139247ea7-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    invoice := Examples#client().<a href="timetracker.html#timetracker::Client::openInvoice">openInvoice</a>();
+                    invoice.<a href="timetracker.html#timetracker::Invoice::client">client</a>.<a href="timetracker.html#timetracker::Client::newProject">newProject</a>("Some project").<a href="timetracker.html#timetracker::Project::addEntry">addEntry</a>(1, null).<a href="timetracker.html#timetracker::Entry::submit">submit</a>(invoice);
+                    invoice.<a href="timetracker.html#timetracker::Invoice::cancel">cancel</a>();
+                end
+                ;
+                begin
+                    invoice.<a href="timetracker.html#timetracker::Invoice::issue">issue</a>();
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="fcc8306d-e4f9-4196-a9ed-e12139247ea7-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#fcc8306d-e4f9-4196-a9ed-e12139247ea7-accordion" href="#fcc8306d-e4f9-4196-a9ed-e12139247ea7-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="fcc8306d-e4f9-4196-a9ed-e12139247ea7-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'invoice' the result of calling operation 'openInvoice' on the result of calling operation 'client' on class Examples
+                  Call operation 'submit' on the result of calling operation 'addEntry' on the result of calling operation 'newProject' on property 'client' in variable 'invoice'  with "Some project" as argument with:
+                      - 1 as an argument for 'units'
+                      - null as an argument for 'description'
+                    with variable 'invoice' as argument
+                  Call operation 'cancel' on variable 'invoice'
+                  Call operation 'issue' on variable 'invoice'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Total Units</td>
+                <td>
+                <table>
+                <tr><td>
+                The total of units in an invoice is the sum of the units of all entries submitted.
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="00c506b5-b8b5-4a86-9935-b0f5c98a6c83-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="00c506b5-b8b5-4a86-9935-b0f5c98a6c83-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#00c506b5-b8b5-4a86-9935-b0f5c98a6c83-accordion" href="#00c506b5-b8b5-4a86-9935-b0f5c98a6c83-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="00c506b5-b8b5-4a86-9935-b0f5c98a6c83-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    client := Examples#client();
+                    invoice := client.<a href="timetracker.html#timetracker::Client::openInvoice">openInvoice</a>();
+                    project1 := client.<a href="timetracker.html#timetracker::Client::newProject">newProject</a>("Project 1");
+                    project2 := client.<a href="timetracker.html#timetracker::Client::newProject">newProject</a>("Project 2");
+                    project1.<a href="timetracker.html#timetracker::Project::addEntry">addEntry</a>(1, null).<a href="timetracker.html#timetracker::Entry::submit">submit</a>(invoice);
+                    project1.<a href="timetracker.html#timetracker::Project::addEntry">addEntry</a>(3, null).<a href="timetracker.html#timetracker::Entry::submit">submit</a>(invoice);
+                    project2.<a href="timetracker.html#timetracker::Project::addEntry">addEntry</a>(7, null).<a href="timetracker.html#timetracker::Entry::submit">submit</a>(invoice);
+                end
+                ;
+                begin
+                    Assert#areEqual(11, invoice.<a href="timetracker.html#timetracker::Invoice::totalUnits">totalUnits</a>);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="00c506b5-b8b5-4a86-9935-b0f5c98a6c83-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#00c506b5-b8b5-4a86-9935-b0f5c98a6c83-accordion" href="#00c506b5-b8b5-4a86-9935-b0f5c98a6c83-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="00c506b5-b8b5-4a86-9935-b0f5c98a6c83-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'client' the result of calling operation 'client' on class Examples
+                  Assign to variable 'invoice' the result of calling operation 'openInvoice' on variable 'client'
+                  Assign to variable 'project1' the result of calling operation 'newProject' on variable 'client'  with "Project 1" as argument
+                  Assign to variable 'project2' the result of calling operation 'newProject' on variable 'client'  with "Project 2" as argument
+                  Call operation 'submit' on the result of calling operation 'addEntry' on variable 'project1' with:
+                      - 1 as an argument for 'units'
+                      - null as an argument for 'description'
+                    with variable 'invoice' as argument
+                  Call operation 'submit' on the result of calling operation 'addEntry' on variable 'project1' with:
+                      - 3 as an argument for 'units'
+                      - null as an argument for 'description'
+                    with variable 'invoice' as argument
+                  Call operation 'submit' on the result of calling operation 'addEntry' on variable 'project2' with:
+                      - 7 as an argument for 'units'
+                      - null as an argument for 'description'
+                    with variable 'invoice' as argument
+                  Ensure that The sum of Property 'units' in 'e'
+                  	where Entry 'e' is property 'submitted' in this Invoice
+                   is equal to: 11
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Payment Received</td>
+                <td>
+                <table>
+                <tr><td>
+                Once payment for an invoice is received, the invoice goes to the Received state.
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="c79511e3-aeaf-47f2-8b52-6408e320f296-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="c79511e3-aeaf-47f2-8b52-6408e320f296-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#c79511e3-aeaf-47f2-8b52-6408e320f296-accordion" href="#c79511e3-aeaf-47f2-8b52-6408e320f296-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="c79511e3-aeaf-47f2-8b52-6408e320f296-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    invoice := Examples#client().<a href="timetracker.html#timetracker::Client::openInvoice">openInvoice</a>();
+                    invoice.<a href="timetracker.html#timetracker::Invoice::client">client</a>.<a href="timetracker.html#timetracker::Client::newProject">newProject</a>("Some project").<a href="timetracker.html#timetracker::Project::addEntry">addEntry</a>(1, null).<a href="timetracker.html#timetracker::Entry::submit">submit</a>(invoice);
+                    invoice.<a href="timetracker.html#timetracker::Invoice::issue">issue</a>();
+                    send <a href="timetracker.html#timetracker::PaymentReceived">PaymentReceived</a>() to invoice;
+                end
+                ;
+                begin
+                    Assert#areEqual(Status#Received, invoice.<a href="timetracker.html#timetracker::Invoice::status">status</a>);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="c79511e3-aeaf-47f2-8b52-6408e320f296-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#c79511e3-aeaf-47f2-8b52-6408e320f296-accordion" href="#c79511e3-aeaf-47f2-8b52-6408e320f296-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="c79511e3-aeaf-47f2-8b52-6408e320f296-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'invoice' the result of calling operation 'openInvoice' on the result of calling operation 'client' on class Examples
+                  Call operation 'submit' on the result of calling operation 'addEntry' on the result of calling operation 'newProject' on property 'client' in variable 'invoice'  with "Some project" as argument with:
+                      - 1 as an argument for 'units'
+                      - null as an argument for 'description'
+                    with variable 'invoice' as argument
+                  Call operation 'issue' on variable 'invoice'
+                  Send a PaymentReceived event to variable 'invoice'
+                  Ensure that property 'status' in variable 'invoice' is equal to: "Received"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Cannot Submit Entry If Invoice Issued</td>
+                <td>
+                <table>
+                <tr><td>
+                It is an error to submit an entry to an invoice that has already being issued.
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="7ef41a6b-8352-40c3-9144-d2165371c021-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="7ef41a6b-8352-40c3-9144-d2165371c021-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#7ef41a6b-8352-40c3-9144-d2165371c021-accordion" href="#7ef41a6b-8352-40c3-9144-d2165371c021-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="7ef41a6b-8352-40c3-9144-d2165371c021-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    project := Examples#project();
+                    invoice := project.<a href="timetracker.html#timetracker::Project::client">client</a>.<a href="timetracker.html#timetracker::Client::openInvoice">openInvoice</a>();
+                    project.<a href="timetracker.html#timetracker::Project::addEntry">addEntry</a>(1, null).<a href="timetracker.html#timetracker::Entry::submit">submit</a>(invoice);
+                    invoice.<a href="timetracker.html#timetracker::Invoice::issue">issue</a>();
+                end
+                ;
+                begin
+                    project.<a href="timetracker.html#timetracker::Project::addEntry">addEntry</a>(2, null).<a href="timetracker.html#timetracker::Entry::submit">submit</a>(invoice);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="7ef41a6b-8352-40c3-9144-d2165371c021-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#7ef41a6b-8352-40c3-9144-d2165371c021-accordion" href="#7ef41a6b-8352-40c3-9144-d2165371c021-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="7ef41a6b-8352-40c3-9144-d2165371c021-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'project' the result of calling operation 'project' on class Examples
+                  Assign to variable 'invoice' the result of calling operation 'openInvoice' on property 'client' in variable 'project'
+                  Call operation 'submit' on the result of calling operation 'addEntry' on variable 'project' with:
+                      - 1 as an argument for 'units'
+                      - null as an argument for 'description'
+                    with variable 'invoice' as argument
+                  Call operation 'issue' on variable 'invoice'
+                  Call operation 'submit' on the result of calling operation 'addEntry' on variable 'project' with:
+                      - 2 as an argument for 'units'
+                      - null as an argument for 'description'
+                    with variable 'invoice' as argument
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Cannot Submit Entry If Invoice Cancelled</td>
+                <td>
+                <table>
+                <tr><td>
+                It is an error to submit an entry to an invoice that has already being cancelled.
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="b5f4f1bb-c278-4771-a2e8-f0f8ce8a81a9-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="b5f4f1bb-c278-4771-a2e8-f0f8ce8a81a9-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b5f4f1bb-c278-4771-a2e8-f0f8ce8a81a9-accordion" href="#b5f4f1bb-c278-4771-a2e8-f0f8ce8a81a9-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="b5f4f1bb-c278-4771-a2e8-f0f8ce8a81a9-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    project := Examples#project();
+                    invoice := project.<a href="timetracker.html#timetracker::Project::client">client</a>.<a href="timetracker.html#timetracker::Client::openInvoice">openInvoice</a>();
+                    invoice.<a href="timetracker.html#timetracker::Invoice::cancel">cancel</a>();
+                end
+                ;
+                begin
+                    project.<a href="timetracker.html#timetracker::Project::addEntry">addEntry</a>(2, null).<a href="timetracker.html#timetracker::Entry::submit">submit</a>(invoice);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="b5f4f1bb-c278-4771-a2e8-f0f8ce8a81a9-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b5f4f1bb-c278-4771-a2e8-f0f8ce8a81a9-accordion" href="#b5f4f1bb-c278-4771-a2e8-f0f8ce8a81a9-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="b5f4f1bb-c278-4771-a2e8-f0f8ce8a81a9-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'project' the result of calling operation 'project' on class Examples
+                  Assign to variable 'invoice' the result of calling operation 'openInvoice' on property 'client' in variable 'project'
+                  Call operation 'cancel' on variable 'invoice'
+                  Call operation 'submit' on the result of calling operation 'addEntry' on variable 'project' with:
+                      - 2 as an argument for 'units'
+                      - null as an argument for 'description'
+                    with variable 'invoice' as argument
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Cannot Issue Invoice Without Any Entry</td>
+                <td>
+                <table>
+                <tr><td>
+                It is an error to issue an invoice with no entries submitted to it.
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="c923acc8-d00a-4673-bd8b-65f37a1abff6-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="c923acc8-d00a-4673-bd8b-65f37a1abff6-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#c923acc8-d00a-4673-bd8b-65f37a1abff6-accordion" href="#c923acc8-d00a-4673-bd8b-65f37a1abff6-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="c923acc8-d00a-4673-bd8b-65f37a1abff6-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                Examples#client().<a href="timetracker.html#timetracker::Client::openInvoice">openInvoice</a>().<a href="timetracker.html#timetracker::Invoice::issue">issue</a>();
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="c923acc8-d00a-4673-bd8b-65f37a1abff6-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#c923acc8-d00a-4673-bd8b-65f37a1abff6-accordion" href="#c923acc8-d00a-4673-bd8b-65f37a1abff6-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="c923acc8-d00a-4673-bd8b-65f37a1abff6-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Call operation 'issue' on the result of calling operation 'openInvoice' on the result of calling operation 'client' on class Examples
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="timetracker_tests::ClientScenarios"></a>
+    <h3>Client Scenarios</h3>
+    <h5>Test class from <strong>Timetracker tests</strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="25%">Test case</th>
+                <th width="75%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>With Invoices Submitted</td>
+                <td>
+                <table>
+                <tr><td>
+                It is possible to retrieve the clients with open invoices.
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="6e6c03d4-4635-4975-80f6-14373c0bccf0-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="6e6c03d4-4635-4975-80f6-14373c0bccf0-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#6e6c03d4-4635-4975-80f6-14373c0bccf0-accordion" href="#6e6c03d4-4635-4975-80f6-14373c0bccf0-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="6e6c03d4-4635-4975-80f6-14373c0bccf0-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    existing := <a href="timetracker.html#timetracker::Client">Client</a>#<a href="timetracker.html#timetracker::Client::withOpenInvoices">withOpenInvoices</a>().size();
+                    client1 := Examples#client();
+                    client2 := Examples#client();
+                    client3 := Examples#client();
+                    client1.<a href="timetracker.html#timetracker::Client::openInvoice">openInvoice</a>();
+                    client2.<a href="timetracker.html#timetracker::Client::openInvoice">openInvoice</a>();
+                    client2.<a href="timetracker.html#timetracker::Client::openInvoice">openInvoice</a>();
+                end
+                ;
+                begin
+                    Assert#areEqual(existing + 2, <a href="timetracker.html#timetracker::Client">Client</a>#<a href="timetracker.html#timetracker::Client::withOpenInvoices">withOpenInvoices</a>().size());
+                    client1.<a href="timetracker.html#timetracker::Client::openInvoices">openInvoices</a>.one().<a href="timetracker.html#timetracker::Invoice::cancel">cancel</a>();
+                end
+                ;
+                begin
+                    Assert#areEqual(existing + 1, <a href="timetracker.html#timetracker::Client">Client</a>#<a href="timetracker.html#timetracker::Client::withOpenInvoices">withOpenInvoices</a>().size());
+                    client2.<a href="timetracker.html#timetracker::Client::openInvoices">openInvoices</a>.one().<a href="timetracker.html#timetracker::Invoice::cancel">cancel</a>();
+                end
+                ;
+                begin
+                    Assert#areEqual(existing + 1, <a href="timetracker.html#timetracker::Client">Client</a>#<a href="timetracker.html#timetracker::Client::withOpenInvoices">withOpenInvoices</a>().size());
+                    client2.<a href="timetracker.html#timetracker::Client::openInvoices">openInvoices</a>.one().<a href="timetracker.html#timetracker::Invoice::cancel">cancel</a>();
+                end
+                ;
+                begin
+                    Assert#areEqual(existing, <a href="timetracker.html#timetracker::Client">Client</a>#<a href="timetracker.html#timetracker::Client::withOpenInvoices">withOpenInvoices</a>().size());
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="6e6c03d4-4635-4975-80f6-14373c0bccf0-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#6e6c03d4-4635-4975-80f6-14373c0bccf0-accordion" href="#6e6c03d4-4635-4975-80f6-14373c0bccf0-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="6e6c03d4-4635-4975-80f6-14373c0bccf0-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'existing' the count of the result of calling operation 'withOpenInvoices' on class Client
+                  Assign to variable 'client1' the result of calling operation 'client' on class Examples
+                  Assign to variable 'client2' the result of calling operation 'client' on class Examples
+                  Assign to variable 'client3' the result of calling operation 'client' on class Examples
+                  Call operation 'openInvoice' on variable 'client1'
+                  Call operation 'openInvoice' on variable 'client2'
+                  Call operation 'openInvoice' on variable 'client2'
+                  Ensure that the count of the result of calling operation 'withOpenInvoices' on class Client  is equal to: variable 'existing' + 2
+                  Call operation 'cancel' on Select from property 'invoices' in this Client 'i'
+                      where the value of property 'status' in this Invoice is equal to "Open"
+                   (any)
+                  Ensure that the count of the result of calling operation 'withOpenInvoices' on class Client  is equal to: variable 'existing' + 1
+                  Call operation 'cancel' on Select from property 'invoices' in this Client 'i'
+                      where the value of property 'status' in this Invoice is equal to "Open"
+                   (any)
+                  Ensure that the count of the result of calling operation 'withOpenInvoices' on class Client  is equal to: variable 'existing' + 1
+                  Call operation 'cancel' on Select from property 'invoices' in this Client 'i'
+                      where the value of property 'status' in this Invoice is equal to "Open"
+                   (any)
+                  Ensure that the count of the result of calling operation 'withOpenInvoices' on class Client  is equal to: variable 'existing'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+</body>
+</html>
+

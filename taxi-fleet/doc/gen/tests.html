@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script   src="https://code.jquery.com/jquery-1.12.3.min.js"   integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ="   crossorigin="anonymous"></script>  
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <title>Package: Tests - Data Dictionary</title>
+</head>
+<body>
+    <div class="container-fluid">
+    <h1>Package: Tests</h1>
+    (<a href="data-dictionary.html">Back to Taxi Fleet Management</a>)
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <div>
+    <a name="tests"></a>
+    <h5>(tests)</h5>
+    
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Entity</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <h4>Class diagram</h4>
+    <img src="tests-classes.png"></img>
+    <h4>State diagram</h4>
+    <img src="tests-state.png"></img>
+    </div>
+    </div>
+    </div>
+    
+    <h2>Scenarios</h2>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="tests::TaxiScenarios"></a>
+    <h3>Taxi Scenarios</h3>
+    <h5>Test class from <strong>Tests</strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="25%">Test case</th>
+                <th width="75%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Available</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="194ab007-ccf6-4fc1-8f5e-7ab446fbe7ee-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="194ab007-ccf6-4fc1-8f5e-7ab446fbe7ee-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#194ab007-ccf6-4fc1-8f5e-7ab446fbe7ee-accordion" href="#194ab007-ccf6-4fc1-8f5e-7ab446fbe7ee-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="194ab007-ccf6-4fc1-8f5e-7ab446fbe7ee-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    shift := TestData#newShift("A shift type", 1);
+                    taxi1 := TestData#newTaxi("Taxi 1", shift);
+                    taxi2 := TestData#newTaxi("Taxi 2", shift);
+                    driver := TestData#newDriver("Driver 1");
+                end
+                ;
+                begin
+                    Assert#isTrue(<a href="taxi_fleet.html#taxi_fleet::Taxi">Taxi</a>#<a href="taxi_fleet.html#taxi_fleet::Taxi::available">available</a>().includes(taxi1));
+                    Assert#isTrue(<a href="taxi_fleet.html#taxi_fleet::Taxi">Taxi</a>#<a href="taxi_fleet.html#taxi_fleet::Taxi::available">available</a>().includes(taxi2));
+                    driver.<a href="taxi_fleet.html#taxi_fleet::Driver::book">book</a>(taxi1);
+                end
+                ;
+                begin
+                    Assert#isTrue(not <a href="taxi_fleet.html#taxi_fleet::Taxi">Taxi</a>#<a href="taxi_fleet.html#taxi_fleet::Taxi::available">available</a>().includes(taxi1));
+                    Assert#isTrue(<a href="taxi_fleet.html#taxi_fleet::Taxi">Taxi</a>#<a href="taxi_fleet.html#taxi_fleet::Taxi::available">available</a>().includes(taxi2));
+                    driver.<a href="taxi_fleet.html#taxi_fleet::Driver::release">release</a>();
+                end
+                ;
+                begin
+                    Assert#isTrue(<a href="taxi_fleet.html#taxi_fleet::Taxi">Taxi</a>#<a href="taxi_fleet.html#taxi_fleet::Taxi::available">available</a>().includes(taxi1));
+                    Assert#isTrue(<a href="taxi_fleet.html#taxi_fleet::Taxi">Taxi</a>#<a href="taxi_fleet.html#taxi_fleet::Taxi::available">available</a>().includes(taxi2));
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="194ab007-ccf6-4fc1-8f5e-7ab446fbe7ee-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#194ab007-ccf6-4fc1-8f5e-7ab446fbe7ee-accordion" href="#194ab007-ccf6-4fc1-8f5e-7ab446fbe7ee-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="194ab007-ccf6-4fc1-8f5e-7ab446fbe7ee-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'shift' the result of calling operation 'newShift' on class TestData with:
+                      - "A shift type" as an argument for 'description'
+                      - 1 as an argument for 'shiftsPerDay'
+                  Assign to variable 'taxi1' the result of calling operation 'newTaxi' on class TestData with:
+                      - "Taxi 1" as an argument for 'name'
+                      - variable 'shift' as an argument for 'shift'
+                  Assign to variable 'taxi2' the result of calling operation 'newTaxi' on class TestData with:
+                      - "Taxi 2" as an argument for 'name'
+                      - variable 'shift' as an argument for 'shift'
+                  Assign to variable 'driver' the result of calling operation 'newDriver' on class TestData  with "Driver 1" as argument
+                  Ensure that TBD: includes
+                  Ensure that TBD: includes
+                  Call operation 'book' on variable 'driver'  with variable 'taxi1' as argument
+                  Ensure that (TBD: includes) is false
+                  Ensure that TBD: includes
+                  Call operation 'release' on variable 'driver'
+                  Ensure that TBD: includes
+                  Ensure that TBD: includes
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+</body>
+</html>
+

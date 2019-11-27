@@ -1,0 +1,802 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Team Tasks"
+    },
+    "paths": {
+        "/contributor" : {
+            "get" : {
+                "operationId": "tasks__Contributor_List",
+                "summary": "List endpoint for Contributor",
+                "tags": ["tasks::Contributor"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/tasks.contributor"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "tasks__Contributor_Creation",
+                "tags": ["tasks::Contributor"],
+                "summary": "Creation endpoint for Contributor",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/tasks.contributor"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/tasks.contributor"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/contributor/{id}" : {
+            "get" : {
+                "operationId": "tasks__Contributor_Get",
+                "summary": "Single object GET endpoint for Contributor",
+                "tags": ["tasks::Contributor"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/tasks.contributor"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "tasks__Contributor_Put",
+                "summary": "Single object PUT endpoint for Contributor",
+                "tags": ["tasks::Contributor"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/tasks.contributor"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "tasks__Contributor_Put",
+                "summary": "Single object DELETE endpoint for Contributor",
+                "tags": ["tasks::Contributor"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        },
+        "/task" : {
+            "get" : {
+                "operationId": "tasks__Task_List",
+                "summary": "List endpoint for Task",
+                "tags": ["tasks::Task"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/tasks.task"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "tasks__Task_Creation",
+                "tags": ["tasks::Task"],
+                "summary": "Creation endpoint for Task",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/tasks.task"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/tasks.task"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/task/{id}" : {
+            "get" : {
+                "operationId": "tasks__Task_Get",
+                "summary": "Single object GET endpoint for Task",
+                "tags": ["tasks::Task"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/tasks.task"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "tasks__Task_Put",
+                "summary": "Single object PUT endpoint for Task",
+                "tags": ["tasks::Task"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/tasks.task"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "tasks__Task_Put",
+                "summary": "Single object DELETE endpoint for Task",
+                "tags": ["tasks::Task"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        }
+        ,
+        "/task/{id}/complete" : {
+            "post" : {
+                "operationId": "tasks__Task__complete",
+                "tags": ["tasks::Task"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for complete"
+                    }
+                }
+            }
+        }
+        ,
+        "/task/{id}/reopen" : {
+            "post" : {
+                "operationId": "tasks__Task__reopen",
+                "tags": ["tasks::Task"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for reopen"
+                    }
+                }
+            }
+        }
+        ,
+        "/task/{id}/reassign" : {
+            "post" : {
+                "operationId": "tasks__Task__reassign",
+                "tags": ["tasks::Task"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for reassign"
+                    }
+                }
+            }
+        }
+        ,
+        "/task/openTasks" : {
+            "post" : {
+                "operationId": "tasks__Task__openTasks",
+                "tags": ["tasks::Task"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "",
+                                        "type": "object",
+                                        "properties": {
+                                            "description": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "details": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "status": {
+                                                "$ref": "#/components/schemas/tasks.task.status"
+                                            }
+                                            ,
+                                            "open": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "openingDate": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "completionDate": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "assignee": {
+                                                "$ref": "#/components/schemas/tasks.contributor"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/task/openTasksFor" : {
+            "post" : {
+                "operationId": "tasks__Task__openTasksFor",
+                "tags": ["tasks::Task"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "",
+                                        "type": "object",
+                                        "properties": {
+                                            "description": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "details": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "status": {
+                                                "$ref": "#/components/schemas/tasks.task.status"
+                                            }
+                                            ,
+                                            "open": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "openingDate": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "completionDate": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "assignee": {
+                                                "$ref": "#/components/schemas/tasks.contributor"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/task/tasksOpenedToday" : {
+            "post" : {
+                "operationId": "tasks__Task__tasksOpenedToday",
+                "tags": ["tasks::Task"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "",
+                                        "type": "object",
+                                        "properties": {
+                                            "description": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "details": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "status": {
+                                                "$ref": "#/components/schemas/tasks.task.status"
+                                            }
+                                            ,
+                                            "open": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "openingDate": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "completionDate": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "assignee": {
+                                                "$ref": "#/components/schemas/tasks.contributor"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/task/tasksOpenedOn" : {
+            "post" : {
+                "operationId": "tasks__Task__tasksOpenedOn",
+                "tags": ["tasks::Task"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "",
+                                        "type": "object",
+                                        "properties": {
+                                            "description": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "details": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "status": {
+                                                "$ref": "#/components/schemas/tasks.task.status"
+                                            }
+                                            ,
+                                            "open": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "openingDate": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "completionDate": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "assignee": {
+                                                "$ref": "#/components/schemas/tasks.contributor"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/task/tasksCompletedToday" : {
+            "post" : {
+                "operationId": "tasks__Task__tasksCompletedToday",
+                "tags": ["tasks::Task"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "",
+                                        "type": "object",
+                                        "properties": {
+                                            "description": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "details": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "status": {
+                                                "$ref": "#/components/schemas/tasks.task.status"
+                                            }
+                                            ,
+                                            "open": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "openingDate": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "completionDate": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "assignee": {
+                                                "$ref": "#/components/schemas/tasks.contributor"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/userProfile" : {
+            "get" : {
+                "operationId": "userprofile__UserProfile_List",
+                "summary": "List endpoint for UserProfile",
+                "tags": ["userprofile::UserProfile"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/userprofile.userProfile"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "userprofile__UserProfile_Creation",
+                "tags": ["userprofile::UserProfile"],
+                "summary": "Creation endpoint for UserProfile",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/userprofile.userProfile"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/userprofile.userProfile"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/userProfile/{id}" : {
+            "get" : {
+                "operationId": "userprofile__UserProfile_Get",
+                "summary": "Single object GET endpoint for UserProfile",
+                "tags": ["userprofile::UserProfile"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/userprofile.userProfile"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "userprofile__UserProfile_Put",
+                "summary": "Single object PUT endpoint for UserProfile",
+                "tags": ["userprofile::UserProfile"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/userprofile.userProfile"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "userprofile__UserProfile_Put",
+                "summary": "Single object DELETE endpoint for UserProfile",
+                "tags": ["userprofile::UserProfile"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        }
+        ,
+        "/userProfile/findByUsername" : {
+            "post" : {
+                "operationId": "userprofile__UserProfile__findByUsername",
+                "tags": ["userprofile::UserProfile"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                	"description": "",
+                                    "type": "object",
+                                    "properties": {
+                                        "username": {
+                                        	"description": "Username is an email",
+                                            "type": "string",
+                                            "format": "email"
+                                        }
+                                        ,
+                                        "password": {
+                                        	"description": "",
+                                            "type": "string"
+                                        }
+                                        ,
+                                        "roleAsContributor": {
+                                            "$ref": "#/components/schemas/tasks.contributor"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "tasks.task.status" : {
+            	"description": "",
+                "type": "string",
+                "enum": [
+                    "Open",
+                    "Completed"
+                ]
+            }
+            ,
+            "tasks.contributor" : {
+            	"description": "",
+                "type": "object",
+                "properties": {
+                    "name": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "openTaskCount": {
+                    	"description": "",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                    ,
+                    "tasks": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/tasks.task"
+                        }
+                    }
+                    ,
+                    "userProfile": {
+                        "$ref": "#/components/schemas/userprofile.userProfile"
+                    }
+                }
+            }
+            ,
+            "tasks.task" : {
+            	"description": "",
+                "type": "object",
+                "properties": {
+                    "description": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "details": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "status": {
+                        "$ref": "#/components/schemas/tasks.task.status"
+                    }
+                    ,
+                    "open": {
+                    	"description": "",
+                        "type": "boolean"
+                    }
+                    ,
+                    "openingDate": {
+                    	"description": "",
+                        "type": "string",
+                        "format": "date"
+                    }
+                    ,
+                    "completionDate": {
+                    	"description": "",
+                        "type": "string",
+                        "format": "date"
+                    }
+                    ,
+                    "assignee": {
+                        "$ref": "#/components/schemas/tasks.contributor"
+                    }
+                }
+            }
+            ,
+            "userprofile.userProfile" : {
+            	"description": "",
+                "type": "object",
+                "properties": {
+                    "username": {
+                    	"description": "Username is an email",
+                        "type": "string",
+                        "format": "email"
+                    }
+                    ,
+                    "password": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "roleAsContributor": {
+                        "$ref": "#/components/schemas/tasks.contributor"
+                    }
+                }
+            }
+        }
+    }
+}

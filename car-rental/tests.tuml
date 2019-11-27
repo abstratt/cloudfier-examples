@@ -95,7 +95,7 @@ class RentalScenarios
         end;
         begin
             Assert#isNotNull(customer.currentRental);
-            Assert#isTrue(customer.currentRental.inProgress);
+            Assert#isTrue(!!(customer.currentRental).inProgress);
         end;
     end;
 
@@ -109,11 +109,12 @@ class RentalScenarios
             rental := customer.currentRental;
         end;
         begin
-            Assert#isTrue(rental.inProgress);
+            Assert#isNotNull(rental);
+            Assert#isTrue(!!rental.inProgress);
             customer.finishRental();
         end;
         begin
-            Assert#isTrue(not rental.inProgress);
+            Assert#isTrue(!!not rental.inProgress);
         end;
     end;
 

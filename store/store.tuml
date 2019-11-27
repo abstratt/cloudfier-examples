@@ -85,14 +85,14 @@ class OrderDetail
         invariant { self.quantity > 0 };
 
     derived attribute weight : Double := {
-        self.product.productWeight * self.quantity
+        self.quantity * self.product.productWeight
     };
 
     derived attribute price : Double := {
         self.unitPrice * self.quantity
     };
     
-    derived attribute unitPrice : Double := { self.product.productPrice };
+    derived attribute unitPrice : Double := { self.product.productPrice ?: 0};
 end;
 
 class Order
@@ -139,8 +139,8 @@ class Order
     begin
         var newItem, existingItem;
         existingItem := self.items.\any((i : OrderDetail) : Boolean { i.product == product });
-        if (not(existingItem == null)) then
-            return existingItem;
+        if (!(existingItem == null)) then
+            return !!existingItem;
         newItem := new OrderDetail;
         newItem.order := self;
         newItem.product := product;
@@ -201,7 +201,7 @@ class Order
         return (System#user() as Customer).orders;
     end;
     
-    private static query currentOrder() : Order
+    private static query currentOrder() : Order[0,1]
         allow Customer;
     begin
         return (System#user() as Customer).orders.\any((o : Order) : Boolean { o.orderStatus == Status#New });

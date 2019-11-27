@@ -156,14 +156,14 @@ class Charge
 
     operation cancelPayment();
 
-    static operation newCharge(taxi : Taxi, payer : Driver, date : Date := { Date#today() });
+    static operation newCharge(taxi : Taxi, payer : Driver, date : Date[0,1] := { Date#today() });
     begin
         var charge;
         charge := new Charge;
         charge.description := taxi.name + " - " + taxi.shift.description;
         charge.amount := taxi.shift.price;
         charge.taxi := taxi;
-        charge.date := date;
+        charge.date := !!date;
         link DriverCharges(driver := payer, charges := charge);
     end;
 
@@ -226,7 +226,7 @@ class Reports implements ReportingService
     query paymentsPerDay() : DailyPayments[*];
     begin
         return Charge#paidCharges().groupBy((c : Charge) : Date {
-            c.receivedOn
+            !!c.receivedOn
         }).groupCollect((grouped : Charge[*]) : DailyPayments {
             ({
                 paidOn := grouped.\any((c : Charge) : Boolean { true }).receivedOn, 

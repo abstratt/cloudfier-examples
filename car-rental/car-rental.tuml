@@ -22,7 +22,7 @@ class Car
         self.status == Status#Available
     };
 
-    derived attribute currentRental : Rental := {
+    derived attribute currentRental : Rental[0,1] := {
         Rental extent.\any((l : Rental) : Boolean {
             (l.car == self) and l.inProgress
         })
@@ -218,7 +218,7 @@ class Customer
         send CarRented() to car;
     end;
 
-    derived attribute currentRental : Rental := {
+    derived attribute currentRental : Rental[0,1] := {
         Rental extent.\any((l : Rental) : Boolean {
             (l.customer == self) and l.inProgress
         })

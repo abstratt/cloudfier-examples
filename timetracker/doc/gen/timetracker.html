@@ -1,0 +1,1878 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script   src="https://code.jquery.com/jquery-1.12.3.min.js"   integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ="   crossorigin="anonymous"></script>  
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <title>Package: Timetracker - Data Dictionary</title>
+</head>
+<body>
+    <div class="container-fluid">
+    <h1>Package: Timetracker</h1>
+    (<a href="data-dictionary.html">Back to Time Tracker</a>)
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <div>
+    <a name="timetracker"></a>
+    <h5>(timetracker)</h5>
+    
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Entity</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a href="timetracker.html#timetracker::Client">Client</a></td>
+                <td>A person or organization work can be done for.</td>
+            </tr>
+            <tr>
+                <td><a href="timetracker.html#timetracker::Project">Project</a></td>
+                <td>A project provides a context for work entries.</td>
+            </tr>
+            <tr>
+                <td><a href="timetracker.html#timetracker::Invoice">Invoice</a></td>
+                <td>An invoice describes work done for a client within one or more projects.</td>
+            </tr>
+            <tr>
+                <td><a href="timetracker.html#timetracker::Entry">Entry</a></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Class diagram</h4>
+    <img src="timetracker-classes.png"></img>
+    <h4>State diagram</h4>
+    <img src="timetracker-state.png"></img>
+    </div>
+    </div>
+    </div>
+    <h2>Entities</h2>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="timetracker::Client"></a>
+    <h3>Client</h3>
+    <h5>Entity from <strong><a href="#timetracker">Timetracker</a></strong></h5>
+    <hr>
+    <blockquote>A person or organization work can be done for.</blockquote>
+    <h4>Properties</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Property</th>
+                <th width="10%">Type</th>
+                <th width="10%">Required</th>
+                <th width="10%">Initializable</th>
+                <th width="10%">Editable</th>
+                <th width="50%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="timetracker::Client::name"></a>Name</a></td>
+                <td>String</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                The name of the client.
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Relationships</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Relationship</th>
+                <th width="20%">Related Entity</th>
+                <th width="5%">Required</th>
+                <th width="5%">Multiple</th>
+                <th width="5%">Navigable</th>
+                <th width="55%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="timetracker::Client::projects"></a>Projects</td>
+                <td><a href="timetracker.html#timetracker::Project">Project</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Client::invoices"></a>Invoices</td>
+                <td><a href="timetracker.html#timetracker::Invoice">Invoice</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Client::openInvoices"></a>Open Invoices</td>
+                <td><a href="timetracker.html#timetracker::Invoice">Invoice</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Actions</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Action</th>
+                <th width="20%">Parameters</th>
+                <th width="70%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="timetracker::Client::newProject"></a>New Project (public)</td>
+                <td><p>Description (String)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="5791eca2-c24d-44e2-9092-a0835e068490-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="5791eca2-c24d-44e2-9092-a0835e068490-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#5791eca2-c24d-44e2-9092-a0835e068490-accordion" href="#5791eca2-c24d-44e2-9092-a0835e068490-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="5791eca2-c24d-44e2-9092-a0835e068490-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                newProject := new <a href="timetracker.html#timetracker::Project">Project</a>;
+                newProject.<a href="timetracker.html#timetracker::Project::description">description</a> := description;
+                link <a href="timetracker.html#timetracker::ClientProject">ClientProject</a>(client := self, projects := newProject);
+                return newProject;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="5791eca2-c24d-44e2-9092-a0835e068490-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#5791eca2-c24d-44e2-9092-a0835e068490-accordion" href="#5791eca2-c24d-44e2-9092-a0835e068490-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="5791eca2-c24d-44e2-9092-a0835e068490-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'newProject' a new instance of Project
+                  Set property 'description' in variable 'newProject' to the given 'description'
+                  Link this Client and variable 'newProject' having:
+                      - this Client as 'client'
+                      - variable 'newProject' as 'projects'
+                  Produce in response the value of variable 'newProject'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Client::openInvoice"></a>Open Invoice (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="7003e460-0e75-449e-8a05-0c6b25046601-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="7003e460-0e75-449e-8a05-0c6b25046601-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#7003e460-0e75-449e-8a05-0c6b25046601-accordion" href="#7003e460-0e75-449e-8a05-0c6b25046601-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="7003e460-0e75-449e-8a05-0c6b25046601-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                newInvoice := new <a href="timetracker.html#timetracker::Invoice">Invoice</a>;
+                link <a href="timetracker.html#timetracker::ClientInvoice">ClientInvoice</a>(client := self, invoices := newInvoice);
+                return newInvoice;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="7003e460-0e75-449e-8a05-0c6b25046601-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#7003e460-0e75-449e-8a05-0c6b25046601-accordion" href="#7003e460-0e75-449e-8a05-0c6b25046601-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="7003e460-0e75-449e-8a05-0c6b25046601-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'newInvoice' a new instance of Invoice
+                  Link this Client and variable 'newInvoice' having:
+                      - this Client as 'client'
+                      - variable 'newInvoice' as 'invoices'
+                  Produce in response the value of variable 'newInvoice'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Queries</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Query</th>
+                <th width="20%">Parameters</th>
+                <th width="70%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="timetracker::Client::withIssuedInvoices"></a>With Issued Invoices (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="35cec6c1-620b-4a24-8d11-03cca4d77beb-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="35cec6c1-620b-4a24-8d11-03cca4d77beb-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#35cec6c1-620b-4a24-8d11-03cca4d77beb-accordion" href="#35cec6c1-620b-4a24-8d11-03cca4d77beb-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="35cec6c1-620b-4a24-8d11-03cca4d77beb-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                return <a href="timetracker.html#timetracker::Client">Client</a> extent.select((client) {
+                	client.<a href="timetracker.html#timetracker::Client::invoices">invoices</a>.exists((i) {
+                		i.<a href="timetracker.html#timetracker::Invoice::issued">issued</a>
+                	})
+                });
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="35cec6c1-620b-4a24-8d11-03cca4d77beb-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#35cec6c1-620b-4a24-8d11-03cca4d77beb-accordion" href="#35cec6c1-620b-4a24-8d11-03cca4d77beb-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="35cec6c1-620b-4a24-8d11-03cca4d77beb-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Select from all records for Client 'client'
+                      where for property 'invoices' in 'client' 'i'
+                          does exist 
+                              an i such that the value of property 'status' in this Invoice is equal to "Issued"?
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Client::withOpenInvoices"></a>With Open Invoices (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="efc88017-ab4c-4d90-b6d8-1986afc7663d-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="efc88017-ab4c-4d90-b6d8-1986afc7663d-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#efc88017-ab4c-4d90-b6d8-1986afc7663d-accordion" href="#efc88017-ab4c-4d90-b6d8-1986afc7663d-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="efc88017-ab4c-4d90-b6d8-1986afc7663d-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                return <a href="timetracker.html#timetracker::Client">Client</a> extent.select((client) {
+                	client.<a href="timetracker.html#timetracker::Client::invoices">invoices</a>.exists((i) {
+                		i.<a href="timetracker.html#timetracker::Invoice::open">open</a>
+                	})
+                });
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="efc88017-ab4c-4d90-b6d8-1986afc7663d-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#efc88017-ab4c-4d90-b6d8-1986afc7663d-accordion" href="#efc88017-ab4c-4d90-b6d8-1986afc7663d-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="efc88017-ab4c-4d90-b6d8-1986afc7663d-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Select from all records for Client 'client'
+                      where for property 'invoices' in 'client' 'i'
+                          does exist 
+                              an i such that the value of property 'status' in this Invoice is equal to "Open"?
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="timetracker::Project"></a>
+    <h3>Project</h3>
+    <h5>Entity from <strong><a href="#timetracker">Timetracker</a></strong></h5>
+    <hr>
+    <blockquote>A project provides a context for work entries.</blockquote>
+    <h4>Properties</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Property</th>
+                <th width="10%">Type</th>
+                <th width="10%">Required</th>
+                <th width="10%">Initializable</th>
+                <th width="10%">Editable</th>
+                <th width="50%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="timetracker::Project::description"></a>Description</a></td>
+                <td>String</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                A description for the project.
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Project::unitsReported"></a>Units Reported</a></td>
+                <td>Integer</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="b330a107-209f-43e2-afb8-5d035af5fa06-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="b330a107-209f-43e2-afb8-5d035af5fa06-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b330a107-209f-43e2-afb8-5d035af5fa06-accordion" href="#b330a107-209f-43e2-afb8-5d035af5fa06-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="b330a107-209f-43e2-afb8-5d035af5fa06-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="timetracker.html#timetracker::Project::reported">reported</a>.sum((e) {
+                	e.<a href="timetracker.html#timetracker::Entry::units">units</a>
+                })
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="b330a107-209f-43e2-afb8-5d035af5fa06-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b330a107-209f-43e2-afb8-5d035af5fa06-accordion" href="#b330a107-209f-43e2-afb8-5d035af5fa06-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="b330a107-209f-43e2-afb8-5d035af5fa06-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The sum of Property 'units' in 'e'
+                  	where Entry 'e' is property 'reported' in this Project
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Project::unitsToSubmit"></a>Units To Submit</a></td>
+                <td>Integer</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="b4c8bed1-82e5-484d-a428-fc745f1c4600-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="b4c8bed1-82e5-484d-a428-fc745f1c4600-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b4c8bed1-82e5-484d-a428-fc745f1c4600-accordion" href="#b4c8bed1-82e5-484d-a428-fc745f1c4600-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="b4c8bed1-82e5-484d-a428-fc745f1c4600-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="timetracker.html#timetracker::Project::toSubmit">toSubmit</a>.sum((e) {
+                	e.<a href="timetracker.html#timetracker::Entry::units">units</a>
+                })
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="b4c8bed1-82e5-484d-a428-fc745f1c4600-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b4c8bed1-82e5-484d-a428-fc745f1c4600-accordion" href="#b4c8bed1-82e5-484d-a428-fc745f1c4600-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="b4c8bed1-82e5-484d-a428-fc745f1c4600-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The sum of Property 'units' in 'e'
+                  	where Entry 'e' is Select from property 'reported' in this Project 'e'
+                  	    where ((the value of property 'invoice' in this Entry is equal to null) is false
+                  	    ) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Relationships</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Relationship</th>
+                <th width="20%">Related Entity</th>
+                <th width="5%">Required</th>
+                <th width="5%">Multiple</th>
+                <th width="5%">Navigable</th>
+                <th width="55%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="timetracker::Project::reported"></a>Reported</td>
+                <td><a href="timetracker.html#timetracker::Entry">Entry</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Project::toSubmit"></a>To Submit</td>
+                <td><a href="timetracker.html#timetracker::Entry">Entry</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Project::client"></a>Client</td>
+                <td><a href="timetracker.html#timetracker::Client">Client</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Actions</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Action</th>
+                <th width="20%">Parameters</th>
+                <th width="70%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="timetracker::Project::addEntry"></a>Add Entry (public)</td>
+                <td><p>Units (Integer)</p>
+                <p>Description (Memo)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="c111a1ba-5c14-4ac7-b3ce-fde802cafda1-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="c111a1ba-5c14-4ac7-b3ce-fde802cafda1-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#c111a1ba-5c14-4ac7-b3ce-fde802cafda1-accordion" href="#c111a1ba-5c14-4ac7-b3ce-fde802cafda1-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="c111a1ba-5c14-4ac7-b3ce-fde802cafda1-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                newEntry := new <a href="timetracker.html#timetracker::Entry">Entry</a>;
+                newEntry.<a href="timetracker.html#timetracker::Entry::units">units</a> := units;
+                newEntry.<a href="timetracker.html#timetracker::Entry::memo">memo</a> := description;
+                link <a href="timetracker.html#timetracker::ProjectEntry">ProjectEntry</a>(reported := newEntry, project := self);
+                return newEntry;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="c111a1ba-5c14-4ac7-b3ce-fde802cafda1-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#c111a1ba-5c14-4ac7-b3ce-fde802cafda1-accordion" href="#c111a1ba-5c14-4ac7-b3ce-fde802cafda1-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="c111a1ba-5c14-4ac7-b3ce-fde802cafda1-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'newEntry' a new instance of Entry
+                  Set property 'units' in variable 'newEntry' to the given 'units'
+                  Set property 'memo' in variable 'newEntry' to the given 'description'
+                  Link variable 'newEntry' and this Project having:
+                      - variable 'newEntry' as 'reported'
+                      - this Project as 'project'
+                  Produce in response the value of variable 'newEntry'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="timetracker::Invoice"></a>
+    <h3>Invoice</h3>
+    <h5>Entity from <strong><a href="#timetracker">Timetracker</a></strong></h5>
+    <hr>
+    <blockquote>An invoice describes work done for a client within one or more projects.</blockquote>
+    <h4>Properties</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Property</th>
+                <th width="10%">Type</th>
+                <th width="10%">Required</th>
+                <th width="10%">Initializable</th>
+                <th width="10%">Editable</th>
+                <th width="50%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="timetracker::Invoice::moniker"></a>Moniker</a></td>
+                <td>String</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="4a02367a-e940-45d3-8ec9-ec49f3cb1973-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="4a02367a-e940-45d3-8ec9-ec49f3cb1973-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#4a02367a-e940-45d3-8ec9-ec49f3cb1973-accordion" href="#4a02367a-e940-45d3-8ec9-ec49f3cb1973-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="4a02367a-e940-45d3-8ec9-ec49f3cb1973-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="timetracker.html#timetracker::Invoice::number">number</a> + (" - " + self.<a href="timetracker.html#timetracker::Invoice::client">client</a>.<a href="timetracker.html#timetracker::Client::name">name</a>)
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="4a02367a-e940-45d3-8ec9-ec49f3cb1973-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#4a02367a-e940-45d3-8ec9-ec49f3cb1973-accordion" href="#4a02367a-e940-45d3-8ec9-ec49f3cb1973-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="4a02367a-e940-45d3-8ec9-ec49f3cb1973-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  "" + TBD: year + "." + property 'invoiceInternalNumber' in this Invoice
+                   + " - " + property 'name' in property 'client' in this Invoice
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Invoice::number"></a>Number</a></td>
+                <td>String</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="c2fff1a4-348f-415a-9bfb-daa07057dd8a-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="c2fff1a4-348f-415a-9bfb-daa07057dd8a-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#c2fff1a4-348f-415a-9bfb-daa07057dd8a-accordion" href="#c2fff1a4-348f-415a-9bfb-daa07057dd8a-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="c2fff1a4-348f-415a-9bfb-daa07057dd8a-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                ("" + self.<a href="timetracker.html#timetracker::Invoice::issueDate">issueDate</a>.year()) + ("." + self.<a href="timetracker.html#timetracker::Invoice::invoiceInternalNumber">invoiceInternalNumber</a>)
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="c2fff1a4-348f-415a-9bfb-daa07057dd8a-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#c2fff1a4-348f-415a-9bfb-daa07057dd8a-accordion" href="#c2fff1a4-348f-415a-9bfb-daa07057dd8a-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="c2fff1a4-348f-415a-9bfb-daa07057dd8a-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  "" + TBD: year + "." + property 'invoiceInternalNumber' in this Invoice
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Invoice::issueDate"></a>Issue Date</a></td>
+                <td>Date</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Invoice::open"></a>Open</a></td>
+                <td>Boolean</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="6e10b4c9-36d3-4276-a012-21bf8cf14098-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="6e10b4c9-36d3-4276-a012-21bf8cf14098-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#6e10b4c9-36d3-4276-a012-21bf8cf14098-accordion" href="#6e10b4c9-36d3-4276-a012-21bf8cf14098-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="6e10b4c9-36d3-4276-a012-21bf8cf14098-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="timetracker.html#timetracker::Invoice::status">status</a> == Status#Open
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="6e10b4c9-36d3-4276-a012-21bf8cf14098-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#6e10b4c9-36d3-4276-a012-21bf8cf14098-accordion" href="#6e10b4c9-36d3-4276-a012-21bf8cf14098-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="6e10b4c9-36d3-4276-a012-21bf8cf14098-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The value of property 'status' in this Invoice is equal to "Open"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Invoice::issued"></a>Issued</a></td>
+                <td>Boolean</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="9ce26d4d-eafd-4d14-92fd-9f098c93dfbf-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="9ce26d4d-eafd-4d14-92fd-9f098c93dfbf-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#9ce26d4d-eafd-4d14-92fd-9f098c93dfbf-accordion" href="#9ce26d4d-eafd-4d14-92fd-9f098c93dfbf-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="9ce26d4d-eafd-4d14-92fd-9f098c93dfbf-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="timetracker.html#timetracker::Invoice::status">status</a> == Status#Issued
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="9ce26d4d-eafd-4d14-92fd-9f098c93dfbf-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#9ce26d4d-eafd-4d14-92fd-9f098c93dfbf-accordion" href="#9ce26d4d-eafd-4d14-92fd-9f098c93dfbf-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="9ce26d4d-eafd-4d14-92fd-9f098c93dfbf-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The value of property 'status' in this Invoice is equal to "Issued"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Invoice::received"></a>Received</a></td>
+                <td>Boolean</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="2ed2ddb1-6833-4a20-b3a2-64dde14bdbc8-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="2ed2ddb1-6833-4a20-b3a2-64dde14bdbc8-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#2ed2ddb1-6833-4a20-b3a2-64dde14bdbc8-accordion" href="#2ed2ddb1-6833-4a20-b3a2-64dde14bdbc8-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="2ed2ddb1-6833-4a20-b3a2-64dde14bdbc8-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="timetracker.html#timetracker::Invoice::status">status</a> == Status#Received
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="2ed2ddb1-6833-4a20-b3a2-64dde14bdbc8-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#2ed2ddb1-6833-4a20-b3a2-64dde14bdbc8-accordion" href="#2ed2ddb1-6833-4a20-b3a2-64dde14bdbc8-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="2ed2ddb1-6833-4a20-b3a2-64dde14bdbc8-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The value of property 'status' in this Invoice is equal to "Received"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Invoice::status"></a>Status</a></td>
+                <td><a href="timetracker.html#timetracker::Invoice::Status">Status</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Invoice::totalUnits"></a>Total Units</a></td>
+                <td>Integer</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="177a265f-fcd1-47d0-b50b-434f014ee39d-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="177a265f-fcd1-47d0-b50b-434f014ee39d-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#177a265f-fcd1-47d0-b50b-434f014ee39d-accordion" href="#177a265f-fcd1-47d0-b50b-434f014ee39d-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="177a265f-fcd1-47d0-b50b-434f014ee39d-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="timetracker.html#timetracker::Invoice::submitted">submitted</a>.sum((e) {
+                	e.<a href="timetracker.html#timetracker::Entry::units">units</a>
+                })
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="177a265f-fcd1-47d0-b50b-434f014ee39d-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#177a265f-fcd1-47d0-b50b-434f014ee39d-accordion" href="#177a265f-fcd1-47d0-b50b-434f014ee39d-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="177a265f-fcd1-47d0-b50b-434f014ee39d-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The sum of Property 'units' in 'e'
+                  	where Entry 'e' is property 'submitted' in this Invoice
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Relationships</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Relationship</th>
+                <th width="20%">Related Entity</th>
+                <th width="5%">Required</th>
+                <th width="5%">Multiple</th>
+                <th width="5%">Navigable</th>
+                <th width="55%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="timetracker::Invoice::client"></a>Client</td>
+                <td><a href="timetracker.html#timetracker::Client">Client</a></a></td>
+                <td>✔</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Invoice::submitted"></a>Submitted</td>
+                <td><a href="timetracker.html#timetracker::Entry">Entry</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Actions</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Action</th>
+                <th width="20%">Parameters</th>
+                <th width="70%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="timetracker::Invoice::cancel"></a>Cancel (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Valid state(s)
+                </th></tr>
+                <tr><td>
+                Open, Issued
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="7cb047f5-c31b-41e0-911f-5209f9cf4d35-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="7cb047f5-c31b-41e0-911f-5209f9cf4d35-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#7cb047f5-c31b-41e0-911f-5209f9cf4d35-accordion" href="#7cb047f5-c31b-41e0-911f-5209f9cf4d35-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="7cb047f5-c31b-41e0-911f-5209f9cf4d35-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="timetracker.html#timetracker::Invoice::open">open</a> or self.<a href="timetracker.html#timetracker::Invoice::issued">issued</a>
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="7cb047f5-c31b-41e0-911f-5209f9cf4d35-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#7cb047f5-c31b-41e0-911f-5209f9cf4d35-accordion" href="#7cb047f5-c31b-41e0-911f-5209f9cf4d35-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="7cb047f5-c31b-41e0-911f-5209f9cf4d35-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  (The value of property 'status' in this Invoice is equal to "Open")
+                  or
+                  (The value of property 'status' in this Invoice is equal to "Issued")
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Invoice::issue"></a>Issue (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Valid state(s)
+                </th></tr>
+                <tr><td>
+                Open
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="dea868a7-3f87-48e5-8c74-da510c254a18-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="dea868a7-3f87-48e5-8c74-da510c254a18-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#dea868a7-3f87-48e5-8c74-da510c254a18-accordion" href="#dea868a7-3f87-48e5-8c74-da510c254a18-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="dea868a7-3f87-48e5-8c74-da510c254a18-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="timetracker.html#timetracker::Invoice::issueDate">issueDate</a> := Date#today();
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="dea868a7-3f87-48e5-8c74-da510c254a18-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#dea868a7-3f87-48e5-8c74-da510c254a18-accordion" href="#dea868a7-3f87-48e5-8c74-da510c254a18-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="dea868a7-3f87-48e5-8c74-da510c254a18-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Set property 'issueDate' in this Invoice to today's date
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="07f45186-87d3-4117-9748-06e7d0ce6fe8-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="07f45186-87d3-4117-9748-06e7d0ce6fe8-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#07f45186-87d3-4117-9748-06e7d0ce6fe8-accordion" href="#07f45186-87d3-4117-9748-06e7d0ce6fe8-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="07f45186-87d3-4117-9748-06e7d0ce6fe8-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="timetracker.html#timetracker::Invoice::open">open</a>
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="07f45186-87d3-4117-9748-06e7d0ce6fe8-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#07f45186-87d3-4117-9748-06e7d0ce6fe8-accordion" href="#07f45186-87d3-4117-9748-06e7d0ce6fe8-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="07f45186-87d3-4117-9748-06e7d0ce6fe8-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The value of property 'status' in this Invoice is equal to "Open"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                Cannot issue an invoice that has no entries submitted.
+                <div class="panel-group" id="2cab51cf-c041-494c-9ac8-eb1a47b7092c-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="2cab51cf-c041-494c-9ac8-eb1a47b7092c-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#2cab51cf-c041-494c-9ac8-eb1a47b7092c-accordion" href="#2cab51cf-c041-494c-9ac8-eb1a47b7092c-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="2cab51cf-c041-494c-9ac8-eb1a47b7092c-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                not self.<a href="timetracker.html#timetracker::Invoice::submitted">submitted</a>.isEmpty()
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="2cab51cf-c041-494c-9ac8-eb1a47b7092c-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#2cab51cf-c041-494c-9ac8-eb1a47b7092c-accordion" href="#2cab51cf-c041-494c-9ac8-eb1a47b7092c-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="2cab51cf-c041-494c-9ac8-eb1a47b7092c-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  (property 'submitted' in this Invoice is empty) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Invoice::reassign"></a>Reassign (public)</td>
+                <td><p>New Client (Client)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="752b159e-725b-4941-b47d-9dff0b91a3e8-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="752b159e-725b-4941-b47d-9dff0b91a3e8-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#752b159e-725b-4941-b47d-9dff0b91a3e8-accordion" href="#752b159e-725b-4941-b47d-9dff0b91a3e8-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="752b159e-725b-4941-b47d-9dff0b91a3e8-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="timetracker.html#timetracker::Invoice::client">client</a> := newClient;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="752b159e-725b-4941-b47d-9dff0b91a3e8-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#752b159e-725b-4941-b47d-9dff0b91a3e8-accordion" href="#752b159e-725b-4941-b47d-9dff0b91a3e8-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="752b159e-725b-4941-b47d-9dff0b91a3e8-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Set property 'client' in this Invoice to the given 'newClient'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="1fea8a96-3ac0-4ffc-9c25-c4709a8e8825-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="1fea8a96-3ac0-4ffc-9c25-c4709a8e8825-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#1fea8a96-3ac0-4ffc-9c25-c4709a8e8825-accordion" href="#1fea8a96-3ac0-4ffc-9c25-c4709a8e8825-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="1fea8a96-3ac0-4ffc-9c25-c4709a8e8825-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                not self.<a href="timetracker.html#timetracker::Invoice::client">client</a> == newClient
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="1fea8a96-3ac0-4ffc-9c25-c4709a8e8825-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#1fea8a96-3ac0-4ffc-9c25-c4709a8e8825-accordion" href="#1fea8a96-3ac0-4ffc-9c25-c4709a8e8825-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="1fea8a96-3ac0-4ffc-9c25-c4709a8e8825-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  (the value of property 'client' in this Invoice is equal to the given 'newClient') is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="timetracker::Entry"></a>
+    <h3>Entry</h3>
+    <h5>Entity from <strong><a href="#timetracker">Timetracker</a></strong></h5>
+    <hr>
+    <h4>Properties</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Property</th>
+                <th width="10%">Type</th>
+                <th width="10%">Required</th>
+                <th width="10%">Initializable</th>
+                <th width="10%">Editable</th>
+                <th width="50%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="timetracker::Entry::units"></a>Units</a></td>
+                <td>Integer</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                The number of units of work in this entry.
+                </td></tr>
+                <tr><th>
+                Invariants
+                </th></tr>
+                <tr><td>
+                Entry must describe a positive number of units.
+                <div class="panel-group" id="de562194-fe63-463d-9c52-902a0a5f8ec6-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="de562194-fe63-463d-9c52-902a0a5f8ec6-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#de562194-fe63-463d-9c52-902a0a5f8ec6-accordion" href="#de562194-fe63-463d-9c52-902a0a5f8ec6-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="de562194-fe63-463d-9c52-902a0a5f8ec6-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="timetracker.html#timetracker::Entry::units">units</a> > 0
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="de562194-fe63-463d-9c52-902a0a5f8ec6-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#de562194-fe63-463d-9c52-902a0a5f8ec6-accordion" href="#de562194-fe63-463d-9c52-902a0a5f8ec6-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="de562194-fe63-463d-9c52-902a0a5f8ec6-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Property 'units' in this Entry > 0
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Entry::date"></a>Date</a></td>
+                <td>Date</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                The date when the work happened.
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Entry::memo"></a>Memo</a></td>
+                <td>Memo</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                An optional description of the work performed .
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Entry::submitted"></a>Submitted</a></td>
+                <td>Boolean</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="8ae2c650-7258-4646-905f-730b40e7b35c-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="8ae2c650-7258-4646-905f-730b40e7b35c-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#8ae2c650-7258-4646-905f-730b40e7b35c-accordion" href="#8ae2c650-7258-4646-905f-730b40e7b35c-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="8ae2c650-7258-4646-905f-730b40e7b35c-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                not self.<a href="timetracker.html#timetracker::Entry::invoice">invoice</a> == null
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="8ae2c650-7258-4646-905f-730b40e7b35c-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#8ae2c650-7258-4646-905f-730b40e7b35c-accordion" href="#8ae2c650-7258-4646-905f-730b40e7b35c-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="8ae2c650-7258-4646-905f-730b40e7b35c-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  (the value of property 'invoice' in this Entry is equal to null) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Relationships</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Relationship</th>
+                <th width="20%">Related Entity</th>
+                <th width="5%">Required</th>
+                <th width="5%">Multiple</th>
+                <th width="5%">Navigable</th>
+                <th width="55%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="timetracker::Entry::project"></a>Project</td>
+                <td><a href="timetracker.html#timetracker::Project">Project</a></a></td>
+                <td>✔</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                The project the work went into.
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Entry::client"></a>Client</td>
+                <td><a href="timetracker.html#timetracker::Client">Client</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Entry::invoice"></a>Invoice</td>
+                <td><a href="timetracker.html#timetracker::Invoice">Invoice</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                Entry can be only submitted to an invoice once. Cannot be set directly but via #submit
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Actions</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Action</th>
+                <th width="20%">Parameters</th>
+                <th width="70%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="timetracker::Entry::submit"></a>Submit (public)</td>
+                <td><p>Invoice (Invoice)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                Submits this entry to a chosen invoice for the client.
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="25b0b3a1-af3d-4941-b7ae-fb9086ce9e1a-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="25b0b3a1-af3d-4941-b7ae-fb9086ce9e1a-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#25b0b3a1-af3d-4941-b7ae-fb9086ce9e1a-accordion" href="#25b0b3a1-af3d-4941-b7ae-fb9086ce9e1a-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="25b0b3a1-af3d-4941-b7ae-fb9086ce9e1a-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="timetracker.html#timetracker::Entry::invoice">invoice</a> := invoice;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="25b0b3a1-af3d-4941-b7ae-fb9086ce9e1a-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#25b0b3a1-af3d-4941-b7ae-fb9086ce9e1a-accordion" href="#25b0b3a1-af3d-4941-b7ae-fb9086ce9e1a-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="25b0b3a1-af3d-4941-b7ae-fb9086ce9e1a-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Set property 'invoice' in this Entry to the given 'invoice'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="1376ab01-445e-499f-88b4-4593a169ad1d-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="1376ab01-445e-499f-88b4-4593a169ad1d-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#1376ab01-445e-499f-88b4-4593a169ad1d-accordion" href="#1376ab01-445e-499f-88b4-4593a169ad1d-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="1376ab01-445e-499f-88b4-4593a169ad1d-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                not self.<a href="timetracker.html#timetracker::Entry::submitted">submitted</a>
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="1376ab01-445e-499f-88b4-4593a169ad1d-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#1376ab01-445e-499f-88b4-4593a169ad1d-accordion" href="#1376ab01-445e-499f-88b4-4593a169ad1d-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="1376ab01-445e-499f-88b4-4593a169ad1d-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  ((the value of property 'invoice' in this Entry is equal to null) is false
+                  ) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="a7a2e316-b9d5-40ca-83b0-eb2eda6c3265-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="a7a2e316-b9d5-40ca-83b0-eb2eda6c3265-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#a7a2e316-b9d5-40ca-83b0-eb2eda6c3265-accordion" href="#a7a2e316-b9d5-40ca-83b0-eb2eda6c3265-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="a7a2e316-b9d5-40ca-83b0-eb2eda6c3265-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                invoice.<a href="timetracker.html#timetracker::Invoice::client">client</a> == self.<a href="timetracker.html#timetracker::Entry::project">project</a>.<a href="timetracker.html#timetracker::Project::client">client</a>
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="a7a2e316-b9d5-40ca-83b0-eb2eda6c3265-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#a7a2e316-b9d5-40ca-83b0-eb2eda6c3265-accordion" href="#a7a2e316-b9d5-40ca-83b0-eb2eda6c3265-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="a7a2e316-b9d5-40ca-83b0-eb2eda6c3265-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The value of property 'client' in the given 'invoice' is equal to property 'client' in property 'project' in this Entry
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="08bd8533-910c-4fca-ba76-7701ab99fcfe-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="08bd8533-910c-4fca-ba76-7701ab99fcfe-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#08bd8533-910c-4fca-ba76-7701ab99fcfe-accordion" href="#08bd8533-910c-4fca-ba76-7701ab99fcfe-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="08bd8533-910c-4fca-ba76-7701ab99fcfe-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                invoice.<a href="timetracker.html#timetracker::Invoice::open">open</a>
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="08bd8533-910c-4fca-ba76-7701ab99fcfe-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#08bd8533-910c-4fca-ba76-7701ab99fcfe-accordion" href="#08bd8533-910c-4fca-ba76-7701ab99fcfe-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="08bd8533-910c-4fca-ba76-7701ab99fcfe-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The value of property 'status' in this Invoice is equal to "Open"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <h2>State machines</h2>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="timetracker::Invoice::Status"></a>
+    <h3>Status</h3>
+    <h5>State machine in <b>Invoice</b> from <strong><a href="#timetracker">Timetracker</a></strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Name</th>
+                <th width="40%">Description</th>
+                <th width="50%">Transitions</th>                    
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Open</td>
+                <td>-</td>
+                <td>
+                    <ul>
+                <li>
+                <p><em>To:</em> <strong>Issued</strong></p>
+                <p>
+                <em>When: </em>action 'Issue' is called
+                </p>
+                <li>
+                <p><em>To:</em> <strong>Cancelled</strong></p>
+                <p>
+                <em>When: </em>action 'Cancel' is called
+                </p>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Issued</td>
+                <td>-</td>
+                <td>
+                    <ul>
+                <li>
+                <p><em>To:</em> <strong>Received</strong></p>
+                <p>
+                <em>When: </em>signal 'Payment Received' is received
+                </p>
+                <li>
+                <p><em>To:</em> <strong>Cancelled</strong></p>
+                <p>
+                <em>When: </em>action 'Cancel' is called
+                </p>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Received</td>
+                <td>-</td>
+                <td>
+                    <ul>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Cancelled</td>
+                <td>-</td>
+                <td>
+                    <ul>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <h2>Enumerations</h2>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="timetracker::Invoice::Status"></a>
+    <h3>Status</h3>
+    <h5>Enumeration from <strong><a href="#timetracker">Timetracker</a></strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="20%">Name</th>
+                <th width="80%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="timetracker::Invoice::Status::Status::Open"></a>Open</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Invoice::Status::Status::Issued"></a>Issued</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Invoice::Status::Status::Received"></a>Received</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td><a name="timetracker::Invoice::Status::Status::Cancelled"></a>Cancelled</td>
+                <td>-</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    
+</body>
+</html>
+

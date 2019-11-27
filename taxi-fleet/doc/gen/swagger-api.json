@@ -1,0 +1,1076 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Taxi Fleet Management"
+    },
+    "paths": {
+        "/taxi" : {
+            "get" : {
+                "operationId": "taxi_fleet__Taxi_List",
+                "summary": "List endpoint for Taxi",
+                "tags": ["taxi_fleet::Taxi"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/taxi_fleet.taxi"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "taxi_fleet__Taxi_Creation",
+                "tags": ["taxi_fleet::Taxi"],
+                "summary": "Creation endpoint for Taxi",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/taxi_fleet.taxi"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/taxi_fleet.taxi"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/taxi/{id}" : {
+            "get" : {
+                "operationId": "taxi_fleet__Taxi_Get",
+                "summary": "Single object GET endpoint for Taxi",
+                "tags": ["taxi_fleet::Taxi"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/taxi_fleet.taxi"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "taxi_fleet__Taxi_Put",
+                "summary": "Single object PUT endpoint for Taxi",
+                "tags": ["taxi_fleet::Taxi"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/taxi_fleet.taxi"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "taxi_fleet__Taxi_Put",
+                "summary": "Single object DELETE endpoint for Taxi",
+                "tags": ["taxi_fleet::Taxi"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        }
+        ,
+        "/taxi/{id}/charge" : {
+            "post" : {
+                "operationId": "taxi_fleet__Taxi__charge",
+                "tags": ["taxi_fleet::Taxi"],
+                "summary": "Create charges for every driver",
+                "responses": {
+                    "200": {
+                        "description": "Result for charge"
+                    }
+                }
+            }
+        }
+        ,
+        "/taxi/{id}/bookTo" : {
+            "post" : {
+                "operationId": "taxi_fleet__Taxi__bookTo",
+                "tags": ["taxi_fleet::Taxi"],
+                "summary": "Book this taxi for a driver.",
+                "responses": {
+                    "200": {
+                        "description": "Result for bookTo"
+                    }
+                }
+            }
+        }
+        ,
+        "/taxi/available" : {
+            "post" : {
+                "operationId": "taxi_fleet__Taxi__available",
+                "tags": ["taxi_fleet::Taxi"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "The vehicles that make up the fleet.",
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "driverCount": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "full": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "booked": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "shift": {
+                                                "$ref": "#/components/schemas/taxi_fleet.shift"
+                                            }
+                                            ,
+                                            "drivers": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/taxi_fleet.driver"
+                                                }
+                                            }
+                                            ,
+                                            "pendingCharges": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/taxi_fleet.charge"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/taxi/empty" : {
+            "post" : {
+                "operationId": "taxi_fleet__Taxi__empty",
+                "tags": ["taxi_fleet::Taxi"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "The vehicles that make up the fleet.",
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "driverCount": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "full": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "booked": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "shift": {
+                                                "$ref": "#/components/schemas/taxi_fleet.shift"
+                                            }
+                                            ,
+                                            "drivers": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/taxi_fleet.driver"
+                                                }
+                                            }
+                                            ,
+                                            "pendingCharges": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/taxi_fleet.charge"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/taxi/full" : {
+            "post" : {
+                "operationId": "taxi_fleet__Taxi__full",
+                "tags": ["taxi_fleet::Taxi"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "The vehicles that make up the fleet.",
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "driverCount": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "full": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "booked": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "shift": {
+                                                "$ref": "#/components/schemas/taxi_fleet.shift"
+                                            }
+                                            ,
+                                            "drivers": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/taxi_fleet.driver"
+                                                }
+                                            }
+                                            ,
+                                            "pendingCharges": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/taxi_fleet.charge"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/shift" : {
+            "get" : {
+                "operationId": "taxi_fleet__Shift_List",
+                "summary": "List endpoint for Shift",
+                "tags": ["taxi_fleet::Shift"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/taxi_fleet.shift"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "taxi_fleet__Shift_Creation",
+                "tags": ["taxi_fleet::Shift"],
+                "summary": "Creation endpoint for Shift",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/taxi_fleet.shift"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/taxi_fleet.shift"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/shift/{id}" : {
+            "get" : {
+                "operationId": "taxi_fleet__Shift_Get",
+                "summary": "Single object GET endpoint for Shift",
+                "tags": ["taxi_fleet::Shift"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/taxi_fleet.shift"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "taxi_fleet__Shift_Put",
+                "summary": "Single object PUT endpoint for Shift",
+                "tags": ["taxi_fleet::Shift"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/taxi_fleet.shift"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "taxi_fleet__Shift_Put",
+                "summary": "Single object DELETE endpoint for Shift",
+                "tags": ["taxi_fleet::Shift"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        },
+        "/driver" : {
+            "get" : {
+                "operationId": "taxi_fleet__Driver_List",
+                "summary": "List endpoint for Driver",
+                "tags": ["taxi_fleet::Driver"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/taxi_fleet.driver"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "taxi_fleet__Driver_Creation",
+                "tags": ["taxi_fleet::Driver"],
+                "summary": "Creation endpoint for Driver",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/taxi_fleet.driver"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/taxi_fleet.driver"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/driver/{id}" : {
+            "get" : {
+                "operationId": "taxi_fleet__Driver_Get",
+                "summary": "Single object GET endpoint for Driver",
+                "tags": ["taxi_fleet::Driver"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/taxi_fleet.driver"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "taxi_fleet__Driver_Put",
+                "summary": "Single object PUT endpoint for Driver",
+                "tags": ["taxi_fleet::Driver"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/taxi_fleet.driver"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "taxi_fleet__Driver_Put",
+                "summary": "Single object DELETE endpoint for Driver",
+                "tags": ["taxi_fleet::Driver"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        }
+        ,
+        "/driver/{id}/book" : {
+            "post" : {
+                "operationId": "taxi_fleet__Driver__book",
+                "tags": ["taxi_fleet::Driver"],
+                "summary": "Book a taxi that is currently available",
+                "responses": {
+                    "200": {
+                        "description": "Result for book"
+                    }
+                }
+            }
+        }
+        ,
+        "/driver/{id}/release" : {
+            "post" : {
+                "operationId": "taxi_fleet__Driver__release",
+                "tags": ["taxi_fleet::Driver"],
+                "summary": "Release a taxi that is currently booked",
+                "responses": {
+                    "200": {
+                        "description": "Result for release"
+                    }
+                }
+            }
+        },
+        "/charge" : {
+            "get" : {
+                "operationId": "taxi_fleet__Charge_List",
+                "summary": "List endpoint for Charge",
+                "tags": ["taxi_fleet::Charge"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/taxi_fleet.charge"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "taxi_fleet__Charge_Creation",
+                "tags": ["taxi_fleet::Charge"],
+                "summary": "Creation endpoint for Charge",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/taxi_fleet.charge"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/taxi_fleet.charge"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/charge/{id}" : {
+            "get" : {
+                "operationId": "taxi_fleet__Charge_Get",
+                "summary": "Single object GET endpoint for Charge",
+                "tags": ["taxi_fleet::Charge"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/taxi_fleet.charge"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "taxi_fleet__Charge_Put",
+                "summary": "Single object PUT endpoint for Charge",
+                "tags": ["taxi_fleet::Charge"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/taxi_fleet.charge"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "taxi_fleet__Charge_Put",
+                "summary": "Single object DELETE endpoint for Charge",
+                "tags": ["taxi_fleet::Charge"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        }
+        ,
+        "/charge/{id}/pay" : {
+            "post" : {
+                "operationId": "taxi_fleet__Charge__pay",
+                "tags": ["taxi_fleet::Charge"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for pay"
+                    }
+                }
+            }
+        }
+        ,
+        "/charge/{id}/cancelPayment" : {
+            "post" : {
+                "operationId": "taxi_fleet__Charge__cancelPayment",
+                "tags": ["taxi_fleet::Charge"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for cancelPayment"
+                    }
+                }
+            }
+        }
+        ,
+        "/charge/newCharge" : {
+            "post" : {
+                "operationId": "taxi_fleet__Charge__newCharge",
+                "tags": ["taxi_fleet::Charge"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for newCharge"
+                    }
+                }
+            }
+        }
+        ,
+        "/charge/pendingCharges" : {
+            "post" : {
+                "operationId": "taxi_fleet__Charge__pendingCharges",
+                "tags": ["taxi_fleet::Charge"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "Charges for renting taxis.",
+                                        "type": "object",
+                                        "properties": {
+                                            "date": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "receivedOn": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "description": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "amount": {
+                                            	"description": "",
+                                            }
+                                            ,
+                                            "status": {
+                                                "$ref": "#/components/schemas/taxi_fleet.charge.status"
+                                            }
+                                            ,
+                                            "paid": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "driver": {
+                                                "$ref": "#/components/schemas/taxi_fleet.driver"
+                                            }
+                                            ,
+                                            "taxi": {
+                                                "$ref": "#/components/schemas/taxi_fleet.taxi"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/charge/byTaxi" : {
+            "post" : {
+                "operationId": "taxi_fleet__Charge__byTaxi",
+                "tags": ["taxi_fleet::Charge"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "Charges for renting taxis.",
+                                        "type": "object",
+                                        "properties": {
+                                            "date": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "receivedOn": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "description": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "amount": {
+                                            	"description": "",
+                                            }
+                                            ,
+                                            "status": {
+                                                "$ref": "#/components/schemas/taxi_fleet.charge.status"
+                                            }
+                                            ,
+                                            "paid": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "driver": {
+                                                "$ref": "#/components/schemas/taxi_fleet.driver"
+                                            }
+                                            ,
+                                            "taxi": {
+                                                "$ref": "#/components/schemas/taxi_fleet.taxi"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/charge/paidCharges" : {
+            "post" : {
+                "operationId": "taxi_fleet__Charge__paidCharges",
+                "tags": ["taxi_fleet::Charge"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "Charges for renting taxis.",
+                                        "type": "object",
+                                        "properties": {
+                                            "date": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "receivedOn": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "description": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "amount": {
+                                            	"description": "",
+                                            }
+                                            ,
+                                            "status": {
+                                                "$ref": "#/components/schemas/taxi_fleet.charge.status"
+                                            }
+                                            ,
+                                            "paid": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "driver": {
+                                                "$ref": "#/components/schemas/taxi_fleet.driver"
+                                            }
+                                            ,
+                                            "taxi": {
+                                                "$ref": "#/components/schemas/taxi_fleet.taxi"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "taxi_fleet.charge.status" : {
+            	"description": "",
+                "type": "string",
+                "enum": [
+                    "Pending",
+                    "Paid"
+                ]
+            }
+            ,
+            "taxi_fleet.taxi" : {
+            	"description": "The vehicles that make up the fleet.",
+                "type": "object",
+                "properties": {
+                    "name": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "driverCount": {
+                    	"description": "",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                    ,
+                    "full": {
+                    	"description": "",
+                        "type": "boolean"
+                    }
+                    ,
+                    "booked": {
+                    	"description": "",
+                        "type": "boolean"
+                    }
+                    ,
+                    "shift": {
+                        "$ref": "#/components/schemas/taxi_fleet.shift"
+                    }
+                    ,
+                    "drivers": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/taxi_fleet.driver"
+                        }
+                    }
+                    ,
+                    "pendingCharges": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/taxi_fleet.charge"
+                        }
+                    }
+                }
+            }
+            ,
+            "taxi_fleet.shift" : {
+            	"description": "Shift modalities.",
+                "type": "object",
+                "properties": {
+                    "description": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "price": {
+                    	"description": "",
+                    }
+                    ,
+                    "shiftsPerDay": {
+                    	"description": "",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                    ,
+                    "taxis": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/taxi_fleet.taxi"
+                        }
+                    }
+                }
+            }
+            ,
+            "taxi_fleet.driver" : {
+            	"description": "Drivers that can book taxis.",
+                "type": "object",
+                "properties": {
+                    "name": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "hasBooking": {
+                    	"description": "",
+                        "type": "boolean"
+                    }
+                    ,
+                    "paymentDue": {
+                    	"description": "",
+                        "type": "boolean"
+                    }
+                    ,
+                    "taxi": {
+                        "$ref": "#/components/schemas/taxi_fleet.taxi"
+                    }
+                    ,
+                    "charges": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/taxi_fleet.charge"
+                        }
+                    }
+                    ,
+                    "pendingCharges": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/taxi_fleet.charge"
+                        }
+                    }
+                }
+            }
+            ,
+            "taxi_fleet.charge" : {
+            	"description": "Charges for renting taxis.",
+                "type": "object",
+                "properties": {
+                    "date": {
+                    	"description": "",
+                        "type": "string",
+                        "format": "date"
+                    }
+                    ,
+                    "receivedOn": {
+                    	"description": "",
+                        "type": "string",
+                        "format": "date"
+                    }
+                    ,
+                    "description": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "amount": {
+                    	"description": "",
+                    }
+                    ,
+                    "status": {
+                        "$ref": "#/components/schemas/taxi_fleet.charge.status"
+                    }
+                    ,
+                    "paid": {
+                    	"description": "",
+                        "type": "boolean"
+                    }
+                    ,
+                    "driver": {
+                        "$ref": "#/components/schemas/taxi_fleet.driver"
+                    }
+                    ,
+                    "taxi": {
+                        "$ref": "#/components/schemas/taxi_fleet.taxi"
+                    }
+                }
+            }
+        }
+    }
+}

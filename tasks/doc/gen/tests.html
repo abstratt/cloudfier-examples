@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script   src="https://code.jquery.com/jquery-1.12.3.min.js"   integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ="   crossorigin="anonymous"></script>  
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <title>Package: Tests - Data Dictionary</title>
+</head>
+<body>
+    <div class="container-fluid">
+    <h1>Package: Tests</h1>
+    (<a href="data-dictionary.html">Back to Team Tasks</a>)
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <div>
+    <a name="tests"></a>
+    <h5>(tests)</h5>
+    
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Entity</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <h4>Class diagram</h4>
+    <img src="tests-classes.png"></img>
+    <h4>State diagram</h4>
+    <img src="tests-state.png"></img>
+    </div>
+    </div>
+    </div>
+    
+    <h2>Scenarios</h2>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="tests::Tasks"></a>
+    <h3>Tasks</h3>
+    <h5>Test class from <strong>Tests</strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="25%">Test case</th>
+                <th width="75%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Closed Tasks</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="65deeaeb-6afa-4821-8088-12c0ae981dbd-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="65deeaeb-6afa-4821-8088-12c0ae981dbd-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#65deeaeb-6afa-4821-8088-12c0ae981dbd-accordion" href="#65deeaeb-6afa-4821-8088-12c0ae981dbd-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="65deeaeb-6afa-4821-8088-12c0ae981dbd-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    contributor := Examples#contributor("son #1");
+                    task := Examples#taskFor(contributor, "wash car");
+                end
+                ;
+                begin
+                    Assert#areEqual(Status#Open, task.<a href="tasks.html#tasks::Task::status">status</a>);
+                    task.<a href="tasks.html#tasks::Task::complete">complete</a>();
+                end
+                ;
+                begin
+                    Assert#areEqual(Status#Completed, task.<a href="tasks.html#tasks::Task::status">status</a>);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="65deeaeb-6afa-4821-8088-12c0ae981dbd-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#65deeaeb-6afa-4821-8088-12c0ae981dbd-accordion" href="#65deeaeb-6afa-4821-8088-12c0ae981dbd-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="65deeaeb-6afa-4821-8088-12c0ae981dbd-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'contributor' the result of calling operation 'contributor' on class Examples  with "son #1" as argument
+                  Assign to variable 'task' the result of calling operation 'taskFor' on class Examples with:
+                      - variable 'contributor' as an argument for 'contributor'
+                      - "wash car" as an argument for 'description'
+                  Ensure that property 'status' in variable 'task' is equal to: "Open"
+                  Call operation 'complete' on variable 'task'
+                  Ensure that property 'status' in variable 'task' is equal to: "Completed"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>All Tasks</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="b82a513f-322d-4246-b8e8-7c5f5b2d7be4-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="b82a513f-322d-4246-b8e8-7c5f5b2d7be4-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b82a513f-322d-4246-b8e8-7c5f5b2d7be4-accordion" href="#b82a513f-322d-4246-b8e8-7c5f5b2d7be4-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="b82a513f-322d-4246-b8e8-7c5f5b2d7be4-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    baseline := <a href="tasks.html#tasks::Task">Task</a> extent.size();
+                    contributor := Examples#contributor("a user");
+                    Examples#taskFor(contributor, "");
+                    Examples#taskFor(contributor, "");
+                    Examples#taskFor(contributor, "");
+                end
+                ;
+                begin
+                    Assert#areEqual(baseline + 3, <a href="tasks.html#tasks::Task">Task</a> extent.size());
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="b82a513f-322d-4246-b8e8-7c5f5b2d7be4-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b82a513f-322d-4246-b8e8-7c5f5b2d7be4-accordion" href="#b82a513f-322d-4246-b8e8-7c5f5b2d7be4-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="b82a513f-322d-4246-b8e8-7c5f5b2d7be4-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'baseline' the count of all records for Task
+                  Assign to variable 'contributor' the result of calling operation 'contributor' on class Examples  with "a user" as argument
+                  Call operation 'taskFor' on class Examples with:
+                      - variable 'contributor' as an argument for 'contributor'
+                      - "" as an argument for 'description'
+                  Call operation 'taskFor' on class Examples with:
+                      - variable 'contributor' as an argument for 'contributor'
+                      - "" as an argument for 'description'
+                  Call operation 'taskFor' on class Examples with:
+                      - variable 'contributor' as an argument for 'contributor'
+                      - "" as an argument for 'description'
+                  Ensure that the count of all records for Task is equal to: variable 'baseline' + 3
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Open Tasks</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="5e186015-b441-46e2-bfdc-08bba5095ff3-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="5e186015-b441-46e2-bfdc-08bba5095ff3-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#5e186015-b441-46e2-bfdc-08bba5095ff3-accordion" href="#5e186015-b441-46e2-bfdc-08bba5095ff3-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="5e186015-b441-46e2-bfdc-08bba5095ff3-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    baseline := <a href="tasks.html#tasks::Task">Task</a>#<a href="tasks.html#tasks::Task::openTasks">openTasks</a>().size();
+                    contributor := Examples#contributor("a contributor");
+                    Examples#taskFor(contributor, "");
+                    Examples#taskFor(contributor, "");
+                    task := Examples#taskFor(contributor, "");
+                end
+                ;
+                begin
+                    Assert#areEqual(baseline + 3, <a href="tasks.html#tasks::Task">Task</a>#<a href="tasks.html#tasks::Task::openTasks">openTasks</a>().size());
+                    task.<a href="tasks.html#tasks::Task::complete">complete</a>();
+                end
+                ;
+                begin
+                    Assert#areEqual(baseline + 2, <a href="tasks.html#tasks::Task">Task</a>#<a href="tasks.html#tasks::Task::openTasks">openTasks</a>().size());
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="5e186015-b441-46e2-bfdc-08bba5095ff3-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#5e186015-b441-46e2-bfdc-08bba5095ff3-accordion" href="#5e186015-b441-46e2-bfdc-08bba5095ff3-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="5e186015-b441-46e2-bfdc-08bba5095ff3-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'baseline' the count of the result of calling operation 'openTasks' on class Task
+                  Assign to variable 'contributor' the result of calling operation 'contributor' on class Examples  with "a contributor" as argument
+                  Call operation 'taskFor' on class Examples with:
+                      - variable 'contributor' as an argument for 'contributor'
+                      - "" as an argument for 'description'
+                  Call operation 'taskFor' on class Examples with:
+                      - variable 'contributor' as an argument for 'contributor'
+                      - "" as an argument for 'description'
+                  Assign to variable 'task' the result of calling operation 'taskFor' on class Examples with:
+                      - variable 'contributor' as an argument for 'contributor'
+                      - "" as an argument for 'description'
+                  Ensure that the count of the result of calling operation 'openTasks' on class Task  is equal to: variable 'baseline' + 3
+                  Call operation 'complete' on variable 'task'
+                  Ensure that the count of the result of calling operation 'openTasks' on class Task  is equal to: variable 'baseline' + 2
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Taks Opened Today</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="19eafe46-1737-4055-b759-20e35b15ab58-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="19eafe46-1737-4055-b759-20e35b15ab58-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#19eafe46-1737-4055-b759-20e35b15ab58-accordion" href="#19eafe46-1737-4055-b759-20e35b15ab58-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="19eafe46-1737-4055-b759-20e35b15ab58-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    today := Date#today();
+                    yesterday := today.transpose(Duration#days(- 1));
+                    baselineToday := <a href="tasks.html#tasks::Task">Task</a>#<a href="tasks.html#tasks::Task::tasksOpenedOn">tasksOpenedOn</a>(today).size();
+                    baselineYesterday := <a href="tasks.html#tasks::Task">Task</a>#<a href="tasks.html#tasks::Task::tasksOpenedOn">tasksOpenedOn</a>(yesterday).size();
+                    contributor := Examples#contributor("auser");
+                    Examples#taskFor(contributor, "");
+                    Examples#taskFor(contributor, "");
+                    task := Examples#taskFor(contributor, "");
+                end
+                ;
+                begin
+                    Assert#areEqual(baselineToday + 3, <a href="tasks.html#tasks::Task">Task</a>#<a href="tasks.html#tasks::Task::tasksOpenedOn">tasksOpenedOn</a>(today).size());
+                    Assert#areEqual(baselineYesterday + 0, <a href="tasks.html#tasks::Task">Task</a>#<a href="tasks.html#tasks::Task::tasksOpenedOn">tasksOpenedOn</a>(yesterday).size());
+                    task.<a href="tasks.html#tasks::Task::openingDate">openingDate</a> := yesterday;
+                end
+                ;
+                begin
+                    Assert#areEqual(baselineToday + 2, <a href="tasks.html#tasks::Task">Task</a>#<a href="tasks.html#tasks::Task::tasksOpenedOn">tasksOpenedOn</a>(today).size());
+                    Assert#areEqual(baselineYesterday + 1, <a href="tasks.html#tasks::Task">Task</a>#<a href="tasks.html#tasks::Task::tasksOpenedOn">tasksOpenedOn</a>(yesterday).size());
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="19eafe46-1737-4055-b759-20e35b15ab58-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#19eafe46-1737-4055-b759-20e35b15ab58-accordion" href="#19eafe46-1737-4055-b759-20e35b15ab58-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="19eafe46-1737-4055-b759-20e35b15ab58-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'today' today's date
+                  Assign to variable 'yesterday' TBD: transpose
+                  Assign to variable 'baselineToday' the count of the result of calling operation 'tasksOpenedOn' on class Task  with variable 'today' as argument
+                  Assign to variable 'baselineYesterday' the count of the result of calling operation 'tasksOpenedOn' on class Task  with variable 'yesterday' as argument
+                  Assign to variable 'contributor' the result of calling operation 'contributor' on class Examples  with "auser" as argument
+                  Call operation 'taskFor' on class Examples with:
+                      - variable 'contributor' as an argument for 'contributor'
+                      - "" as an argument for 'description'
+                  Call operation 'taskFor' on class Examples with:
+                      - variable 'contributor' as an argument for 'contributor'
+                      - "" as an argument for 'description'
+                  Assign to variable 'task' the result of calling operation 'taskFor' on class Examples with:
+                      - variable 'contributor' as an argument for 'contributor'
+                      - "" as an argument for 'description'
+                  Ensure that the count of the result of calling operation 'tasksOpenedOn' on class Task  with variable 'today' as argument is equal to: variable 'baselineToday' + 3
+                  Ensure that the count of the result of calling operation 'tasksOpenedOn' on class Task  with variable 'yesterday' as argument is equal to: variable 'baselineYesterday' + 0
+                  Set property 'openingDate' in variable 'task' to variable 'yesterday'
+                  Ensure that the count of the result of calling operation 'tasksOpenedOn' on class Task  with variable 'today' as argument is equal to: variable 'baselineToday' + 2
+                  Ensure that the count of the result of calling operation 'tasksOpenedOn' on class Task  with variable 'yesterday' as argument is equal to: variable 'baselineYesterday' + 1
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+</body>
+</html>
+

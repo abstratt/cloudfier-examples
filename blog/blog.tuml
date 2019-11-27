@@ -8,7 +8,7 @@ role class User
     readonly id attribute name : String;
     static query guest() : User;
     begin
-        return User extent.\any((u : User) : Boolean { u.name = "guest" });
+        return !!User extent.\any((u : User) : Boolean { u.name = "guest" });
     end;
     operation writeAs(title : String, text : Memo);
     begin

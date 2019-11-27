@@ -7,7 +7,7 @@ import mdd_types;
 class City
     derived attribute token : String := { self.name + "-" + self.cityState.abbreviation };
     attribute name : String;
-    attribute cityState : State[0,1];
+    attribute cityState : State;
     attribute population : Integer;
     derived attribute isCapital : Boolean := { self == self.cityState.capital };
     static query citiesMorePopulousThan(threshold : Integer) : Integer;
@@ -18,13 +18,15 @@ class City
     begin
         return City extent.max((c : City) : Integer { c.population } );
     end;
-    static query mostPopulousCity() : City;
+    static query mostPopulousCity() : City[0,1];
     begin
         return City extent.maxElement((c : City) : Integer { c.population } );
     end;
     static query stateCapitals() : City[*];
     begin
-        return State extent.collect((s : State) : City { s.capital }).select((c : City) : Boolean { !(c == null) });
+        return State extent
+        	.select((s : State) : Boolean { !(s.capital == null) })
+        	.collect((s : State) : City[1,1] { !!s.capital });
     end;
     static query byState(cityState : State) : City[*];
     begin
@@ -66,10 +68,10 @@ class State
     static query citiesByState() : { stateAcronym : String, cities : City[*] }[*];
     begin
         return City extent.groupBy((c : City) : State {
-        	c.cityState
+        	!!c.cityState
     	}).groupCollect((cities : City[*]) : { stateAcronym  : String, cities : City[*]} {
             {
-                stateAcronym := cities.one().cityState.abbreviation, 
+                stateAcronym := !!(cities.one()?.cityState?.abbreviation), 
                 cities := cities
             }
         });
@@ -77,7 +79,7 @@ class State
     static query byAbbreviation(abbreviation : String) : State[0, 1];
     begin
         return State extent.\any((s : State) : Boolean {
-            s.abbreviation = abbreviation
+            abbreviation = s.abbreviation
         });
     end;
     static query statePopulationsAbove(threshold : Integer) : { \state : State, statePopulation : Integer}[*];

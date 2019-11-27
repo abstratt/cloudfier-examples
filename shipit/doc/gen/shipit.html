@@ -1,0 +1,3160 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script   src="https://code.jquery.com/jquery-1.12.3.min.js"   integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ="   crossorigin="anonymous"></script>  
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <title>Package: Shipit - Data Dictionary</title>
+</head>
+<body>
+    <div class="container-fluid">
+    <h1>Package: Shipit</h1>
+    (<a href="data-dictionary.html">Back to shipit</a>)
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <div>
+    <a name="shipit"></a>
+    <h5>(shipit)</h5>
+    
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Entity</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a href="shipit.html#shipit::User">User</a></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><a href="shipit.html#shipit::Comment">Comment</a></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><a href="shipit.html#shipit::Label">Label</a></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><a href="shipit.html#shipit::Project">Project</a></td>
+                <td>Issues are reported against a specific project.</td>
+            </tr>
+            <tr>
+                <td><a href="shipit.html#shipit::Issue">Issue</a></td>
+                <td>An issue describes a problem report, a feature request or just a work item for a project.
+                    Issues are reported by and assigned to users, and go through a lifecycle from the time 
+                    they are opened until they are resolved and eventually closed.</td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Class diagram</h4>
+    <img src="shipit-classes.png"></img>
+    <h4>State diagram</h4>
+    <img src="shipit-state.png"></img>
+    </div>
+    </div>
+    </div>
+    <h2>Entities</h2>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="shipit::User"></a>
+    <h3>User</h3>
+    <h5>Entity from <strong><a href="#shipit">Shipit</a></strong></h5>
+    <hr>
+    <h4>Properties</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Property</th>
+                <th width="10%">Type</th>
+                <th width="10%">Required</th>
+                <th width="10%">Initializable</th>
+                <th width="10%">Editable</th>
+                <th width="50%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="shipit::User::email"></a>Email</a></td>
+                <td>String</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::User::fullName"></a>Full Name</a></td>
+                <td>String</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::User::kind"></a>Kind</a></td>
+                <td><a href="shipit.html#shipit::UserKind">UserKind</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                <p>
+                Reporter, Committer
+                </p>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Relationships</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Relationship</th>
+                <th width="20%">Related Entity</th>
+                <th width="5%">Required</th>
+                <th width="5%">Multiple</th>
+                <th width="5%">Navigable</th>
+                <th width="55%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="shipit::User::issuesReportedByUser"></a>Issues Reported By User</td>
+                <td><a href="shipit.html#shipit::Issue">Issue</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::User::issuesCurrentlyInProgress"></a>Issues Currently In Progress</td>
+                <td><a href="shipit.html#shipit::Issue">Issue</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::User::issuesCurrentlyAssigned"></a>Issues Currently Assigned</td>
+                <td><a href="shipit.html#shipit::Issue">Issue</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::User::userProfile"></a>User Profile</td>
+                <td><a href="userprofile.html#userprofile::UserProfile">UserProfile</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::VotedIssues::voted"></a>Voted</td>
+                <td><a href="shipit.html#shipit::Issue">Issue</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::WatchedIssues::issuesWatched"></a>Issues Watched</td>
+                <td><a href="shipit.html#shipit::Issue">Issue</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Actions</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Action</th>
+                <th width="20%">Parameters</th>
+                <th width="70%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="shipit::User::promoteToCommitter"></a>Promote To Committer (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="b4e5667a-6ff4-43a7-8323-834996af5e77-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="b4e5667a-6ff4-43a7-8323-834996af5e77-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b4e5667a-6ff4-43a7-8323-834996af5e77-accordion" href="#b4e5667a-6ff4-43a7-8323-834996af5e77-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="b4e5667a-6ff4-43a7-8323-834996af5e77-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="shipit.html#shipit::User::kind">kind</a> := <a href="shipit.html#shipit::UserKind::Committer">UserKind#Committer</a>;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="b4e5667a-6ff4-43a7-8323-834996af5e77-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b4e5667a-6ff4-43a7-8323-834996af5e77-accordion" href="#b4e5667a-6ff4-43a7-8323-834996af5e77-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="b4e5667a-6ff4-43a7-8323-834996af5e77-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Set property 'kind' in this User to Committer
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="71af0e30-214a-45d9-9e05-c2471a974df0-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="71af0e30-214a-45d9-9e05-c2471a974df0-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#71af0e30-214a-45d9-9e05-c2471a974df0-accordion" href="#71af0e30-214a-45d9-9e05-c2471a974df0-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="71af0e30-214a-45d9-9e05-c2471a974df0-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                (not <a href="shipit.html#shipit::User">User</a>#<a href="shipit.html#shipit::User::current">current</a>() == null) and <a href="shipit.html#shipit::User">User</a>#<a href="shipit.html#shipit::User::current">current</a>().<a href="shipit.html#shipit::User::committer">committer</a>
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="71af0e30-214a-45d9-9e05-c2471a974df0-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#71af0e30-214a-45d9-9e05-c2471a974df0-accordion" href="#71af0e30-214a-45d9-9e05-c2471a974df0-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="71af0e30-214a-45d9-9e05-c2471a974df0-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  ((the value of the result of calling operation 'current' on class User  is equal to null) is false)
+                  and
+                  (The value of property 'kind' in this User is equal to Committer)
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::User::voteOn"></a>Vote On (public)</td>
+                <td><p>Issue (Issue)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="0994e3b4-b4f1-4ab8-b469-ded8aa0acb0a-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="0994e3b4-b4f1-4ab8-b469-ded8aa0acb0a-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#0994e3b4-b4f1-4ab8-b469-ded8aa0acb0a-accordion" href="#0994e3b4-b4f1-4ab8-b469-ded8aa0acb0a-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="0994e3b4-b4f1-4ab8-b469-ded8aa0acb0a-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                link <a href="shipit.html#shipit::VotedIssues">VotedIssues</a>(voted := issue, voter := self);
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="0994e3b4-b4f1-4ab8-b469-ded8aa0acb0a-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#0994e3b4-b4f1-4ab8-b469-ded8aa0acb0a-accordion" href="#0994e3b4-b4f1-4ab8-b469-ded8aa0acb0a-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="0994e3b4-b4f1-4ab8-b469-ded8aa0acb0a-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Link the given 'issue' and this User having:
+                      - the given 'issue' as 'voted'
+                      - this User as 'voter'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                A user can only vote once on any given issue.
+                <div class="panel-group" id="e882a985-30ce-48bd-b359-d1ac3898012b-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="e882a985-30ce-48bd-b359-d1ac3898012b-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#e882a985-30ce-48bd-b359-d1ac3898012b-accordion" href="#e882a985-30ce-48bd-b359-d1ac3898012b-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="e882a985-30ce-48bd-b359-d1ac3898012b-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                not self.<a href="shipit.html#shipit::User::isVoter">isVoter</a>(issue)
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="e882a985-30ce-48bd-b359-d1ac3898012b-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#e882a985-30ce-48bd-b359-d1ac3898012b-accordion" href="#e882a985-30ce-48bd-b359-d1ac3898012b-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="e882a985-30ce-48bd-b359-d1ac3898012b-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  (the result of calling operation 'isVoter' on this User  with the given 'issue' as argument) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::User::withdrawVoteFrom"></a>Withdraw Vote From (public)</td>
+                <td><p>Issue (Issue)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="9bebfb11-c79d-4ccb-b7ee-6784e4b08777-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="9bebfb11-c79d-4ccb-b7ee-6784e4b08777-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#9bebfb11-c79d-4ccb-b7ee-6784e4b08777-accordion" href="#9bebfb11-c79d-4ccb-b7ee-6784e4b08777-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="9bebfb11-c79d-4ccb-b7ee-6784e4b08777-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                /* TBD: DestroyLinkAction */;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="9bebfb11-c79d-4ccb-b7ee-6784e4b08777-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#9bebfb11-c79d-4ccb-b7ee-6784e4b08777-accordion" href="#9bebfb11-c79d-4ccb-b7ee-6784e4b08777-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="9bebfb11-c79d-4ccb-b7ee-6784e4b08777-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Unlink the given 'issue' and this User having:
+                      - the given 'issue' as 'voted'
+                      - this User as 'voter'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="b3cf5bd3-ad8d-40cc-a435-e0d694a824c3-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="b3cf5bd3-ad8d-40cc-a435-e0d694a824c3-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b3cf5bd3-ad8d-40cc-a435-e0d694a824c3-accordion" href="#b3cf5bd3-ad8d-40cc-a435-e0d694a824c3-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="b3cf5bd3-ad8d-40cc-a435-e0d694a824c3-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                not self <- VotedIssues -> voted
+                .isEmpty()
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="b3cf5bd3-ad8d-40cc-a435-e0d694a824c3-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b3cf5bd3-ad8d-40cc-a435-e0d694a824c3-accordion" href="#b3cf5bd3-ad8d-40cc-a435-e0d694a824c3-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="b3cf5bd3-ad8d-40cc-a435-e0d694a824c3-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  (relationship property 'voted' in this User is empty) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="5293206c-07e4-4b59-bd14-fafb8a517c1d-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="5293206c-07e4-4b59-bd14-fafb8a517c1d-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#5293206c-07e4-4b59-bd14-fafb8a517c1d-accordion" href="#5293206c-07e4-4b59-bd14-fafb8a517c1d-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="5293206c-07e4-4b59-bd14-fafb8a517c1d-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="shipit.html#shipit::User::isVoter">isVoter</a>(issue)
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="5293206c-07e4-4b59-bd14-fafb8a517c1d-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#5293206c-07e4-4b59-bd14-fafb8a517c1d-accordion" href="#5293206c-07e4-4b59-bd14-fafb8a517c1d-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="5293206c-07e4-4b59-bd14-fafb8a517c1d-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The result of calling operation 'isVoter' on this User  with the given 'issue' as argument
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Queries</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Query</th>
+                <th width="20%">Parameters</th>
+                <th width="70%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="shipit::User::current"></a>Current (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="ad8672b8-3a5b-4c6f-8456-777ef49b1b86-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="ad8672b8-3a5b-4c6f-8456-777ef49b1b86-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#ad8672b8-3a5b-4c6f-8456-777ef49b1b86-accordion" href="#ad8672b8-3a5b-4c6f-8456-777ef49b1b86-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="ad8672b8-3a5b-4c6f-8456-777ef49b1b86-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                return (System#user() as User);
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="ad8672b8-3a5b-4c6f-8456-777ef49b1b86-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#ad8672b8-3a5b-4c6f-8456-777ef49b1b86-accordion" href="#ad8672b8-3a5b-4c6f-8456-777ef49b1b86-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="ad8672b8-3a5b-4c6f-8456-777ef49b1b86-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Current user (as User)
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="shipit::Comment"></a>
+    <h3>Comment</h3>
+    <h5>Entity from <strong><a href="#shipit">Shipit</a></strong></h5>
+    <hr>
+    <h4>Properties</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Property</th>
+                <th width="10%">Type</th>
+                <th width="10%">Required</th>
+                <th width="10%">Initializable</th>
+                <th width="10%">Editable</th>
+                <th width="50%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="shipit::Comment::text"></a>Text</a></td>
+                <td>Memo</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Comment::commentedOn"></a>Commented On</a></td>
+                <td>DateTime</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Relationships</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Relationship</th>
+                <th width="20%">Related Entity</th>
+                <th width="5%">Required</th>
+                <th width="5%">Multiple</th>
+                <th width="5%">Navigable</th>
+                <th width="55%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="shipit::Comment::user"></a>User</td>
+                <td><a href="shipit.html#shipit::User">User</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Comment::inReplyTo"></a>In Reply To</td>
+                <td><a href="shipit.html#shipit::Comment">Comment</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Comment::issue"></a>Issue</td>
+                <td><a href="shipit.html#shipit::Issue">Issue</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Actions</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Action</th>
+                <th width="20%">Parameters</th>
+                <th width="70%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="shipit::Comment::reply"></a>Reply (public)</td>
+                <td><p>Text (Memo)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="d859d9cd-0a13-4f82-858e-f6cdaa6e444e-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="d859d9cd-0a13-4f82-858e-f6cdaa6e444e-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#d859d9cd-0a13-4f82-858e-f6cdaa6e444e-accordion" href="#d859d9cd-0a13-4f82-858e-f6cdaa6e444e-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="d859d9cd-0a13-4f82-858e-f6cdaa6e444e-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="shipit.html#shipit::Comment::issue">issue</a>.<a href="shipit.html#shipit::Issue::addComment">addComment</a>(text, self);
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="d859d9cd-0a13-4f82-858e-f6cdaa6e444e-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#d859d9cd-0a13-4f82-858e-f6cdaa6e444e-accordion" href="#d859d9cd-0a13-4f82-858e-f6cdaa6e444e-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="d859d9cd-0a13-4f82-858e-f6cdaa6e444e-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Call operation 'addComment' on property 'issue' in this Comment with:
+                      - the given 'text' as an argument for 'text'
+                      - this Comment as an argument for 'inReplyTo'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="shipit::Label"></a>
+    <h3>Label</h3>
+    <h5>Entity from <strong><a href="#shipit">Shipit</a></strong></h5>
+    <hr>
+    <h4>Properties</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Property</th>
+                <th width="10%">Type</th>
+                <th width="10%">Required</th>
+                <th width="10%">Initializable</th>
+                <th width="10%">Editable</th>
+                <th width="50%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="shipit::Label::name"></a>Name</a></td>
+                <td>String</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Relationships</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Relationship</th>
+                <th width="20%">Related Entity</th>
+                <th width="5%">Required</th>
+                <th width="5%">Multiple</th>
+                <th width="5%">Navigable</th>
+                <th width="55%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="shipit::IssueLabels::labeled"></a>Labeled</td>
+                <td><a href="shipit.html#shipit::Issue">Issue</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="shipit::Project"></a>
+    <h3>Project</h3>
+    <h5>Entity from <strong><a href="#shipit">Shipit</a></strong></h5>
+    <hr>
+    <blockquote>Issues are reported against a specific project.</blockquote>
+    <h4>Properties</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Property</th>
+                <th width="10%">Type</th>
+                <th width="10%">Required</th>
+                <th width="10%">Initializable</th>
+                <th width="10%">Editable</th>
+                <th width="50%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="shipit::Project::description"></a>Description</a></td>
+                <td>String</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Project::token"></a>Token</a></td>
+                <td>String</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Relationships</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Relationship</th>
+                <th width="20%">Related Entity</th>
+                <th width="5%">Required</th>
+                <th width="5%">Multiple</th>
+                <th width="5%">Navigable</th>
+                <th width="55%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="shipit::ProjectIssues::issues"></a>Issues</td>
+                <td><a href="shipit.html#shipit::Issue">Issue</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Queries</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Query</th>
+                <th width="20%">Parameters</th>
+                <th width="70%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="shipit::Project::projects"></a>Projects (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="f189cd8d-702b-48dd-b8ce-2cc2a64937a5-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="f189cd8d-702b-48dd-b8ce-2cc2a64937a5-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#f189cd8d-702b-48dd-b8ce-2cc2a64937a5-accordion" href="#f189cd8d-702b-48dd-b8ce-2cc2a64937a5-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="f189cd8d-702b-48dd-b8ce-2cc2a64937a5-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                return <a href="shipit.html#shipit::Project">Project</a> extent;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="f189cd8d-702b-48dd-b8ce-2cc2a64937a5-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#f189cd8d-702b-48dd-b8ce-2cc2a64937a5-accordion" href="#f189cd8d-702b-48dd-b8ce-2cc2a64937a5-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="f189cd8d-702b-48dd-b8ce-2cc2a64937a5-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  All records for Project
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="shipit::Issue"></a>
+    <h3>Issue</h3>
+    <h5>Entity from <strong><a href="#shipit">Shipit</a></strong></h5>
+    <hr>
+    <blockquote>An issue describes a problem report, a feature request or just a work item for a project.
+        Issues are reported by and assigned to users, and go through a lifecycle from the time 
+        they are opened until they are resolved and eventually closed.</blockquote>
+    <h4>Properties</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Property</th>
+                <th width="10%">Type</th>
+                <th width="10%">Required</th>
+                <th width="10%">Initializable</th>
+                <th width="10%">Editable</th>
+                <th width="50%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="shipit::Issue::mnemonic"></a>Mnemonic</a></td>
+                <td>String</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="df65dbb9-c235-4799-ad72-70e9ce5f6647-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="df65dbb9-c235-4799-ad72-70e9ce5f6647-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#df65dbb9-c235-4799-ad72-70e9ce5f6647-accordion" href="#df65dbb9-c235-4799-ad72-70e9ce5f6647-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="df65dbb9-c235-4799-ad72-70e9ce5f6647-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="shipit.html#shipit::Issue::issueKey">issueKey</a> + (" - " + self.<a href="shipit.html#shipit::Issue::summary">summary</a>)
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="df65dbb9-c235-4799-ad72-70e9ce5f6647-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#df65dbb9-c235-4799-ad72-70e9ce5f6647-accordion" href="#df65dbb9-c235-4799-ad72-70e9ce5f6647-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="df65dbb9-c235-4799-ad72-70e9ce5f6647-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Property 'token' in property 'project' in this Issue + "-" + property 'issueId' in this Issue
+                   + " - " + property 'summary' in this Issue
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::summary"></a>Summary</a></td>
+                <td>String</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::issueKey"></a>Issue Key</a></td>
+                <td>String</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="27de0bd8-0e81-433a-8941-8d62c4fcb018-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="27de0bd8-0e81-433a-8941-8d62c4fcb018-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#27de0bd8-0e81-433a-8941-8d62c4fcb018-accordion" href="#27de0bd8-0e81-433a-8941-8d62c4fcb018-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="27de0bd8-0e81-433a-8941-8d62c4fcb018-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="shipit.html#shipit::Issue::project">project</a>.<a href="shipit.html#shipit::Project::token">token</a> + ("-" + self.<a href="shipit.html#shipit::Issue::issueId">issueId</a>)
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="27de0bd8-0e81-433a-8941-8d62c4fcb018-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#27de0bd8-0e81-433a-8941-8d62c4fcb018-accordion" href="#27de0bd8-0e81-433a-8941-8d62c4fcb018-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="27de0bd8-0e81-433a-8941-8d62c4fcb018-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Property 'token' in property 'project' in this Issue + "-" + property 'issueId' in this Issue
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::reportedOn"></a>Reported On</a></td>
+                <td>DateTime</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::severity"></a>Severity</a></td>
+                <td><a href="shipit.html#shipit::Severity">Severity</a></a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                <p>
+                Minor, Normal, Major, Blocker, Enhancement
+                </p>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::status"></a>Status</a></td>
+                <td><a href="shipit.html#shipit::Issue::Status">Status</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::resolution"></a>Resolution</a></td>
+                <td><a href="shipit.html#shipit::Resolution">Resolution</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                <p>
+                Fixed, Works For Me, Wont Fix
+                </p>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::resolvedOn"></a>Resolved On</a></td>
+                <td>Date</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::votes"></a>Votes</a></td>
+                <td>Integer</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="d3d01e3b-ec2b-48e4-b9c5-bf0ea31c7493-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="d3d01e3b-ec2b-48e4-b9c5-bf0ea31c7493-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#d3d01e3b-ec2b-48e4-b9c5-bf0ea31c7493-accordion" href="#d3d01e3b-ec2b-48e4-b9c5-bf0ea31c7493-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="d3d01e3b-ec2b-48e4-b9c5-bf0ea31c7493-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self <- VotedIssues -> voter
+                .size()
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="d3d01e3b-ec2b-48e4-b9c5-bf0ea31c7493-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#d3d01e3b-ec2b-48e4-b9c5-bf0ea31c7493-accordion" href="#d3d01e3b-ec2b-48e4-b9c5-bf0ea31c7493-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="d3d01e3b-ec2b-48e4-b9c5-bf0ea31c7493-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The count of relationship property 'voter' in this Issue
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::commentCount"></a>Comment Count</a></td>
+                <td>Integer</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="92cd52a6-72f9-46a3-ae8a-0d3daa6f285c-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="92cd52a6-72f9-46a3-ae8a-0d3daa6f285c-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#92cd52a6-72f9-46a3-ae8a-0d3daa6f285c-accordion" href="#92cd52a6-72f9-46a3-ae8a-0d3daa6f285c-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="92cd52a6-72f9-46a3-ae8a-0d3daa6f285c-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="shipit.html#shipit::Issue::comments">comments</a>.size()
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="92cd52a6-72f9-46a3-ae8a-0d3daa6f285c-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#92cd52a6-72f9-46a3-ae8a-0d3daa6f285c-accordion" href="#92cd52a6-72f9-46a3-ae8a-0d3daa6f285c-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="92cd52a6-72f9-46a3-ae8a-0d3daa6f285c-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The count of property 'comments' in this Issue
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::waitingFor"></a>Waiting For</a></td>
+                <td>String</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="b01a408f-9313-4be9-b30e-2d36a7755f2a-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="b01a408f-9313-4be9-b30e-2d36a7755f2a-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b01a408f-9313-4be9-b30e-2d36a7755f2a-accordion" href="#b01a408f-9313-4be9-b30e-2d36a7755f2a-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="b01a408f-9313-4be9-b30e-2d36a7755f2a-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                ("" + self.<a href="shipit.html#shipit::Issue::reportedOn">reportedOn</a>.date().difference(self.<a href="shipit.html#shipit::Issue::referenceDate">referenceDate</a>).toDays()) + " day(s)"
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="b01a408f-9313-4be9-b30e-2d36a7755f2a-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b01a408f-9313-4be9-b30e-2d36a7755f2a-accordion" href="#b01a408f-9313-4be9-b30e-2d36a7755f2a-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="b01a408f-9313-4be9-b30e-2d36a7755f2a-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  "" + difference between the result of calling operation 'date' on property 'reportedOn' in this Issue  and If call operation 'notNull' on property 'resolvedOn' in this Issue  then
+                  	property 'resolvedOn' in this Issue
+                   else
+                      Today's date
+                   (in days) + " day(s)"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::description"></a>Description</a></td>
+                <td>Memo</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Relationships</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Relationship</th>
+                <th width="20%">Related Entity</th>
+                <th width="5%">Required</th>
+                <th width="5%">Multiple</th>
+                <th width="5%">Navigable</th>
+                <th width="55%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="shipit::Issue::labels"></a>Labels</td>
+                <td><a href="shipit.html#shipit::Label">Label</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::project"></a>Project</td>
+                <td><a href="shipit.html#shipit::Project">Project</a></a></td>
+                <td>✔</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::reporter"></a>Reporter</td>
+                <td><a href="shipit.html#shipit::User">User</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::assignee"></a>Assignee</td>
+                <td><a href="shipit.html#shipit::User">User</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::comments"></a>Comments</td>
+                <td><a href="shipit.html#shipit::Comment">Comment</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::watchers"></a>Watchers</td>
+                <td><a href="shipit.html#shipit::User">User</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::VotedIssues::voter"></a>Voter</td>
+                <td><a href="shipit.html#shipit::User">User</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Actions</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Action</th>
+                <th width="20%">Parameters</th>
+                <th width="70%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="shipit::Issue::addWatcher"></a>Add Watcher (public)</td>
+                <td><p>User To Add (User)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="5087cef6-d0af-48fb-80ab-e56ee6daeae9-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="5087cef6-d0af-48fb-80ab-e56ee6daeae9-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#5087cef6-d0af-48fb-80ab-e56ee6daeae9-accordion" href="#5087cef6-d0af-48fb-80ab-e56ee6daeae9-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="5087cef6-d0af-48fb-80ab-e56ee6daeae9-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                link <a href="shipit.html#shipit::WatchedIssues">WatchedIssues</a>(issuesWatched := self, watchers := userToAdd);
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="5087cef6-d0af-48fb-80ab-e56ee6daeae9-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#5087cef6-d0af-48fb-80ab-e56ee6daeae9-accordion" href="#5087cef6-d0af-48fb-80ab-e56ee6daeae9-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="5087cef6-d0af-48fb-80ab-e56ee6daeae9-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Link this Issue and the given 'userToAdd' having:
+                      - this Issue as 'issuesWatched'
+                      - the given 'userToAdd' as 'watchers'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::assign"></a>Assign (public)</td>
+                <td><p>New Assignee (User)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                Assign an issue to a user.
+                </td></tr>
+                <tr><th>
+                Valid state(s)
+                </th></tr>
+                <tr><td>
+                Open
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="f55d291a-fadf-4d43-86f6-3fe8978a3f70-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="f55d291a-fadf-4d43-86f6-3fe8978a3f70-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#f55d291a-fadf-4d43-86f6-3fe8978a3f70-accordion" href="#f55d291a-fadf-4d43-86f6-3fe8978a3f70-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="f55d291a-fadf-4d43-86f6-3fe8978a3f70-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="shipit.html#shipit::Issue::assignee">assignee</a> := newAssignee;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="f55d291a-fadf-4d43-86f6-3fe8978a3f70-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#f55d291a-fadf-4d43-86f6-3fe8978a3f70-accordion" href="#f55d291a-fadf-4d43-86f6-3fe8978a3f70-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="f55d291a-fadf-4d43-86f6-3fe8978a3f70-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Set property 'assignee' in this Issue to the given 'newAssignee'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="2e0d3827-3ae4-4799-90f0-f2799294a28e-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="2e0d3827-3ae4-4799-90f0-f2799294a28e-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#2e0d3827-3ae4-4799-90f0-f2799294a28e-accordion" href="#2e0d3827-3ae4-4799-90f0-f2799294a28e-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="2e0d3827-3ae4-4799-90f0-f2799294a28e-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="shipit.html#shipit::Issue::mine">mine</a> or self.<a href="shipit.html#shipit::Issue::free">free</a>
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="2e0d3827-3ae4-4799-90f0-f2799294a28e-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#2e0d3827-3ae4-4799-90f0-f2799294a28e-accordion" href="#2e0d3827-3ae4-4799-90f0-f2799294a28e-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="2e0d3827-3ae4-4799-90f0-f2799294a28e-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  (The value of The result of calling operation 'current' on class User
+                   is equal to property 'assignee' in this Issue)
+                  or
+                  (The value of property 'assignee' in this Issue is equal to null)
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::assignToMe"></a>Assign To Me (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                Take over an issue currently available.
+                </td></tr>
+                <tr><th>
+                Valid state(s)
+                </th></tr>
+                <tr><td>
+                Open
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="b5dbcd29-24e2-4749-8778-ab9c5836419c-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="b5dbcd29-24e2-4749-8778-ab9c5836419c-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b5dbcd29-24e2-4749-8778-ab9c5836419c-accordion" href="#b5dbcd29-24e2-4749-8778-ab9c5836419c-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="b5dbcd29-24e2-4749-8778-ab9c5836419c-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="shipit.html#shipit::Issue::assignee">assignee</a> := <a href="shipit.html#shipit::User">User</a>#<a href="shipit.html#shipit::User::current">current</a>;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="b5dbcd29-24e2-4749-8778-ab9c5836419c-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b5dbcd29-24e2-4749-8778-ab9c5836419c-accordion" href="#b5dbcd29-24e2-4749-8778-ab9c5836419c-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="b5dbcd29-24e2-4749-8778-ab9c5836419c-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Set property 'assignee' in this Issue to The result of calling operation 'current' on class User
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="dc4e5911-048c-4402-a726-b28166c3d270-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="dc4e5911-048c-4402-a726-b28166c3d270-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#dc4e5911-048c-4402-a726-b28166c3d270-accordion" href="#dc4e5911-048c-4402-a726-b28166c3d270-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="dc4e5911-048c-4402-a726-b28166c3d270-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                (<a href="shipit.html#shipit::User">User</a>#<a href="shipit.html#shipit::User::current">current</a>.<a href="shipit.html#shipit::User::committer">committer</a> as Boolean)
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="dc4e5911-048c-4402-a726-b28166c3d270-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#dc4e5911-048c-4402-a726-b28166c3d270-accordion" href="#dc4e5911-048c-4402-a726-b28166c3d270-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="dc4e5911-048c-4402-a726-b28166c3d270-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The value of property 'kind' in this User is equal to Committer
+                   (as Boolean)
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="e5baeb7a-9ee8-4954-93be-ff6d4b0eb739-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="e5baeb7a-9ee8-4954-93be-ff6d4b0eb739-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#e5baeb7a-9ee8-4954-93be-ff6d4b0eb739-accordion" href="#e5baeb7a-9ee8-4954-93be-ff6d4b0eb739-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="e5baeb7a-9ee8-4954-93be-ff6d4b0eb739-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                not self.<a href="shipit.html#shipit::Issue::mine">mine</a>
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="e5baeb7a-9ee8-4954-93be-ff6d4b0eb739-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#e5baeb7a-9ee8-4954-93be-ff6d4b0eb739-accordion" href="#e5baeb7a-9ee8-4954-93be-ff6d4b0eb739-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="e5baeb7a-9ee8-4954-93be-ff6d4b0eb739-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  (The value of The result of calling operation 'current' on class User
+                   is equal to property 'assignee' in this Issue
+                  ) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::comment"></a>Comment (public)</td>
+                <td><p>Text (Memo)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                Add a comment to the issue
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="89dfe310-eb93-4ae9-aca9-33222439a8ee-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="89dfe310-eb93-4ae9-aca9-33222439a8ee-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#89dfe310-eb93-4ae9-aca9-33222439a8ee-accordion" href="#89dfe310-eb93-4ae9-aca9-33222439a8ee-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="89dfe310-eb93-4ae9-aca9-33222439a8ee-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="shipit.html#shipit::Issue::addComment">addComment</a>(text, null);
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="89dfe310-eb93-4ae9-aca9-33222439a8ee-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#89dfe310-eb93-4ae9-aca9-33222439a8ee-accordion" href="#89dfe310-eb93-4ae9-aca9-33222439a8ee-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="89dfe310-eb93-4ae9-aca9-33222439a8ee-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Call operation 'addComment' on this Issue with:
+                      - the given 'text' as an argument for 'text'
+                      - null as an argument for 'inReplyTo'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::release"></a>Release (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                Release the issue so another committer can work on it.
+                </td></tr>
+                <tr><th>
+                Valid state(s)
+                </th></tr>
+                <tr><td>
+                Assigned
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="6f829ef8-c89b-42a1-aa7b-1f900df39221-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="6f829ef8-c89b-42a1-aa7b-1f900df39221-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#6f829ef8-c89b-42a1-aa7b-1f900df39221-accordion" href="#6f829ef8-c89b-42a1-aa7b-1f900df39221-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="6f829ef8-c89b-42a1-aa7b-1f900df39221-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="shipit.html#shipit::Issue::assignee">assignee</a> := null;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="6f829ef8-c89b-42a1-aa7b-1f900df39221-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#6f829ef8-c89b-42a1-aa7b-1f900df39221-accordion" href="#6f829ef8-c89b-42a1-aa7b-1f900df39221-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="6f829ef8-c89b-42a1-aa7b-1f900df39221-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Set property 'assignee' in this Issue to null
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="cac4f953-1bc5-4b1e-be1c-152610d2bf12-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="cac4f953-1bc5-4b1e-be1c-152610d2bf12-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#cac4f953-1bc5-4b1e-be1c-152610d2bf12-accordion" href="#cac4f953-1bc5-4b1e-be1c-152610d2bf12-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="cac4f953-1bc5-4b1e-be1c-152610d2bf12-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="shipit.html#shipit::Issue::mine">mine</a>
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="cac4f953-1bc5-4b1e-be1c-152610d2bf12-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#cac4f953-1bc5-4b1e-be1c-152610d2bf12-accordion" href="#cac4f953-1bc5-4b1e-be1c-152610d2bf12-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="cac4f953-1bc5-4b1e-be1c-152610d2bf12-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The value of The result of calling operation 'current' on class User
+                   is equal to property 'assignee' in this Issue
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::reopen"></a>Reopen (public)</td>
+                <td><p>Reason (Memo)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                Reopen the issue.
+                </td></tr>
+                <tr><th>
+                Valid state(s)
+                </th></tr>
+                <tr><td>
+                Resolved, Verified
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="40401f75-b8fd-437d-9dc2-e282a623dcb8-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="40401f75-b8fd-437d-9dc2-e282a623dcb8-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#40401f75-b8fd-437d-9dc2-e282a623dcb8-accordion" href="#40401f75-b8fd-437d-9dc2-e282a623dcb8-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="40401f75-b8fd-437d-9dc2-e282a623dcb8-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="shipit.html#shipit::Issue::resolvedOn">resolvedOn</a> := null;
+                self.<a href="shipit.html#shipit::Issue::resolution">resolution</a> := null;
+                if (reason != "") then
+                    begin
+                        self.<a href="shipit.html#shipit::Issue::comment">comment</a>((reason as Memo));
+                    end;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="40401f75-b8fd-437d-9dc2-e282a623dcb8-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#40401f75-b8fd-437d-9dc2-e282a623dcb8-accordion" href="#40401f75-b8fd-437d-9dc2-e282a623dcb8-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="40401f75-b8fd-437d-9dc2-e282a623dcb8-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Set property 'resolvedOn' in this Issue to null
+                  Set property 'resolution' in this Issue to null
+                  Call operation 'comment' on this Issue  with the given 'reason' (as Memo) as argument
+                   provided that the given 'reason' <> ""
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::reportIssue"></a>Report Issue (public)</td>
+                <td><p>Project (Project)</p>
+                <p>Summary (String)</p>
+                <p>Description (Memo)</p>
+                <p>Severity (Severity)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                Report a new issue.
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="b24039ea-55dc-4030-861e-92e9d3503c13-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="b24039ea-55dc-4030-861e-92e9d3503c13-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b24039ea-55dc-4030-861e-92e9d3503c13-accordion" href="#b24039ea-55dc-4030-861e-92e9d3503c13-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="b24039ea-55dc-4030-861e-92e9d3503c13-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                newIssue := <a href="shipit.html#shipit::Issue">Issue</a>#<a href="shipit.html#shipit::Issue::createIssue">createIssue</a>((<a href="shipit.html#shipit::User">User</a>#<a href="shipit.html#shipit::User::current">current</a> as User), project, summary, description, severity);
+                send <a href="shipit.html#shipit::IssueReported">IssueReported</a>(issueKey := newIssue.<a href="shipit.html#shipit::Issue::issueKey">issueKey</a>, summary := summary, description := description, userEmail := newIssue.<a href="shipit.html#shipit::Issue::reporter">reporter</a>.<a href="shipit.html#shipit::User::email">email</a>) to newIssue.<a href="shipit.html#shipit::Issue::userNotifier">userNotifier</a>;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="b24039ea-55dc-4030-861e-92e9d3503c13-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b24039ea-55dc-4030-861e-92e9d3503c13-accordion" href="#b24039ea-55dc-4030-861e-92e9d3503c13-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="b24039ea-55dc-4030-861e-92e9d3503c13-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'newIssue' the result of calling operation 'createIssue' on class Issue with:
+                      - The result of calling operation 'current' on class User
+                       (as User) as an argument for 'reporter'
+                      - the given 'project' as an argument for 'project'
+                      - the given 'summary' as an argument for 'summary'
+                      - the given 'description' as an argument for 'description'
+                      - the given 'severity' as an argument for 'severity'
+                  Send an IssueReported event to port 'userNotifier' in variable 'newIssue'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="f3182bb0-c3f4-4002-b2d2-2d65cad71cd6-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="f3182bb0-c3f4-4002-b2d2-2d65cad71cd6-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#f3182bb0-c3f4-4002-b2d2-2d65cad71cd6-accordion" href="#f3182bb0-c3f4-4002-b2d2-2d65cad71cd6-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="f3182bb0-c3f4-4002-b2d2-2d65cad71cd6-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                <a href="shipit.html#shipit::User">User</a>#<a href="shipit.html#shipit::User::provisioned">provisioned</a>
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="f3182bb0-c3f4-4002-b2d2-2d65cad71cd6-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#f3182bb0-c3f4-4002-b2d2-2d65cad71cd6-accordion" href="#f3182bb0-c3f4-4002-b2d2-2d65cad71cd6-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="f3182bb0-c3f4-4002-b2d2-2d65cad71cd6-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  (the value of current user is equal to null) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::resolve"></a>Resolve (public)</td>
+                <td><p>Resolution (Resolution)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                Resolve the issue.
+                </td></tr>
+                <tr><th>
+                Valid state(s)
+                </th></tr>
+                <tr><td>
+                Open, Assigned
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="d850136f-0224-4e29-ba8c-560eca71bb92-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="d850136f-0224-4e29-ba8c-560eca71bb92-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#d850136f-0224-4e29-ba8c-560eca71bb92-accordion" href="#d850136f-0224-4e29-ba8c-560eca71bb92-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="d850136f-0224-4e29-ba8c-560eca71bb92-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="shipit.html#shipit::Issue::resolvedOn">resolvedOn</a> := Date#today();
+                self.<a href="shipit.html#shipit::Issue::resolution">resolution</a> := resolution;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="d850136f-0224-4e29-ba8c-560eca71bb92-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#d850136f-0224-4e29-ba8c-560eca71bb92-accordion" href="#d850136f-0224-4e29-ba8c-560eca71bb92-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="d850136f-0224-4e29-ba8c-560eca71bb92-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Set property 'resolvedOn' in this Issue to today's date
+                  Set property 'resolution' in this Issue to the given 'resolution'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="6f95cc40-c324-4c46-8bcd-471879e6b729-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="6f95cc40-c324-4c46-8bcd-471879e6b729-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#6f95cc40-c324-4c46-8bcd-471879e6b729-accordion" href="#6f95cc40-c324-4c46-8bcd-471879e6b729-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="6f95cc40-c324-4c46-8bcd-471879e6b729-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="shipit.html#shipit::Issue::mine">mine</a> or self.<a href="shipit.html#shipit::Issue::free">free</a>
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="6f95cc40-c324-4c46-8bcd-471879e6b729-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#6f95cc40-c324-4c46-8bcd-471879e6b729-accordion" href="#6f95cc40-c324-4c46-8bcd-471879e6b729-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="6f95cc40-c324-4c46-8bcd-471879e6b729-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  (The value of The result of calling operation 'current' on class User
+                   is equal to property 'assignee' in this Issue)
+                  or
+                  (The value of property 'assignee' in this Issue is equal to null)
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::start"></a>Start (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                Start/resume work on this issue.
+                </td></tr>
+                <tr><th>
+                Valid state(s)
+                </th></tr>
+                <tr><td>
+                Assigned
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="99a578ed-2de7-445b-b01a-604bcf93eedf-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="99a578ed-2de7-445b-b01a-604bcf93eedf-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#99a578ed-2de7-445b-b01a-604bcf93eedf-accordion" href="#99a578ed-2de7-445b-b01a-604bcf93eedf-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="99a578ed-2de7-445b-b01a-604bcf93eedf-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="shipit.html#shipit::Issue::mine">mine</a>
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="99a578ed-2de7-445b-b01a-604bcf93eedf-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#99a578ed-2de7-445b-b01a-604bcf93eedf-accordion" href="#99a578ed-2de7-445b-b01a-604bcf93eedf-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="99a578ed-2de7-445b-b01a-604bcf93eedf-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The value of The result of calling operation 'current' on class User
+                   is equal to property 'assignee' in this Issue
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::steal"></a>Steal (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                Take over an issue currently assigned to another user (not in progress).
+                </td></tr>
+                <tr><th>
+                Valid state(s)
+                </th></tr>
+                <tr><td>
+                Assigned
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="0a8fa55b-0939-4fba-9350-c8e06dcdc0db-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="0a8fa55b-0939-4fba-9350-c8e06dcdc0db-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#0a8fa55b-0939-4fba-9350-c8e06dcdc0db-accordion" href="#0a8fa55b-0939-4fba-9350-c8e06dcdc0db-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="0a8fa55b-0939-4fba-9350-c8e06dcdc0db-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="shipit.html#shipit::Issue::assignee">assignee</a> := <a href="shipit.html#shipit::User">User</a>#<a href="shipit.html#shipit::User::current">current</a>;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="0a8fa55b-0939-4fba-9350-c8e06dcdc0db-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#0a8fa55b-0939-4fba-9350-c8e06dcdc0db-accordion" href="#0a8fa55b-0939-4fba-9350-c8e06dcdc0db-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="0a8fa55b-0939-4fba-9350-c8e06dcdc0db-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Set property 'assignee' in this Issue to The result of calling operation 'current' on class User
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="5a479fa8-123f-4d83-8cc8-04992cfcf225-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="5a479fa8-123f-4d83-8cc8-04992cfcf225-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#5a479fa8-123f-4d83-8cc8-04992cfcf225-accordion" href="#5a479fa8-123f-4d83-8cc8-04992cfcf225-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="5a479fa8-123f-4d83-8cc8-04992cfcf225-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                (<a href="shipit.html#shipit::User">User</a>#<a href="shipit.html#shipit::User::current">current</a>.<a href="shipit.html#shipit::User::committer">committer</a> as Boolean)
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="5a479fa8-123f-4d83-8cc8-04992cfcf225-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#5a479fa8-123f-4d83-8cc8-04992cfcf225-accordion" href="#5a479fa8-123f-4d83-8cc8-04992cfcf225-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="5a479fa8-123f-4d83-8cc8-04992cfcf225-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The value of property 'kind' in this User is equal to Committer
+                   (as Boolean)
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="f12fbb7c-a099-4635-86fd-8ee7da5e65d0-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="f12fbb7c-a099-4635-86fd-8ee7da5e65d0-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#f12fbb7c-a099-4635-86fd-8ee7da5e65d0-accordion" href="#f12fbb7c-a099-4635-86fd-8ee7da5e65d0-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="f12fbb7c-a099-4635-86fd-8ee7da5e65d0-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                not self.<a href="shipit.html#shipit::Issue::mine">mine</a>
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="f12fbb7c-a099-4635-86fd-8ee7da5e65d0-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#f12fbb7c-a099-4635-86fd-8ee7da5e65d0-accordion" href="#f12fbb7c-a099-4635-86fd-8ee7da5e65d0-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="f12fbb7c-a099-4635-86fd-8ee7da5e65d0-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  (The value of The result of calling operation 'current' on class User
+                   is equal to property 'assignee' in this Issue
+                  ) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::suspend"></a>Suspend (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                Suspend work on this issue.
+                </td></tr>
+                <tr><th>
+                Valid state(s)
+                </th></tr>
+                <tr><td>
+                InProgress
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="a1e070d5-0822-4477-bf2d-751b6c350a56-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="a1e070d5-0822-4477-bf2d-751b6c350a56-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#a1e070d5-0822-4477-bf2d-751b6c350a56-accordion" href="#a1e070d5-0822-4477-bf2d-751b6c350a56-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="a1e070d5-0822-4477-bf2d-751b6c350a56-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="shipit.html#shipit::Issue::mine">mine</a>
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="a1e070d5-0822-4477-bf2d-751b6c350a56-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#a1e070d5-0822-4477-bf2d-751b6c350a56-accordion" href="#a1e070d5-0822-4477-bf2d-751b6c350a56-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="a1e070d5-0822-4477-bf2d-751b6c350a56-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The value of The result of calling operation 'current' on class User
+                   is equal to property 'assignee' in this Issue
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::verify"></a>Verify (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                Close the issue marking it as verified.
+                </td></tr>
+                <tr><th>
+                Valid state(s)
+                </th></tr>
+                <tr><td>
+                Resolved
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::vote"></a>Vote (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="e7a6f4cc-40d4-41c0-814b-e89cb0843678-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="e7a6f4cc-40d4-41c0-814b-e89cb0843678-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#e7a6f4cc-40d4-41c0-814b-e89cb0843678-accordion" href="#e7a6f4cc-40d4-41c0-814b-e89cb0843678-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="e7a6f4cc-40d4-41c0-814b-e89cb0843678-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                <a href="shipit.html#shipit::User">User</a>#<a href="shipit.html#shipit::User::current">current</a>.<a href="shipit.html#shipit::User::voteOn">voteOn</a>(self);
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="e7a6f4cc-40d4-41c0-814b-e89cb0843678-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#e7a6f4cc-40d4-41c0-814b-e89cb0843678-accordion" href="#e7a6f4cc-40d4-41c0-814b-e89cb0843678-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="e7a6f4cc-40d4-41c0-814b-e89cb0843678-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Call operation 'voteOn' on The result of calling operation 'current' on class User
+                    with this Issue as argument
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="de8c79ea-60b5-47a2-ac77-ea0852934470-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="de8c79ea-60b5-47a2-ac77-ea0852934470-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#de8c79ea-60b5-47a2-ac77-ea0852934470-accordion" href="#de8c79ea-60b5-47a2-ac77-ea0852934470-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="de8c79ea-60b5-47a2-ac77-ea0852934470-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                not <a href="shipit.html#shipit::User">User</a>#<a href="shipit.html#shipit::User::current">current</a> == null
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="de8c79ea-60b5-47a2-ac77-ea0852934470-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#de8c79ea-60b5-47a2-ac77-ea0852934470-accordion" href="#de8c79ea-60b5-47a2-ac77-ea0852934470-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="de8c79ea-60b5-47a2-ac77-ea0852934470-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  (the value of The result of calling operation 'current' on class User
+                   is equal to null) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::withdrawVote"></a>Withdraw Vote (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="4ccb0367-5cf1-438f-8926-4033b30b74d9-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="4ccb0367-5cf1-438f-8926-4033b30b74d9-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#4ccb0367-5cf1-438f-8926-4033b30b74d9-accordion" href="#4ccb0367-5cf1-438f-8926-4033b30b74d9-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="4ccb0367-5cf1-438f-8926-4033b30b74d9-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                <a href="shipit.html#shipit::User">User</a>#<a href="shipit.html#shipit::User::current">current</a>.<a href="shipit.html#shipit::User::withdrawVoteFrom">withdrawVoteFrom</a>(self);
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="4ccb0367-5cf1-438f-8926-4033b30b74d9-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#4ccb0367-5cf1-438f-8926-4033b30b74d9-accordion" href="#4ccb0367-5cf1-438f-8926-4033b30b74d9-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="4ccb0367-5cf1-438f-8926-4033b30b74d9-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Call operation 'withdrawVoteFrom' on The result of calling operation 'current' on class User
+                    with this Issue as argument
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="79bd4598-9b2b-4524-b3a7-923b4f12ef4a-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="79bd4598-9b2b-4524-b3a7-923b4f12ef4a-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#79bd4598-9b2b-4524-b3a7-923b4f12ef4a-accordion" href="#79bd4598-9b2b-4524-b3a7-923b4f12ef4a-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="79bd4598-9b2b-4524-b3a7-923b4f12ef4a-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                (<a href="shipit.html#shipit::User">User</a>#<a href="shipit.html#shipit::User::current">current</a>.<a href="shipit.html#shipit::User::isVoter">isVoter</a>(self) as Boolean)
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="79bd4598-9b2b-4524-b3a7-923b4f12ef4a-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#79bd4598-9b2b-4524-b3a7-923b4f12ef4a-accordion" href="#79bd4598-9b2b-4524-b3a7-923b4f12ef4a-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="79bd4598-9b2b-4524-b3a7-923b4f12ef4a-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The result of calling operation 'isVoter' on The result of calling operation 'current' on class User
+                    with this Issue as argument (as Boolean)
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Queries</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Query</th>
+                <th width="20%">Parameters</th>
+                <th width="70%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="shipit::Issue::byProject"></a>By Project (public)</td>
+                <td><p>toMatch (Project)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="1c338ba1-b9a6-4a43-901a-15f8585fe2b0-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="1c338ba1-b9a6-4a43-901a-15f8585fe2b0-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#1c338ba1-b9a6-4a43-901a-15f8585fe2b0-accordion" href="#1c338ba1-b9a6-4a43-901a-15f8585fe2b0-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="1c338ba1-b9a6-4a43-901a-15f8585fe2b0-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                return <a href="shipit.html#shipit::Issue">Issue</a> extent.select((i) {
+                	i.<a href="shipit.html#shipit::Issue::project">project</a> == toMatch
+                });
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="1c338ba1-b9a6-4a43-901a-15f8585fe2b0-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#1c338ba1-b9a6-4a43-901a-15f8585fe2b0-accordion" href="#1c338ba1-b9a6-4a43-901a-15f8585fe2b0-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="1c338ba1-b9a6-4a43-901a-15f8585fe2b0-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Select from all records for Issue 'i'
+                      where the value of property 'project' in 'i' is equal to the given 'toMatch'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::bySeverity"></a>By Severity (public)</td>
+                <td><p>toMatch (Severity)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="d0153b34-a4dc-4876-ac2a-c88ad4078e95-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="d0153b34-a4dc-4876-ac2a-c88ad4078e95-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#d0153b34-a4dc-4876-ac2a-c88ad4078e95-accordion" href="#d0153b34-a4dc-4876-ac2a-c88ad4078e95-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="d0153b34-a4dc-4876-ac2a-c88ad4078e95-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                return <a href="shipit.html#shipit::Issue">Issue</a> extent.select((i) {
+                	i.<a href="shipit.html#shipit::Issue::severity">severity</a> == toMatch
+                });
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="d0153b34-a4dc-4876-ac2a-c88ad4078e95-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#d0153b34-a4dc-4876-ac2a-c88ad4078e95-accordion" href="#d0153b34-a4dc-4876-ac2a-c88ad4078e95-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="d0153b34-a4dc-4876-ac2a-c88ad4078e95-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Select from all records for Issue 'i'
+                      where the value of property 'severity' in 'i' is equal to the given 'toMatch'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::closedIssues"></a>Closed Issues (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="07a945d0-55fc-42f4-ae66-ebebba3a944f-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="07a945d0-55fc-42f4-ae66-ebebba3a944f-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#07a945d0-55fc-42f4-ae66-ebebba3a944f-accordion" href="#07a945d0-55fc-42f4-ae66-ebebba3a944f-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="07a945d0-55fc-42f4-ae66-ebebba3a944f-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                return <a href="shipit.html#shipit::Issue">Issue</a> extent.select((i) {
+                	i.<a href="shipit.html#shipit::Issue::status">status</a> >= Status#Resolved
+                });
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="07a945d0-55fc-42f4-ae66-ebebba3a944f-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#07a945d0-55fc-42f4-ae66-ebebba3a944f-accordion" href="#07a945d0-55fc-42f4-ae66-ebebba3a944f-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="07a945d0-55fc-42f4-ae66-ebebba3a944f-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Select from all records for Issue 'i'
+                      where property 'status' in 'i' >= "Resolved"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::issuesInProgress"></a>Issues In Progress (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="5fcf29a2-89f7-4429-b098-873a31438f7a-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="5fcf29a2-89f7-4429-b098-873a31438f7a-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#5fcf29a2-89f7-4429-b098-873a31438f7a-accordion" href="#5fcf29a2-89f7-4429-b098-873a31438f7a-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="5fcf29a2-89f7-4429-b098-873a31438f7a-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                return <a href="shipit.html#shipit::Issue">Issue</a> extent.select((i) {
+                	i.<a href="shipit.html#shipit::Issue::status">status</a> == Status#InProgress
+                });
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="5fcf29a2-89f7-4429-b098-873a31438f7a-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#5fcf29a2-89f7-4429-b098-873a31438f7a-accordion" href="#5fcf29a2-89f7-4429-b098-873a31438f7a-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="5fcf29a2-89f7-4429-b098-873a31438f7a-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Select from all records for Issue 'i'
+                      where the value of property 'status' in 'i' is equal to "InProgress"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::openIssues"></a>Open Issues (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="7837bfdd-6fbc-4994-9890-382972386901-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="7837bfdd-6fbc-4994-9890-382972386901-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#7837bfdd-6fbc-4994-9890-382972386901-accordion" href="#7837bfdd-6fbc-4994-9890-382972386901-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="7837bfdd-6fbc-4994-9890-382972386901-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                return <a href="shipit.html#shipit::Issue">Issue</a> extent.select((i) {
+                	i.<a href="shipit.html#shipit::Issue::status">status</a> <= Status#Assigned
+                });
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="7837bfdd-6fbc-4994-9890-382972386901-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#7837bfdd-6fbc-4994-9890-382972386901-accordion" href="#7837bfdd-6fbc-4994-9890-382972386901-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="7837bfdd-6fbc-4994-9890-382972386901-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Select from all records for Issue 'i'
+                      where property 'status' in 'i' <= "Assigned"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <h2>State machines</h2>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="shipit::Issue::Status"></a>
+    <h3>Status</h3>
+    <h5>State machine in <b>Issue</b> from <strong><a href="#shipit">Shipit</a></strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Name</th>
+                <th width="40%">Description</th>
+                <th width="50%">Transitions</th>                    
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Open</td>
+                <td>-</td>
+                <td>
+                    <ul>
+                <li>
+                <p><em>To:</em> <strong>Resolved</strong></p>
+                <p>
+                <em>When: </em>action 'Resolve' is called
+                </p>
+                <li>
+                <p><em>To:</em> <strong>Assigned</strong></p>
+                <p>
+                <em>When: </em>action 'Assign To Me' is called
+                </p>
+                <li>
+                <p><em>To:</em> <strong>Assigned</strong></p>
+                <p>
+                <em>When: </em>action 'Assign' is called
+                </p>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Assigned</td>
+                <td>-</td>
+                <td>
+                    <ul>
+                <li>
+                <p><em>To:</em> <strong>Open</strong></p>
+                <p>
+                <em>When: </em>action 'Release' is called
+                </p>
+                <li>
+                <p><em>To:</em> <strong>Resolved</strong></p>
+                <p>
+                <em>When: </em>action 'Resolve' is called
+                </p>
+                <li>
+                <p><em>To:</em> <strong>Assigned</strong></p>
+                <p>
+                <em>When: </em>action 'Steal' is called
+                </p>
+                <li>
+                <p><em>To:</em> <strong>In Progress</strong></p>
+                <p>
+                <em>When: </em>action 'Start' is called
+                </p>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>In Progress</td>
+                <td>-</td>
+                <td>
+                    <ul>
+                <li>
+                <p><em>To:</em> <strong>Assigned</strong></p>
+                <p>
+                <em>When: </em>action 'Suspend' is called
+                </p>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Resolved</td>
+                <td>-</td>
+                <td>
+                    <ul>
+                <li>
+                <p><em>To:</em> <strong>Verified</strong></p>
+                <p>
+                <em>When: </em>action 'Verify' is called
+                </p>
+                <li>
+                <p><em>To:</em> <strong>Open</strong></p>
+                <p>
+                <em>When: </em>action 'Reopen' is called
+                </p>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Verified</td>
+                <td>-</td>
+                <td>
+                    <ul>
+                <li>
+                <p><em>To:</em> <strong>Open</strong></p>
+                <p>
+                <em>When: </em>action 'Reopen' is called
+                </p>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <h2>Enumerations</h2>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="shipit::UserKind"></a>
+    <h3>User Kind</h3>
+    <h5>Enumeration from <strong><a href="#shipit">Shipit</a></strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="20%">Name</th>
+                <th width="80%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="shipit::UserKind::Reporter"></a>Reporter</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td><a name="shipit::UserKind::Committer"></a>Committer</td>
+                <td>-</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="shipit::Severity"></a>
+    <h3>Severity</h3>
+    <h5>Enumeration from <strong><a href="#shipit">Shipit</a></strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="20%">Name</th>
+                <th width="80%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="shipit::Severity::Minor"></a>Minor</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Severity::Normal"></a>Normal</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Severity::Major"></a>Major</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Severity::Blocker"></a>Blocker</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Severity::Enhancement"></a>Enhancement</td>
+                <td>-</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="shipit::Resolution"></a>
+    <h3>Resolution</h3>
+    <h5>Enumeration from <strong><a href="#shipit">Shipit</a></strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="20%">Name</th>
+                <th width="80%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="shipit::Resolution::Fixed"></a>Fixed</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Resolution::WorksForMe"></a>Works For Me</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Resolution::WontFix"></a>Wont Fix</td>
+                <td>-</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="shipit::Issue::Status"></a>
+    <h3>Status</h3>
+    <h5>Enumeration from <strong><a href="#shipit">Shipit</a></strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="20%">Name</th>
+                <th width="80%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="shipit::Issue::Status::Status::Open"></a>Open</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::Status::Status::Assigned"></a>Assigned</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::Status::Status::InProgress"></a>In Progress</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::Status::Status::Resolved"></a>Resolved</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td><a name="shipit::Issue::Status::Status::Verified"></a>Verified</td>
+                <td>-</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    
+</body>
+</html>
+
