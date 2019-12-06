@@ -3,6 +3,7 @@ package expenses_tests;
 
 import expenses;
 apply mdd_extensions;
+import mdd_media;
 
 [Test]
 class Tests
@@ -164,7 +165,34 @@ class Tests
         end;
     end;        
     
-
+    [Failure(constraint="ReceiptRequired")]    
+    operation receiptMissing();
+    begin
+        var expense : Expense;
+        begin
+            expense := Tests#declare(500.0);
+        end;
+        begin
+            /* Will fail */
+            expense.submit();
+        end;
+    end;        
+    
+    operation receiptProvided();
+    begin
+        var expense : Expense;
+        begin
+            expense := Tests#declare(500.0);
+            Assert#isTrue(expense.receiptRequired);
+        end;
+        begin
+            expense.receipt := new Picture;
+            Assert#isTrue(not expense.receiptRequired);
+            expense.submit();
+        end;
+    end;        
+ 
+    
     operation expenseByCategoryTotals();
     begin
         var employee, cat1, cat2, cat3;
@@ -175,9 +203,9 @@ class Tests
             cat3 := Tests#createCategory("category 3");            
         end; 
         begin        
-            employee.declareExpense("expense 1", 100, Date#today(), cat1).submit();
-            employee.declareExpense("expense 2", 300, Date#today(), cat1).submit();
-            employee.declareExpense("expense 3", 750, Date#today(), cat2).submit();
+            employee.declareExpense("expense 1", 10, Date#today(), cat1).submit();
+            employee.declareExpense("expense 2", 30, Date#today(), cat1).submit();
+            employee.declareExpense("expense 3", 75, Date#today(), cat2).submit();
         end;
         begin
             var stats, cat1Stats, cat2Stats;
@@ -190,7 +218,7 @@ class Tests
         		}
         	);
             Assert#isNotNull(cat1Stats);
-            Assert#areEqual(400, cat1Stats?.total);
+            Assert#areEqual(40, cat1Stats?.total);
             
             cat2Stats := stats.\any(
             	(group : CategoryTotal) : Boolean {
@@ -198,7 +226,7 @@ class Tests
         		}
         	);
             Assert#isNotNull(cat2Stats);
-            Assert#areEqual(750, cat2Stats?.total);            
+            Assert#areEqual(75, cat2Stats?.total);            
         end;
     end;    
     
@@ -213,8 +241,8 @@ class Tests
         end; 
         begin        
             employee.declareExpense("expense 1", 100, Date#today(), cat1).submit();
-            employee.declareExpense("expense 2", 300, Date#today(), cat1).submit();
-            employee.declareExpense("expense 3", 750, Date#today(), cat2).submit();
+            employee.declareExpense("expense 2", 160, Date#today(), cat1).submit();
+            employee.declareExpense("expense 3", 150, Date#today(), cat2).submit();
             employee.declareExpense("expense 4", 5, Date#today(), cat2).submit();
             employee.declareExpense("expense 5", 7, Date#today(), cat2).submit();            
             employee.declareExpense("expense 6", 13, Date#today(), cat3).submit();                        
@@ -252,16 +280,16 @@ class Tests
             cat3 := Tests#createCategory("category 3");            
         end; 
         begin        
-            employee.declareExpense("expense 1", 100, Date#today(), cat1).submit();
-            employee.declareExpense("expense 2", 300, Date#today(), cat1).submit();
-            employee.declareExpense("expense 3", 700, Date#today(), cat1).submit();
-            employee.declareExpense("expense 5", 1500, Date#today(), cat2).submit();            
-            employee.declareExpense("expense 6", 500, Date#today(), cat3).submit();                        
+            employee.declareExpense("expense 1", 10, Date#today(), cat1).submit();
+            employee.declareExpense("expense 2", 30, Date#today(), cat1).submit();
+            employee.declareExpense("expense 3", 70, Date#today(), cat1).submit();
+            employee.declareExpense("expense 5", 150, Date#today(), cat2).submit();            
+            employee.declareExpense("expense 6", 50, Date#today(), cat3).submit();                        
         end;
         begin
             var stats, cat1Stats, cat2Stats;
-            stats := Category#mostExpensedCategories(1000.0);
-            Assert#isTrue(stats.size() >= 2);
+            stats := Category#mostExpensedCategories(100);
+            Assert#areEqual(2, stats.size());
             
             cat1Stats := stats.\any(
             	(group : CategoryTotal) : Boolean {
@@ -269,7 +297,7 @@ class Tests
         		}
         	);
             Assert#isNotNull(cat1Stats);
-            Assert#areEqual(1100, cat1Stats?.total);            
+            Assert#areEqual(110, cat1Stats?.total);            
             
             cat2Stats := stats.\any(
             	(group : CategoryTotal) : Boolean {
@@ -277,7 +305,7 @@ class Tests
         		}
         	);
             Assert#isNotNull(cat2Stats);
-            Assert#areEqual(1500, cat2Stats?.total);            
+            Assert#areEqual(150, cat2Stats?.total);            
         end;
     end;        
     
@@ -321,8 +349,8 @@ class Tests
         end; 
         begin        
             Assert#isTrue(!Expense#anyPendingExpenses());            
-            expense1 := Tests#declareFor(800, employee1);
-            expense2 := Tests#declareFor(1000, employee2);            
+            expense1 := Tests#declareFor(80, employee1);
+            expense2 := Tests#declareFor(100, employee2);            
         end;
         begin
             expense1.submit();
@@ -427,10 +455,10 @@ class Tests
             programmer := Tests#createEmployee("A programmer that never expenses anything");                        
         end; 
         begin        
-            Tests#declareFor(800, ceo);
-            Tests#declareFor(1000, ceo);            
-            Tests#declareFor(2000, ceo);                        
-            Tests#declareFor(500, salesGuy);            
+            Tests#declareFor(80, ceo);
+            Tests#declareFor(100, ceo);            
+            Tests#declareFor(200, ceo);                        
+            Tests#declareFor(50, salesGuy);            
         end;
         begin
             var stats, ceoStats, salesGuyStats;

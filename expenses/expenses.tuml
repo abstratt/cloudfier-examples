@@ -62,9 +62,7 @@ class Category
 
     static query mostExpensedCategories(threshold : Double) : CategoryTotal[*];
     begin
-        return Expense extent.select((e : Expense) : Boolean {
-            e.status == Expense::Status#Submitted
-        }).groupBy((e : Expense) : Category { e.category }).groupCollect((expenses : Expense[1, *]) : CategoryTotal {
+        return Expense extent.groupBy((e : Expense) : Category { e.category }).groupCollect((expenses : Expense[1, *]) : CategoryTotal {
             {
                 category := (!!expenses.one()).category, 
                 total := expenses.sum((e : Expense) : Double { e.amount })
@@ -75,10 +73,10 @@ end;
 
 (* The expense as reported by an employee. *)
 class Expense
-    allow Administrator all;
-    allow Approver extent;
     allow Employee read { self.employee == (System#user() as Employee) };
     allow Employee update { self.employee == (System#user() as Employee) and self.status == Status#Draft };
+    allow Administrator all;
+    allow Approver extent, read, call;
 
     (* A moniker for this expense. *)
     derived attribute moniker : String := {
@@ -144,6 +142,9 @@ class Expense
 
     (* Whether this expense qualifies for automatic approval. *)
     derived attribute automaticApproval : Boolean := { self.amount < 50 };
+    
+    (* Whether this expense requires an receipt. *)
+    derived attribute receiptRequired : Boolean := { self.receipt == null and self.amount > 200 };    
 
     (* The number of days since this expense was processed. *)
     derived attribute daysProcessed : Integer := {
@@ -186,7 +187,9 @@ class Expense
 
     (* Submit this expense. *)
     operation submit()
-        allow Employee all { self.employee == (System#user() as Employee) };
+        allow Employee all { self.employee == (System#user() as Employee) }
+        (* A receipt must be attached before submitting an expense with this amount. *)
+        precondition ReceiptRequired { not self.receiptRequired };
 
     private operation reportApproved();
     begin
