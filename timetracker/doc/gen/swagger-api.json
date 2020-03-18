@@ -1,0 +1,986 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Time Tracker"
+    },
+    "paths": {
+        "/client" : {
+            "get" : {
+                "operationId": "timetracker__Client_List",
+                "summary": "List endpoint for Client",
+                "tags": ["timetracker::Client"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/timetracker.client"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "timetracker__Client_Creation",
+                "tags": ["timetracker::Client"],
+                "summary": "Creation endpoint for Client",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/timetracker.client"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/timetracker.client"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/client/{id}" : {
+            "get" : {
+                "operationId": "timetracker__Client_Get",
+                "summary": "Single object GET endpoint for Client",
+                "tags": ["timetracker::Client"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/timetracker.client"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "timetracker__Client_Put",
+                "summary": "Single object PUT endpoint for Client",
+                "tags": ["timetracker::Client"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/timetracker.client"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "timetracker__Client_Put",
+                "summary": "Single object DELETE endpoint for Client",
+                "tags": ["timetracker::Client"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        }
+        ,
+        "/client/{id}/newProject" : {
+            "post" : {
+                "operationId": "timetracker__Client__newProject",
+                "tags": ["timetracker::Client"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                	"description": "A project provides a context for work entries.",
+                                    "type": "object",
+                                    "properties": {
+                                        "description": {
+                                        	"description": "A description for the project.",
+                                            "type": "string"
+                                        }
+                                        ,
+                                        "unitsReported": {
+                                        	"description": "",
+                                            "type": "integer",
+                                            "format": "int64"
+                                        }
+                                        ,
+                                        "unitsToSubmit": {
+                                        	"description": "",
+                                            "type": "integer",
+                                            "format": "int64"
+                                        }
+                                        ,
+                                        "reported": {
+                                            "description": "",
+                                            "type": "array",
+                                            "items" : {
+                                                "$ref": "#/components/schemas/timetracker.entry"
+                                            }
+                                        }
+                                        ,
+                                        "toSubmit": {
+                                            "description": "",
+                                            "type": "array",
+                                            "items" : {
+                                                "$ref": "#/components/schemas/timetracker.entry"
+                                            }
+                                        }
+                                        ,
+                                        "client": {
+                                            "$ref": "#/components/schemas/timetracker.client"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/client/{id}/openInvoice" : {
+            "post" : {
+                "operationId": "timetracker__Client__openInvoice",
+                "tags": ["timetracker::Client"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                	"description": "An invoice describes work done for a client within one or more projects.",
+                                    "type": "object",
+                                    "properties": {
+                                        "moniker": {
+                                        	"description": "",
+                                            "type": "string"
+                                        }
+                                        ,
+                                        "number": {
+                                        	"description": "",
+                                            "type": "string"
+                                        }
+                                        ,
+                                        "invoiceInternalNumber": {
+                                        	"description": "",
+                                            "type": "integer",
+                                            "format": "int64"
+                                        }
+                                        ,
+                                        "issueDate": {
+                                        	"description": "",
+                                            "type": "string",
+                                            "format": "date"
+                                        }
+                                        ,
+                                        "open": {
+                                        	"description": "",
+                                            "type": "boolean"
+                                        }
+                                        ,
+                                        "issued": {
+                                        	"description": "",
+                                            "type": "boolean"
+                                        }
+                                        ,
+                                        "received": {
+                                        	"description": "",
+                                            "type": "boolean"
+                                        }
+                                        ,
+                                        "status": {
+                                            "$ref": "#/components/schemas/timetracker.invoice.status"
+                                        }
+                                        ,
+                                        "totalUnits": {
+                                        	"description": "",
+                                            "type": "integer",
+                                            "format": "int64"
+                                        }
+                                        ,
+                                        "client": {
+                                            "$ref": "#/components/schemas/timetracker.client"
+                                        }
+                                        ,
+                                        "submitted": {
+                                            "description": "",
+                                            "type": "array",
+                                            "items" : {
+                                                "$ref": "#/components/schemas/timetracker.entry"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/client/withOpenInvoices" : {
+            "post" : {
+                "operationId": "timetracker__Client__withOpenInvoices",
+                "tags": ["timetracker::Client"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "A person or organization work can be done for.",
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                            	"description": "The name of the client.",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "projects": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/timetracker.project"
+                                                }
+                                            }
+                                            ,
+                                            "invoices": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/timetracker.invoice"
+                                                }
+                                            }
+                                            ,
+                                            "openInvoices": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/timetracker.invoice"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/client/withIssuedInvoices" : {
+            "post" : {
+                "operationId": "timetracker__Client__withIssuedInvoices",
+                "tags": ["timetracker::Client"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "A person or organization work can be done for.",
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                            	"description": "The name of the client.",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "projects": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/timetracker.project"
+                                                }
+                                            }
+                                            ,
+                                            "invoices": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/timetracker.invoice"
+                                                }
+                                            }
+                                            ,
+                                            "openInvoices": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/timetracker.invoice"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/project" : {
+            "get" : {
+                "operationId": "timetracker__Project_List",
+                "summary": "List endpoint for Project",
+                "tags": ["timetracker::Project"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/timetracker.project"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "timetracker__Project_Creation",
+                "tags": ["timetracker::Project"],
+                "summary": "Creation endpoint for Project",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/timetracker.project"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/timetracker.project"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/project/{id}" : {
+            "get" : {
+                "operationId": "timetracker__Project_Get",
+                "summary": "Single object GET endpoint for Project",
+                "tags": ["timetracker::Project"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/timetracker.project"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "timetracker__Project_Put",
+                "summary": "Single object PUT endpoint for Project",
+                "tags": ["timetracker::Project"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/timetracker.project"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "timetracker__Project_Put",
+                "summary": "Single object DELETE endpoint for Project",
+                "tags": ["timetracker::Project"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        }
+        ,
+        "/project/{id}/addEntry" : {
+            "post" : {
+                "operationId": "timetracker__Project__addEntry",
+                "tags": ["timetracker::Project"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                	"description": "",
+                                    "type": "object",
+                                    "properties": {
+                                        "units": {
+                                        	"description": "The number of units of work in this entry.",
+                                            "type": "integer",
+                                            "format": "int64"
+                                        }
+                                        ,
+                                        "date": {
+                                        	"description": "The date when the work happened.",
+                                            "type": "string",
+                                            "format": "date"
+                                        }
+                                        ,
+                                        "memo": {
+                                        	"description": "An optional description of the work performed .",
+                                            "type": "string"
+                                        }
+                                        ,
+                                        "submitted": {
+                                        	"description": "",
+                                            "type": "boolean"
+                                        }
+                                        ,
+                                        "project": {
+                                            "$ref": "#/components/schemas/timetracker.project"
+                                        }
+                                        ,
+                                        "client": {
+                                            "$ref": "#/components/schemas/timetracker.client"
+                                        }
+                                        ,
+                                        "invoice": {
+                                            "$ref": "#/components/schemas/timetracker.invoice"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/invoice" : {
+            "get" : {
+                "operationId": "timetracker__Invoice_List",
+                "summary": "List endpoint for Invoice",
+                "tags": ["timetracker::Invoice"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/timetracker.invoice"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "timetracker__Invoice_Creation",
+                "tags": ["timetracker::Invoice"],
+                "summary": "Creation endpoint for Invoice",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/timetracker.invoice"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/timetracker.invoice"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/invoice/{id}" : {
+            "get" : {
+                "operationId": "timetracker__Invoice_Get",
+                "summary": "Single object GET endpoint for Invoice",
+                "tags": ["timetracker::Invoice"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/timetracker.invoice"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "timetracker__Invoice_Put",
+                "summary": "Single object PUT endpoint for Invoice",
+                "tags": ["timetracker::Invoice"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/timetracker.invoice"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "timetracker__Invoice_Put",
+                "summary": "Single object DELETE endpoint for Invoice",
+                "tags": ["timetracker::Invoice"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        }
+        ,
+        "/invoice/{id}/reassign" : {
+            "post" : {
+                "operationId": "timetracker__Invoice__reassign",
+                "tags": ["timetracker::Invoice"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for reassign"
+                    }
+                }
+            }
+        }
+        ,
+        "/invoice/{id}/issue" : {
+            "post" : {
+                "operationId": "timetracker__Invoice__issue",
+                "tags": ["timetracker::Invoice"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for issue"
+                    }
+                }
+            }
+        }
+        ,
+        "/invoice/{id}/cancel" : {
+            "post" : {
+                "operationId": "timetracker__Invoice__cancel",
+                "tags": ["timetracker::Invoice"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for cancel"
+                    }
+                }
+            }
+        }
+        ,
+        "/invoice/{id}/sendInvoice" : {
+            "post" : {
+                "operationId": "timetracker__Invoice__sendInvoice",
+                "tags": ["timetracker::Invoice"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for sendInvoice"
+                    }
+                }
+            }
+        },
+        "/entry" : {
+            "get" : {
+                "operationId": "timetracker__Entry_List",
+                "summary": "List endpoint for Entry",
+                "tags": ["timetracker::Entry"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/timetracker.entry"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "timetracker__Entry_Creation",
+                "tags": ["timetracker::Entry"],
+                "summary": "Creation endpoint for Entry",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/timetracker.entry"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/timetracker.entry"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/entry/{id}" : {
+            "get" : {
+                "operationId": "timetracker__Entry_Get",
+                "summary": "Single object GET endpoint for Entry",
+                "tags": ["timetracker::Entry"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/timetracker.entry"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "timetracker__Entry_Put",
+                "summary": "Single object PUT endpoint for Entry",
+                "tags": ["timetracker::Entry"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/timetracker.entry"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "timetracker__Entry_Put",
+                "summary": "Single object DELETE endpoint for Entry",
+                "tags": ["timetracker::Entry"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        }
+        ,
+        "/entry/{id}/submit" : {
+            "post" : {
+                "operationId": "timetracker__Entry__submit",
+                "tags": ["timetracker::Entry"],
+                "summary": "Submits this entry to a chosen invoice for the client.",
+                "responses": {
+                    "200": {
+                        "description": "Result for submit"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "timetracker.invoice.status" : {
+            	"description": "",
+                "type": "string",
+                "enum": [
+                    "Open",
+                    "Issued",
+                    "Received",
+                    "Cancelled"
+                ]
+            }
+            ,
+            "timetracker.client" : {
+            	"description": "A person or organization work can be done for.",
+                "type": "object",
+                "properties": {
+                    "name": {
+                    	"description": "The name of the client.",
+                        "type": "string"
+                    }
+                    ,
+                    "projects": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/timetracker.project"
+                        }
+                    }
+                    ,
+                    "invoices": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/timetracker.invoice"
+                        }
+                    }
+                    ,
+                    "openInvoices": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/timetracker.invoice"
+                        }
+                    }
+                }
+            }
+            ,
+            "timetracker.project" : {
+            	"description": "A project provides a context for work entries.",
+                "type": "object",
+                "properties": {
+                    "description": {
+                    	"description": "A description for the project.",
+                        "type": "string"
+                    }
+                    ,
+                    "unitsReported": {
+                    	"description": "",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                    ,
+                    "unitsToSubmit": {
+                    	"description": "",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                    ,
+                    "reported": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/timetracker.entry"
+                        }
+                    }
+                    ,
+                    "toSubmit": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/timetracker.entry"
+                        }
+                    }
+                    ,
+                    "client": {
+                        "$ref": "#/components/schemas/timetracker.client"
+                    }
+                }
+            }
+            ,
+            "timetracker.invoice" : {
+            	"description": "An invoice describes work done for a client within one or more projects.",
+                "type": "object",
+                "properties": {
+                    "moniker": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "number": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "invoiceInternalNumber": {
+                    	"description": "",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                    ,
+                    "issueDate": {
+                    	"description": "",
+                        "type": "string",
+                        "format": "date"
+                    }
+                    ,
+                    "open": {
+                    	"description": "",
+                        "type": "boolean"
+                    }
+                    ,
+                    "issued": {
+                    	"description": "",
+                        "type": "boolean"
+                    }
+                    ,
+                    "received": {
+                    	"description": "",
+                        "type": "boolean"
+                    }
+                    ,
+                    "status": {
+                        "$ref": "#/components/schemas/timetracker.invoice.status"
+                    }
+                    ,
+                    "totalUnits": {
+                    	"description": "",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                    ,
+                    "client": {
+                        "$ref": "#/components/schemas/timetracker.client"
+                    }
+                    ,
+                    "submitted": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/timetracker.entry"
+                        }
+                    }
+                }
+            }
+            ,
+            "timetracker.entry" : {
+            	"description": "",
+                "type": "object",
+                "properties": {
+                    "units": {
+                    	"description": "The number of units of work in this entry.",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                    ,
+                    "date": {
+                    	"description": "The date when the work happened.",
+                        "type": "string",
+                        "format": "date"
+                    }
+                    ,
+                    "memo": {
+                    	"description": "An optional description of the work performed .",
+                        "type": "string"
+                    }
+                    ,
+                    "submitted": {
+                    	"description": "",
+                        "type": "boolean"
+                    }
+                    ,
+                    "project": {
+                        "$ref": "#/components/schemas/timetracker.project"
+                    }
+                    ,
+                    "client": {
+                        "$ref": "#/components/schemas/timetracker.client"
+                    }
+                    ,
+                    "invoice": {
+                        "$ref": "#/components/schemas/timetracker.invoice"
+                    }
+                }
+            }
+        }
+    }
+}

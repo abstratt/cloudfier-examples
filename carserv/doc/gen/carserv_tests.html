@@ -1,0 +1,815 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script   src="https://code.jquery.com/jquery-1.12.3.min.js"   integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ="   crossorigin="anonymous"></script>  
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <title>Package: Carserv tests - Data Dictionary</title>
+</head>
+<body>
+    <div class="container-fluid">
+    <h1>Package: Carserv tests</h1>
+    (<a href="data-dictionary.html">Back to Car Shop</a>)
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <div>
+    <a name="carserv_tests"></a>
+    <h5>(carserv_tests)</h5>
+    
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Entity</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <h4>Class diagram</h4>
+    <img src="carserv_tests-classes.png"></img>
+    <h4>State diagram</h4>
+    <img src="carserv_tests-state.png"></img>
+    </div>
+    </div>
+    </div>
+    
+    <h2>Scenarios</h2>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="carserv_tests::CustomerScenarios"></a>
+    <h3>Customer Scenarios</h3>
+    <h5>Test class from <strong>Carserv tests</strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="25%">Test case</th>
+                <th width="75%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Vip Customers</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="54f5c877-e5c7-4035-b301-3a93790d6442-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="54f5c877-e5c7-4035-b301-3a93790d6442-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#54f5c877-e5c7-4035-b301-3a93790d6442-accordion" href="#54f5c877-e5c7-4035-b301-3a93790d6442-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="54f5c877-e5c7-4035-b301-3a93790d6442-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    vipCustomer1 := TestData#newCustomer();
+                    vipCustomer2 := TestData#newCustomer();
+                    regularCustomer1 := TestData#newCustomer();
+                    regularCustomer2 := TestData#newCustomer();
+                end
+                ;
+                begin
+                    TestData#newCar(vipCustomer1);
+                    TestData#newCar(vipCustomer1);
+                    TestData#newCar(vipCustomer2);
+                end
+                ;
+                begin
+                    Assert#isTrue(vipCustomer1.<a href="carserv.html#carserv::Customer::vip">vip</a>);
+                    Assert#isTrue(not vipCustomer2.<a href="carserv.html#carserv::Customer::vip">vip</a>);
+                    Assert#isTrue(not regularCustomer1.<a href="carserv.html#carserv::Customer::vip">vip</a>);
+                    Assert#isTrue(not regularCustomer2.<a href="carserv.html#carserv::Customer::vip">vip</a>);
+                end
+                ;
+                begin
+                    TestData#newCar(vipCustomer2);
+                end
+                ;
+                begin
+                    Assert#isTrue(vipCustomer2.<a href="carserv.html#carserv::Customer::vip">vip</a>);
+                end
+                ;
+                begin
+                    Assert#isTrue(<a href="carserv.html#carserv::Customer">Customer</a>#<a href="carserv.html#carserv::Customer::vipCustomers">vipCustomers</a>().includes(vipCustomer1));
+                    Assert#isTrue(<a href="carserv.html#carserv::Customer">Customer</a>#<a href="carserv.html#carserv::Customer::vipCustomers">vipCustomers</a>().includes(vipCustomer2));
+                    Assert#isTrue(not <a href="carserv.html#carserv::Customer">Customer</a>#<a href="carserv.html#carserv::Customer::vipCustomers">vipCustomers</a>().includes(regularCustomer1));
+                    Assert#isTrue(not <a href="carserv.html#carserv::Customer">Customer</a>#<a href="carserv.html#carserv::Customer::vipCustomers">vipCustomers</a>().includes(regularCustomer2));
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="54f5c877-e5c7-4035-b301-3a93790d6442-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#54f5c877-e5c7-4035-b301-3a93790d6442-accordion" href="#54f5c877-e5c7-4035-b301-3a93790d6442-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="54f5c877-e5c7-4035-b301-3a93790d6442-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'vipCustomer1' the result of calling operation 'newCustomer' on class TestData
+                  Assign to variable 'vipCustomer2' the result of calling operation 'newCustomer' on class TestData
+                  Assign to variable 'regularCustomer1' the result of calling operation 'newCustomer' on class TestData
+                  Assign to variable 'regularCustomer2' the result of calling operation 'newCustomer' on class TestData
+                  Call operation 'newCar' on class TestData  with variable 'vipCustomer1' as argument
+                  Call operation 'newCar' on class TestData  with variable 'vipCustomer1' as argument
+                  Call operation 'newCar' on class TestData  with variable 'vipCustomer2' as argument
+                  Ensure that The count of property 'cars' in this Customer >= 2
+                  Ensure that (The count of property 'cars' in this Customer >= 2
+                  ) is false
+                  Ensure that (The count of property 'cars' in this Customer >= 2
+                  ) is false
+                  Ensure that (The count of property 'cars' in this Customer >= 2
+                  ) is false
+                  Call operation 'newCar' on class TestData  with variable 'vipCustomer2' as argument
+                  Ensure that The count of property 'cars' in this Customer >= 2
+                  Ensure that TBD: includes
+                  Ensure that TBD: includes
+                  Ensure that (TBD: includes) is false
+                  Ensure that (TBD: includes) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Carless Customers</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="1d05f5fb-e56e-41d7-a7d5-17732aa2b198-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="1d05f5fb-e56e-41d7-a7d5-17732aa2b198-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#1d05f5fb-e56e-41d7-a7d5-17732aa2b198-accordion" href="#1d05f5fb-e56e-41d7-a7d5-17732aa2b198-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="1d05f5fb-e56e-41d7-a7d5-17732aa2b198-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    customer1 := TestData#newCustomer();
+                    customer2 := TestData#newCustomer();
+                    customer3 := TestData#newCustomer();
+                    TestData#newCar(customer1);
+                end
+                ;
+                begin
+                    Assert#isTrue(not <a href="carserv.html#carserv::Customer">Customer</a>#<a href="carserv.html#carserv::Customer::carlessCustomers">carlessCustomers</a>().includes(customer1));
+                    Assert#isTrue(<a href="carserv.html#carserv::Customer">Customer</a>#<a href="carserv.html#carserv::Customer::carlessCustomers">carlessCustomers</a>().includes(customer2));
+                    Assert#isTrue(<a href="carserv.html#carserv::Customer">Customer</a>#<a href="carserv.html#carserv::Customer::carlessCustomers">carlessCustomers</a>().includes(customer3));
+                    TestData#newCar(customer2);
+                end
+                ;
+                begin
+                    Assert#isTrue(not <a href="carserv.html#carserv::Customer">Customer</a>#<a href="carserv.html#carserv::Customer::carlessCustomers">carlessCustomers</a>().includes(customer1));
+                    Assert#isTrue(not <a href="carserv.html#carserv::Customer">Customer</a>#<a href="carserv.html#carserv::Customer::carlessCustomers">carlessCustomers</a>().includes(customer2));
+                    Assert#isTrue(<a href="carserv.html#carserv::Customer">Customer</a>#<a href="carserv.html#carserv::Customer::carlessCustomers">carlessCustomers</a>().includes(customer3));
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="1d05f5fb-e56e-41d7-a7d5-17732aa2b198-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#1d05f5fb-e56e-41d7-a7d5-17732aa2b198-accordion" href="#1d05f5fb-e56e-41d7-a7d5-17732aa2b198-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="1d05f5fb-e56e-41d7-a7d5-17732aa2b198-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'customer1' the result of calling operation 'newCustomer' on class TestData
+                  Assign to variable 'customer2' the result of calling operation 'newCustomer' on class TestData
+                  Assign to variable 'customer3' the result of calling operation 'newCustomer' on class TestData
+                  Call operation 'newCar' on class TestData  with variable 'customer1' as argument
+                  Ensure that (TBD: includes) is false
+                  Ensure that TBD: includes
+                  Ensure that TBD: includes
+                  Call operation 'newCar' on class TestData  with variable 'customer2' as argument
+                  Ensure that (TBD: includes) is false
+                  Ensure that (TBD: includes) is false
+                  Ensure that TBD: includes
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="carserv_tests::MechanicScenarios"></a>
+    <h3>Mechanic Scenarios</h3>
+    <h5>Test class from <strong>Carserv tests</strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="25%">Test case</th>
+                <th width="75%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Starts In Training</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="e974ca3e-10ee-40d1-b82c-4f8433c96f2d-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="e974ca3e-10ee-40d1-b82c-4f8433c96f2d-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#e974ca3e-10ee-40d1-b82c-4f8433c96f2d-accordion" href="#e974ca3e-10ee-40d1-b82c-4f8433c96f2d-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="e974ca3e-10ee-40d1-b82c-4f8433c96f2d-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    mechanic := TestData#newMechanic();
+                    Assert#isTrue(mechanic.<a href="carserv.html#carserv::AutoMechanic::training">training</a>);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="e974ca3e-10ee-40d1-b82c-4f8433c96f2d-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#e974ca3e-10ee-40d1-b82c-4f8433c96f2d-accordion" href="#e974ca3e-10ee-40d1-b82c-4f8433c96f2d-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="e974ca3e-10ee-40d1-b82c-4f8433c96f2d-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'mechanic' the result of calling operation 'newMechanic' on class TestData
+                  Ensure that The value of property 'status' in this AutoMechanic is equal to "Apprentice"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Goes On Vacation</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="951eadf9-c9b1-466b-867c-3964c15aff63-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="951eadf9-c9b1-466b-867c-3964c15aff63-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#951eadf9-c9b1-466b-867c-3964c15aff63-accordion" href="#951eadf9-c9b1-466b-867c-3964c15aff63-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="951eadf9-c9b1-466b-867c-3964c15aff63-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    mechanic := TestData#getAMechanic();
+                end
+                ;
+                begin
+                    Assert#isTrue(mechanic.<a href="carserv.html#carserv::AutoMechanic::working">working</a>);
+                    mechanic.<a href="carserv.html#carserv::AutoMechanic::beginVacation">beginVacation</a>();
+                end
+                ;
+                begin
+                    Assert#isTrue(not mechanic.<a href="carserv.html#carserv::AutoMechanic::working">working</a>);
+                end
+                ;
+                begin
+                    mechanic.<a href="carserv.html#carserv::AutoMechanic::endVacation">endVacation</a>();
+                end
+                ;
+                begin
+                    Assert#isTrue(mechanic.<a href="carserv.html#carserv::AutoMechanic::working">working</a>);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="951eadf9-c9b1-466b-867c-3964c15aff63-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#951eadf9-c9b1-466b-867c-3964c15aff63-accordion" href="#951eadf9-c9b1-466b-867c-3964c15aff63-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="951eadf9-c9b1-466b-867c-3964c15aff63-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'mechanic' the result of calling operation 'getAMechanic' on class TestData
+                  Ensure that The value of property 'status' in this AutoMechanic is equal to "Working"
+                  Call operation 'beginVacation' on variable 'mechanic'
+                  Ensure that (The value of property 'status' in this AutoMechanic is equal to "Working"
+                  ) is false
+                  Call operation 'endVacation' on variable 'mechanic'
+                  Ensure that The value of property 'status' in this AutoMechanic is equal to "Working"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Work Completed</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="1ee4ecae-89ff-4617-9e33-2f89b5ded629-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="1ee4ecae-89ff-4617-9e33-2f89b5ded629-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#1ee4ecae-89ff-4617-9e33-2f89b5ded629-accordion" href="#1ee4ecae-89ff-4617-9e33-2f89b5ded629-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="1ee4ecae-89ff-4617-9e33-2f89b5ded629-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    mechanic := TestData#getAMechanicWithWorkScheduled();
+                    service := (mechanic.<a href="carserv.html#carserv::AutoMechanic::upcomingServices">upcomingServices</a>.one() as Service);
+                    Assert#isTrue(mechanic.<a href="carserv.html#carserv::AutoMechanic::workScheduled">workScheduled</a>);
+                    Assert#isTrue(not mechanic.<a href="carserv.html#carserv::AutoMechanic::workInProgress">workInProgress</a>);
+                    service.<a href="carserv.html#carserv::Service::start">start</a>();
+                end
+                ;
+                begin
+                    Assert#isTrue(not mechanic.<a href="carserv.html#carserv::AutoMechanic::workScheduled">workScheduled</a>);
+                    Assert#isTrue(mechanic.<a href="carserv.html#carserv::AutoMechanic::workInProgress">workInProgress</a>);
+                    service.<a href="carserv.html#carserv::Service::complete">complete</a>();
+                end
+                ;
+                begin
+                    Assert#isTrue(not mechanic.<a href="carserv.html#carserv::AutoMechanic::workInProgress">workInProgress</a>);
+                    Assert#isTrue(not mechanic.<a href="carserv.html#carserv::AutoMechanic::workScheduled">workScheduled</a>);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="1ee4ecae-89ff-4617-9e33-2f89b5ded629-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#1ee4ecae-89ff-4617-9e33-2f89b5ded629-accordion" href="#1ee4ecae-89ff-4617-9e33-2f89b5ded629-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="1ee4ecae-89ff-4617-9e33-2f89b5ded629-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'mechanic' the result of calling operation 'getAMechanicWithWorkScheduled' on class TestData
+                  Assign to variable 'service' Select from relationship property 'services' in this AutoMechanic 'service'
+                      where the value of property 'status' in 'service' is equal to "Booked"
+                   (any) (as Service)
+                  Ensure that (Select from relationship property 'services' in this AutoMechanic 'service'
+                      where the value of property 'status' in 'service' is equal to "Booked"
+                   is empty) is false
+                  Ensure that ((Select from relationship property 'services' in this AutoMechanic 'service'
+                      where the value of property 'status' in 'service' is equal to "InProgress"
+                   is empty) is false
+                  ) is false
+                  Call operation 'start' on variable 'service'
+                  Ensure that ((Select from relationship property 'services' in this AutoMechanic 'service'
+                      where the value of property 'status' in 'service' is equal to "Booked"
+                   is empty) is false
+                  ) is false
+                  Ensure that (Select from relationship property 'services' in this AutoMechanic 'service'
+                      where the value of property 'status' in 'service' is equal to "InProgress"
+                   is empty) is false
+                  Call operation 'complete' on variable 'service'
+                  Ensure that ((Select from relationship property 'services' in this AutoMechanic 'service'
+                      where the value of property 'status' in 'service' is equal to "InProgress"
+                   is empty) is false
+                  ) is false
+                  Ensure that ((Select from relationship property 'services' in this AutoMechanic 'service'
+                      where the value of property 'status' in 'service' is equal to "Booked"
+                   is empty) is false
+                  ) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Services By Technician</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="cdd1b807-b1d7-49c0-b509-dc1ddfb231f7-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="cdd1b807-b1d7-49c0-b509-dc1ddfb231f7-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#cdd1b807-b1d7-49c0-b509-dc1ddfb231f7-accordion" href="#cdd1b807-b1d7-49c0-b509-dc1ddfb231f7-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="cdd1b807-b1d7-49c0-b509-dc1ddfb231f7-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    mechanic := TestData#getAMechanic();
+                    car := TestData#newCar(TestData#newCustomer());
+                    service1 := <a href="carserv.html#carserv::Service">Service</a>#<a href="carserv.html#carserv::Service::newService">newService</a>(car, Memo#fromString("Service 1"), 1);
+                    service2 := <a href="carserv.html#carserv::Service">Service</a>#<a href="carserv.html#carserv::Service::newService">newService</a>(car, Memo#fromString("Service 2"), 1);
+                    service3 := <a href="carserv.html#carserv::Service">Service</a>#<a href="carserv.html#carserv::Service::newService">newService</a>(car, Memo#fromString("Service 3"), 1);
+                end
+                ;
+                begin
+                    service1.<a href="carserv.html#carserv::Service::assignTo">assignTo</a>(mechanic);
+                    service2.<a href="carserv.html#carserv::Service::assignTo">assignTo</a>(mechanic);
+                end
+                ;
+                begin
+                    Assert#isTrue(mechanic.<a href="carserv.html#carserv::AutoMechanic::upcomingServices">upcomingServices</a>.includes(service1));
+                    Assert#isTrue(mechanic.<a href="carserv.html#carserv::AutoMechanic::upcomingServices">upcomingServices</a>.includes(service2));
+                    Assert#isTrue(not mechanic.<a href="carserv.html#carserv::AutoMechanic::upcomingServices">upcomingServices</a>.includes(service3));
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="cdd1b807-b1d7-49c0-b509-dc1ddfb231f7-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#cdd1b807-b1d7-49c0-b509-dc1ddfb231f7-accordion" href="#cdd1b807-b1d7-49c0-b509-dc1ddfb231f7-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="cdd1b807-b1d7-49c0-b509-dc1ddfb231f7-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'mechanic' the result of calling operation 'getAMechanic' on class TestData
+                  Assign to variable 'car' the result of calling operation 'newCar' on class TestData  with the result of calling operation 'newCustomer' on class TestData  as argument
+                  Assign to variable 'service1' the result of calling operation 'newService' on class Service with:
+                      - variable 'car' as an argument for 'carToService'
+                      - "Service 1" as an argument for 'description'
+                      - 1 as an argument for 'estimate'
+                  Assign to variable 'service2' the result of calling operation 'newService' on class Service with:
+                      - variable 'car' as an argument for 'carToService'
+                      - "Service 2" as an argument for 'description'
+                      - 1 as an argument for 'estimate'
+                  Assign to variable 'service3' the result of calling operation 'newService' on class Service with:
+                      - variable 'car' as an argument for 'carToService'
+                      - "Service 3" as an argument for 'description'
+                      - 1 as an argument for 'estimate'
+                  Call operation 'assignTo' on variable 'service1'  with variable 'mechanic' as argument
+                  Call operation 'assignTo' on variable 'service2'  with variable 'mechanic' as argument
+                  Ensure that TBD: includes
+                  Ensure that TBD: includes
+                  Ensure that (TBD: includes) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Cannot Go On Vacation If Work In Progress</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="02fdb5b0-ac3d-4ab8-9141-5426492d3000-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="02fdb5b0-ac3d-4ab8-9141-5426492d3000-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#02fdb5b0-ac3d-4ab8-9141-5426492d3000-accordion" href="#02fdb5b0-ac3d-4ab8-9141-5426492d3000-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="02fdb5b0-ac3d-4ab8-9141-5426492d3000-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    mechanic := TestData#getAMechanicWithWorkScheduled();
+                end
+                ;
+                begin
+                    service := (mechanic.<a href="carserv.html#carserv::AutoMechanic::upcomingServices">upcomingServices</a>.one() as Service);
+                    service.<a href="carserv.html#carserv::Service::start">start</a>();
+                end
+                ;
+                begin
+                    mechanic.<a href="carserv.html#carserv::AutoMechanic::beginVacation">beginVacation</a>();
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="02fdb5b0-ac3d-4ab8-9141-5426492d3000-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#02fdb5b0-ac3d-4ab8-9141-5426492d3000-accordion" href="#02fdb5b0-ac3d-4ab8-9141-5426492d3000-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="02fdb5b0-ac3d-4ab8-9141-5426492d3000-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'mechanic' the result of calling operation 'getAMechanicWithWorkScheduled' on class TestData
+                  Assign to variable 'service' Select from relationship property 'services' in this AutoMechanic 'service'
+                      where the value of property 'status' in 'service' is equal to "Booked"
+                   (any) (as Service)
+                  Call operation 'start' on variable 'service'
+                  Call operation 'beginVacation' on variable 'mechanic'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Cannot Start Service If Not Assigned</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="798e45d5-c56e-49d8-a435-03faa91c728a-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="798e45d5-c56e-49d8-a435-03faa91c728a-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#798e45d5-c56e-49d8-a435-03faa91c728a-accordion" href="#798e45d5-c56e-49d8-a435-03faa91c728a-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="798e45d5-c56e-49d8-a435-03faa91c728a-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    car := TestData#newCar(TestData#newCustomer());
+                    service := <a href="carserv.html#carserv::Service">Service</a>#<a href="carserv.html#carserv::Service::newService">newService</a>(car, Memo#fromString("A service"), 1);
+                end
+                ;
+                begin
+                    service.<a href="carserv.html#carserv::Service::start">start</a>();
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="798e45d5-c56e-49d8-a435-03faa91c728a-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#798e45d5-c56e-49d8-a435-03faa91c728a-accordion" href="#798e45d5-c56e-49d8-a435-03faa91c728a-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="798e45d5-c56e-49d8-a435-03faa91c728a-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'car' the result of calling operation 'newCar' on class TestData  with the result of calling operation 'newCustomer' on class TestData  as argument
+                  Assign to variable 'service' the result of calling operation 'newService' on class Service with:
+                      - variable 'car' as an argument for 'carToService'
+                      - "A service" as an argument for 'description'
+                      - 1 as an argument for 'estimate'
+                  Call operation 'start' on variable 'service'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Cannot End Vacation If Already Working</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="9e7f7de0-3e0a-471a-8590-7522108cc6ac-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="9e7f7de0-3e0a-471a-8590-7522108cc6ac-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#9e7f7de0-3e0a-471a-8590-7522108cc6ac-accordion" href="#9e7f7de0-3e0a-471a-8590-7522108cc6ac-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="9e7f7de0-3e0a-471a-8590-7522108cc6ac-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    mechanic := TestData#getAMechanic();
+                    mechanic.<a href="carserv.html#carserv::AutoMechanic::endVacation">endVacation</a>();
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="9e7f7de0-3e0a-471a-8590-7522108cc6ac-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#9e7f7de0-3e0a-471a-8590-7522108cc6ac-accordion" href="#9e7f7de0-3e0a-471a-8590-7522108cc6ac-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="9e7f7de0-3e0a-471a-8590-7522108cc6ac-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'mechanic' the result of calling operation 'getAMechanic' on class TestData
+                  Call operation 'endVacation' on variable 'mechanic'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Retires</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="2ec5d432-79e1-412a-a4b1-4909f1af36e1-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="2ec5d432-79e1-412a-a4b1-4909f1af36e1-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#2ec5d432-79e1-412a-a4b1-4909f1af36e1-accordion" href="#2ec5d432-79e1-412a-a4b1-4909f1af36e1-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="2ec5d432-79e1-412a-a4b1-4909f1af36e1-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    mechanic := TestData#getAMechanicWithWorkScheduled();
+                end
+                ;
+                begin
+                    Assert#isTrue(mechanic.<a href="carserv.html#carserv::AutoMechanic::workScheduled">workScheduled</a>);
+                    Assert#isTrue(not mechanic.<a href="carserv.html#carserv::AutoMechanic::workInProgress">workInProgress</a>);
+                    mechanic.<a href="carserv.html#carserv::AutoMechanic::retire">retire</a>();
+                end
+                ;
+                begin
+                    Assert#isTrue(not mechanic.<a href="carserv.html#carserv::AutoMechanic::workScheduled">workScheduled</a>);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="2ec5d432-79e1-412a-a4b1-4909f1af36e1-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#2ec5d432-79e1-412a-a4b1-4909f1af36e1-accordion" href="#2ec5d432-79e1-412a-a4b1-4909f1af36e1-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="2ec5d432-79e1-412a-a4b1-4909f1af36e1-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'mechanic' the result of calling operation 'getAMechanicWithWorkScheduled' on class TestData
+                  Ensure that (Select from relationship property 'services' in this AutoMechanic 'service'
+                      where the value of property 'status' in 'service' is equal to "Booked"
+                   is empty) is false
+                  Ensure that ((Select from relationship property 'services' in this AutoMechanic 'service'
+                      where the value of property 'status' in 'service' is equal to "InProgress"
+                   is empty) is false
+                  ) is false
+                  Call operation 'retire' on variable 'mechanic'
+                  Ensure that ((Select from relationship property 'services' in this AutoMechanic 'service'
+                      where the value of property 'status' in 'service' is equal to "Booked"
+                   is empty) is false
+                  ) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,2344 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "shipit"
+    },
+    "paths": {
+        "/user" : {
+            "get" : {
+                "operationId": "shipit__User_List",
+                "summary": "List endpoint for User",
+                "tags": ["shipit::User"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/shipit.user"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "shipit__User_Creation",
+                "tags": ["shipit::User"],
+                "summary": "Creation endpoint for User",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/shipit.user"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/shipit.user"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{id}" : {
+            "get" : {
+                "operationId": "shipit__User_Get",
+                "summary": "Single object GET endpoint for User",
+                "tags": ["shipit::User"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/shipit.user"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "shipit__User_Put",
+                "summary": "Single object PUT endpoint for User",
+                "tags": ["shipit::User"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/shipit.user"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "shipit__User_Put",
+                "summary": "Single object DELETE endpoint for User",
+                "tags": ["shipit::User"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        }
+        ,
+        "/user/{id}/promoteToCommitter" : {
+            "post" : {
+                "operationId": "shipit__User__promoteToCommitter",
+                "tags": ["shipit::User"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for promoteToCommitter"
+                    }
+                }
+            }
+        }
+        ,
+        "/user/current" : {
+            "post" : {
+                "operationId": "shipit__User__current",
+                "tags": ["shipit::User"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                	"description": "",
+                                    "type": "object",
+                                    "properties": {
+                                        "email": {
+                                        	"description": "",
+                                            "type": "string"
+                                        }
+                                        ,
+                                        "fullName": {
+                                        	"description": "",
+                                            "type": "string"
+                                        }
+                                        ,
+                                        "kind": {
+                                            "$ref": "#/components/schemas/shipit.userKind"
+                                        }
+                                        ,
+                                        "committer": {
+                                        	"description": "",
+                                            "type": "boolean"
+                                        }
+                                        ,
+                                        "issuesReportedByUser": {
+                                            "description": "",
+                                            "type": "array",
+                                            "items" : {
+                                                "$ref": "#/components/schemas/shipit.issue"
+                                            }
+                                        }
+                                        ,
+                                        "issuesCurrentlyInProgress": {
+                                            "description": "",
+                                            "type": "array",
+                                            "items" : {
+                                                "$ref": "#/components/schemas/shipit.issue"
+                                            }
+                                        }
+                                        ,
+                                        "issuesCurrentlyAssigned": {
+                                            "description": "",
+                                            "type": "array",
+                                            "items" : {
+                                                "$ref": "#/components/schemas/shipit.issue"
+                                            }
+                                        }
+                                        ,
+                                        "userProfile": {
+                                            "$ref": "#/components/schemas/userprofile.userProfile"
+                                        }
+                                        ,
+                                        "voted": {
+                                            "description": "",
+                                            "type": "array",
+                                            "items" : {
+                                                "$ref": "#/components/schemas/shipit.issue"
+                                            }
+                                        }
+                                        ,
+                                        "issuesAssignedToUser": {
+                                            "description": "",
+                                            "type": "array",
+                                            "items" : {
+                                                "$ref": "#/components/schemas/shipit.issue"
+                                            }
+                                        }
+                                        ,
+                                        "issuesWatched": {
+                                            "description": "",
+                                            "type": "array",
+                                            "items" : {
+                                                "$ref": "#/components/schemas/shipit.issue"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/user/{id}/isVoter" : {
+            "post" : {
+                "operationId": "shipit__User__isVoter",
+                "tags": ["shipit::User"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                	"description": "",
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/user/{id}/voteOn" : {
+            "post" : {
+                "operationId": "shipit__User__voteOn",
+                "tags": ["shipit::User"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for voteOn"
+                    }
+                }
+            }
+        }
+        ,
+        "/user/{id}/withdrawVoteFrom" : {
+            "post" : {
+                "operationId": "shipit__User__withdrawVoteFrom",
+                "tags": ["shipit::User"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for withdrawVoteFrom"
+                    }
+                }
+            }
+        },
+        "/comment" : {
+            "get" : {
+                "operationId": "shipit__Comment_List",
+                "summary": "List endpoint for Comment",
+                "tags": ["shipit::Comment"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/shipit.comment"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "shipit__Comment_Creation",
+                "tags": ["shipit::Comment"],
+                "summary": "Creation endpoint for Comment",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/shipit.comment"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/shipit.comment"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/comment/{id}" : {
+            "get" : {
+                "operationId": "shipit__Comment_Get",
+                "summary": "Single object GET endpoint for Comment",
+                "tags": ["shipit::Comment"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/shipit.comment"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "shipit__Comment_Put",
+                "summary": "Single object PUT endpoint for Comment",
+                "tags": ["shipit::Comment"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/shipit.comment"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "shipit__Comment_Put",
+                "summary": "Single object DELETE endpoint for Comment",
+                "tags": ["shipit::Comment"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        }
+        ,
+        "/comment/{id}/reply" : {
+            "post" : {
+                "operationId": "shipit__Comment__reply",
+                "tags": ["shipit::Comment"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for reply"
+                    }
+                }
+            }
+        },
+        "/label" : {
+            "get" : {
+                "operationId": "shipit__Label_List",
+                "summary": "List endpoint for Label",
+                "tags": ["shipit::Label"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/shipit.label"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "shipit__Label_Creation",
+                "tags": ["shipit::Label"],
+                "summary": "Creation endpoint for Label",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/shipit.label"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/shipit.label"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/label/{id}" : {
+            "get" : {
+                "operationId": "shipit__Label_Get",
+                "summary": "Single object GET endpoint for Label",
+                "tags": ["shipit::Label"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/shipit.label"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "shipit__Label_Put",
+                "summary": "Single object PUT endpoint for Label",
+                "tags": ["shipit::Label"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/shipit.label"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "shipit__Label_Put",
+                "summary": "Single object DELETE endpoint for Label",
+                "tags": ["shipit::Label"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        },
+        "/project" : {
+            "get" : {
+                "operationId": "shipit__Project_List",
+                "summary": "List endpoint for Project",
+                "tags": ["shipit::Project"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/shipit.project"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "shipit__Project_Creation",
+                "tags": ["shipit::Project"],
+                "summary": "Creation endpoint for Project",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/shipit.project"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/shipit.project"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/project/{id}" : {
+            "get" : {
+                "operationId": "shipit__Project_Get",
+                "summary": "Single object GET endpoint for Project",
+                "tags": ["shipit::Project"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/shipit.project"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "shipit__Project_Put",
+                "summary": "Single object PUT endpoint for Project",
+                "tags": ["shipit::Project"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/shipit.project"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "shipit__Project_Put",
+                "summary": "Single object DELETE endpoint for Project",
+                "tags": ["shipit::Project"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        }
+        ,
+        "/project/projects" : {
+            "post" : {
+                "operationId": "shipit__Project__projects",
+                "tags": ["shipit::Project"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "Issues are reported against a specific project.",
+                                        "type": "object",
+                                        "properties": {
+                                            "description": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "token": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "issues": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/shipit.issue"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/issue" : {
+            "get" : {
+                "operationId": "shipit__Issue_List",
+                "summary": "List endpoint for Issue",
+                "tags": ["shipit::Issue"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/shipit.issue"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "shipit__Issue_Creation",
+                "tags": ["shipit::Issue"],
+                "summary": "Creation endpoint for Issue",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/shipit.issue"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/shipit.issue"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/issue/{id}" : {
+            "get" : {
+                "operationId": "shipit__Issue_Get",
+                "summary": "Single object GET endpoint for Issue",
+                "tags": ["shipit::Issue"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/shipit.issue"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "shipit__Issue_Put",
+                "summary": "Single object PUT endpoint for Issue",
+                "tags": ["shipit::Issue"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/shipit.issue"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "shipit__Issue_Put",
+                "summary": "Single object DELETE endpoint for Issue",
+                "tags": ["shipit::Issue"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        }
+        ,
+        "/issue/reportIssue" : {
+            "post" : {
+                "operationId": "shipit__Issue__reportIssue",
+                "tags": ["shipit::Issue"],
+                "summary": "Report a new issue.",
+                "responses": {
+                    "200": {
+                        "description": "Result for reportIssue"
+                    }
+                }
+            }
+        }
+        ,
+        "/issue/createIssue" : {
+            "post" : {
+                "operationId": "shipit__Issue__createIssue",
+                "tags": ["shipit::Issue"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                	"description": "An issue describes a problem report, a feature request or just a work item for a project.
+                                	    Issues are reported by and assigned to users, and go through a lifecycle from the time 
+                                	    they are opened until they are resolved and eventually closed.",
+                                    "type": "object",
+                                    "properties": {
+                                        "mnemonic": {
+                                        	"description": "",
+                                            "type": "string"
+                                        }
+                                        ,
+                                        "summary": {
+                                        	"description": "",
+                                            "type": "string"
+                                        }
+                                        ,
+                                        "issueId": {
+                                        	"description": "",
+                                            "type": "integer",
+                                            "format": "int64"
+                                        }
+                                        ,
+                                        "issueKey": {
+                                        	"description": "",
+                                            "type": "string"
+                                        }
+                                        ,
+                                        "reportedOn": {
+                                        	"description": "",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                        ,
+                                        "severity": {
+                                            "$ref": "#/components/schemas/shipit.severity"
+                                        }
+                                        ,
+                                        "status": {
+                                            "$ref": "#/components/schemas/shipit.issue.status"
+                                        }
+                                        ,
+                                        "resolution": {
+                                            "$ref": "#/components/schemas/shipit.resolution"
+                                        }
+                                        ,
+                                        "resolvedOn": {
+                                        	"description": "",
+                                            "type": "string",
+                                            "format": "date"
+                                        }
+                                        ,
+                                        "votes": {
+                                        	"description": "",
+                                            "type": "integer",
+                                            "format": "int64"
+                                        }
+                                        ,
+                                        "commentCount": {
+                                        	"description": "",
+                                            "type": "integer",
+                                            "format": "int64"
+                                        }
+                                        ,
+                                        "waitingFor": {
+                                        	"description": "",
+                                            "type": "string"
+                                        }
+                                        ,
+                                        "mine": {
+                                        	"description": "",
+                                            "type": "boolean"
+                                        }
+                                        ,
+                                        "free": {
+                                        	"description": "",
+                                            "type": "boolean"
+                                        }
+                                        ,
+                                        "referenceDate": {
+                                        	"description": "",
+                                            "type": "string",
+                                            "format": "date"
+                                        }
+                                        ,
+                                        "description": {
+                                        	"description": "",
+                                            "type": "string"
+                                        }
+                                        ,
+                                        "labels": {
+                                            "description": "",
+                                            "type": "array",
+                                            "items" : {
+                                                "$ref": "#/components/schemas/shipit.label"
+                                            }
+                                        }
+                                        ,
+                                        "project": {
+                                            "$ref": "#/components/schemas/shipit.project"
+                                        }
+                                        ,
+                                        "reporter": {
+                                            "$ref": "#/components/schemas/shipit.user"
+                                        }
+                                        ,
+                                        "assignee": {
+                                            "$ref": "#/components/schemas/shipit.user"
+                                        }
+                                        ,
+                                        "comments": {
+                                            "description": "",
+                                            "type": "array",
+                                            "items" : {
+                                                "$ref": "#/components/schemas/shipit.comment"
+                                            }
+                                        }
+                                        ,
+                                        "watchers": {
+                                            "description": "",
+                                            "type": "array",
+                                            "items" : {
+                                                "$ref": "#/components/schemas/shipit.user"
+                                            }
+                                        }
+                                        ,
+                                        "voter": {
+                                            "description": "",
+                                            "type": "array",
+                                            "items" : {
+                                                "$ref": "#/components/schemas/shipit.user"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/issue/bySeverity" : {
+            "post" : {
+                "operationId": "shipit__Issue__bySeverity",
+                "tags": ["shipit::Issue"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "An issue describes a problem report, a feature request or just a work item for a project.
+                                    	    Issues are reported by and assigned to users, and go through a lifecycle from the time 
+                                    	    they are opened until they are resolved and eventually closed.",
+                                        "type": "object",
+                                        "properties": {
+                                            "mnemonic": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "summary": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "issueId": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "issueKey": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "reportedOn": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                            ,
+                                            "severity": {
+                                                "$ref": "#/components/schemas/shipit.severity"
+                                            }
+                                            ,
+                                            "status": {
+                                                "$ref": "#/components/schemas/shipit.issue.status"
+                                            }
+                                            ,
+                                            "resolution": {
+                                                "$ref": "#/components/schemas/shipit.resolution"
+                                            }
+                                            ,
+                                            "resolvedOn": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "votes": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "commentCount": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "waitingFor": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "mine": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "free": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "referenceDate": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "description": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "labels": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/shipit.label"
+                                                }
+                                            }
+                                            ,
+                                            "project": {
+                                                "$ref": "#/components/schemas/shipit.project"
+                                            }
+                                            ,
+                                            "reporter": {
+                                                "$ref": "#/components/schemas/shipit.user"
+                                            }
+                                            ,
+                                            "assignee": {
+                                                "$ref": "#/components/schemas/shipit.user"
+                                            }
+                                            ,
+                                            "comments": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/shipit.comment"
+                                                }
+                                            }
+                                            ,
+                                            "watchers": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/shipit.user"
+                                                }
+                                            }
+                                            ,
+                                            "voter": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/shipit.user"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/issue/byProject" : {
+            "post" : {
+                "operationId": "shipit__Issue__byProject",
+                "tags": ["shipit::Issue"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "An issue describes a problem report, a feature request or just a work item for a project.
+                                    	    Issues are reported by and assigned to users, and go through a lifecycle from the time 
+                                    	    they are opened until they are resolved and eventually closed.",
+                                        "type": "object",
+                                        "properties": {
+                                            "mnemonic": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "summary": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "issueId": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "issueKey": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "reportedOn": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                            ,
+                                            "severity": {
+                                                "$ref": "#/components/schemas/shipit.severity"
+                                            }
+                                            ,
+                                            "status": {
+                                                "$ref": "#/components/schemas/shipit.issue.status"
+                                            }
+                                            ,
+                                            "resolution": {
+                                                "$ref": "#/components/schemas/shipit.resolution"
+                                            }
+                                            ,
+                                            "resolvedOn": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "votes": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "commentCount": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "waitingFor": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "mine": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "free": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "referenceDate": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "description": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "labels": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/shipit.label"
+                                                }
+                                            }
+                                            ,
+                                            "project": {
+                                                "$ref": "#/components/schemas/shipit.project"
+                                            }
+                                            ,
+                                            "reporter": {
+                                                "$ref": "#/components/schemas/shipit.user"
+                                            }
+                                            ,
+                                            "assignee": {
+                                                "$ref": "#/components/schemas/shipit.user"
+                                            }
+                                            ,
+                                            "comments": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/shipit.comment"
+                                                }
+                                            }
+                                            ,
+                                            "watchers": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/shipit.user"
+                                                }
+                                            }
+                                            ,
+                                            "voter": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/shipit.user"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/issue/openIssues" : {
+            "post" : {
+                "operationId": "shipit__Issue__openIssues",
+                "tags": ["shipit::Issue"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "An issue describes a problem report, a feature request or just a work item for a project.
+                                    	    Issues are reported by and assigned to users, and go through a lifecycle from the time 
+                                    	    they are opened until they are resolved and eventually closed.",
+                                        "type": "object",
+                                        "properties": {
+                                            "mnemonic": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "summary": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "issueId": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "issueKey": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "reportedOn": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                            ,
+                                            "severity": {
+                                                "$ref": "#/components/schemas/shipit.severity"
+                                            }
+                                            ,
+                                            "status": {
+                                                "$ref": "#/components/schemas/shipit.issue.status"
+                                            }
+                                            ,
+                                            "resolution": {
+                                                "$ref": "#/components/schemas/shipit.resolution"
+                                            }
+                                            ,
+                                            "resolvedOn": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "votes": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "commentCount": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "waitingFor": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "mine": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "free": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "referenceDate": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "description": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "labels": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/shipit.label"
+                                                }
+                                            }
+                                            ,
+                                            "project": {
+                                                "$ref": "#/components/schemas/shipit.project"
+                                            }
+                                            ,
+                                            "reporter": {
+                                                "$ref": "#/components/schemas/shipit.user"
+                                            }
+                                            ,
+                                            "assignee": {
+                                                "$ref": "#/components/schemas/shipit.user"
+                                            }
+                                            ,
+                                            "comments": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/shipit.comment"
+                                                }
+                                            }
+                                            ,
+                                            "watchers": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/shipit.user"
+                                                }
+                                            }
+                                            ,
+                                            "voter": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/shipit.user"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/issue/issuesInProgress" : {
+            "post" : {
+                "operationId": "shipit__Issue__issuesInProgress",
+                "tags": ["shipit::Issue"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "An issue describes a problem report, a feature request or just a work item for a project.
+                                    	    Issues are reported by and assigned to users, and go through a lifecycle from the time 
+                                    	    they are opened until they are resolved and eventually closed.",
+                                        "type": "object",
+                                        "properties": {
+                                            "mnemonic": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "summary": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "issueId": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "issueKey": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "reportedOn": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                            ,
+                                            "severity": {
+                                                "$ref": "#/components/schemas/shipit.severity"
+                                            }
+                                            ,
+                                            "status": {
+                                                "$ref": "#/components/schemas/shipit.issue.status"
+                                            }
+                                            ,
+                                            "resolution": {
+                                                "$ref": "#/components/schemas/shipit.resolution"
+                                            }
+                                            ,
+                                            "resolvedOn": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "votes": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "commentCount": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "waitingFor": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "mine": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "free": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "referenceDate": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "description": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "labels": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/shipit.label"
+                                                }
+                                            }
+                                            ,
+                                            "project": {
+                                                "$ref": "#/components/schemas/shipit.project"
+                                            }
+                                            ,
+                                            "reporter": {
+                                                "$ref": "#/components/schemas/shipit.user"
+                                            }
+                                            ,
+                                            "assignee": {
+                                                "$ref": "#/components/schemas/shipit.user"
+                                            }
+                                            ,
+                                            "comments": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/shipit.comment"
+                                                }
+                                            }
+                                            ,
+                                            "watchers": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/shipit.user"
+                                                }
+                                            }
+                                            ,
+                                            "voter": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/shipit.user"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/issue/closedIssues" : {
+            "post" : {
+                "operationId": "shipit__Issue__closedIssues",
+                "tags": ["shipit::Issue"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "An issue describes a problem report, a feature request or just a work item for a project.
+                                    	    Issues are reported by and assigned to users, and go through a lifecycle from the time 
+                                    	    they are opened until they are resolved and eventually closed.",
+                                        "type": "object",
+                                        "properties": {
+                                            "mnemonic": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "summary": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "issueId": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "issueKey": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "reportedOn": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                            ,
+                                            "severity": {
+                                                "$ref": "#/components/schemas/shipit.severity"
+                                            }
+                                            ,
+                                            "status": {
+                                                "$ref": "#/components/schemas/shipit.issue.status"
+                                            }
+                                            ,
+                                            "resolution": {
+                                                "$ref": "#/components/schemas/shipit.resolution"
+                                            }
+                                            ,
+                                            "resolvedOn": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "votes": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "commentCount": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "waitingFor": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "mine": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "free": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "referenceDate": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "description": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "labels": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/shipit.label"
+                                                }
+                                            }
+                                            ,
+                                            "project": {
+                                                "$ref": "#/components/schemas/shipit.project"
+                                            }
+                                            ,
+                                            "reporter": {
+                                                "$ref": "#/components/schemas/shipit.user"
+                                            }
+                                            ,
+                                            "assignee": {
+                                                "$ref": "#/components/schemas/shipit.user"
+                                            }
+                                            ,
+                                            "comments": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/shipit.comment"
+                                                }
+                                            }
+                                            ,
+                                            "watchers": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/shipit.user"
+                                                }
+                                            }
+                                            ,
+                                            "voter": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/shipit.user"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/issue/{id}/release" : {
+            "post" : {
+                "operationId": "shipit__Issue__release",
+                "tags": ["shipit::Issue"],
+                "summary": "Release the issue so another committer can work on it.",
+                "responses": {
+                    "200": {
+                        "description": "Result for release"
+                    }
+                }
+            }
+        }
+        ,
+        "/issue/{id}/assign" : {
+            "post" : {
+                "operationId": "shipit__Issue__assign",
+                "tags": ["shipit::Issue"],
+                "summary": "Assign an issue to a user.",
+                "responses": {
+                    "200": {
+                        "description": "Result for assign"
+                    }
+                }
+            }
+        }
+        ,
+        "/issue/{id}/suspend" : {
+            "post" : {
+                "operationId": "shipit__Issue__suspend",
+                "tags": ["shipit::Issue"],
+                "summary": "Suspend work on this issue.",
+                "responses": {
+                    "200": {
+                        "description": "Result for suspend"
+                    }
+                }
+            }
+        }
+        ,
+        "/issue/{id}/start" : {
+            "post" : {
+                "operationId": "shipit__Issue__start",
+                "tags": ["shipit::Issue"],
+                "summary": "Start/resume work on this issue.",
+                "responses": {
+                    "200": {
+                        "description": "Result for start"
+                    }
+                }
+            }
+        }
+        ,
+        "/issue/{id}/resolve" : {
+            "post" : {
+                "operationId": "shipit__Issue__resolve",
+                "tags": ["shipit::Issue"],
+                "summary": "Resolve the issue.",
+                "responses": {
+                    "200": {
+                        "description": "Result for resolve"
+                    }
+                }
+            }
+        }
+        ,
+        "/issue/{id}/reopen" : {
+            "post" : {
+                "operationId": "shipit__Issue__reopen",
+                "tags": ["shipit::Issue"],
+                "summary": "Reopen the issue.",
+                "responses": {
+                    "200": {
+                        "description": "Result for reopen"
+                    }
+                }
+            }
+        }
+        ,
+        "/issue/{id}/comment" : {
+            "post" : {
+                "operationId": "shipit__Issue__comment",
+                "tags": ["shipit::Issue"],
+                "summary": "Add a comment to the issue",
+                "responses": {
+                    "200": {
+                        "description": "Result for comment"
+                    }
+                }
+            }
+        }
+        ,
+        "/issue/{id}/addComment" : {
+            "post" : {
+                "operationId": "shipit__Issue__addComment",
+                "tags": ["shipit::Issue"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for addComment"
+                    }
+                }
+            }
+        }
+        ,
+        "/issue/{id}/addWatcher" : {
+            "post" : {
+                "operationId": "shipit__Issue__addWatcher",
+                "tags": ["shipit::Issue"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for addWatcher"
+                    }
+                }
+            }
+        }
+        ,
+        "/issue/{id}/vote" : {
+            "post" : {
+                "operationId": "shipit__Issue__vote",
+                "tags": ["shipit::Issue"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for vote"
+                    }
+                }
+            }
+        }
+        ,
+        "/issue/{id}/withdrawVote" : {
+            "post" : {
+                "operationId": "shipit__Issue__withdrawVote",
+                "tags": ["shipit::Issue"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for withdrawVote"
+                    }
+                }
+            }
+        }
+        ,
+        "/issue/{id}/assignToMe" : {
+            "post" : {
+                "operationId": "shipit__Issue__assignToMe",
+                "tags": ["shipit::Issue"],
+                "summary": "Take over an issue currently available.",
+                "responses": {
+                    "200": {
+                        "description": "Result for assignToMe"
+                    }
+                }
+            }
+        }
+        ,
+        "/issue/{id}/steal" : {
+            "post" : {
+                "operationId": "shipit__Issue__steal",
+                "tags": ["shipit::Issue"],
+                "summary": "Take over an issue currently assigned to another user (not in progress).",
+                "responses": {
+                    "200": {
+                        "description": "Result for steal"
+                    }
+                }
+            }
+        }
+        ,
+        "/issue/{id}/verify" : {
+            "post" : {
+                "operationId": "shipit__Issue__verify",
+                "tags": ["shipit::Issue"],
+                "summary": "Close the issue marking it as verified.",
+                "responses": {
+                    "200": {
+                        "description": "Result for verify"
+                    }
+                }
+            }
+        },
+        "/userProfile" : {
+            "get" : {
+                "operationId": "userprofile__UserProfile_List",
+                "summary": "List endpoint for UserProfile",
+                "tags": ["userprofile::UserProfile"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/userprofile.userProfile"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "userprofile__UserProfile_Creation",
+                "tags": ["userprofile::UserProfile"],
+                "summary": "Creation endpoint for UserProfile",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/userprofile.userProfile"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/userprofile.userProfile"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/userProfile/{id}" : {
+            "get" : {
+                "operationId": "userprofile__UserProfile_Get",
+                "summary": "Single object GET endpoint for UserProfile",
+                "tags": ["userprofile::UserProfile"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/userprofile.userProfile"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "userprofile__UserProfile_Put",
+                "summary": "Single object PUT endpoint for UserProfile",
+                "tags": ["userprofile::UserProfile"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/userprofile.userProfile"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "userprofile__UserProfile_Put",
+                "summary": "Single object DELETE endpoint for UserProfile",
+                "tags": ["userprofile::UserProfile"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        }
+        ,
+        "/userProfile/findByUsername" : {
+            "post" : {
+                "operationId": "userprofile__UserProfile__findByUsername",
+                "tags": ["userprofile::UserProfile"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                	"description": "",
+                                    "type": "object",
+                                    "properties": {
+                                        "username": {
+                                        	"description": "Username is an email",
+                                            "type": "string",
+                                            "format": "email"
+                                        }
+                                        ,
+                                        "password": {
+                                        	"description": "",
+                                            "type": "string"
+                                        }
+                                        ,
+                                        "roleAsUser": {
+                                            "$ref": "#/components/schemas/shipit.user"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "shipit.userKind" : {
+            	"description": "",
+                "type": "string",
+                "enum": [
+                    "Reporter",
+                    "Committer"
+                ]
+            }
+            ,
+            "shipit.severity" : {
+            	"description": "",
+                "type": "string",
+                "enum": [
+                    "Minor",
+                    "Normal",
+                    "Major",
+                    "Blocker",
+                    "Enhancement"
+                ]
+            }
+            ,
+            "shipit.resolution" : {
+            	"description": "",
+                "type": "string",
+                "enum": [
+                    "Fixed",
+                    "WorksForMe",
+                    "WontFix"
+                ]
+            }
+            ,
+            "shipit.issue.status" : {
+            	"description": "",
+                "type": "string",
+                "enum": [
+                    "Open",
+                    "Assigned",
+                    "InProgress",
+                    "Resolved",
+                    "Verified"
+                ]
+            }
+            ,
+            "shipit.user" : {
+            	"description": "",
+                "type": "object",
+                "properties": {
+                    "email": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "fullName": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "kind": {
+                        "$ref": "#/components/schemas/shipit.userKind"
+                    }
+                    ,
+                    "committer": {
+                    	"description": "",
+                        "type": "boolean"
+                    }
+                    ,
+                    "issuesReportedByUser": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/shipit.issue"
+                        }
+                    }
+                    ,
+                    "issuesCurrentlyInProgress": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/shipit.issue"
+                        }
+                    }
+                    ,
+                    "issuesCurrentlyAssigned": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/shipit.issue"
+                        }
+                    }
+                    ,
+                    "userProfile": {
+                        "$ref": "#/components/schemas/userprofile.userProfile"
+                    }
+                    ,
+                    "voted": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/shipit.issue"
+                        }
+                    }
+                    ,
+                    "issuesAssignedToUser": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/shipit.issue"
+                        }
+                    }
+                    ,
+                    "issuesWatched": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/shipit.issue"
+                        }
+                    }
+                }
+            }
+            ,
+            "shipit.comment" : {
+            	"description": "",
+                "type": "object",
+                "properties": {
+                    "text": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "commentedOn": {
+                    	"description": "",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                    ,
+                    "user": {
+                        "$ref": "#/components/schemas/shipit.user"
+                    }
+                    ,
+                    "inReplyTo": {
+                        "$ref": "#/components/schemas/shipit.comment"
+                    }
+                    ,
+                    "issue": {
+                        "$ref": "#/components/schemas/shipit.issue"
+                    }
+                }
+            }
+            ,
+            "shipit.label" : {
+            	"description": "",
+                "type": "object",
+                "properties": {
+                    "name": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "labeled": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/shipit.issue"
+                        }
+                    }
+                }
+            }
+            ,
+            "shipit.project" : {
+            	"description": "Issues are reported against a specific project.",
+                "type": "object",
+                "properties": {
+                    "description": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "token": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "issues": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/shipit.issue"
+                        }
+                    }
+                }
+            }
+            ,
+            "shipit.issue" : {
+            	"description": "An issue describes a problem report, a feature request or just a work item for a project.
+            	    Issues are reported by and assigned to users, and go through a lifecycle from the time 
+            	    they are opened until they are resolved and eventually closed.",
+                "type": "object",
+                "properties": {
+                    "mnemonic": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "summary": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "issueId": {
+                    	"description": "",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                    ,
+                    "issueKey": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "reportedOn": {
+                    	"description": "",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                    ,
+                    "severity": {
+                        "$ref": "#/components/schemas/shipit.severity"
+                    }
+                    ,
+                    "status": {
+                        "$ref": "#/components/schemas/shipit.issue.status"
+                    }
+                    ,
+                    "resolution": {
+                        "$ref": "#/components/schemas/shipit.resolution"
+                    }
+                    ,
+                    "resolvedOn": {
+                    	"description": "",
+                        "type": "string",
+                        "format": "date"
+                    }
+                    ,
+                    "votes": {
+                    	"description": "",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                    ,
+                    "commentCount": {
+                    	"description": "",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                    ,
+                    "waitingFor": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "mine": {
+                    	"description": "",
+                        "type": "boolean"
+                    }
+                    ,
+                    "free": {
+                    	"description": "",
+                        "type": "boolean"
+                    }
+                    ,
+                    "referenceDate": {
+                    	"description": "",
+                        "type": "string",
+                        "format": "date"
+                    }
+                    ,
+                    "description": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "labels": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/shipit.label"
+                        }
+                    }
+                    ,
+                    "project": {
+                        "$ref": "#/components/schemas/shipit.project"
+                    }
+                    ,
+                    "reporter": {
+                        "$ref": "#/components/schemas/shipit.user"
+                    }
+                    ,
+                    "assignee": {
+                        "$ref": "#/components/schemas/shipit.user"
+                    }
+                    ,
+                    "comments": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/shipit.comment"
+                        }
+                    }
+                    ,
+                    "watchers": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/shipit.user"
+                        }
+                    }
+                    ,
+                    "voter": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/shipit.user"
+                        }
+                    }
+                }
+            }
+            ,
+            "userprofile.userProfile" : {
+            	"description": "",
+                "type": "object",
+                "properties": {
+                    "username": {
+                    	"description": "Username is an email",
+                        "type": "string",
+                        "format": "email"
+                    }
+                    ,
+                    "password": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "roleAsUser": {
+                        "$ref": "#/components/schemas/shipit.user"
+                    }
+                }
+            }
+        }
+    }
+}

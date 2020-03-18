@@ -135,7 +135,7 @@ class Comment
 
     readonly attribute text : Memo;
 
-    readonly attribute user : User := { User#current };
+    readonly attribute user : User := { !!User#current };
 
     readonly attribute commentedOn : DateTime := { DateTime#now() };
 
@@ -267,7 +267,7 @@ class Issue
     derived attribute commentCount : Integer := { self.comments.size() };
 
     derived attribute waitingFor : String := {
-        ("" + self.reportedOn.date().difference(self.referenceDate()).toDays()) + " day(s)"
+        ("" + self.reportedOn.date().difference(self.referenceDate).toDays()) + " day(s)"
     };
 
     private derived attribute mine : Boolean := {
@@ -276,13 +276,9 @@ class Issue
 
     private derived attribute free : Boolean := { self.assignee == null };
 
-    private query referenceDate() : Date;
-    begin
-        if (self.resolvedOn == null) then
-            return Date#today()
-        else
-            return self.resolvedOn;
-    end;
+    private derived attribute referenceDate : Date := {
+    	self.resolvedOn ?: Date#today()
+    };
 
     attribute description : Memo;
 
@@ -292,7 +288,7 @@ class Issue
         precondition Must_be_logged_in { User#provisioned };
     begin
         var newIssue;
-        newIssue := Issue#createIssue(User#current, project, summary, description, severity);
+        newIssue := Issue#createIssue(!!User#current, project, summary, description, severity);
         send IssueReported(
             issueKey := newIssue.issueKey, 
             summary := summary, 
@@ -384,7 +380,7 @@ class Issue
         self.resolvedOn := null;
         self.resolution := null;
         if (reason != "") then
-            self.comment(reason);
+            self.comment(!!reason);
     end;
 
     (* Add a comment to the issue *)
@@ -399,7 +395,7 @@ class Issue
         comment := new Comment;
         comment.commentedOn := DateTime#now();
         comment.text := text;
-        comment.user := User#current;
+        comment.user := !!User#current;
         comment.inReplyTo := inReplyTo;
         link IssueComments(issue := self, comments := comment);
         send CommentAdded(
@@ -421,14 +417,14 @@ class Issue
     end;
 
     operation withdrawVote()
-        precondition { User#current.isVoter(self) };
+        precondition { !!User#current.isVoter(self) };
     begin
         User#current.withdrawVoteFrom(self);
     end;
 
     (* Take over an issue currently available. *)
     operation assignToMe()
-        precondition { User#current.committer }
+        precondition { !!User#current.committer }
         precondition { not self.mine };
     begin
         self.assignee := User#current;
@@ -436,7 +432,7 @@ class Issue
 
     (* Take over an issue currently assigned to another user (not in progress). *)
     operation steal()
-        precondition { User#current.committer }
+        precondition { !!User#current.committer }
         precondition { not (self.mine) };
     begin
         self.assignee := User#current;

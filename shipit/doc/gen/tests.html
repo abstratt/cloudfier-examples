@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script   src="https://code.jquery.com/jquery-1.12.3.min.js"   integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ="   crossorigin="anonymous"></script>  
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <title>Package: Tests - Data Dictionary</title>
+</head>
+<body>
+    <div class="container-fluid">
+    <h1>Package: Tests</h1>
+    (<a href="data-dictionary.html">Back to shipit</a>)
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <div>
+    <a name="tests"></a>
+    <h5>(tests)</h5>
+    
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Entity</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <h4>Class diagram</h4>
+    <img src="tests-classes.png"></img>
+    <h4>State diagram</h4>
+    <img src="tests-state.png"></img>
+    </div>
+    </div>
+    </div>
+    
+    <h2>Scenarios</h2>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="tests::IssueScenarios"></a>
+    <h3>Issue Scenarios</h3>
+    <h5>Test class from <strong>Tests</strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="25%">Test case</th>
+                <th width="75%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Test Is Voter</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="c484f5be-9265-4ac4-adff-55463f46483c-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="c484f5be-9265-4ac4-adff-55463f46483c-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#c484f5be-9265-4ac4-adff-55463f46483c-accordion" href="#c484f5be-9265-4ac4-adff-55463f46483c-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="c484f5be-9265-4ac4-adff-55463f46483c-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    user1 := TestData#newUser("User 1");
+                    user2 := TestData#newUser("User 2");
+                end
+                ;
+                begin
+                    issue := <a href="shipit.html#shipit::Issue">Issue</a>#<a href="shipit.html#shipit::Issue::createIssue">createIssue</a>(user1, TestData#newProject(), "A new bug", Memo#fromString("Just found it"), null);
+                end
+                ;
+                begin
+                    user1.<a href="shipit.html#shipit::User::voteOn">voteOn</a>(issue);
+                end
+                ;
+                begin
+                    Assert#isTrue(user1.<a href="shipit.html#shipit::User::isVoter">isVoter</a>(issue));
+                    Assert#isTrue(not user2.<a href="shipit.html#shipit::User::isVoter">isVoter</a>(issue));
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="c484f5be-9265-4ac4-adff-55463f46483c-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#c484f5be-9265-4ac4-adff-55463f46483c-accordion" href="#c484f5be-9265-4ac4-adff-55463f46483c-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="c484f5be-9265-4ac4-adff-55463f46483c-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'user1' the result of calling operation 'newUser' on class TestData  with "User 1" as argument
+                  Assign to variable 'user2' the result of calling operation 'newUser' on class TestData  with "User 2" as argument
+                  Assign to variable 'issue' the result of calling operation 'createIssue' on class Issue with:
+                      - variable 'user1' as an argument for 'reporter'
+                      - the result of calling operation 'newProject' on class TestData  as an argument for 'project'
+                      - "A new bug" as an argument for 'summary'
+                      - "Just found it" as an argument for 'description'
+                      - null as an argument for 'severity'
+                  Call operation 'voteOn' on variable 'user1'  with variable 'issue' as argument
+                  Ensure that the result of calling operation 'isVoter' on variable 'user1'  with variable 'issue' as argument
+                  Ensure that (the result of calling operation 'isVoter' on variable 'user2'  with variable 'issue' as argument) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Test Vote Counts</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="ef8dc92a-8976-41fc-9e96-6dfb3eadb04e-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="ef8dc92a-8976-41fc-9e96-6dfb3eadb04e-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#ef8dc92a-8976-41fc-9e96-6dfb3eadb04e-accordion" href="#ef8dc92a-8976-41fc-9e96-6dfb3eadb04e-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="ef8dc92a-8976-41fc-9e96-6dfb3eadb04e-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    user1 := TestData#newUser("User 1");
+                    user2 := TestData#newUser("User 2");
+                end
+                ;
+                begin
+                    issue := <a href="shipit.html#shipit::Issue">Issue</a>#<a href="shipit.html#shipit::Issue::createIssue">createIssue</a>(user1, TestData#newProject(), "A new bug", Memo#fromString("Just found it"), null);
+                end
+                ;
+                begin
+                    Assert#areEqual(issue.<a href="shipit.html#shipit::Issue::votes">votes</a>, 0);
+                    user1.<a href="shipit.html#shipit::User::voteOn">voteOn</a>(issue);
+                end
+                ;
+                begin
+                    Assert#areEqual(issue.<a href="shipit.html#shipit::Issue::votes">votes</a>, 1);
+                    user2.<a href="shipit.html#shipit::User::voteOn">voteOn</a>(issue);
+                end
+                ;
+                begin
+                    Assert#areEqual(issue.<a href="shipit.html#shipit::Issue::votes">votes</a>, 2);
+                    user1.<a href="shipit.html#shipit::User::withdrawVoteFrom">withdrawVoteFrom</a>(issue);
+                end
+                ;
+                begin
+                    Assert#areEqual(issue.<a href="shipit.html#shipit::Issue::votes">votes</a>, 1);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="ef8dc92a-8976-41fc-9e96-6dfb3eadb04e-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#ef8dc92a-8976-41fc-9e96-6dfb3eadb04e-accordion" href="#ef8dc92a-8976-41fc-9e96-6dfb3eadb04e-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="ef8dc92a-8976-41fc-9e96-6dfb3eadb04e-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'user1' the result of calling operation 'newUser' on class TestData  with "User 1" as argument
+                  Assign to variable 'user2' the result of calling operation 'newUser' on class TestData  with "User 2" as argument
+                  Assign to variable 'issue' the result of calling operation 'createIssue' on class Issue with:
+                      - variable 'user1' as an argument for 'reporter'
+                      - the result of calling operation 'newProject' on class TestData  as an argument for 'project'
+                      - "A new bug" as an argument for 'summary'
+                      - "Just found it" as an argument for 'description'
+                      - null as an argument for 'severity'
+                  Ensure that 0 is equal to: The count of relationship property 'voter' in this Issue
+                  Call operation 'voteOn' on variable 'user1'  with variable 'issue' as argument
+                  Ensure that 1 is equal to: The count of relationship property 'voter' in this Issue
+                  Call operation 'voteOn' on variable 'user2'  with variable 'issue' as argument
+                  Ensure that 2 is equal to: The count of relationship property 'voter' in this Issue
+                  Call operation 'withdrawVoteFrom' on variable 'user1'  with variable 'issue' as argument
+                  Ensure that 1 is equal to: The count of relationship property 'voter' in this Issue
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+</body>
+</html>
+

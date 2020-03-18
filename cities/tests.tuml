@@ -44,7 +44,7 @@ class Tests
     begin
         var oregon, expected;
         TestData#build();
-        oregon := State#byAbbreviation("OR");
+        oregon := !!State#byAbbreviation("OR");
         Assert#isTrue(oregon.recordedPopulation > 0);
         Assert#areEqual(3, oregon.cities.size());
         expected := oregon.city("Portland").population + oregon.city("Eugene").population + oregon.city("Salem").population;
@@ -70,7 +70,7 @@ class Tests
         populations := State#statePopulationsAbove(500000);
         Assert#areEqual(2, populations.size());
         found := populations.\any((s : {\state : State,  : Integer}) : Boolean {
-            s.\state.abbreviation = "OR"
+            "OR" = s.\state.abbreviation
         });
         Assert#areEqual(oregon.recordedPopulation, found.statePopulation);
     end;

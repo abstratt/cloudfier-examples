@@ -1,0 +1,1951 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script   src="https://code.jquery.com/jquery-1.12.3.min.js"   integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ="   crossorigin="anonymous"></script>  
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <title>Package: Taxi fleet - Data Dictionary</title>
+</head>
+<body>
+    <div class="container-fluid">
+    <h1>Package: Taxi fleet</h1>
+    (<a href="data-dictionary.html">Back to Taxi Fleet Management</a>)
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <div>
+    <a name="taxi_fleet"></a>
+    <h5>(taxi_fleet)</h5>
+    
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Entity</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a href="taxi_fleet.html#taxi_fleet::Taxi">Taxi</a></td>
+                <td>The vehicles that make up the fleet.</td>
+            </tr>
+            <tr>
+                <td><a href="taxi_fleet.html#taxi_fleet::Shift">Shift</a></td>
+                <td>Shift modalities.</td>
+            </tr>
+            <tr>
+                <td><a href="taxi_fleet.html#taxi_fleet::Driver">Driver</a></td>
+                <td>Drivers that can book taxis.</td>
+            </tr>
+            <tr>
+                <td><a href="taxi_fleet.html#taxi_fleet::Charge">Charge</a></td>
+                <td>Charges for renting taxis.</td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Class diagram</h4>
+    <img src="taxi_fleet-classes.png"></img>
+    <h4>State diagram</h4>
+    <img src="taxi_fleet-state.png"></img>
+    </div>
+    </div>
+    </div>
+    <h2>Entities</h2>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="taxi_fleet::Taxi"></a>
+    <h3>Taxi</h3>
+    <h5>Entity from <strong><a href="#taxi_fleet">Taxi fleet</a></strong></h5>
+    <hr>
+    <blockquote>The vehicles that make up the fleet.</blockquote>
+    <h4>Properties</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Property</th>
+                <th width="10%">Type</th>
+                <th width="10%">Required</th>
+                <th width="10%">Initializable</th>
+                <th width="10%">Editable</th>
+                <th width="50%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="taxi_fleet::Taxi::name"></a>Name</a></td>
+                <td>String</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Taxi::driverCount"></a>Driver Count</a></td>
+                <td>Integer</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="37e407b4-efb5-48a2-ad75-0f0287447aa4-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="37e407b4-efb5-48a2-ad75-0f0287447aa4-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#37e407b4-efb5-48a2-ad75-0f0287447aa4-accordion" href="#37e407b4-efb5-48a2-ad75-0f0287447aa4-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="37e407b4-efb5-48a2-ad75-0f0287447aa4-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="taxi_fleet.html#taxi_fleet::Taxi::drivers">drivers</a>.size()
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="37e407b4-efb5-48a2-ad75-0f0287447aa4-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#37e407b4-efb5-48a2-ad75-0f0287447aa4-accordion" href="#37e407b4-efb5-48a2-ad75-0f0287447aa4-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="37e407b4-efb5-48a2-ad75-0f0287447aa4-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The count of property 'drivers' in this Taxi
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Taxi::full"></a>Full</a></td>
+                <td>Boolean</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="29a01efd-e8ca-4b33-aa1a-091bbce276dd-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="29a01efd-e8ca-4b33-aa1a-091bbce276dd-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#29a01efd-e8ca-4b33-aa1a-091bbce276dd-accordion" href="#29a01efd-e8ca-4b33-aa1a-091bbce276dd-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="29a01efd-e8ca-4b33-aa1a-091bbce276dd-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="taxi_fleet.html#taxi_fleet::Taxi::driverCount">driverCount</a> >= self.<a href="taxi_fleet.html#taxi_fleet::Taxi::shift">shift</a>.<a href="taxi_fleet.html#taxi_fleet::Shift::shiftsPerDay">shiftsPerDay</a>
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="29a01efd-e8ca-4b33-aa1a-091bbce276dd-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#29a01efd-e8ca-4b33-aa1a-091bbce276dd-accordion" href="#29a01efd-e8ca-4b33-aa1a-091bbce276dd-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="29a01efd-e8ca-4b33-aa1a-091bbce276dd-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The count of property 'drivers' in this Taxi
+                   >= property 'shiftsPerDay' in property 'shift' in this Taxi
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Taxi::booked"></a>Booked</a></td>
+                <td>Boolean</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="2488a607-dba9-4dd0-bd54-17f94cdc05ac-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="2488a607-dba9-4dd0-bd54-17f94cdc05ac-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#2488a607-dba9-4dd0-bd54-17f94cdc05ac-accordion" href="#2488a607-dba9-4dd0-bd54-17f94cdc05ac-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="2488a607-dba9-4dd0-bd54-17f94cdc05ac-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="taxi_fleet.html#taxi_fleet::Taxi::driverCount">driverCount</a> > 0
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="2488a607-dba9-4dd0-bd54-17f94cdc05ac-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#2488a607-dba9-4dd0-bd54-17f94cdc05ac-accordion" href="#2488a607-dba9-4dd0-bd54-17f94cdc05ac-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="2488a607-dba9-4dd0-bd54-17f94cdc05ac-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The count of property 'drivers' in this Taxi
+                   > 0
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Relationships</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Relationship</th>
+                <th width="20%">Related Entity</th>
+                <th width="5%">Required</th>
+                <th width="5%">Multiple</th>
+                <th width="5%">Navigable</th>
+                <th width="55%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="taxi_fleet::Taxi::shift"></a>Shift</td>
+                <td><a href="taxi_fleet.html#taxi_fleet::Shift">Shift</a></a></td>
+                <td>✔</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Taxi::drivers"></a>Drivers</td>
+                <td><a href="taxi_fleet.html#taxi_fleet::Driver">Driver</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                <tr><th>
+                Invariants
+                </th></tr>
+                <tr><td>
+                Too many drivers for this shift
+                <div class="panel-group" id="da144ca5-2764-42d9-b3f2-9800bc23202c-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="da144ca5-2764-42d9-b3f2-9800bc23202c-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#da144ca5-2764-42d9-b3f2-9800bc23202c-accordion" href="#da144ca5-2764-42d9-b3f2-9800bc23202c-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="da144ca5-2764-42d9-b3f2-9800bc23202c-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="taxi_fleet.html#taxi_fleet::Taxi::drivers">drivers</a>.size() <= self.<a href="taxi_fleet.html#taxi_fleet::Taxi::shift">shift</a>.<a href="taxi_fleet.html#taxi_fleet::Shift::shiftsPerDay">shiftsPerDay</a>
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="da144ca5-2764-42d9-b3f2-9800bc23202c-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#da144ca5-2764-42d9-b3f2-9800bc23202c-accordion" href="#da144ca5-2764-42d9-b3f2-9800bc23202c-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="da144ca5-2764-42d9-b3f2-9800bc23202c-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The count of property 'drivers' in this Taxi <= property 'shiftsPerDay' in property 'shift' in this Taxi
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Taxi::pendingCharges"></a>Pending Charges</td>
+                <td><a href="taxi_fleet.html#taxi_fleet::Charge">Charge</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Actions</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Action</th>
+                <th width="20%">Parameters</th>
+                <th width="70%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="taxi_fleet::Taxi::bookTo"></a>Book To (public)</td>
+                <td><p>Driver (Driver)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                Book this taxi for a driver.
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="7dbd29e1-6ef2-4500-8e93-5325d4c38ed6-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="7dbd29e1-6ef2-4500-8e93-5325d4c38ed6-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#7dbd29e1-6ef2-4500-8e93-5325d4c38ed6-accordion" href="#7dbd29e1-6ef2-4500-8e93-5325d4c38ed6-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="7dbd29e1-6ef2-4500-8e93-5325d4c38ed6-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                driver.<a href="taxi_fleet.html#taxi_fleet::Driver::book">book</a>(self);
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="7dbd29e1-6ef2-4500-8e93-5325d4c38ed6-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#7dbd29e1-6ef2-4500-8e93-5325d4c38ed6-accordion" href="#7dbd29e1-6ef2-4500-8e93-5325d4c38ed6-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="7dbd29e1-6ef2-4500-8e93-5325d4c38ed6-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Call operation 'book' on the given 'driver'  with this Taxi as argument
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="7cfe82cc-3383-4d10-9006-dd79c40033c0-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="7cfe82cc-3383-4d10-9006-dd79c40033c0-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#7cfe82cc-3383-4d10-9006-dd79c40033c0-accordion" href="#7cfe82cc-3383-4d10-9006-dd79c40033c0-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="7cfe82cc-3383-4d10-9006-dd79c40033c0-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                not self.<a href="taxi_fleet.html#taxi_fleet::Taxi::full">full</a>
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="7cfe82cc-3383-4d10-9006-dd79c40033c0-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#7cfe82cc-3383-4d10-9006-dd79c40033c0-accordion" href="#7cfe82cc-3383-4d10-9006-dd79c40033c0-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="7cfe82cc-3383-4d10-9006-dd79c40033c0-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  (The count of property 'drivers' in this Taxi
+                   >= property 'shiftsPerDay' in property 'shift' in this Taxi
+                  ) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="ff63d642-77b3-4a00-9842-b0222a26774b-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="ff63d642-77b3-4a00-9842-b0222a26774b-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#ff63d642-77b3-4a00-9842-b0222a26774b-accordion" href="#ff63d642-77b3-4a00-9842-b0222a26774b-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="ff63d642-77b3-4a00-9842-b0222a26774b-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                driver.<a href="taxi_fleet.html#taxi_fleet::Driver::taxi">taxi</a> == null
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="ff63d642-77b3-4a00-9842-b0222a26774b-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#ff63d642-77b3-4a00-9842-b0222a26774b-accordion" href="#ff63d642-77b3-4a00-9842-b0222a26774b-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="ff63d642-77b3-4a00-9842-b0222a26774b-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The value of property 'taxi' in the given 'driver' is equal to null
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Taxi::charge"></a>Charge (public)</td>
+                <td><p>Date (Date)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                Create charges for every driver
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="a2c54975-b5aa-4a95-a425-8b042feedd4a-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="a2c54975-b5aa-4a95-a425-8b042feedd4a-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#a2c54975-b5aa-4a95-a425-8b042feedd4a-accordion" href="#a2c54975-b5aa-4a95-a425-8b042feedd4a-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="a2c54975-b5aa-4a95-a425-8b042feedd4a-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="taxi_fleet.html#taxi_fleet::Taxi::drivers">drivers</a>.forEach((toCharge) {
+                	<a href="taxi_fleet.html#taxi_fleet::Charge">Charge</a>#<a href="taxi_fleet.html#taxi_fleet::Charge::newCharge">newCharge</a>(self, toCharge, date);
+                });
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="a2c54975-b5aa-4a95-a425-8b042feedd4a-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#a2c54975-b5aa-4a95-a425-8b042feedd4a-accordion" href="#a2c54975-b5aa-4a95-a425-8b042feedd4a-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="a2c54975-b5aa-4a95-a425-8b042feedd4a-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  For each Driver 'toCharge' in property 'drivers' in this Taxi do:
+                      Call operation 'newCharge' on class Charge with:
+                          - this Taxi as an argument for 'taxi'
+                          - 'toCharge' as an argument for 'payer'
+                          - the given 'date' as an argument for 'date'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                Not booked, can't charge
+                <div class="panel-group" id="b648a2b5-fb59-4634-8e2c-728e49506d55-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="b648a2b5-fb59-4634-8e2c-728e49506d55-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b648a2b5-fb59-4634-8e2c-728e49506d55-accordion" href="#b648a2b5-fb59-4634-8e2c-728e49506d55-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="b648a2b5-fb59-4634-8e2c-728e49506d55-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="taxi_fleet.html#taxi_fleet::Taxi::booked">booked</a>
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="b648a2b5-fb59-4634-8e2c-728e49506d55-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b648a2b5-fb59-4634-8e2c-728e49506d55-accordion" href="#b648a2b5-fb59-4634-8e2c-728e49506d55-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="b648a2b5-fb59-4634-8e2c-728e49506d55-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The count of property 'drivers' in this Taxi
+                   > 0
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Queries</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Query</th>
+                <th width="20%">Parameters</th>
+                <th width="70%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="taxi_fleet::Taxi::available"></a>Available (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="0c9cacf5-d675-4246-9899-e58f5fd3883b-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="0c9cacf5-d675-4246-9899-e58f5fd3883b-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#0c9cacf5-d675-4246-9899-e58f5fd3883b-accordion" href="#0c9cacf5-d675-4246-9899-e58f5fd3883b-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="0c9cacf5-d675-4246-9899-e58f5fd3883b-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                return <a href="taxi_fleet.html#taxi_fleet::Taxi">Taxi</a> extent.select((t) {
+                	not t.<a href="taxi_fleet.html#taxi_fleet::Taxi::full">full</a>
+                });
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="0c9cacf5-d675-4246-9899-e58f5fd3883b-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#0c9cacf5-d675-4246-9899-e58f5fd3883b-accordion" href="#0c9cacf5-d675-4246-9899-e58f5fd3883b-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="0c9cacf5-d675-4246-9899-e58f5fd3883b-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Select from all records for Taxi 't'
+                      where (The count of property 'drivers' in this Taxi
+                       >= property 'shiftsPerDay' in property 'shift' in this Taxi
+                      ) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Taxi::empty"></a>Empty (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="3cd3e4cb-a1ec-4369-9159-7af248d47652-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="3cd3e4cb-a1ec-4369-9159-7af248d47652-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#3cd3e4cb-a1ec-4369-9159-7af248d47652-accordion" href="#3cd3e4cb-a1ec-4369-9159-7af248d47652-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="3cd3e4cb-a1ec-4369-9159-7af248d47652-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                return <a href="taxi_fleet.html#taxi_fleet::Taxi">Taxi</a> extent.select((t) {
+                	t.<a href="taxi_fleet.html#taxi_fleet::Taxi::drivers">drivers</a>.isEmpty()
+                });
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="3cd3e4cb-a1ec-4369-9159-7af248d47652-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#3cd3e4cb-a1ec-4369-9159-7af248d47652-accordion" href="#3cd3e4cb-a1ec-4369-9159-7af248d47652-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="3cd3e4cb-a1ec-4369-9159-7af248d47652-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Select from all records for Taxi 't'
+                      where property 'drivers' in 't' is empty
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Taxi::full"></a>Full (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="ea62e53d-f5a8-42c7-a0d6-1b7144ae0966-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="ea62e53d-f5a8-42c7-a0d6-1b7144ae0966-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#ea62e53d-f5a8-42c7-a0d6-1b7144ae0966-accordion" href="#ea62e53d-f5a8-42c7-a0d6-1b7144ae0966-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="ea62e53d-f5a8-42c7-a0d6-1b7144ae0966-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                return <a href="taxi_fleet.html#taxi_fleet::Taxi">Taxi</a> extent.select((t) {
+                	t.<a href="taxi_fleet.html#taxi_fleet::Taxi::full">full</a>
+                });
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="ea62e53d-f5a8-42c7-a0d6-1b7144ae0966-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#ea62e53d-f5a8-42c7-a0d6-1b7144ae0966-accordion" href="#ea62e53d-f5a8-42c7-a0d6-1b7144ae0966-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="ea62e53d-f5a8-42c7-a0d6-1b7144ae0966-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Select from all records for Taxi 't'
+                      where the count of property 'drivers' in this Taxi
+                       >= property 'shiftsPerDay' in property 'shift' in this Taxi
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="taxi_fleet::Shift"></a>
+    <h3>Shift</h3>
+    <h5>Entity from <strong><a href="#taxi_fleet">Taxi fleet</a></strong></h5>
+    <hr>
+    <blockquote>Shift modalities.</blockquote>
+    <h4>Properties</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Property</th>
+                <th width="10%">Type</th>
+                <th width="10%">Required</th>
+                <th width="10%">Initializable</th>
+                <th width="10%">Editable</th>
+                <th width="50%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="taxi_fleet::Shift::description"></a>Description</a></td>
+                <td>String</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Shift::price"></a>Price</a></td>
+                <td>Double</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Shift::shiftsPerDay"></a>Shifts Per Day</a></td>
+                <td>Integer</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Invariants
+                </th></tr>
+                <tr><td>
+                Choose at least 1 shift per day
+                <div class="panel-group" id="037f7fb6-795d-41fb-8a46-97a035030902-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="037f7fb6-795d-41fb-8a46-97a035030902-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#037f7fb6-795d-41fb-8a46-97a035030902-accordion" href="#037f7fb6-795d-41fb-8a46-97a035030902-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="037f7fb6-795d-41fb-8a46-97a035030902-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="taxi_fleet.html#taxi_fleet::Shift::shiftsPerDay">shiftsPerDay</a> > 0
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="037f7fb6-795d-41fb-8a46-97a035030902-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#037f7fb6-795d-41fb-8a46-97a035030902-accordion" href="#037f7fb6-795d-41fb-8a46-97a035030902-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="037f7fb6-795d-41fb-8a46-97a035030902-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Property 'shiftsPerDay' in this Shift > 0
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Invariants
+                </th></tr>
+                <tr><td>
+                Too many shifts per day
+                <div class="panel-group" id="f5901126-2787-4713-91de-4cdc8b5c9eb2-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="f5901126-2787-4713-91de-4cdc8b5c9eb2-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#f5901126-2787-4713-91de-4cdc8b5c9eb2-accordion" href="#f5901126-2787-4713-91de-4cdc8b5c9eb2-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="f5901126-2787-4713-91de-4cdc8b5c9eb2-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="taxi_fleet.html#taxi_fleet::Shift::shiftsPerDay">shiftsPerDay</a> <= 3
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="f5901126-2787-4713-91de-4cdc8b5c9eb2-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#f5901126-2787-4713-91de-4cdc8b5c9eb2-accordion" href="#f5901126-2787-4713-91de-4cdc8b5c9eb2-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="f5901126-2787-4713-91de-4cdc8b5c9eb2-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Property 'shiftsPerDay' in this Shift <= 3
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Relationships</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Relationship</th>
+                <th width="20%">Related Entity</th>
+                <th width="5%">Required</th>
+                <th width="5%">Multiple</th>
+                <th width="5%">Navigable</th>
+                <th width="55%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="taxi_fleet::Shift::taxis"></a>Taxis</td>
+                <td><a href="taxi_fleet.html#taxi_fleet::Taxi">Taxi</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="taxi_fleet::Driver"></a>
+    <h3>Driver</h3>
+    <h5>Entity from <strong><a href="#taxi_fleet">Taxi fleet</a></strong></h5>
+    <hr>
+    <blockquote>Drivers that can book taxis.</blockquote>
+    <h4>Properties</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Property</th>
+                <th width="10%">Type</th>
+                <th width="10%">Required</th>
+                <th width="10%">Initializable</th>
+                <th width="10%">Editable</th>
+                <th width="50%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="taxi_fleet::Driver::name"></a>Name</a></td>
+                <td>String</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Driver::hasBooking"></a>Has Booking</a></td>
+                <td>Boolean</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="2f214832-b21d-43f8-98b9-6a6b727bded7-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="2f214832-b21d-43f8-98b9-6a6b727bded7-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#2f214832-b21d-43f8-98b9-6a6b727bded7-accordion" href="#2f214832-b21d-43f8-98b9-6a6b727bded7-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="2f214832-b21d-43f8-98b9-6a6b727bded7-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                not self.<a href="taxi_fleet.html#taxi_fleet::Driver::taxi">taxi</a> == null
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="2f214832-b21d-43f8-98b9-6a6b727bded7-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#2f214832-b21d-43f8-98b9-6a6b727bded7-accordion" href="#2f214832-b21d-43f8-98b9-6a6b727bded7-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="2f214832-b21d-43f8-98b9-6a6b727bded7-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  (the value of property 'taxi' in this Driver is equal to null) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Driver::paymentDue"></a>Payment Due</a></td>
+                <td>Boolean</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="c2915786-8387-44d3-ac5a-39c31a5d08fa-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="c2915786-8387-44d3-ac5a-39c31a5d08fa-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#c2915786-8387-44d3-ac5a-39c31a5d08fa-accordion" href="#c2915786-8387-44d3-ac5a-39c31a5d08fa-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="c2915786-8387-44d3-ac5a-39c31a5d08fa-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                not self.<a href="taxi_fleet.html#taxi_fleet::Driver::pendingCharges">pendingCharges</a>.isEmpty()
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="c2915786-8387-44d3-ac5a-39c31a5d08fa-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#c2915786-8387-44d3-ac5a-39c31a5d08fa-accordion" href="#c2915786-8387-44d3-ac5a-39c31a5d08fa-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="c2915786-8387-44d3-ac5a-39c31a5d08fa-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  (Select from property 'charges' in this Driver 'c'
+                      where (The value of property 'status' in this Charge is equal to "Paid"
+                      ) is false
+                   is empty) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Relationships</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Relationship</th>
+                <th width="20%">Related Entity</th>
+                <th width="5%">Required</th>
+                <th width="5%">Multiple</th>
+                <th width="5%">Navigable</th>
+                <th width="55%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="taxi_fleet::Driver::taxi"></a>Taxi</td>
+                <td><a href="taxi_fleet.html#taxi_fleet::Taxi">Taxi</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Driver::charges"></a>Charges</td>
+                <td><a href="taxi_fleet.html#taxi_fleet::Charge">Charge</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Driver::pendingCharges"></a>Pending Charges</td>
+                <td><a href="taxi_fleet.html#taxi_fleet::Charge">Charge</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Actions</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Action</th>
+                <th width="20%">Parameters</th>
+                <th width="70%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="taxi_fleet::Driver::book"></a>Book (public)</td>
+                <td><p>To Rent (Taxi)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                Book a taxi that is currently available
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="28c39d42-8781-464c-b1c9-e2c5b69f3bf2-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="28c39d42-8781-464c-b1c9-e2c5b69f3bf2-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#28c39d42-8781-464c-b1c9-e2c5b69f3bf2-accordion" href="#28c39d42-8781-464c-b1c9-e2c5b69f3bf2-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="28c39d42-8781-464c-b1c9-e2c5b69f3bf2-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                link <a href="taxi_fleet.html#taxi_fleet::TaxiDrivers">TaxiDrivers</a>(taxi := toRent, drivers := self);
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="28c39d42-8781-464c-b1c9-e2c5b69f3bf2-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#28c39d42-8781-464c-b1c9-e2c5b69f3bf2-accordion" href="#28c39d42-8781-464c-b1c9-e2c5b69f3bf2-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="28c39d42-8781-464c-b1c9-e2c5b69f3bf2-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Link the given 'toRent' and this Driver having:
+                      - the given 'toRent' as 'taxi'
+                      - this Driver as 'drivers'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                No taxis available
+                <div class="panel-group" id="62a45910-a664-410d-acb9-af3bc6891629-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="62a45910-a664-410d-acb9-af3bc6891629-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#62a45910-a664-410d-acb9-af3bc6891629-accordion" href="#62a45910-a664-410d-acb9-af3bc6891629-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="62a45910-a664-410d-acb9-af3bc6891629-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                <a href="taxi_fleet.html#taxi_fleet::Taxi">Taxi</a> extent.exists((t) {
+                	not t.<a href="taxi_fleet.html#taxi_fleet::Taxi::full">full</a>
+                })
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="62a45910-a664-410d-acb9-af3bc6891629-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#62a45910-a664-410d-acb9-af3bc6891629-accordion" href="#62a45910-a664-410d-acb9-af3bc6891629-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="62a45910-a664-410d-acb9-af3bc6891629-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  For all records for Taxi 't'
+                      does exist 
+                          a t such that (The count of property 'drivers' in this Taxi
+                           >= property 'shiftsPerDay' in property 'shift' in this Taxi
+                          ) is false?
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                Taxi is not available
+                <div class="panel-group" id="f690f3b8-3943-4d6e-bd1f-70e0a8fbcca1-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="f690f3b8-3943-4d6e-bd1f-70e0a8fbcca1-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#f690f3b8-3943-4d6e-bd1f-70e0a8fbcca1-accordion" href="#f690f3b8-3943-4d6e-bd1f-70e0a8fbcca1-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="f690f3b8-3943-4d6e-bd1f-70e0a8fbcca1-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                not toRent.<a href="taxi_fleet.html#taxi_fleet::Taxi::full">full</a>
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="f690f3b8-3943-4d6e-bd1f-70e0a8fbcca1-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#f690f3b8-3943-4d6e-bd1f-70e0a8fbcca1-accordion" href="#f690f3b8-3943-4d6e-bd1f-70e0a8fbcca1-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="f690f3b8-3943-4d6e-bd1f-70e0a8fbcca1-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  (The count of property 'drivers' in this Taxi
+                   >= property 'shiftsPerDay' in property 'shift' in this Taxi
+                  ) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                Taxi already booked by this driver
+                <div class="panel-group" id="1fcff485-70a7-4b97-8da2-e445516268c5-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="1fcff485-70a7-4b97-8da2-e445516268c5-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#1fcff485-70a7-4b97-8da2-e445516268c5-accordion" href="#1fcff485-70a7-4b97-8da2-e445516268c5-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="1fcff485-70a7-4b97-8da2-e445516268c5-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                not toRent == self.<a href="taxi_fleet.html#taxi_fleet::Driver::taxi">taxi</a>
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="1fcff485-70a7-4b97-8da2-e445516268c5-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#1fcff485-70a7-4b97-8da2-e445516268c5-accordion" href="#1fcff485-70a7-4b97-8da2-e445516268c5-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="1fcff485-70a7-4b97-8da2-e445516268c5-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  (the value of the given 'toRent' is equal to property 'taxi' in this Driver) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Driver::release"></a>Release (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                Release a taxi that is currently booked
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="33e2af67-f27b-4032-b4f0-f257412dd8f2-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="33e2af67-f27b-4032-b4f0-f257412dd8f2-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#33e2af67-f27b-4032-b4f0-f257412dd8f2-accordion" href="#33e2af67-f27b-4032-b4f0-f257412dd8f2-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="33e2af67-f27b-4032-b4f0-f257412dd8f2-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                /* TBD: DestroyLinkAction */;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="33e2af67-f27b-4032-b4f0-f257412dd8f2-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#33e2af67-f27b-4032-b4f0-f257412dd8f2-accordion" href="#33e2af67-f27b-4032-b4f0-f257412dd8f2-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="33e2af67-f27b-4032-b4f0-f257412dd8f2-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Unlink property 'taxi' in this Driver and this Driver having:
+                      - property 'taxi' in this Driver as 'taxi'
+                      - this Driver as 'drivers'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                No bookings to release
+                <div class="panel-group" id="aa6fe047-afbb-4ff6-aebe-e67fa347f169-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="aa6fe047-afbb-4ff6-aebe-e67fa347f169-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#aa6fe047-afbb-4ff6-aebe-e67fa347f169-accordion" href="#aa6fe047-afbb-4ff6-aebe-e67fa347f169-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="aa6fe047-afbb-4ff6-aebe-e67fa347f169-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="taxi_fleet.html#taxi_fleet::Driver::hasBooking">hasBooking</a>
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="aa6fe047-afbb-4ff6-aebe-e67fa347f169-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#aa6fe047-afbb-4ff6-aebe-e67fa347f169-accordion" href="#aa6fe047-afbb-4ff6-aebe-e67fa347f169-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="aa6fe047-afbb-4ff6-aebe-e67fa347f169-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  (the value of property 'taxi' in this Driver is equal to null) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="taxi_fleet::Charge"></a>
+    <h3>Charge</h3>
+    <h5>Entity from <strong><a href="#taxi_fleet">Taxi fleet</a></strong></h5>
+    <hr>
+    <blockquote>Charges for renting taxis.</blockquote>
+    <h4>Properties</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Property</th>
+                <th width="10%">Type</th>
+                <th width="10%">Required</th>
+                <th width="10%">Initializable</th>
+                <th width="10%">Editable</th>
+                <th width="50%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="taxi_fleet::Charge::date"></a>Date</a></td>
+                <td>Date</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Charge::receivedOn"></a>Received On</a></td>
+                <td>Date</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Charge::description"></a>Description</a></td>
+                <td>String</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Charge::amount"></a>Amount</a></td>
+                <td>Double</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Charge::status"></a>Status</a></td>
+                <td><a href="taxi_fleet.html#taxi_fleet::Charge::Status">Status</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Charge::paid"></a>Paid</a></td>
+                <td>Boolean</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="0e60b483-7d76-4349-bb26-13d771eefbd8-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="0e60b483-7d76-4349-bb26-13d771eefbd8-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#0e60b483-7d76-4349-bb26-13d771eefbd8-accordion" href="#0e60b483-7d76-4349-bb26-13d771eefbd8-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="0e60b483-7d76-4349-bb26-13d771eefbd8-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="taxi_fleet.html#taxi_fleet::Charge::status">status</a> == Status#Paid
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="0e60b483-7d76-4349-bb26-13d771eefbd8-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#0e60b483-7d76-4349-bb26-13d771eefbd8-accordion" href="#0e60b483-7d76-4349-bb26-13d771eefbd8-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="0e60b483-7d76-4349-bb26-13d771eefbd8-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The value of property 'status' in this Charge is equal to "Paid"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Relationships</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Relationship</th>
+                <th width="20%">Related Entity</th>
+                <th width="5%">Required</th>
+                <th width="5%">Multiple</th>
+                <th width="5%">Navigable</th>
+                <th width="55%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="taxi_fleet::Charge::driver"></a>Driver</td>
+                <td><a href="taxi_fleet.html#taxi_fleet::Driver">Driver</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Charge::taxi"></a>Taxi</td>
+                <td><a href="taxi_fleet.html#taxi_fleet::Taxi">Taxi</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Actions</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Action</th>
+                <th width="20%">Parameters</th>
+                <th width="70%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="taxi_fleet::Charge::cancelPayment"></a>Cancel Payment (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Valid state(s)
+                </th></tr>
+                <tr><td>
+                Paid
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Charge::newCharge"></a>New Charge (public)</td>
+                <td><p>Taxi (Taxi)</p>
+                <p>Payer (Driver)</p>
+                <p>Date (Date)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="c3b2762a-86d6-4b75-a0ea-b584bef2416d-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="c3b2762a-86d6-4b75-a0ea-b584bef2416d-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#c3b2762a-86d6-4b75-a0ea-b584bef2416d-accordion" href="#c3b2762a-86d6-4b75-a0ea-b584bef2416d-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="c3b2762a-86d6-4b75-a0ea-b584bef2416d-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                charge := new <a href="taxi_fleet.html#taxi_fleet::Charge">Charge</a>;
+                charge.<a href="taxi_fleet.html#taxi_fleet::Charge::description">description</a> := taxi.<a href="taxi_fleet.html#taxi_fleet::Taxi::name">name</a> + (" - " + taxi.<a href="taxi_fleet.html#taxi_fleet::Taxi::shift">shift</a>.<a href="taxi_fleet.html#taxi_fleet::Shift::description">description</a>);
+                charge.<a href="taxi_fleet.html#taxi_fleet::Charge::amount">amount</a> := taxi.<a href="taxi_fleet.html#taxi_fleet::Taxi::shift">shift</a>.<a href="taxi_fleet.html#taxi_fleet::Shift::price">price</a>;
+                charge.<a href="taxi_fleet.html#taxi_fleet::Charge::taxi">taxi</a> := taxi;
+                charge.<a href="taxi_fleet.html#taxi_fleet::Charge::date">date</a> := (date as Date);
+                link <a href="taxi_fleet.html#taxi_fleet::DriverCharges">DriverCharges</a>(driver := payer, charges := charge);
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="c3b2762a-86d6-4b75-a0ea-b584bef2416d-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#c3b2762a-86d6-4b75-a0ea-b584bef2416d-accordion" href="#c3b2762a-86d6-4b75-a0ea-b584bef2416d-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="c3b2762a-86d6-4b75-a0ea-b584bef2416d-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'charge' a new instance of Charge
+                  Set property 'description' in variable 'charge' to property 'name' in the given 'taxi' + " - " + property 'description' in property 'shift' in the given 'taxi'
+                  Set property 'amount' in variable 'charge' to property 'price' in property 'shift' in the given 'taxi'
+                  Set property 'taxi' in variable 'charge' to the given 'taxi'
+                  Set property 'date' in variable 'charge' to the given 'date' (as Date)
+                  Link the given 'payer' and variable 'charge' having:
+                      - the given 'payer' as 'driver'
+                      - variable 'charge' as 'charges'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Charge::pay"></a>Pay (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Valid state(s)
+                </th></tr>
+                <tr><td>
+                Pending
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Queries</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Query</th>
+                <th width="20%">Parameters</th>
+                <th width="70%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="taxi_fleet::Charge::byTaxi"></a>By Taxi (public)</td>
+                <td><p>taxi (Taxi)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="1c5d129d-e124-4198-970e-37adf9a0f89c-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="1c5d129d-e124-4198-970e-37adf9a0f89c-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#1c5d129d-e124-4198-970e-37adf9a0f89c-accordion" href="#1c5d129d-e124-4198-970e-37adf9a0f89c-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="1c5d129d-e124-4198-970e-37adf9a0f89c-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                return <a href="taxi_fleet.html#taxi_fleet::Charge">Charge</a> extent.select((c) {
+                	c.<a href="taxi_fleet.html#taxi_fleet::Charge::taxi">taxi</a> == taxi
+                });
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="1c5d129d-e124-4198-970e-37adf9a0f89c-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#1c5d129d-e124-4198-970e-37adf9a0f89c-accordion" href="#1c5d129d-e124-4198-970e-37adf9a0f89c-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="1c5d129d-e124-4198-970e-37adf9a0f89c-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Select from all records for Charge 'c'
+                      where the value of property 'taxi' in 'c' is equal to the given 'taxi'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Charge::paidCharges"></a>Paid Charges (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="d99e8a52-998d-4659-83db-cb29c1435082-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="d99e8a52-998d-4659-83db-cb29c1435082-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#d99e8a52-998d-4659-83db-cb29c1435082-accordion" href="#d99e8a52-998d-4659-83db-cb29c1435082-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="d99e8a52-998d-4659-83db-cb29c1435082-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                return <a href="taxi_fleet.html#taxi_fleet::Charge">Charge</a> extent.select((c) {
+                	c.<a href="taxi_fleet.html#taxi_fleet::Charge::paid">paid</a>
+                });
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="d99e8a52-998d-4659-83db-cb29c1435082-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#d99e8a52-998d-4659-83db-cb29c1435082-accordion" href="#d99e8a52-998d-4659-83db-cb29c1435082-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="d99e8a52-998d-4659-83db-cb29c1435082-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Select from all records for Charge 'c'
+                      where the value of property 'status' in this Charge is equal to "Paid"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Charge::pendingCharges"></a>Pending Charges (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="92d0ce0c-201b-4c3e-b2f0-d71c0fc2d733-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="92d0ce0c-201b-4c3e-b2f0-d71c0fc2d733-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#92d0ce0c-201b-4c3e-b2f0-d71c0fc2d733-accordion" href="#92d0ce0c-201b-4c3e-b2f0-d71c0fc2d733-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="92d0ce0c-201b-4c3e-b2f0-d71c0fc2d733-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                return <a href="taxi_fleet.html#taxi_fleet::Charge">Charge</a> extent.select((c) {
+                	not c.<a href="taxi_fleet.html#taxi_fleet::Charge::paid">paid</a>
+                });
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="92d0ce0c-201b-4c3e-b2f0-d71c0fc2d733-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#92d0ce0c-201b-4c3e-b2f0-d71c0fc2d733-accordion" href="#92d0ce0c-201b-4c3e-b2f0-d71c0fc2d733-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="92d0ce0c-201b-4c3e-b2f0-d71c0fc2d733-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Select from all records for Charge 'c'
+                      where (The value of property 'status' in this Charge is equal to "Paid"
+                      ) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <h2>State machines</h2>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="taxi_fleet::Charge::Status"></a>
+    <h3>Status</h3>
+    <h5>State machine in <b>Charge</b> from <strong><a href="#taxi_fleet">Taxi fleet</a></strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Name</th>
+                <th width="40%">Description</th>
+                <th width="50%">Transitions</th>                    
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Pending</td>
+                <td>-</td>
+                <td>
+                    <ul>
+                <li>
+                <p><em>To:</em> <strong>Paid</strong></p>
+                <p>
+                <em>When: </em>action 'Pay' is called
+                </p>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Paid</td>
+                <td>-</td>
+                <td>
+                    <ul>
+                <li>
+                <p><em>To:</em> <strong>Pending</strong></p>
+                <p>
+                <em>When: </em>action 'Cancel Payment' is called
+                </p>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <h2>Enumerations</h2>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="taxi_fleet::Charge::Status"></a>
+    <h3>Status</h3>
+    <h5>Enumeration from <strong><a href="#taxi_fleet">Taxi fleet</a></strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="20%">Name</th>
+                <th width="80%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="taxi_fleet::Charge::Status::Status::Pending"></a>Pending</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td><a name="taxi_fleet::Charge::Status::Status::Paid"></a>Paid</td>
+                <td>-</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    
+</body>
+</html>
+

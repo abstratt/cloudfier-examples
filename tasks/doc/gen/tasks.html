@@ -1,0 +1,827 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script   src="https://code.jquery.com/jquery-1.12.3.min.js"   integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ="   crossorigin="anonymous"></script>  
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <title>Package: Tasks - Data Dictionary</title>
+</head>
+<body>
+    <div class="container-fluid">
+    <h1>Package: Tasks</h1>
+    (<a href="data-dictionary.html">Back to Team Tasks</a>)
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <div>
+    <a name="tasks"></a>
+    <h5>(tasks)</h5>
+    
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Entity</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a href="tasks.html#tasks::Contributor">Contributor</a></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><a href="tasks.html#tasks::Task">Task</a></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Class diagram</h4>
+    <img src="tasks-classes.png"></img>
+    <h4>State diagram</h4>
+    <img src="tasks-state.png"></img>
+    </div>
+    </div>
+    </div>
+    <h2>Entities</h2>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="tasks::Contributor"></a>
+    <h3>Contributor</h3>
+    <h5>Entity from <strong><a href="#tasks">Tasks</a></strong></h5>
+    <hr>
+    <h4>Properties</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Property</th>
+                <th width="10%">Type</th>
+                <th width="10%">Required</th>
+                <th width="10%">Initializable</th>
+                <th width="10%">Editable</th>
+                <th width="50%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="tasks::Contributor::name"></a>Name</a></td>
+                <td>String</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="tasks::Contributor::openTaskCount"></a>Open Task Count</a></td>
+                <td>Integer</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Computed value
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="414b0ee0-ffc2-44a0-b92f-f1cf5d117eda-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="414b0ee0-ffc2-44a0-b92f-f1cf5d117eda-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#414b0ee0-ffc2-44a0-b92f-f1cf5d117eda-accordion" href="#414b0ee0-ffc2-44a0-b92f-f1cf5d117eda-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="414b0ee0-ffc2-44a0-b92f-f1cf5d117eda-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="tasks.html#tasks::Contributor::tasks">tasks</a>.count((t) {
+                	t.<a href="tasks.html#tasks::Task::open">open</a>
+                })
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="414b0ee0-ffc2-44a0-b92f-f1cf5d117eda-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#414b0ee0-ffc2-44a0-b92f-f1cf5d117eda-accordion" href="#414b0ee0-ffc2-44a0-b92f-f1cf5d117eda-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="414b0ee0-ffc2-44a0-b92f-f1cf5d117eda-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Count property 'tasks' in this Contributor 't'
+                      where the value of property 'status' in this Task is equal to "Open"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Relationships</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Relationship</th>
+                <th width="20%">Related Entity</th>
+                <th width="5%">Required</th>
+                <th width="5%">Multiple</th>
+                <th width="5%">Navigable</th>
+                <th width="55%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="tasks::Contributor::tasks"></a>Tasks</td>
+                <td><a href="tasks.html#tasks::Task">Task</a></a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="tasks::Contributor::userProfile"></a>User Profile</td>
+                <td><a href="userprofile.html#userprofile::UserProfile">UserProfile</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="tasks::Task"></a>
+    <h3>Task</h3>
+    <h5>Entity from <strong><a href="#tasks">Tasks</a></strong></h5>
+    <hr>
+    <h4>Properties</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Property</th>
+                <th width="10%">Type</th>
+                <th width="10%">Required</th>
+                <th width="10%">Initializable</th>
+                <th width="10%">Editable</th>
+                <th width="50%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="tasks::Task::description"></a>Description</a></td>
+                <td>String</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="tasks::Task::details"></a>Details</a></td>
+                <td>Memo</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="tasks::Task::status"></a>Status</a></td>
+                <td><a href="tasks.html#tasks::Task::Status">Status</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="tasks::Task::openingDate"></a>Opening Date</a></td>
+                <td>Date</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="tasks::Task::completionDate"></a>Completion Date</a></td>
+                <td>Date</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Relationships</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Relationship</th>
+                <th width="20%">Related Entity</th>
+                <th width="5%">Required</th>
+                <th width="5%">Multiple</th>
+                <th width="5%">Navigable</th>
+                <th width="55%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="tasks::Task::assignee"></a>Assignee</td>
+                <td><a href="tasks.html#tasks::Contributor">Contributor</a></a></td>
+                <td>-</a></td>
+                <td>-</a></td>
+                <td>✔</a></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td</tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Actions</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Action</th>
+                <th width="20%">Parameters</th>
+                <th width="70%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="tasks::Task::complete"></a>Complete (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Valid state(s)
+                </th></tr>
+                <tr><td>
+                Open
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="23fc1a30-5697-4162-8988-23a87d51ba99-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="23fc1a30-5697-4162-8988-23a87d51ba99-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#23fc1a30-5697-4162-8988-23a87d51ba99-accordion" href="#23fc1a30-5697-4162-8988-23a87d51ba99-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="23fc1a30-5697-4162-8988-23a87d51ba99-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                not self.<a href="tasks.html#tasks::Task::assignee">assignee</a> == null
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="23fc1a30-5697-4162-8988-23a87d51ba99-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#23fc1a30-5697-4162-8988-23a87d51ba99-accordion" href="#23fc1a30-5697-4162-8988-23a87d51ba99-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="23fc1a30-5697-4162-8988-23a87d51ba99-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  (the value of property 'assignee' in this Task is equal to null) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="tasks::Task::reassign"></a>Reassign (public)</td>
+                <td><p>New Assignee (Contributor)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="fc1eb33b-3454-40d6-95d0-5e4b3173dfd6-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="fc1eb33b-3454-40d6-95d0-5e4b3173dfd6-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#fc1eb33b-3454-40d6-95d0-5e4b3173dfd6-accordion" href="#fc1eb33b-3454-40d6-95d0-5e4b3173dfd6-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="fc1eb33b-3454-40d6-95d0-5e4b3173dfd6-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                self.<a href="tasks.html#tasks::Task::assignee">assignee</a> := newAssignee;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="fc1eb33b-3454-40d6-95d0-5e4b3173dfd6-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#fc1eb33b-3454-40d6-95d0-5e4b3173dfd6-accordion" href="#fc1eb33b-3454-40d6-95d0-5e4b3173dfd6-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="fc1eb33b-3454-40d6-95d0-5e4b3173dfd6-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Set property 'assignee' in this Task to the given 'newAssignee'
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                <tr><th>
+                Preconditions
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="e3f5cad1-c05a-4e64-87cf-82eba4fb08b5-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="e3f5cad1-c05a-4e64-87cf-82eba4fb08b5-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#e3f5cad1-c05a-4e64-87cf-82eba4fb08b5-accordion" href="#e3f5cad1-c05a-4e64-87cf-82eba4fb08b5-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="e3f5cad1-c05a-4e64-87cf-82eba4fb08b5-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                not newAssignee == self.<a href="tasks.html#tasks::Task::assignee">assignee</a>
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="e3f5cad1-c05a-4e64-87cf-82eba4fb08b5-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#e3f5cad1-c05a-4e64-87cf-82eba4fb08b5-accordion" href="#e3f5cad1-c05a-4e64-87cf-82eba4fb08b5-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="e3f5cad1-c05a-4e64-87cf-82eba4fb08b5-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  (the value of the given 'newAssignee' is equal to property 'assignee' in this Task) is false
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="tasks::Task::reopen"></a>Reopen (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Valid state(s)
+                </th></tr>
+                <tr><td>
+                Completed
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Queries</h4>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Query</th>
+                <th width="20%">Parameters</th>
+                <th width="70%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="tasks::Task::openTasks"></a>Open Tasks (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="02b07fd2-a4e7-4fdc-a1bb-ec665edffcdb-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="02b07fd2-a4e7-4fdc-a1bb-ec665edffcdb-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#02b07fd2-a4e7-4fdc-a1bb-ec665edffcdb-accordion" href="#02b07fd2-a4e7-4fdc-a1bb-ec665edffcdb-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="02b07fd2-a4e7-4fdc-a1bb-ec665edffcdb-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                return <a href="tasks.html#tasks::Task">Task</a> extent.select((t) {
+                	t.<a href="tasks.html#tasks::Task::status">status</a> == Status#Open
+                });
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="02b07fd2-a4e7-4fdc-a1bb-ec665edffcdb-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#02b07fd2-a4e7-4fdc-a1bb-ec665edffcdb-accordion" href="#02b07fd2-a4e7-4fdc-a1bb-ec665edffcdb-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="02b07fd2-a4e7-4fdc-a1bb-ec665edffcdb-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Select from all records for Task 't'
+                      where the value of property 'status' in 't' is equal to "Open"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="tasks::Task::openTasksFor"></a>Open Tasks For (public)</td>
+                <td><p>contributor (Contributor)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="aaace382-630d-4555-90fb-aacd558441d2-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="aaace382-630d-4555-90fb-aacd558441d2-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#aaace382-630d-4555-90fb-aacd558441d2-accordion" href="#aaace382-630d-4555-90fb-aacd558441d2-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="aaace382-630d-4555-90fb-aacd558441d2-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                return <a href="tasks.html#tasks::Task">Task</a> extent.select((t) {
+                	t.<a href="tasks.html#tasks::Task::assignee">assignee</a> == contributor and t.<a href="tasks.html#tasks::Task::status">status</a> == Status#Open
+                });
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="aaace382-630d-4555-90fb-aacd558441d2-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#aaace382-630d-4555-90fb-aacd558441d2-accordion" href="#aaace382-630d-4555-90fb-aacd558441d2-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="aaace382-630d-4555-90fb-aacd558441d2-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Select from all records for Task 't'
+                      where (the value of property 'assignee' in 't' is equal to the given 'contributor')
+                      and
+                      (the value of property 'status' in 't' is equal to "Open")
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="tasks::Task::tasksCompletedToday"></a>Tasks Completed Today (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="6e9e5b49-af88-4f7d-ab1c-aad278aa9584-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="6e9e5b49-af88-4f7d-ab1c-aad278aa9584-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#6e9e5b49-af88-4f7d-ab1c-aad278aa9584-accordion" href="#6e9e5b49-af88-4f7d-ab1c-aad278aa9584-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="6e9e5b49-af88-4f7d-ab1c-aad278aa9584-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                return <a href="tasks.html#tasks::Task">Task</a> extent.select((t) {
+                	t.<a href="tasks.html#tasks::Task::status">status</a> == Status#Completed and (t.<a href="tasks.html#tasks::Task::completionDate">completionDate</a> = Date#today())
+                });
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="6e9e5b49-af88-4f7d-ab1c-aad278aa9584-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#6e9e5b49-af88-4f7d-ab1c-aad278aa9584-accordion" href="#6e9e5b49-af88-4f7d-ab1c-aad278aa9584-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="6e9e5b49-af88-4f7d-ab1c-aad278aa9584-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Select from all records for Task 't'
+                      where (the value of property 'status' in 't' is equal to "Completed")
+                      and
+                      (the result of calling operation 'equals' on property 'completionDate' in 't'  with today's date as argument)
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="tasks::Task::tasksOpenedOn"></a>Tasks Opened On (public)</td>
+                <td><p>date (Date)</p></td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="fbf8790a-e8e5-42dd-a226-f025694abdf1-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="fbf8790a-e8e5-42dd-a226-f025694abdf1-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#fbf8790a-e8e5-42dd-a226-f025694abdf1-accordion" href="#fbf8790a-e8e5-42dd-a226-f025694abdf1-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="fbf8790a-e8e5-42dd-a226-f025694abdf1-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                return <a href="tasks.html#tasks::Task">Task</a> extent.select((t) {
+                	t.<a href="tasks.html#tasks::Task::openingDate">openingDate</a> = date
+                });
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="fbf8790a-e8e5-42dd-a226-f025694abdf1-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#fbf8790a-e8e5-42dd-a226-f025694abdf1-accordion" href="#fbf8790a-e8e5-42dd-a226-f025694abdf1-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="fbf8790a-e8e5-42dd-a226-f025694abdf1-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Select from all records for Task 't'
+                      where the result of calling operation 'equals' on property 'openingDate' in 't'  with the given 'date' as argument
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a name="tasks::Task::tasksOpenedToday"></a>Tasks Opened Today (public)</td>
+                <td>-</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="5baf7d08-4024-43e2-b728-33fdc35f2298-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="5baf7d08-4024-43e2-b728-33fdc35f2298-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#5baf7d08-4024-43e2-b728-33fdc35f2298-accordion" href="#5baf7d08-4024-43e2-b728-33fdc35f2298-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="5baf7d08-4024-43e2-b728-33fdc35f2298-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                return <a href="tasks.html#tasks::Task">Task</a>#<a href="tasks.html#tasks::Task::tasksOpenedOn">tasksOpenedOn</a>(Date#today());
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="5baf7d08-4024-43e2-b728-33fdc35f2298-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#5baf7d08-4024-43e2-b728-33fdc35f2298-accordion" href="#5baf7d08-4024-43e2-b728-33fdc35f2298-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="5baf7d08-4024-43e2-b728-33fdc35f2298-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  The result of calling operation 'tasksOpenedOn' on class Task  with today's date as argument
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <h2>State machines</h2>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="tasks::Task::Status"></a>
+    <h3>Status</h3>
+    <h5>State machine in <b>Task</b> from <strong><a href="#tasks">Tasks</a></strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="10%">Name</th>
+                <th width="40%">Description</th>
+                <th width="50%">Transitions</th>                    
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Open</td>
+                <td>-</td>
+                <td>
+                    <ul>
+                <li>
+                <p><em>To:</em> <strong>Completed</strong></p>
+                <p>
+                <em>When: </em>action 'Complete' is called
+                </p>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Completed</td>
+                <td>-</td>
+                <td>
+                    <ul>
+                <li>
+                <p><em>To:</em> <strong>Open</strong></p>
+                <p>
+                <em>When: </em>action 'Reopen' is called
+                </p>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <h2>Enumerations</h2>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="tasks::Task::Status"></a>
+    <h3>Status</h3>
+    <h5>Enumeration from <strong><a href="#tasks">Tasks</a></strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="20%">Name</th>
+                <th width="80%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a name="tasks::Task::Status::Status::Open"></a>Open</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td><a name="tasks::Task::Status::Status::Completed"></a>Completed</td>
+                <td>-</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    
+</body>
+</html>
+

@@ -1,0 +1,1959 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Car Shop"
+    },
+    "paths": {
+        "/autoMechanic" : {
+            "get" : {
+                "operationId": "carserv__AutoMechanic_List",
+                "summary": "List endpoint for AutoMechanic",
+                "tags": ["carserv::AutoMechanic"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/carserv.autoMechanic"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "carserv__AutoMechanic_Creation",
+                "tags": ["carserv::AutoMechanic"],
+                "summary": "Creation endpoint for AutoMechanic",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/carserv.autoMechanic"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/carserv.autoMechanic"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/autoMechanic/{id}" : {
+            "get" : {
+                "operationId": "carserv__AutoMechanic_Get",
+                "summary": "Single object GET endpoint for AutoMechanic",
+                "tags": ["carserv::AutoMechanic"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/carserv.autoMechanic"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "carserv__AutoMechanic_Put",
+                "summary": "Single object PUT endpoint for AutoMechanic",
+                "tags": ["carserv::AutoMechanic"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/carserv.autoMechanic"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "carserv__AutoMechanic_Put",
+                "summary": "Single object DELETE endpoint for AutoMechanic",
+                "tags": ["carserv::AutoMechanic"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        }
+        ,
+        "/autoMechanic/{id}/unassign" : {
+            "post" : {
+                "operationId": "carserv__AutoMechanic__unassign",
+                "tags": ["carserv::AutoMechanic"],
+                "summary": "Unassigns any work scheduled. Does not affect work in progress.",
+                "responses": {
+                    "200": {
+                        "description": "Result for unassign"
+                    }
+                }
+            }
+        }
+        ,
+        "/autoMechanic/{id}/doUnassign" : {
+            "post" : {
+                "operationId": "carserv__AutoMechanic__doUnassign",
+                "tags": ["carserv::AutoMechanic"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for doUnassign"
+                    }
+                }
+            }
+        }
+        ,
+        "/autoMechanic/{id}/beginVacation" : {
+            "post" : {
+                "operationId": "carserv__AutoMechanic__beginVacation",
+                "tags": ["carserv::AutoMechanic"],
+                "summary": "Puts employee into vacation. Unassigns any work scheduled.",
+                "responses": {
+                    "200": {
+                        "description": "Result for beginVacation"
+                    }
+                }
+            }
+        }
+        ,
+        "/autoMechanic/{id}/endVacation" : {
+            "post" : {
+                "operationId": "carserv__AutoMechanic__endVacation",
+                "tags": ["carserv::AutoMechanic"],
+                "summary": "Brings the employee back from vacation. Employee can be assigned work again.",
+                "responses": {
+                    "200": {
+                        "description": "Result for endVacation"
+                    }
+                }
+            }
+        }
+        ,
+        "/autoMechanic/{id}/retire" : {
+            "post" : {
+                "operationId": "carserv__AutoMechanic__retire",
+                "tags": ["carserv::AutoMechanic"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for retire"
+                    }
+                }
+            }
+        }
+        ,
+        "/autoMechanic/{id}/rehire" : {
+            "post" : {
+                "operationId": "carserv__AutoMechanic__rehire",
+                "tags": ["carserv::AutoMechanic"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "Result for rehire"
+                    }
+                }
+            }
+        }
+        ,
+        "/autoMechanic/{id}/completeTraining" : {
+            "post" : {
+                "operationId": "carserv__AutoMechanic__completeTraining",
+                "tags": ["carserv::AutoMechanic"],
+                "summary": "Completes the training period, promoting the apprentice to a trained mechanic. Mechanic         will become apt for taking on services.",
+                "responses": {
+                    "200": {
+                        "description": "Result for completeTraining"
+                    }
+                }
+            }
+        },
+        "/customer" : {
+            "get" : {
+                "operationId": "carserv__Customer_List",
+                "summary": "List endpoint for Customer",
+                "tags": ["carserv::Customer"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/carserv.customer"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "carserv__Customer_Creation",
+                "tags": ["carserv::Customer"],
+                "summary": "Creation endpoint for Customer",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/carserv.customer"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/carserv.customer"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/{id}" : {
+            "get" : {
+                "operationId": "carserv__Customer_Get",
+                "summary": "Single object GET endpoint for Customer",
+                "tags": ["carserv::Customer"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/carserv.customer"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "carserv__Customer_Put",
+                "summary": "Single object PUT endpoint for Customer",
+                "tags": ["carserv::Customer"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/carserv.customer"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "carserv__Customer_Put",
+                "summary": "Single object DELETE endpoint for Customer",
+                "tags": ["carserv::Customer"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        }
+        ,
+        "/customer/findByName" : {
+            "post" : {
+                "operationId": "carserv__Customer__findByName",
+                "tags": ["carserv::Customer"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "",
+                                        "type": "object",
+                                        "properties": {
+                                            "fullName": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "firstName": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "lastName": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "title": {
+                                                "$ref": "#/components/schemas/carserv.title"
+                                            }
+                                            ,
+                                            "vip": {
+                                            	"description": "A valuable customer is a customer that has two or more cars with us",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "cars": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/carserv.car"
+                                                }
+                                            }
+                                            ,
+                                            "userProfile": {
+                                                "$ref": "#/components/schemas/userprofile.userProfile"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/customer/vipCustomers" : {
+            "post" : {
+                "operationId": "carserv__Customer__vipCustomers",
+                "tags": ["carserv::Customer"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "",
+                                        "type": "object",
+                                        "properties": {
+                                            "fullName": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "firstName": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "lastName": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "title": {
+                                                "$ref": "#/components/schemas/carserv.title"
+                                            }
+                                            ,
+                                            "vip": {
+                                            	"description": "A valuable customer is a customer that has two or more cars with us",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "cars": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/carserv.car"
+                                                }
+                                            }
+                                            ,
+                                            "userProfile": {
+                                                "$ref": "#/components/schemas/userprofile.userProfile"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/customer/carlessCustomers" : {
+            "post" : {
+                "operationId": "carserv__Customer__carlessCustomers",
+                "tags": ["carserv::Customer"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "",
+                                        "type": "object",
+                                        "properties": {
+                                            "fullName": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "firstName": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "lastName": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "title": {
+                                                "$ref": "#/components/schemas/carserv.title"
+                                            }
+                                            ,
+                                            "vip": {
+                                            	"description": "A valuable customer is a customer that has two or more cars with us",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "cars": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/carserv.car"
+                                                }
+                                            }
+                                            ,
+                                            "userProfile": {
+                                                "$ref": "#/components/schemas/userprofile.userProfile"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/car" : {
+            "get" : {
+                "operationId": "carserv__Car_List",
+                "summary": "List endpoint for Car",
+                "tags": ["carserv::Car"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/carserv.car"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "carserv__Car_Creation",
+                "tags": ["carserv::Car"],
+                "summary": "Creation endpoint for Car",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/carserv.car"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/carserv.car"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/car/{id}" : {
+            "get" : {
+                "operationId": "carserv__Car_Get",
+                "summary": "Single object GET endpoint for Car",
+                "tags": ["carserv::Car"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/carserv.car"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "carserv__Car_Put",
+                "summary": "Single object PUT endpoint for Car",
+                "tags": ["carserv::Car"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/carserv.car"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "carserv__Car_Put",
+                "summary": "Single object DELETE endpoint for Car",
+                "tags": ["carserv::Car"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        }
+        ,
+        "/car/{id}/registrationAndModel" : {
+            "post" : {
+                "operationId": "carserv__Car__registrationAndModel",
+                "tags": ["carserv::Car"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                	"description": "",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/car/findByRegistrationNumber" : {
+            "post" : {
+                "operationId": "carserv__Car__findByRegistrationNumber",
+                "tags": ["carserv::Car"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                	"description": "",
+                                    "type": "object",
+                                    "properties": {
+                                        "registrationNumber": {
+                                        	"description": "",
+                                            "type": "string"
+                                        }
+                                        ,
+                                        "modelName": {
+                                        	"description": "",
+                                            "type": "string"
+                                        }
+                                        ,
+                                        "pending": {
+                                        	"description": "",
+                                            "type": "integer",
+                                            "format": "int64"
+                                        }
+                                        ,
+                                        "model": {
+                                            "$ref": "#/components/schemas/carserv.model"
+                                        }
+                                        ,
+                                        "owner": {
+                                            "$ref": "#/components/schemas/carserv.customer"
+                                        }
+                                        ,
+                                        "pendingServices": {
+                                            "description": "",
+                                            "type": "array",
+                                            "items" : {
+                                                "$ref": "#/components/schemas/carserv.service"
+                                            }
+                                        }
+                                        ,
+                                        "completedServices": {
+                                            "description": "",
+                                            "type": "array",
+                                            "items" : {
+                                                "$ref": "#/components/schemas/carserv.service"
+                                            }
+                                        }
+                                        ,
+                                        "services": {
+                                            "description": "",
+                                            "type": "array",
+                                            "items" : {
+                                                "$ref": "#/components/schemas/carserv.service"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/car/{id}/bookService" : {
+            "post" : {
+                "operationId": "carserv__Car__bookService",
+                "tags": ["carserv::Car"],
+                "summary": "Book a service on this car.",
+                "responses": {
+                    "200": {
+                        "description": "Result for bookService"
+                    }
+                }
+            }
+        }
+        ,
+        "/car/findByOwner" : {
+            "post" : {
+                "operationId": "carserv__Car__findByOwner",
+                "tags": ["carserv::Car"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "",
+                                        "type": "object",
+                                        "properties": {
+                                            "registrationNumber": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "modelName": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "pending": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "model": {
+                                                "$ref": "#/components/schemas/carserv.model"
+                                            }
+                                            ,
+                                            "owner": {
+                                                "$ref": "#/components/schemas/carserv.customer"
+                                            }
+                                            ,
+                                            "pendingServices": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/carserv.service"
+                                                }
+                                            }
+                                            ,
+                                            "completedServices": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/carserv.service"
+                                                }
+                                            }
+                                            ,
+                                            "services": {
+                                                "description": "",
+                                                "type": "array",
+                                                "items" : {
+                                                    "$ref": "#/components/schemas/carserv.service"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/service" : {
+            "get" : {
+                "operationId": "carserv__Service_List",
+                "summary": "List endpoint for Service",
+                "tags": ["carserv::Service"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/carserv.service"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "carserv__Service_Creation",
+                "tags": ["carserv::Service"],
+                "summary": "Creation endpoint for Service",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/carserv.service"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/carserv.service"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/service/{id}" : {
+            "get" : {
+                "operationId": "carserv__Service_Get",
+                "summary": "Single object GET endpoint for Service",
+                "tags": ["carserv::Service"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/carserv.service"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "carserv__Service_Put",
+                "summary": "Single object PUT endpoint for Service",
+                "tags": ["carserv::Service"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/carserv.service"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "carserv__Service_Put",
+                "summary": "Single object DELETE endpoint for Service",
+                "tags": ["carserv::Service"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        }
+        ,
+        "/service/inProgress" : {
+            "post" : {
+                "operationId": "carserv__Service__inProgress",
+                "tags": ["carserv::Service"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "",
+                                        "type": "object",
+                                        "properties": {
+                                            "serviceNumber": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "sequence": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "description": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "bookedOn": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "estimatedReady": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "pending": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "status": {
+                                                "$ref": "#/components/schemas/carserv.service.status"
+                                            }
+                                            ,
+                                            "estimatedDays": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "assigned": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "car": {
+                                                "$ref": "#/components/schemas/carserv.car"
+                                            }
+                                            ,
+                                            "technician": {
+                                                "$ref": "#/components/schemas/carserv.autoMechanic"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/service/booked" : {
+            "post" : {
+                "operationId": "carserv__Service__booked",
+                "tags": ["carserv::Service"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "",
+                                        "type": "object",
+                                        "properties": {
+                                            "serviceNumber": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "sequence": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "description": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "bookedOn": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "estimatedReady": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "pending": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "status": {
+                                                "$ref": "#/components/schemas/carserv.service.status"
+                                            }
+                                            ,
+                                            "estimatedDays": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "assigned": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "car": {
+                                                "$ref": "#/components/schemas/carserv.car"
+                                            }
+                                            ,
+                                            "technician": {
+                                                "$ref": "#/components/schemas/carserv.autoMechanic"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/service/findByOwner" : {
+            "post" : {
+                "operationId": "carserv__Service__findByOwner",
+                "tags": ["carserv::Service"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "description": "",
+                                    "type": "array",
+                                    "items" : {
+                                    	"description": "",
+                                        "type": "object",
+                                        "properties": {
+                                            "serviceNumber": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "sequence": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "description": {
+                                            	"description": "",
+                                                "type": "string"
+                                            }
+                                            ,
+                                            "bookedOn": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "estimatedReady": {
+                                            	"description": "",
+                                                "type": "string",
+                                                "format": "date"
+                                            }
+                                            ,
+                                            "pending": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "status": {
+                                                "$ref": "#/components/schemas/carserv.service.status"
+                                            }
+                                            ,
+                                            "estimatedDays": {
+                                            	"description": "",
+                                                "type": "integer",
+                                                "format": "int64"
+                                            }
+                                            ,
+                                            "assigned": {
+                                            	"description": "",
+                                                "type": "boolean"
+                                            }
+                                            ,
+                                            "car": {
+                                                "$ref": "#/components/schemas/carserv.car"
+                                            }
+                                            ,
+                                            "technician": {
+                                                "$ref": "#/components/schemas/carserv.autoMechanic"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/service/newService" : {
+            "post" : {
+                "operationId": "carserv__Service__newService",
+                "tags": ["carserv::Service"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                	"description": "",
+                                    "type": "object",
+                                    "properties": {
+                                        "serviceNumber": {
+                                        	"description": "",
+                                            "type": "string"
+                                        }
+                                        ,
+                                        "sequence": {
+                                        	"description": "",
+                                            "type": "integer",
+                                            "format": "int64"
+                                        }
+                                        ,
+                                        "description": {
+                                        	"description": "",
+                                            "type": "string"
+                                        }
+                                        ,
+                                        "bookedOn": {
+                                        	"description": "",
+                                            "type": "string",
+                                            "format": "date"
+                                        }
+                                        ,
+                                        "estimatedReady": {
+                                        	"description": "",
+                                            "type": "string",
+                                            "format": "date"
+                                        }
+                                        ,
+                                        "pending": {
+                                        	"description": "",
+                                            "type": "boolean"
+                                        }
+                                        ,
+                                        "status": {
+                                            "$ref": "#/components/schemas/carserv.service.status"
+                                        }
+                                        ,
+                                        "estimatedDays": {
+                                        	"description": "",
+                                            "type": "integer",
+                                            "format": "int64"
+                                        }
+                                        ,
+                                        "assigned": {
+                                        	"description": "",
+                                            "type": "boolean"
+                                        }
+                                        ,
+                                        "car": {
+                                            "$ref": "#/components/schemas/carserv.car"
+                                        }
+                                        ,
+                                        "technician": {
+                                            "$ref": "#/components/schemas/carserv.autoMechanic"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+        ,
+        "/service/{id}/cancel" : {
+            "post" : {
+                "operationId": "carserv__Service__cancel",
+                "tags": ["carserv::Service"],
+                "summary": "Cancels a service.",
+                "responses": {
+                    "200": {
+                        "description": "Result for cancel"
+                    }
+                }
+            }
+        }
+        ,
+        "/service/{id}/start" : {
+            "post" : {
+                "operationId": "carserv__Service__start",
+                "tags": ["carserv::Service"],
+                "summary": "Starts the service. It can no longer be canceled.",
+                "responses": {
+                    "200": {
+                        "description": "Result for start"
+                    }
+                }
+            }
+        }
+        ,
+        "/service/{id}/complete" : {
+            "post" : {
+                "operationId": "carserv__Service__complete",
+                "tags": ["carserv::Service"],
+                "summary": "Completes the service.",
+                "responses": {
+                    "200": {
+                        "description": "Result for complete"
+                    }
+                }
+            }
+        }
+        ,
+        "/service/{id}/assignTo" : {
+            "post" : {
+                "operationId": "carserv__Service__assignTo",
+                "tags": ["carserv::Service"],
+                "summary": "Assigns a service that is available to a technician.",
+                "responses": {
+                    "200": {
+                        "description": "Result for assignTo"
+                    }
+                }
+            }
+        }
+        ,
+        "/service/{id}/transfer" : {
+            "post" : {
+                "operationId": "carserv__Service__transfer",
+                "tags": ["carserv::Service"],
+                "summary": "Assigns a service to a different technician other than the one currently assigned.",
+                "responses": {
+                    "200": {
+                        "description": "Result for transfer"
+                    }
+                }
+            }
+        },
+        "/make" : {
+            "get" : {
+                "operationId": "carserv__Make_List",
+                "summary": "List endpoint for Make",
+                "tags": ["carserv::Make"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/carserv.make"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "carserv__Make_Creation",
+                "tags": ["carserv::Make"],
+                "summary": "Creation endpoint for Make",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/carserv.make"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/carserv.make"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/make/{id}" : {
+            "get" : {
+                "operationId": "carserv__Make_Get",
+                "summary": "Single object GET endpoint for Make",
+                "tags": ["carserv::Make"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/carserv.make"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "carserv__Make_Put",
+                "summary": "Single object PUT endpoint for Make",
+                "tags": ["carserv::Make"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/carserv.make"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "carserv__Make_Put",
+                "summary": "Single object DELETE endpoint for Make",
+                "tags": ["carserv::Make"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        },
+        "/model" : {
+            "get" : {
+                "operationId": "carserv__Model_List",
+                "summary": "List endpoint for Model",
+                "tags": ["carserv::Model"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/carserv.model"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "carserv__Model_Creation",
+                "tags": ["carserv::Model"],
+                "summary": "Creation endpoint for Model",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/carserv.model"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/carserv.model"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/model/{id}" : {
+            "get" : {
+                "operationId": "carserv__Model_Get",
+                "summary": "Single object GET endpoint for Model",
+                "tags": ["carserv::Model"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/carserv.model"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "carserv__Model_Put",
+                "summary": "Single object PUT endpoint for Model",
+                "tags": ["carserv::Model"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/carserv.model"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "carserv__Model_Put",
+                "summary": "Single object DELETE endpoint for Model",
+                "tags": ["carserv::Model"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        }
+        ,
+        "/model/{id}/makeAndModel" : {
+            "post" : {
+                "operationId": "carserv__Model__makeAndModel",
+                "tags": ["carserv::Model"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                	"description": "",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/userProfile" : {
+            "get" : {
+                "operationId": "userprofile__UserProfile_List",
+                "summary": "List endpoint for UserProfile",
+                "tags": ["userprofile::UserProfile"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                    	"content": {
+                                    		"type": "array",
+                                    		"items": {
+                                    		    "$ref": "#/components/schemas/userprofile.userProfile"
+                                    		}
+                                    	},
+                                	}  
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "operationId": "userprofile__UserProfile_Creation",
+                "tags": ["userprofile::UserProfile"],
+                "summary": "Creation endpoint for UserProfile",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/userprofile.userProfile"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/userprofile.userProfile"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/userProfile/{id}" : {
+            "get" : {
+                "operationId": "userprofile__UserProfile_Get",
+                "summary": "Single object GET endpoint for UserProfile",
+                "tags": ["userprofile::UserProfile"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/userprofile.userProfile"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "operationId": "userprofile__UserProfile_Put",
+                "summary": "Single object PUT endpoint for UserProfile",
+                "tags": ["userprofile::UserProfile"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/userprofile.userProfile"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "operationId": "userprofile__UserProfile_Put",
+                "summary": "Single object DELETE endpoint for UserProfile",
+                "tags": ["userprofile::UserProfile"],
+                "responses": {
+                    "202": {
+                        "description": "NO CONTENT"
+                    }
+                }
+            }
+        }
+        ,
+        "/userProfile/findByUsername" : {
+            "post" : {
+                "operationId": "userprofile__UserProfile__findByUsername",
+                "tags": ["userprofile::UserProfile"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                	"description": "",
+                                    "type": "object",
+                                    "properties": {
+                                        "username": {
+                                        	"description": "Username is an email",
+                                            "type": "string",
+                                            "format": "email"
+                                        }
+                                        ,
+                                        "password": {
+                                        	"description": "",
+                                            "type": "string"
+                                        }
+                                        ,
+                                        "roleAsAutoMechanic": {
+                                            "$ref": "#/components/schemas/carserv.autoMechanic"
+                                        }
+                                        ,
+                                        "roleAsCustomer": {
+                                            "$ref": "#/components/schemas/carserv.customer"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        "description": ""
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "carserv.title" : {
+            	"description": "",
+                "type": "string",
+                "enum": [
+                    "Mr",
+                    "Mrs",
+                    "Ms"
+                ]
+            }
+            ,
+            "carserv.autoMechanic.workingStatus" : {
+            	"description": "",
+                "type": "string",
+                "enum": [
+                    "Apprentice",
+                    "Working",
+                    "Vacation",
+                    "Retired"
+                ]
+            }
+            ,
+            "carserv.service.status" : {
+            	"description": "",
+                "type": "string",
+                "enum": [
+                    "Booked",
+                    "InProgress",
+                    "Completed",
+                    "Cancelled"
+                ]
+            }
+            ,
+            "carserv.autoMechanic" : {
+            	"description": "",
+                "type": "object",
+                "properties": {
+                    "fullName": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "firstName": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "lastName": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "status": {
+                        "$ref": "#/components/schemas/carserv.autoMechanic.workingStatus"
+                    }
+                    ,
+                    "working": {
+                    	"description": "",
+                        "type": "boolean"
+                    }
+                    ,
+                    "training": {
+                    	"description": "",
+                        "type": "boolean"
+                    }
+                    ,
+                    "workInProgress": {
+                    	"description": "",
+                        "type": "boolean"
+                    }
+                    ,
+                    "workScheduled": {
+                    	"description": "",
+                        "type": "boolean"
+                    }
+                    ,
+                    "currentServices": {
+                        "description": "Services currently in progress by this worker.",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/carserv.service"
+                        }
+                    }
+                    ,
+                    "upcomingServices": {
+                        "description": "Services assigned to this worker but not yet started.",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/carserv.service"
+                        }
+                    }
+                    ,
+                    "userProfile": {
+                        "$ref": "#/components/schemas/userprofile.userProfile"
+                    }
+                    ,
+                    "services": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/carserv.service"
+                        }
+                    }
+                }
+            }
+            ,
+            "carserv.customer" : {
+            	"description": "",
+                "type": "object",
+                "properties": {
+                    "fullName": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "firstName": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "lastName": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "title": {
+                        "$ref": "#/components/schemas/carserv.title"
+                    }
+                    ,
+                    "vip": {
+                    	"description": "A valuable customer is a customer that has two or more cars with us",
+                        "type": "boolean"
+                    }
+                    ,
+                    "cars": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/carserv.car"
+                        }
+                    }
+                    ,
+                    "userProfile": {
+                        "$ref": "#/components/schemas/userprofile.userProfile"
+                    }
+                }
+            }
+            ,
+            "carserv.car" : {
+            	"description": "",
+                "type": "object",
+                "properties": {
+                    "registrationNumber": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "modelName": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "pending": {
+                    	"description": "",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                    ,
+                    "model": {
+                        "$ref": "#/components/schemas/carserv.model"
+                    }
+                    ,
+                    "owner": {
+                        "$ref": "#/components/schemas/carserv.customer"
+                    }
+                    ,
+                    "pendingServices": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/carserv.service"
+                        }
+                    }
+                    ,
+                    "completedServices": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/carserv.service"
+                        }
+                    }
+                    ,
+                    "services": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/carserv.service"
+                        }
+                    }
+                }
+            }
+            ,
+            "carserv.service" : {
+            	"description": "",
+                "type": "object",
+                "properties": {
+                    "serviceNumber": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "sequence": {
+                    	"description": "",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                    ,
+                    "description": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "bookedOn": {
+                    	"description": "",
+                        "type": "string",
+                        "format": "date"
+                    }
+                    ,
+                    "estimatedReady": {
+                    	"description": "",
+                        "type": "string",
+                        "format": "date"
+                    }
+                    ,
+                    "pending": {
+                    	"description": "",
+                        "type": "boolean"
+                    }
+                    ,
+                    "status": {
+                        "$ref": "#/components/schemas/carserv.service.status"
+                    }
+                    ,
+                    "estimatedDays": {
+                    	"description": "",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                    ,
+                    "assigned": {
+                    	"description": "",
+                        "type": "boolean"
+                    }
+                    ,
+                    "car": {
+                        "$ref": "#/components/schemas/carserv.car"
+                    }
+                    ,
+                    "technician": {
+                        "$ref": "#/components/schemas/carserv.autoMechanic"
+                    }
+                }
+            }
+            ,
+            "carserv.make" : {
+            	"description": "",
+                "type": "object",
+                "properties": {
+                    "name": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "models": {
+                        "description": "",
+                        "type": "array",
+                        "items" : {
+                            "$ref": "#/components/schemas/carserv.model"
+                        }
+                    }
+                }
+            }
+            ,
+            "carserv.model" : {
+            	"description": "",
+                "type": "object",
+                "properties": {
+                    "name": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "make": {
+                        "$ref": "#/components/schemas/carserv.make"
+                    }
+                }
+            }
+            ,
+            "userprofile.userProfile" : {
+            	"description": "",
+                "type": "object",
+                "properties": {
+                    "username": {
+                    	"description": "Username is an email",
+                        "type": "string",
+                        "format": "email"
+                    }
+                    ,
+                    "password": {
+                    	"description": "",
+                        "type": "string"
+                    }
+                    ,
+                    "roleAsAutoMechanic": {
+                        "$ref": "#/components/schemas/carserv.autoMechanic"
+                    }
+                    ,
+                    "roleAsCustomer": {
+                        "$ref": "#/components/schemas/carserv.customer"
+                    }
+                }
+            }
+        }
+    }
+}

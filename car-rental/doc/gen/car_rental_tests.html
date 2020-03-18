@@ -1,0 +1,1478 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script   src="https://code.jquery.com/jquery-1.12.3.min.js"   integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ="   crossorigin="anonymous"></script>  
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <title>Package: Car rental tests - Data Dictionary</title>
+</head>
+<body>
+    <div class="container-fluid">
+    <h1>Package: Car rental tests</h1>
+    (<a href="data-dictionary.html">Back to Simple Car Rental Application</a>)
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <div>
+    <a name="car_rental_tests"></a>
+    <h5>(car_rental_tests)</h5>
+    
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Entity</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <h4>Class diagram</h4>
+    <img src="car_rental_tests-classes.png"></img>
+    <h4>State diagram</h4>
+    <img src="car_rental_tests-state.png"></img>
+    </div>
+    </div>
+    </div>
+    
+    <h2>Scenarios</h2>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="car_rental_tests::MakeScenarios"></a>
+    <h3>Make Scenarios</h3>
+    <h5>Test class from <strong>Car rental tests</strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="25%">Test case</th>
+                <th width="75%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Creation</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="b100521c-ddbb-461a-91d4-9c3c7e0a6c9f-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="b100521c-ddbb-461a-91d4-9c3c7e0a6c9f-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b100521c-ddbb-461a-91d4-9c3c7e0a6c9f-accordion" href="#b100521c-ddbb-461a-91d4-9c3c7e0a6c9f-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="b100521c-ddbb-461a-91d4-9c3c7e0a6c9f-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    carMake := Examples#newMake();
+                end
+                ;
+                begin
+                    Assert#isNotNull(carMake);
+                    Assert#isNotNull(carMake.<a href="car_rental.html#car_rental::Make::name">name</a>);
+                    Assert#areEqual("Fiat", carMake.<a href="car_rental.html#car_rental::Make::name">name</a>);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="b100521c-ddbb-461a-91d4-9c3c7e0a6c9f-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b100521c-ddbb-461a-91d4-9c3c7e0a6c9f-accordion" href="#b100521c-ddbb-461a-91d4-9c3c7e0a6c9f-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="b100521c-ddbb-461a-91d4-9c3c7e0a6c9f-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'carMake' the result of calling operation 'newMake' on class Examples
+                  Ensure that variable 'carMake' is not null
+                  Ensure that property 'name' in variable 'carMake' is not null
+                  Ensure that property 'name' in variable 'carMake' is equal to: "Fiat"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="car_rental_tests::ModelScenarios"></a>
+    <h3>Model Scenarios</h3>
+    <h5>Test class from <strong>Car rental tests</strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="25%">Test case</th>
+                <th width="75%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Creation</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="ba6604b4-27ef-4537-99c7-d17a3fd669e7-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="ba6604b4-27ef-4537-99c7-d17a3fd669e7-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#ba6604b4-27ef-4537-99c7-d17a3fd669e7-accordion" href="#ba6604b4-27ef-4537-99c7-d17a3fd669e7-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="ba6604b4-27ef-4537-99c7-d17a3fd669e7-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    carModel := Examples#newModel();
+                    carModel.<a href="car_rental.html#car_rental::CarModel::name">name</a> := "Mille";
+                end
+                ;
+                begin
+                    Assert#isNotNull(carModel);
+                    Assert#isNotNull(carModel.<a href="car_rental.html#car_rental::CarModel::name">name</a>);
+                    Assert#areEqual("Mille", carModel.<a href="car_rental.html#car_rental::CarModel::name">name</a>);
+                    Assert#isNotNull(carModel.<a href="car_rental.html#car_rental::CarModel::make">make</a>);
+                    Assert#isNotNull(carModel.<a href="car_rental.html#car_rental::CarModel::make">make</a>.<a href="car_rental.html#car_rental::Make::name">name</a>);
+                    Assert#areEqual("Fiat", carModel.<a href="car_rental.html#car_rental::CarModel::make">make</a>.<a href="car_rental.html#car_rental::Make::name">name</a>);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="ba6604b4-27ef-4537-99c7-d17a3fd669e7-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#ba6604b4-27ef-4537-99c7-d17a3fd669e7-accordion" href="#ba6604b4-27ef-4537-99c7-d17a3fd669e7-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="ba6604b4-27ef-4537-99c7-d17a3fd669e7-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'carModel' the result of calling operation 'newModel' on class Examples
+                  Set property 'name' in variable 'carModel' to "Mille"
+                  Ensure that variable 'carModel' is not null
+                  Ensure that property 'name' in variable 'carModel' is not null
+                  Ensure that property 'name' in variable 'carModel' is equal to: "Mille"
+                  Ensure that property 'make' in variable 'carModel' is not null
+                  Ensure that property 'name' in property 'make' in variable 'carModel' is not null
+                  Ensure that property 'name' in property 'make' in variable 'carModel' is equal to: "Fiat"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="car_rental_tests::CustomerScenarios"></a>
+    <h3>Customer Scenarios</h3>
+    <h5>Test class from <strong>Car rental tests</strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="25%">Test case</th>
+                <th width="75%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Creation</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="e3ee84e6-6e52-4fff-97e3-83f9a32ac3cc-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="e3ee84e6-6e52-4fff-97e3-83f9a32ac3cc-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#e3ee84e6-6e52-4fff-97e3-83f9a32ac3cc-accordion" href="#e3ee84e6-6e52-4fff-97e3-83f9a32ac3cc-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="e3ee84e6-6e52-4fff-97e3-83f9a32ac3cc-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    customer := Examples#newCustomer();
+                end
+                ;
+                begin
+                    Assert#isNotNull(customer);
+                    Assert#isNotNull(customer.<a href="car_rental.html#car_rental::Customer::name">name</a>);
+                    Assert#areEqual("Joana de Almeida", customer.<a href="car_rental.html#car_rental::Customer::name">name</a>);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="e3ee84e6-6e52-4fff-97e3-83f9a32ac3cc-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#e3ee84e6-6e52-4fff-97e3-83f9a32ac3cc-accordion" href="#e3ee84e6-6e52-4fff-97e3-83f9a32ac3cc-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="e3ee84e6-6e52-4fff-97e3-83f9a32ac3cc-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'customer' the result of calling operation 'newCustomer' on class Examples
+                  Ensure that variable 'customer' is not null
+                  Ensure that property 'name' in variable 'customer' is not null
+                  Ensure that property 'name' in variable 'customer' is equal to: "Joana de Almeida"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Rental History</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="bfcc2b71-53d5-4ac6-8a2d-a9a941ab4bb2-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="bfcc2b71-53d5-4ac6-8a2d-a9a941ab4bb2-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#bfcc2b71-53d5-4ac6-8a2d-a9a941ab4bb2-accordion" href="#bfcc2b71-53d5-4ac6-8a2d-a9a941ab4bb2-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="bfcc2b71-53d5-4ac6-8a2d-a9a941ab4bb2-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    car := Examples#newCar();
+                    customer := Examples#newCustomer();
+                    customer.<a href="car_rental.html#car_rental::Customer::rent">rent</a>(car);
+                    Assert#areEqual(1, customer.<a href="car_rental.html#car_rental::Customer::rentals">rentals</a>.size());
+                    customer.<a href="car_rental.html#car_rental::Customer::finishRental">finishRental</a>();
+                end
+                ;
+                begin
+                    customer.<a href="car_rental.html#car_rental::Customer::rent">rent</a>(car);
+                end
+                ;
+                begin
+                    Assert#areEqual(2, customer.<a href="car_rental.html#car_rental::Customer::rentals">rentals</a>.size());
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="bfcc2b71-53d5-4ac6-8a2d-a9a941ab4bb2-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#bfcc2b71-53d5-4ac6-8a2d-a9a941ab4bb2-accordion" href="#bfcc2b71-53d5-4ac6-8a2d-a9a941ab4bb2-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="bfcc2b71-53d5-4ac6-8a2d-a9a941ab4bb2-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'car' the result of calling operation 'newCar' on class Examples
+                  Assign to variable 'customer' the result of calling operation 'newCustomer' on class Examples
+                  Call operation 'rent' on variable 'customer'  with variable 'car' as argument
+                  Ensure that the count of property 'rentals' in variable 'customer' is equal to: 1
+                  Call operation 'finishRental' on variable 'customer'
+                  Call operation 'rent' on variable 'customer'  with variable 'car' as argument
+                  Ensure that the count of property 'rentals' in variable 'customer' is equal to: 2
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="car_rental_tests::RentalScenarios"></a>
+    <h3>Rental Scenarios</h3>
+    <h5>Test class from <strong>Car rental tests</strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="25%">Test case</th>
+                <th width="75%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Starts As In Progress</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="5352e484-f90e-4464-9010-1701cb34830a-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="5352e484-f90e-4464-9010-1701cb34830a-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#5352e484-f90e-4464-9010-1701cb34830a-accordion" href="#5352e484-f90e-4464-9010-1701cb34830a-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="5352e484-f90e-4464-9010-1701cb34830a-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    car := Examples#newCar();
+                    customer := Examples#newCustomer();
+                    Assert#isNull(customer.<a href="car_rental.html#car_rental::Customer::currentRental">currentRental</a>);
+                    customer.<a href="car_rental.html#car_rental::Customer::rent">rent</a>(car);
+                end
+                ;
+                begin
+                    Assert#isNotNull(customer.<a href="car_rental.html#car_rental::Customer::currentRental">currentRental</a>);
+                    Assert#isTrue((customer.<a href="car_rental.html#car_rental::Customer::currentRental">currentRental</a>.<a href="car_rental.html#car_rental::Rental::inProgress">inProgress</a> as Boolean));
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="5352e484-f90e-4464-9010-1701cb34830a-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#5352e484-f90e-4464-9010-1701cb34830a-accordion" href="#5352e484-f90e-4464-9010-1701cb34830a-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="5352e484-f90e-4464-9010-1701cb34830a-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'car' the result of calling operation 'newCar' on class Examples
+                  Assign to variable 'customer' the result of calling operation 'newCustomer' on class Examples
+                  Ensure that Any all records for Rental 'l'
+                      where (the value of property 'customer' in 'l' is equal to this Customer)
+                      and
+                      (The value of property 'status' in this Rental is equal to "InProgress")
+                   is null
+                  Call operation 'rent' on variable 'customer'  with variable 'car' as argument
+                  Ensure that Any all records for Rental 'l'
+                      where (the value of property 'customer' in 'l' is equal to this Customer)
+                      and
+                      (The value of property 'status' in this Rental is equal to "InProgress")
+                   is not null
+                  Ensure that The value of property 'status' in this Rental is equal to "InProgress"
+                   (as Boolean)
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Finished Upon Return</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="0229f4f0-382d-4feb-a9f5-787a4e50af83-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="0229f4f0-382d-4feb-a9f5-787a4e50af83-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#0229f4f0-382d-4feb-a9f5-787a4e50af83-accordion" href="#0229f4f0-382d-4feb-a9f5-787a4e50af83-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="0229f4f0-382d-4feb-a9f5-787a4e50af83-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    car := Examples#newCar();
+                    customer := Examples#newCustomer();
+                    customer.<a href="car_rental.html#car_rental::Customer::rent">rent</a>(car);
+                    rental := customer.<a href="car_rental.html#car_rental::Customer::currentRental">currentRental</a>;
+                end
+                ;
+                begin
+                    Assert#isNotNull(rental);
+                    Assert#isTrue((rental.<a href="car_rental.html#car_rental::Rental::inProgress">inProgress</a> as Boolean));
+                    customer.<a href="car_rental.html#car_rental::Customer::finishRental">finishRental</a>();
+                end
+                ;
+                begin
+                    Assert#isTrue((not rental.<a href="car_rental.html#car_rental::Rental::inProgress">inProgress</a> as Boolean));
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="0229f4f0-382d-4feb-a9f5-787a4e50af83-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#0229f4f0-382d-4feb-a9f5-787a4e50af83-accordion" href="#0229f4f0-382d-4feb-a9f5-787a4e50af83-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="0229f4f0-382d-4feb-a9f5-787a4e50af83-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'car' the result of calling operation 'newCar' on class Examples
+                  Assign to variable 'customer' the result of calling operation 'newCustomer' on class Examples
+                  Call operation 'rent' on variable 'customer'  with variable 'car' as argument
+                  Assign to variable 'rental' Any all records for Rental 'l'
+                      where (the value of property 'customer' in 'l' is equal to this Customer)
+                      and
+                      (The value of property 'status' in this Rental is equal to "InProgress")
+                  Ensure that variable 'rental' is not null
+                  Ensure that The value of property 'status' in this Rental is equal to "InProgress"
+                   (as Boolean)
+                  Call operation 'finishRental' on variable 'customer'
+                  Ensure that (The value of property 'status' in this Rental is equal to "InProgress"
+                  ) is false
+                   (as Boolean)
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>One Car Per Customer</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="21e8d41f-7af6-45b9-9112-30386abb2503-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="21e8d41f-7af6-45b9-9112-30386abb2503-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#21e8d41f-7af6-45b9-9112-30386abb2503-accordion" href="#21e8d41f-7af6-45b9-9112-30386abb2503-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="21e8d41f-7af6-45b9-9112-30386abb2503-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    car1 := Examples#newCar();
+                    car2 := Examples#newCar();
+                    customer := Examples#newCustomer();
+                    customer.<a href="car_rental.html#car_rental::Customer::rent">rent</a>(car1);
+                end
+                ;
+                begin
+                    customer.<a href="car_rental.html#car_rental::Customer::rent">rent</a>(car2);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="21e8d41f-7af6-45b9-9112-30386abb2503-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#21e8d41f-7af6-45b9-9112-30386abb2503-accordion" href="#21e8d41f-7af6-45b9-9112-30386abb2503-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="21e8d41f-7af6-45b9-9112-30386abb2503-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'car1' the result of calling operation 'newCar' on class Examples
+                  Assign to variable 'car2' the result of calling operation 'newCar' on class Examples
+                  Assign to variable 'customer' the result of calling operation 'newCustomer' on class Examples
+                  Call operation 'rent' on variable 'customer'  with variable 'car1' as argument
+                  Call operation 'rent' on variable 'customer'  with variable 'car2' as argument
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Count In Progress</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="b4a766ed-3d28-46f2-a343-5e4b1158ee5a-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="b4a766ed-3d28-46f2-a343-5e4b1158ee5a-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b4a766ed-3d28-46f2-a343-5e4b1158ee5a-accordion" href="#b4a766ed-3d28-46f2-a343-5e4b1158ee5a-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="b4a766ed-3d28-46f2-a343-5e4b1158ee5a-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    baseline := <a href="car_rental.html#car_rental::Rental">Rental</a>#<a href="car_rental.html#car_rental::Rental::countOfRentalsInProgress">countOfRentalsInProgress</a>();
+                    car1 := Examples#newCar();
+                    car2 := Examples#newCar();
+                    car3 := Examples#newCar();
+                    customer1 := Examples#newCustomer();
+                    customer2 := Examples#newCustomer();
+                    customer3 := Examples#newCustomer();
+                    customer1.<a href="car_rental.html#car_rental::Customer::rent">rent</a>(car1);
+                    customer2.<a href="car_rental.html#car_rental::Customer::rent">rent</a>(car2);
+                    customer3.<a href="car_rental.html#car_rental::Customer::rent">rent</a>(car3);
+                end
+                ;
+                begin
+                    Assert#areEqual(3, <a href="car_rental.html#car_rental::Rental">Rental</a>#<a href="car_rental.html#car_rental::Rental::countOfRentalsInProgress">countOfRentalsInProgress</a>() - baseline);
+                    customer3.<a href="car_rental.html#car_rental::Customer::finishRental">finishRental</a>();
+                end
+                ;
+                begin
+                    Assert#areEqual(2, <a href="car_rental.html#car_rental::Rental">Rental</a>#<a href="car_rental.html#car_rental::Rental::countOfRentalsInProgress">countOfRentalsInProgress</a>() - baseline);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="b4a766ed-3d28-46f2-a343-5e4b1158ee5a-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b4a766ed-3d28-46f2-a343-5e4b1158ee5a-accordion" href="#b4a766ed-3d28-46f2-a343-5e4b1158ee5a-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="b4a766ed-3d28-46f2-a343-5e4b1158ee5a-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'baseline' the result of calling operation 'countOfRentalsInProgress' on class Rental
+                  Assign to variable 'car1' the result of calling operation 'newCar' on class Examples
+                  Assign to variable 'car2' the result of calling operation 'newCar' on class Examples
+                  Assign to variable 'car3' the result of calling operation 'newCar' on class Examples
+                  Assign to variable 'customer1' the result of calling operation 'newCustomer' on class Examples
+                  Assign to variable 'customer2' the result of calling operation 'newCustomer' on class Examples
+                  Assign to variable 'customer3' the result of calling operation 'newCustomer' on class Examples
+                  Call operation 'rent' on variable 'customer1'  with variable 'car1' as argument
+                  Call operation 'rent' on variable 'customer2'  with variable 'car2' as argument
+                  Call operation 'rent' on variable 'customer3'  with variable 'car3' as argument
+                  Ensure that the result of calling operation 'countOfRentalsInProgress' on class Rental  - variable 'baseline' is equal to: 3
+                  Call operation 'finishRental' on variable 'customer3'
+                  Ensure that the result of calling operation 'countOfRentalsInProgress' on class Rental  - variable 'baseline' is equal to: 2
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Car Unavailable</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="2fcd0829-8e10-4946-a850-bd1ba84b10de-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="2fcd0829-8e10-4946-a850-bd1ba84b10de-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#2fcd0829-8e10-4946-a850-bd1ba84b10de-accordion" href="#2fcd0829-8e10-4946-a850-bd1ba84b10de-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="2fcd0829-8e10-4946-a850-bd1ba84b10de-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    car := Examples#newCar();
+                    customer1 := Examples#newCustomer();
+                    customer2 := Examples#newCustomer();
+                    customer1.<a href="car_rental.html#car_rental::Customer::rent">rent</a>(car);
+                end
+                ;
+                begin
+                    Assert#isTrue(car.<a href="car_rental.html#car_rental::Car::rented">rented</a>);
+                    customer2.<a href="car_rental.html#car_rental::Customer::rent">rent</a>(car);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="2fcd0829-8e10-4946-a850-bd1ba84b10de-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#2fcd0829-8e10-4946-a850-bd1ba84b10de-accordion" href="#2fcd0829-8e10-4946-a850-bd1ba84b10de-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="2fcd0829-8e10-4946-a850-bd1ba84b10de-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'car' the result of calling operation 'newCar' on class Examples
+                  Assign to variable 'customer1' the result of calling operation 'newCustomer' on class Examples
+                  Assign to variable 'customer2' the result of calling operation 'newCustomer' on class Examples
+                  Call operation 'rent' on variable 'customer1'  with variable 'car' as argument
+                  Ensure that The value of property 'status' in this Car is equal to "Rented"
+                  Call operation 'rent' on variable 'customer2'  with variable 'car' as argument
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-sm-9 col-md-12 main">
+    <a name="car_rental_tests::CarScenarios"></a>
+    <h3>Car Scenarios</h3>
+    <h5>Test class from <strong>Car rental tests</strong></h5>
+    <hr>
+    <table class="table">
+        <thead class="thead-inverse">
+            <tr>
+                <th width="25%">Test case</th>
+                <th width="75%">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Creation</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="12898735-c097-497b-b464-4f04fb767603-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="12898735-c097-497b-b464-4f04fb767603-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#12898735-c097-497b-b464-4f04fb767603-accordion" href="#12898735-c097-497b-b464-4f04fb767603-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="12898735-c097-497b-b464-4f04fb767603-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    car := Examples#newCar();
+                end
+                ;
+                begin
+                    Assert#isNotNull(car);
+                    Assert#isNotNull(car.<a href="car_rental.html#car_rental::Car::plate">plate</a>);
+                    Assert#isNotNull(car.<a href="car_rental.html#car_rental::Car::carModel">carModel</a>);
+                    Assert#isNotNull(car.<a href="car_rental.html#car_rental::Car::carModel">carModel</a>.<a href="car_rental.html#car_rental::CarModel::name">name</a>);
+                    Assert#isNotNull(car.<a href="car_rental.html#car_rental::Car::carModel">carModel</a>.<a href="car_rental.html#car_rental::CarModel::make">make</a>);
+                    Assert#isNotNull(car.<a href="car_rental.html#car_rental::Car::carModel">carModel</a>.<a href="car_rental.html#car_rental::CarModel::make">make</a>.<a href="car_rental.html#car_rental::Make::name">name</a>);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="12898735-c097-497b-b464-4f04fb767603-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#12898735-c097-497b-b464-4f04fb767603-accordion" href="#12898735-c097-497b-b464-4f04fb767603-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="12898735-c097-497b-b464-4f04fb767603-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'car' the result of calling operation 'newCar' on class Examples
+                  Ensure that variable 'car' is not null
+                  Ensure that property 'plate' in variable 'car' is not null
+                  Ensure that property 'carModel' in variable 'car' is not null
+                  Ensure that property 'name' in property 'carModel' in variable 'car' is not null
+                  Ensure that property 'make' in property 'carModel' in variable 'car' is not null
+                  Ensure that property 'name' in property 'make' in property 'carModel' in variable 'car' is not null
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Starts As Valid</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="f2d7e99f-40b0-4adc-becc-932cc398f29c-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="f2d7e99f-40b0-4adc-becc-932cc398f29c-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#f2d7e99f-40b0-4adc-becc-932cc398f29c-accordion" href="#f2d7e99f-40b0-4adc-becc-932cc398f29c-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="f2d7e99f-40b0-4adc-becc-932cc398f29c-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                car := Examples#newCar();
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="f2d7e99f-40b0-4adc-becc-932cc398f29c-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#f2d7e99f-40b0-4adc-becc-932cc398f29c-accordion" href="#f2d7e99f-40b0-4adc-becc-932cc398f29c-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="f2d7e99f-40b0-4adc-becc-932cc398f29c-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'car' the result of calling operation 'newCar' on class Examples
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Starts As Available</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="c4c7cc51-239c-455f-afc6-cd60a2e7cd13-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="c4c7cc51-239c-455f-afc6-cd60a2e7cd13-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#c4c7cc51-239c-455f-afc6-cd60a2e7cd13-accordion" href="#c4c7cc51-239c-455f-afc6-cd60a2e7cd13-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="c4c7cc51-239c-455f-afc6-cd60a2e7cd13-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                car := Examples#newCar();
+                Assert#isTrue(car.<a href="car_rental.html#car_rental::Car::available">available</a>);
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="c4c7cc51-239c-455f-afc6-cd60a2e7cd13-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#c4c7cc51-239c-455f-afc6-cd60a2e7cd13-accordion" href="#c4c7cc51-239c-455f-afc6-cd60a2e7cd13-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="c4c7cc51-239c-455f-afc6-cd60a2e7cd13-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'car' the result of calling operation 'newCar' on class Examples
+                  Ensure that The value of property 'status' in this Car is equal to "Available"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Too Old</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="c5463e89-3779-4628-b115-eb7675f72f13-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="c5463e89-3779-4628-b115-eb7675f72f13-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#c5463e89-3779-4628-b115-eb7675f72f13-accordion" href="#c5463e89-3779-4628-b115-eb7675f72f13-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="c5463e89-3779-4628-b115-eb7675f72f13-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                car := Examples#newCar();
+                car.<a href="car_rental.html#car_rental::Car::year">year</a> := 1900;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="c5463e89-3779-4628-b115-eb7675f72f13-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#c5463e89-3779-4628-b115-eb7675f72f13-accordion" href="#c5463e89-3779-4628-b115-eb7675f72f13-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="c5463e89-3779-4628-b115-eb7675f72f13-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'car' the result of calling operation 'newCar' on class Examples
+                  Set property 'year' in variable 'car' to 1900
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Too New</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="10e0c3c3-db6b-43f4-8291-3d0d7de1d06f-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="10e0c3c3-db6b-43f4-8291-3d0d7de1d06f-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#10e0c3c3-db6b-43f4-8291-3d0d7de1d06f-accordion" href="#10e0c3c3-db6b-43f4-8291-3d0d7de1d06f-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="10e0c3c3-db6b-43f4-8291-3d0d7de1d06f-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                car := Examples#newCar();
+                car.<a href="car_rental.html#car_rental::Car::year">year</a> := 2500;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="10e0c3c3-db6b-43f4-8291-3d0d7de1d06f-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#10e0c3c3-db6b-43f4-8291-3d0d7de1d06f-accordion" href="#10e0c3c3-db6b-43f4-8291-3d0d7de1d06f-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="10e0c3c3-db6b-43f4-8291-3d0d7de1d06f-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'car' the result of calling operation 'newCar' on class Examples
+                  Set property 'year' in variable 'car' to 2500
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Price Is Too Low</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="8bcf2c33-7757-49b5-81d0-2aba70aea9f4-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="8bcf2c33-7757-49b5-81d0-2aba70aea9f4-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#8bcf2c33-7757-49b5-81d0-2aba70aea9f4-accordion" href="#8bcf2c33-7757-49b5-81d0-2aba70aea9f4-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="8bcf2c33-7757-49b5-81d0-2aba70aea9f4-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                car := Examples#newCar();
+                car.<a href="car_rental.html#car_rental::Car::price">price</a> := 49.0;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="8bcf2c33-7757-49b5-81d0-2aba70aea9f4-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#8bcf2c33-7757-49b5-81d0-2aba70aea9f4-accordion" href="#8bcf2c33-7757-49b5-81d0-2aba70aea9f4-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="8bcf2c33-7757-49b5-81d0-2aba70aea9f4-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'car' the result of calling operation 'newCar' on class Examples
+                  Set property 'price' in variable 'car' to 49.0
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Price Is Too High</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="0482cd3a-9a0f-4ea4-9854-86d31e55d15e-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="0482cd3a-9a0f-4ea4-9854-86d31e55d15e-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#0482cd3a-9a0f-4ea4-9854-86d31e55d15e-accordion" href="#0482cd3a-9a0f-4ea4-9854-86d31e55d15e-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="0482cd3a-9a0f-4ea4-9854-86d31e55d15e-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                car := Examples#newCar();
+                car.<a href="car_rental.html#car_rental::Car::price">price</a> := 2000.0;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="0482cd3a-9a0f-4ea4-9854-86d31e55d15e-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#0482cd3a-9a0f-4ea4-9854-86d31e55d15e-accordion" href="#0482cd3a-9a0f-4ea4-9854-86d31e55d15e-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="0482cd3a-9a0f-4ea4-9854-86d31e55d15e-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'car' the result of calling operation 'newCar' on class Examples
+                  Set property 'price' in variable 'car' to 2000.0
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Unavailable When Rented</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="b32012c5-55fa-4d28-a249-5517bb7ad7fb-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="b32012c5-55fa-4d28-a249-5517bb7ad7fb-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b32012c5-55fa-4d28-a249-5517bb7ad7fb-accordion" href="#b32012c5-55fa-4d28-a249-5517bb7ad7fb-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="b32012c5-55fa-4d28-a249-5517bb7ad7fb-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    car := Examples#newCar();
+                    customer := Examples#newCustomer();
+                    Assert#areEqual(Status#Available, car.<a href="car_rental.html#car_rental::Car::status">status</a>);
+                    customer.<a href="car_rental.html#car_rental::Customer::rent">rent</a>(car);
+                end
+                ;
+                begin
+                    Assert#areEqual(Status#Rented, car.<a href="car_rental.html#car_rental::Car::status">status</a>);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="b32012c5-55fa-4d28-a249-5517bb7ad7fb-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#b32012c5-55fa-4d28-a249-5517bb7ad7fb-accordion" href="#b32012c5-55fa-4d28-a249-5517bb7ad7fb-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="b32012c5-55fa-4d28-a249-5517bb7ad7fb-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'car' the result of calling operation 'newCar' on class Examples
+                  Assign to variable 'customer' the result of calling operation 'newCustomer' on class Examples
+                  Ensure that property 'status' in variable 'car' is equal to: "Available"
+                  Call operation 'rent' on variable 'customer'  with variable 'car' as argument
+                  Ensure that property 'status' in variable 'car' is equal to: "Rented"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Available Upon Return</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="3a22f9e4-daa3-48f6-9d93-2e395d00169d-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="3a22f9e4-daa3-48f6-9d93-2e395d00169d-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#3a22f9e4-daa3-48f6-9d93-2e395d00169d-accordion" href="#3a22f9e4-daa3-48f6-9d93-2e395d00169d-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="3a22f9e4-daa3-48f6-9d93-2e395d00169d-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    car := Examples#newCar();
+                    customer := Examples#newCustomer();
+                end
+                ;
+                begin
+                    Assert#areEqual(Status#Available, car.<a href="car_rental.html#car_rental::Car::status">status</a>);
+                    customer.<a href="car_rental.html#car_rental::Customer::rent">rent</a>(car);
+                    rental := customer.<a href="car_rental.html#car_rental::Customer::currentRental">currentRental</a>;
+                end
+                ;
+                begin
+                    Assert#areEqual(Status#Rented, car.<a href="car_rental.html#car_rental::Car::status">status</a>);
+                    customer.<a href="car_rental.html#car_rental::Customer::finishRental">finishRental</a>();
+                end
+                ;
+                begin
+                    Assert#areEqual(Status#Available, car.<a href="car_rental.html#car_rental::Car::status">status</a>);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="3a22f9e4-daa3-48f6-9d93-2e395d00169d-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#3a22f9e4-daa3-48f6-9d93-2e395d00169d-accordion" href="#3a22f9e4-daa3-48f6-9d93-2e395d00169d-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="3a22f9e4-daa3-48f6-9d93-2e395d00169d-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'car' the result of calling operation 'newCar' on class Examples
+                  Assign to variable 'customer' the result of calling operation 'newCustomer' on class Examples
+                  Ensure that property 'status' in variable 'car' is equal to: "Available"
+                  Call operation 'rent' on variable 'customer'  with variable 'car' as argument
+                  Assign to variable 'rental' Any all records for Rental 'l'
+                      where (the value of property 'customer' in 'l' is equal to this Customer)
+                      and
+                      (The value of property 'status' in this Rental is equal to "InProgress")
+                  Ensure that property 'status' in variable 'car' is equal to: "Rented"
+                  Call operation 'finishRental' on variable 'customer'
+                  Ensure that property 'status' in variable 'car' is equal to: "Available"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Unavailable When Under Repair</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="313585cd-0c12-4afd-a895-93dc9c725866-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="313585cd-0c12-4afd-a895-93dc9c725866-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#313585cd-0c12-4afd-a895-93dc9c725866-accordion" href="#313585cd-0c12-4afd-a895-93dc9c725866-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="313585cd-0c12-4afd-a895-93dc9c725866-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    car := Examples#newCar();
+                end
+                ;
+                begin
+                    Assert#isTrue(car.<a href="car_rental.html#car_rental::Car::available">available</a>);
+                    Assert#isTrue(not car.<a href="car_rental.html#car_rental::Car::underRepair">underRepair</a>);
+                    car.<a href="car_rental.html#car_rental::Car::startRepair">startRepair</a>();
+                end
+                ;
+                begin
+                    Assert#isTrue(not car.<a href="car_rental.html#car_rental::Car::available">available</a>);
+                    Assert#isTrue(car.<a href="car_rental.html#car_rental::Car::underRepair">underRepair</a>);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="313585cd-0c12-4afd-a895-93dc9c725866-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#313585cd-0c12-4afd-a895-93dc9c725866-accordion" href="#313585cd-0c12-4afd-a895-93dc9c725866-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="313585cd-0c12-4afd-a895-93dc9c725866-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'car' the result of calling operation 'newCar' on class Examples
+                  Ensure that The value of property 'status' in this Car is equal to "Available"
+                  Ensure that (The value of property 'status' in this Car is equal to "UnderRepair"
+                  ) is false
+                  Call operation 'startRepair' on variable 'car'
+                  Ensure that (The value of property 'status' in this Car is equal to "Available"
+                  ) is false
+                  Ensure that The value of property 'status' in this Car is equal to "UnderRepair"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>Available Upon Repair Completion</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="fa4b4a0a-e38d-4534-88dd-74f7b915ff78-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="fa4b4a0a-e38d-4534-88dd-74f7b915ff78-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#fa4b4a0a-e38d-4534-88dd-74f7b915ff78-accordion" href="#fa4b4a0a-e38d-4534-88dd-74f7b915ff78-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="fa4b4a0a-e38d-4534-88dd-74f7b915ff78-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    car := Examples#newCar();
+                end
+                ;
+                begin
+                    Assert#isTrue(car.<a href="car_rental.html#car_rental::Car::available">available</a>);
+                    car.<a href="car_rental.html#car_rental::Car::startRepair">startRepair</a>();
+                end
+                ;
+                begin
+                    Assert#isTrue(not car.<a href="car_rental.html#car_rental::Car::available">available</a>);
+                    car.<a href="car_rental.html#car_rental::Car::finishRepair">finishRepair</a>();
+                end
+                ;
+                begin
+                    Assert#isTrue(car.<a href="car_rental.html#car_rental::Car::available">available</a>);
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="fa4b4a0a-e38d-4534-88dd-74f7b915ff78-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#fa4b4a0a-e38d-4534-88dd-74f7b915ff78-accordion" href="#fa4b4a0a-e38d-4534-88dd-74f7b915ff78-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="fa4b4a0a-e38d-4534-88dd-74f7b915ff78-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'car' the result of calling operation 'newCar' on class Examples
+                  Ensure that The value of property 'status' in this Car is equal to "Available"
+                  Call operation 'startRepair' on variable 'car'
+                  Ensure that (The value of property 'status' in this Car is equal to "Available"
+                  ) is false
+                  Call operation 'finishRepair' on variable 'car'
+                  Ensure that The value of property 'status' in this Car is equal to "Available"
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+            <tr>
+                <td>By Make</td>
+                <td>
+                <table>
+                <tr><td>
+                -
+                </td></tr>
+                <tr><th>
+                Behavior
+                </th></tr>
+                <tr><td>
+                <div class="panel-group" id="a8639981-03c6-476a-b1fb-665b52ab8472-accordion" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="a8639981-03c6-476a-b1fb-665b52ab8472-textuml-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#a8639981-03c6-476a-b1fb-665b52ab8472-accordion" href="#a8639981-03c6-476a-b1fb-665b52ab8472-textuml-content" aria-expanded="true">
+                        Specification
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="a8639981-03c6-476a-b1fb-665b52ab8472-textuml-content" class="panel-collapse collapse in" role="tabpanel">
+                      <div class="panel-body">
+                          <pre>
+                begin
+                    make1 := Examples#newMake();
+                    make2 := Examples#newMake();
+                    make3 := Examples#newMake();
+                end
+                ;
+                begin
+                    model1 := Examples#newMakeModel(make1);
+                    model2 := Examples#newMakeModel(make2);
+                    model3 := Examples#newMakeModel(make2);
+                    model4 := Examples#newMakeModel(make3);
+                end
+                ;
+                begin
+                    car1 := Examples#newCarForModel(model1);
+                    car2 := Examples#newCarForModel(model2);
+                    car3 := Examples#newCarForModel(model2);
+                    car4 := Examples#newCarForModel(model3);
+                end
+                ;
+                begin
+                    Assert#areEqual(1, <a href="car_rental.html#car_rental::Car">Car</a>#<a href="car_rental.html#car_rental::Car::byMake">byMake</a>(make1).size());
+                    Assert#areEqual(3, <a href="car_rental.html#car_rental::Car">Car</a>#<a href="car_rental.html#car_rental::Car::byMake">byMake</a>(make2).size());
+                    Assert#areEqual(0, <a href="car_rental.html#car_rental::Car">Car</a>#<a href="car_rental.html#car_rental::Car::byMake">byMake</a>(make3).size());
+                end
+                ;
+                          </pre>              
+                      </div>
+                    </div>
+                    <div class="panel-heading" role="tab" id="a8639981-03c6-476a-b1fb-665b52ab8472-pseudocode-heading">
+                      <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#a8639981-03c6-476a-b1fb-665b52ab8472-accordion" href="#a8639981-03c6-476a-b1fb-665b52ab8472-pseudocode-content">
+                        Pseudocode (experimental)
+                        </a>
+                      </h4>
+                      </div>
+                      <div id="a8639981-03c6-476a-b1fb-665b52ab8472-pseudocode-content" class="panel-collapse collapse" role="tabpanel">
+                        <div class="panel-body">
+                            <pre>
+                  Assign to variable 'make1' the result of calling operation 'newMake' on class Examples
+                  Assign to variable 'make2' the result of calling operation 'newMake' on class Examples
+                  Assign to variable 'make3' the result of calling operation 'newMake' on class Examples
+                  Assign to variable 'model1' the result of calling operation 'newMakeModel' on class Examples  with variable 'make1' as argument
+                  Assign to variable 'model2' the result of calling operation 'newMakeModel' on class Examples  with variable 'make2' as argument
+                  Assign to variable 'model3' the result of calling operation 'newMakeModel' on class Examples  with variable 'make2' as argument
+                  Assign to variable 'model4' the result of calling operation 'newMakeModel' on class Examples  with variable 'make3' as argument
+                  Assign to variable 'car1' the result of calling operation 'newCarForModel' on class Examples  with variable 'model1' as argument
+                  Assign to variable 'car2' the result of calling operation 'newCarForModel' on class Examples  with variable 'model2' as argument
+                  Assign to variable 'car3' the result of calling operation 'newCarForModel' on class Examples  with variable 'model2' as argument
+                  Assign to variable 'car4' the result of calling operation 'newCarForModel' on class Examples  with variable 'model3' as argument
+                  Ensure that the count of the result of calling operation 'byMake' on class Car  with variable 'make1' as argument is equal to: 1
+                  Ensure that the count of the result of calling operation 'byMake' on class Car  with variable 'make2' as argument is equal to: 3
+                  Ensure that the count of the result of calling operation 'byMake' on class Car  with variable 'make3' as argument is equal to: 0
+                            </pre>              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </td></tr>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+</body>
+</html>
+
