@@ -297,15 +297,15 @@ class ClientScenarios
         end;
         begin
             Assert#areEqual(existing + 2, Client#withOpenInvoices().size());
-            client1.openInvoices.one().cancel();
+            (!!client1.openInvoices.one()).cancel();
         end;
         begin
             Assert#areEqual(existing + 1, Client#withOpenInvoices().size());
-            client2.openInvoices.one().cancel();
+            (!!client2.openInvoices.one()).cancel();
         end;
         begin
             Assert#areEqual(existing + 1, Client#withOpenInvoices().size());
-            client2.openInvoices.one().cancel();
+            (!!client2.openInvoices.one()).cancel();
         end;
         begin
             Assert#areEqual(existing, Client#withOpenInvoices().size());
