@@ -44,7 +44,7 @@ class Product
     attribute productDescription : Memo[0, 1];
 
     attribute productWeight : Double[0, 1] := 0.0
-        invariant { self.productWeight == null or self.productWeight >= 0 };
+        invariant { (self.productWeight ?: 0) >= 0 };
 
     attribute image : Picture;
  
@@ -54,7 +54,7 @@ class Product
     allow Customer
     precondition { not (Order#currentOrder() == null) };
     begin
-        Order#currentOrder().addItem(self, 1);
+        (!!Order#currentOrder()).addItem(self, 1);
     end;
 
 end;
@@ -78,7 +78,7 @@ class OrderDetail
 
     attribute order : Order;
     
-    readonly reference product : Product[0, 1];
+    readonly reference product : Product;
 
     attribute quantity : Integer := 1
         (* Quantity must be a positive number. *)
@@ -92,7 +92,7 @@ class OrderDetail
         self.unitPrice * self.quantity
     };
     
-    derived attribute unitPrice : Double := { self.product.productPrice ?: 0};
+    derived attribute unitPrice : Double := { self.product.productPrice};
 end;
 
 class Order

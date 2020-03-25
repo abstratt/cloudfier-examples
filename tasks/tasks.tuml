@@ -79,7 +79,7 @@ class Task
     static query tasksCompletedToday() : Task[*];
     begin
         return Task extent.select((t : Task) : Boolean {
-            t.status == Status#Completed and (t.completionDate = Date#today())
+            t.status == Status#Completed and (!!t.completionDate = Date#today())
         });
     end;
 
