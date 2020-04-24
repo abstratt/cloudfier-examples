@@ -42,7 +42,7 @@ class AutoMechanic specializes Person
     };
 
     (* Services currently in progress by this worker. *)
-    derived attribute currentServices : Service[*] := {
+    derived attribute inProgressServices : Service[*] := {
         self<-TechnicianWorksOnService->services.select((service : Service) : Boolean {
             service.status == Service::Status#InProgress
         })
@@ -54,9 +54,16 @@ class AutoMechanic specializes Person
             service.status == Service::Status#Booked
         })
     };
+    
+    (* Services assigned to this worker but not yet completed. *)
+    derived attribute currentServices : Service[*] := {
+        self<-TechnicianWorksOnService->services.select((service : Service) : Boolean {
+            (service.status == Service::Status#Booked) or (service.status == Service::Status#InProgress)
+        })
+    };
 
     derived attribute workInProgress : Boolean := {
-        not self.currentServices.isEmpty()
+        not self.inProgressServices.isEmpty()
     };
 
     derived attribute workScheduled : Boolean := {
@@ -75,11 +82,15 @@ class AutoMechanic specializes Person
         self.upcomingServices.forEach((s : Service) {
             unlink TechnicianWorksOnService(services := s, technician := self);
         });
+        self.inProgressServices.forEach((s : Service) {
+            unlink TechnicianWorksOnService(services := s, technician := self);
+        });
     end;
 
-    (* Puts employee into vacation. Unassigns any work scheduled. *)
+    (* Puts employee into vacation. *)
     operation beginVacation()
-        precondition NoWorkInProgress { not self.workInProgress };
+        precondition NoWorkInProgress { not self.workInProgress }
+        precondition NoWorkScheduled { not self.workScheduled };
     begin
     end;
 
@@ -89,8 +100,8 @@ class AutoMechanic specializes Person
             self.status == WorkingStatus#Vacation
         };
 
-    operation retire()
-        precondition NoWorkInProgress { not self.workInProgress };
+    (* Retires the employee. Unassigns any work scheduled. *)
+    operation retire();
 
     operation rehire();
 
@@ -251,9 +262,9 @@ class Service
     attribute estimatedReady : Date := {
         Date#today().transpose(Duration#days(1))
     }
-        invariant DeliveryDateMustBeAfterBookDate {
-            self.estimatedReady == null or self.bookedOn == null or self.estimatedDays >= 0
-        };
+    invariant DeliveryDateMustBeAfterBookDate {
+        self.estimatedReady == null or self.bookedOn == null or self.estimatedDays >= 0
+    };
 
     derived attribute pending : Boolean := {
         self.status == Status#Booked or self.status == Status#InProgress
@@ -281,6 +292,19 @@ class Service
         return Service extent.select((s : Service) : Boolean {
             s.status == Status#Booked
         });
+    end;
+    
+    static query unassigned() : Service[*];
+    begin
+        return Service extent.select((s : Service) : Boolean {
+            (s.status == Status#Booked) and (not s.assigned)
+        });
+    end;
+    
+    static query assignedToMe() : Service[*]
+        allow AutoMechanic;
+    begin
+        return (System#user() as AutoMechanic).currentServices;
     end;
     
     static query findByOwner(owner : Customer) : Service[*];
@@ -323,6 +347,17 @@ class Service
     begin
         self.technician := technician;
     end;
+    
+    (* The current mechanic takes over a service *)
+    operation takeOver()
+        precondition MustBePending { self.pending }
+        precondition MustNotBeAssignedToMe { not (self.technician == (System#user() as AutoMechanic)) }
+        precondition TechnicianMustBeWorking { (System#user() as AutoMechanic).working }
+        allow AutoMechanic;
+    begin
+        self.technician := (System#user() as AutoMechanic);
+    end;
+    
 
     (* Assigns a service to a different technician other than the one currently assigned. *)
     operation transfer(mechanic : AutoMechanic)

@@ -160,6 +160,18 @@ class MechanicScenarios
             mechanic.beginVacation();
         end;
     end;
+    
+    [Failure(constraint="NoWorkScheduled")]
+    operation cannotGoOnVacationIfWorkScheduled();
+    begin
+        var mechanic;
+        begin
+            mechanic := TestData#getAMechanicWithWorkScheduled();
+        end;
+        begin
+            mechanic.beginVacation();
+        end;
+    end;
 
     [Failure(constraint="MustBeAssigned")]
     operation cannotStartServiceIfNotAssigned();
